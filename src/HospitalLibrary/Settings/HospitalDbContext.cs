@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HospitalLibrary.Core.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Settings
 {
     public class HospitalDbContext : DbContext
     {
+        public DbSet<Room> Rooms { get; set; }
 
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
