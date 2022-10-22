@@ -1,5 +1,3 @@
-using HospitalLibrary.Core.Repository;
-using HospitalLibrary.Core.Service;
 using HospitalLibrary.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,8 +30,6 @@ namespace HospitalAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });
             });
 
-            services.AddScoped<IRoomService, RoomService>();
-            services.AddScoped<IRoomRepository, RoomRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
