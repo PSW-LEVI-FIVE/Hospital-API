@@ -1,3 +1,7 @@
+using HospitalLibrary.Core.Repository;
+using HospitalLibrary.Core.Repository.Interfaces;
+using HospitalLibrary.Core.Service;
+using HospitalLibrary.Core.Service.Interfaces;
 using HospitalLibrary.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,6 +29,8 @@ namespace HospitalAPI
             options.UseNpgsql(Configuration.GetConnectionString("HospitalDb")));
 
             services.AddControllers();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IRoomService, RoomService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });
