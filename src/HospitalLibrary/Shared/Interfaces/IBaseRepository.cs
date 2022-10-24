@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace HospitalLibrary.Core.Repository.Interfaces
+namespace HospitalLibrary.Shared.Interfaces
 {
     public interface IBaseRepository<T>
     {

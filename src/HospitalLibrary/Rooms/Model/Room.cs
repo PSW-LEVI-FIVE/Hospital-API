@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HospitalLibrary.Core.Model
+namespace HospitalLibrary.Rooms.Model
 {
     public class Room
     {
         
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity), Key()]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key()]
         public int Id { get; set; }
         public string RoomNumber { get; set; }
         public int Floor { get; set; }

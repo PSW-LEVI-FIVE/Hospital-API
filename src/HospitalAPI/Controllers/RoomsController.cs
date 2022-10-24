@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HospitalLibrary.Core.Model;
-using HospitalLibrary.Core.Service.Interfaces;
+using HospitalLibrary.Rooms.Interfaces;
+using HospitalLibrary.Rooms.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers
@@ -10,15 +10,11 @@ namespace HospitalAPI.Controllers
     [ApiController]
     public class RoomsController : ControllerBase
     {
-
-
         private IRoomService _roomService;
         public RoomsController(IRoomService roomService)
         {
             _roomService = roomService;
         }
-
-
 
         [HttpGet]
         public async Task<IActionResult> GetAll()

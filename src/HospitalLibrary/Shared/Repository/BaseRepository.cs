@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HospitalLibrary.Core.Repository.Interfaces;
 using HospitalLibrary.Settings;
+using HospitalLibrary.Shared.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace HospitalLibrary.Core.Repository
+namespace HospitalLibrary.Shared.Repository
 {
     public class BaseRepository<T> : IBaseRepository<T> where T: class
     {

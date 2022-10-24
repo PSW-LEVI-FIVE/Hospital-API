@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HospitalLibrary.Core.Model;
+using HospitalLibrary.Rooms.Model;
 
-namespace HospitalLibrary.Core.Service.Interfaces
+namespace HospitalLibrary.Rooms.Interfaces
 {
     public interface IRoomService
     {
