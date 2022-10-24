@@ -1,4 +1,4 @@
-﻿using HospitalLibrary.Rooms;
+using HospitalLibrary.Rooms;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Settings
