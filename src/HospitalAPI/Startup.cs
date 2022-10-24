@@ -1,8 +1,8 @@
-using HospitalLibrary.Core.Repository;
-using HospitalLibrary.Core.Repository.Interfaces;
-using HospitalLibrary.Core.Service;
-using HospitalLibrary.Core.Service.Interfaces;
+using HospitalLibrary.Rooms.Interfaces;
+using HospitalLibrary.Rooms.Service;
 using HospitalLibrary.Settings;
+using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Shared.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

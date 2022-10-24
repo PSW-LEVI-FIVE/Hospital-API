@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HospitalLibrary.Core.Model;
-using HospitalLibrary.Core.Repository.Interfaces;
-using HospitalLibrary.Core.Service.Interfaces;
+using HospitalLibrary.Rooms.Interfaces;
+using HospitalLibrary.Rooms.Model;
+using HospitalLibrary.Shared.Interfaces;
 
-namespace HospitalLibrary.Core.Service
+namespace HospitalLibrary.Rooms.Service
 {
     public class RoomService: IRoomService
     {
