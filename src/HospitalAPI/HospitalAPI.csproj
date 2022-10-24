@@ -17,4 +17,8 @@
     <ProjectReference Include="..\HospitalLibrary\HospitalLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Public" />
+  </ItemGroup>
+
 </Project>
