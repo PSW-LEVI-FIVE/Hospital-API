@@ -1,7 +1,9 @@
-﻿using HospitalLibrary.Core.Repository.Interfaces;
+﻿using HospitalLibrary.Rooms;
+using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Settings;
+using HospitalLibrary.Shared.Interfaces;
 
-namespace HospitalLibrary.Core.Repository
+namespace HospitalLibrary.Shared.Repository
 {
     public class UnitOfWork: IUnitOfWork
     {

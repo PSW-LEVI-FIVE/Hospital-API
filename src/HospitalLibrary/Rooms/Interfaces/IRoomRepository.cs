@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HospitalLibrary.Core.Model;
+using HospitalLibrary.Shared.Interfaces;
 
-namespace HospitalLibrary.Core.Repository.Interfaces
+namespace HospitalLibrary.Rooms.Interfaces
 {
     public interface IRoomRepository: IBaseRepository<Room>
     {
