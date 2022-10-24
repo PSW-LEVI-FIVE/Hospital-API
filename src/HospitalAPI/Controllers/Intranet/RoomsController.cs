@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Interfaces;
-using HospitalLibrary.Rooms.Model;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HospitalAPI.Controllers
+namespace HospitalAPI.Controllers.Intranet
 {
     [Route("api/[controller]")]
     [ApiController]

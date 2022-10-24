@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HospitalLibrary.Rooms.Model
+namespace HospitalLibrary.Rooms
 {
     public class Room
     {

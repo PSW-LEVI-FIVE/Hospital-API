@@ -1,5 +1,5 @@
-﻿using HospitalLibrary.Rooms.Interfaces;
-using HospitalLibrary.Rooms.Repository;
+﻿using HospitalLibrary.Rooms;
+using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Interfaces;
 
