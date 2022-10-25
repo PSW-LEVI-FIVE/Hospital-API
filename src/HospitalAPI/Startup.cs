@@ -1,3 +1,5 @@
+using HospitalLibrary.Doctors;
+using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Feedbacks;
 using HospitalLibrary.Feedbacks.Interfaces;
 using HospitalLibrary.Rooms;
@@ -34,6 +36,7 @@ namespace HospitalAPI
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<IFeedbackService, FeedbackService>();
+            services.AddScoped<IDoctorService, DoctorService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });
