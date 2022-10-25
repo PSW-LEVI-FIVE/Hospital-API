@@ -1,4 +1,5 @@
-﻿using HospitalLibrary.Rooms;
+﻿using HospitalLibrary.Feedbacks;
+using HospitalLibrary.Rooms;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Settings
@@ -6,6 +7,7 @@ namespace HospitalLibrary.Settings
     public class HospitalDbContext : DbContext
     {
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
 
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
