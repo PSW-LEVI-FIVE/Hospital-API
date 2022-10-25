@@ -12,10 +12,5 @@ namespace HospitalLibrary.Feedbacks
         public FeedbackRepository(HospitalDbContext dataContext) : base(dataContext)
         {
         }
-        
-        public async Task<IEnumerable<Feedback>> FindAll()
-        {
-            return await _dataContext.Feedbacks.ToListAsync();
-        }
     }
 }

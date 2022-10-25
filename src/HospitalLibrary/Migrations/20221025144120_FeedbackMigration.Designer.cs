@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    [Migration("20221025094356_FeedbackMigration")]
+    [Migration("20221025144120_FeedbackMigration")]
     partial class FeedbackMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
