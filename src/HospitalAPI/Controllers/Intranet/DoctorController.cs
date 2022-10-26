@@ -31,7 +31,6 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(created);
         }
 
-
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

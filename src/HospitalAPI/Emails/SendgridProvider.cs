@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using HospitalLibrary.Shared.Interfaces;
 using Microsoft.Extensions.Configuration;
 using SendGrid;
@@ -11,9 +12,9 @@ namespace HospitalAPI.Emails
 
         private SendGridClient _sendgrid;
 
-        public SendgridProvider(IConfiguration configurationService)
+        public SendgridProvider()
         {
-            _sendgrid = new SendGridClient(configurationService["Sendgrid:ApiKey"]);
+            _sendgrid = new SendGridClient(Environment.GetEnvironmentVariable("SENDGRID_API_KEY"));
         }
         
         public async Task SendAppointmentEmail(string email)
