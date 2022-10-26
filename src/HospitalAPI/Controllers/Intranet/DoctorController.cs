@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Doctors;
+using HospitalLibrary.Doctors.Dtos;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -23,10 +24,9 @@ namespace HospitalAPI.Controllers.Intranet
 
 
         [HttpPost]
-        public IActionResult Create()
+        public IActionResult Create([FromBody] CreateDoctorDTO doctorDto)
         {
-            Doctor doctor = new Doctor("Srdjan", "Stjepanovic", "stjepanovicsrdjan2000@gmail.com", "123123123", "066603434", DateTime.Now.Date, "Neka ulica", SpecialtyType.SURGERY);
-            Doctor created = _doctorService.Create(doctor);
+            Doctor created = _doctorService.Create(doctorDto.MapToModel());
             _emailService.SendWelcomeEmail(created.Email);
             return Ok(created);
         }

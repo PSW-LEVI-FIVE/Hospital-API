@@ -27,6 +27,8 @@ namespace HospitalLibrary.Shared.Model
             BirthDate = birthDate;
             Address = address;
         }
+        
+        public Person () {}
     }
     
     
