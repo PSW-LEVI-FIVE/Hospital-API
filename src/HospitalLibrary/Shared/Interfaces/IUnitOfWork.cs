@@ -2,6 +2,7 @@
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Feedbacks.Interfaces;
+using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Rooms.Interfaces;
 
 namespace HospitalLibrary.Shared.Interfaces
@@ -11,5 +12,6 @@ namespace HospitalLibrary.Shared.Interfaces
         IRoomRepository RoomRepository { get; }
         IFeedbackRepository FeedbackRepository { get; }
         IDoctorRepository DoctorRepository { get; }
+        IPatientRepository PatientRepository { get; }
     }
 }

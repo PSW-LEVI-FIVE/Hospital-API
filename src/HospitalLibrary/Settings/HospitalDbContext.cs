@@ -1,5 +1,6 @@
 ﻿using HospitalLibrary.Doctors;
 using HospitalLibrary.Feedbacks;
+using HospitalLibrary.Patients;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Shared.Model;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace HospitalLibrary.Settings
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Person> Persons { get; set; }
+        public DbSet<Patient> Patients { get; set; }
 
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
@@ -19,6 +21,7 @@ namespace HospitalLibrary.Settings
         {
             modelBuilder.Entity<Person>().ToTable("Persons");
             modelBuilder.Entity<Doctor>().ToTable("Doctors");
+            modelBuilder.Entity<Patient>().ToTable("Patients");
         }
     }
 }
