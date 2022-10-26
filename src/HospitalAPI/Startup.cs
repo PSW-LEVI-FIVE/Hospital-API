@@ -1,3 +1,4 @@
+using System;
 using HospitalAPI.Emails;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
@@ -33,7 +34,7 @@ namespace HospitalAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<HospitalDbContext>(options =>
-            options.UseNpgsql(Configuration.GetConnectionString("HospitalDb")));
+            options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_CONNECTION")));
 
             services.AddControllers();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
