@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HospitalAPI.Controllers.Intranet
 {
-    [Route("api/[controller]")]
+    [Route("api/intranet/feedbacks")]
     [ApiController]
     public class FeedbacksController : ControllerBase
     {
@@ -21,10 +21,17 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(Feedback NewFeedback)
+        public IActionResult Create(Feedback feedback)
         {
-             _feedbackService.Add(NewFeedback);
-            return Ok();
+            Feedback created =  _feedbackService.Create(feedback);
+            return Ok(created);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            IEnumerable<Feedback> feedbacks = await _feedbackService.GetAll();
+            return Ok(feedbacks);
         }
     }
 }
