@@ -26,5 +26,9 @@ namespace HospitalLibrary.Doctors
         {
             SpecialtyType = specialtyType;
         }
+
+        public Doctor()
+        {
+        }
     }
 }
