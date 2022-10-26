@@ -22,7 +22,7 @@ namespace HospitalLibrary.Doctors
     {
         public SpecialtyType SpecialtyType { get; set; }
 
-        public Doctor(int id, string name, string surname, string email, string uid, string phoneNumber, DateTime birthDate, string address, SpecialtyType specialtyType) : base(id, name, surname, email, uid, phoneNumber, birthDate, address)
+        public Doctor(string name, string surname, string email, string uid, string phoneNumber, DateTime birthDate, string address, SpecialtyType specialtyType) : base(name, surname, email, uid, phoneNumber, birthDate, address)
         {
             SpecialtyType = specialtyType;
         }

@@ -1,3 +1,4 @@
+using HospitalAPI.Emails;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Feedbacks;
@@ -40,6 +41,7 @@ namespace HospitalAPI
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IDoctorService, DoctorService>();
             services.AddScoped<IPatientService, PatientService>();
+            services.AddScoped<IEmailService, SendgridProvider>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });
