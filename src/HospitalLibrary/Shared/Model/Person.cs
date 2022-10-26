@@ -17,9 +17,8 @@ namespace HospitalLibrary.Shared.Model
         public DateTime BirthDate { get; set;  }
         public string Address { get; set; }
 
-        public Person(int id, string name, string surname, string email, string uid, string phoneNumber, DateTime birthDate, string address)
+        public Person(string name, string surname, string email, string uid, string phoneNumber, DateTime birthDate, string address)
         {
-            Id = id;
             Name = name;
             Surname = surname;
             Email = email;

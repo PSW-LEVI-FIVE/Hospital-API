@@ -1,4 +1,6 @@
 .idea/*
+
+src/HospitalAPI/.env
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudio,csharp,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudio,csharp,windows
 
