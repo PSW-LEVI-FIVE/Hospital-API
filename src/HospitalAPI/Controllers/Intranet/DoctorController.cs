@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
 {
-    [Route("api/doctors")]
+    [Route("api/intranet/doctors")]
     [ApiController]
     public class DoctorController: ControllerBase
     {
