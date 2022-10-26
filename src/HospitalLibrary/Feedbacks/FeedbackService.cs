@@ -16,10 +16,11 @@ namespace HospitalLibrary.Feedbacks
             _unitOfWork = unitOfWork;
         }
 
-        public void Add(Feedback NewFeedback)
+        public Feedback Create(Feedback feedback)
         {
-            _unitOfWork.FeedbackRepository.Add(NewFeedback);
+            _unitOfWork.FeedbackRepository.Add(feedback);
             _unitOfWork.FeedbackRepository.Save();
+            return feedback;
         }
 
         public Task<IEnumerable<Feedback>> GetAll()
