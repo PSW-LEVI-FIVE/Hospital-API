@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HospitalLibrary.Feedbacks
@@ -10,5 +11,6 @@ namespace HospitalLibrary.Feedbacks
         public int PatientId { get; set; }
         public string FeedbackContent { get; set; }
         public FeedbackStatus FeedbackStatus { get; set; }
+        public Boolean Publishment { get; set; }
     }
 }

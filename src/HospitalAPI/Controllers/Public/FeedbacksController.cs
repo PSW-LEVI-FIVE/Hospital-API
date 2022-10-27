@@ -24,5 +24,12 @@ namespace HospitalAPI.Controllers.Public
             Feedback created = _feedbackService.Create(feedback);
             return Ok(created);
         }
+
+        [HttpPut]
+        public IActionResult Update(Feedback feedback)
+        {
+            Feedback updated = _feedbackService.Update(feedback);
+            return Ok(updated);
+        }
     }
 }
