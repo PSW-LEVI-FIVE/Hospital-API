@@ -1,4 +1,6 @@
-﻿using HospitalLibrary.Doctors;
+﻿using HospitalLibrary.Appointments;
+using HospitalLibrary.Appointments.Interfaces;
+using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Feedbacks;
 using HospitalLibrary.Feedbacks.Interfaces;
@@ -8,6 +10,10 @@ using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Appointments;
+using HospitalLibrary.Appointments.Interfaces;
+
+
 
 namespace HospitalLibrary.Shared.Repository
 {
@@ -20,6 +26,7 @@ namespace HospitalLibrary.Shared.Repository
         private IFeedbackRepository _feedbackRepository;
         private IDoctorRepository _doctorRepository;
         private IPatientRepository _patientRepository;
+        private IAppointmentRepository _appointmentRepository;
 
         public UnitOfWork(HospitalDbContext dataContext)
         {
@@ -34,5 +41,7 @@ namespace HospitalLibrary.Shared.Repository
         public IFeedbackRepository FeedbackRepository => _feedbackRepository ?? new FeedbackRepository(_dataContext);
         public IDoctorRepository DoctorRepository => _doctorRepository ?? new DoctorRepository(_dataContext);
         public IPatientRepository PatientRepository => _patientRepository ?? new PatientRepository(_dataContext);
+        public IAppointmentRepository AppointmentRepository => _appointmentRepository ?? new AppointmentRepository(_dataContext);
+        
     }
 }
