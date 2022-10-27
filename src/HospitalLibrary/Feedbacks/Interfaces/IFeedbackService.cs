@@ -9,5 +9,7 @@ namespace HospitalLibrary.Feedbacks.Interfaces
 
         Feedback Create(Feedback NewFeedback);
 
+        Feedback Update(Feedback NewFeedback);
+
     }
 }
