@@ -10,8 +10,8 @@ namespace HospitalLibrary.Appointments.Interfaces
         Task<IEnumerable<Appointment>> GetAll();
 
         Appointment Create(Appointment appointment);
-
-        AppointmentCancelledDTO CancelAppointment(int appointmentId);
         
+        AppointmentCancelledDTO CancelAppointment(int appointmentId);
+
     }
 }

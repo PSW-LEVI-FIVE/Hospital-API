@@ -28,7 +28,7 @@ namespace HospitalLibrary.Appointments
             _unitOfWork.AppointmentRepository.Save();
             return appointment;
         }
-
+        
         public AppointmentCancelledDTO CancelAppointment(int appointmentId)
         {
             Appointment canceled = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
