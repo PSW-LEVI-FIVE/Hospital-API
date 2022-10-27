@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
 {
-    [Route("api/appointments")]
+    [Route("api/intranet/appointments")]
     [ApiController]
     public class AppointmentController:ControllerBase
     {
@@ -24,7 +24,6 @@ namespace HospitalAPI.Controllers.Intranet
         {
             IEnumerable<Appointment> appointments = await _appointmentService.GetAll();
             return Ok(appointments);
-
         }
     }
 }

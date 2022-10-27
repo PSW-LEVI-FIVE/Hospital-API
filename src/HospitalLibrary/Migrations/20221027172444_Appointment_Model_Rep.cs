@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
-    public partial class AppointmentMigration : Migration
+    public partial class Appointment_Model_Rep : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,10 +17,9 @@ namespace HospitalLibrary.Migrations
                     DoctorId = table.Column<int>(type: "integer", nullable: false),
                     PatientId = table.Column<int>(type: "integer", nullable: false),
                     RoomId = table.Column<int>(type: "integer", nullable: false),
-                    StartDateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    EndDateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
-                    IsFinished = table.Column<bool>(type: "boolean", nullable: false)
+                    StartAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    EndAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    State = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

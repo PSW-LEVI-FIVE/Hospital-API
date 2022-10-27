@@ -4,6 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Rooms;
+public enum AppointmentState
+{
+    DELETED,
+    FINISHED,
+    PENDING
+}
+
+
 namespace HospitalLibrary.Appointments
 {
     public class Appointment
@@ -23,13 +31,12 @@ namespace HospitalLibrary.Appointments
         public int RoomId { get; set; }
         public Room Room { get; set; }
         
-        public DateTime StartDateTime { get; set; }
-        public DateTime EndDateTime { get; set; }
-        
-        public bool IsDeleted { get; set; }
-        public bool IsFinished { get; set; }
-        
-  
-        
+        public DateTime StartAt { get; set; }
+        public DateTime EndAt { get; set; }
+
+        public AppointmentState State { get; set; }
+
     }
+    
+    
 }
