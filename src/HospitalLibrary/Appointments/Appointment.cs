@@ -23,8 +23,11 @@ namespace HospitalLibrary.Appointments
         public int RoomId { get; set; }
         public Room Room { get; set; }
         
-        public TimeInterval TimeInterval { get; set; }
+        public DateTime StartDateTime { get; set; }
+        public DateTime EndDateTime { get; set; }
+        
         public bool IsDeleted { get; set; }
+        public bool IsFinished { get; set; }
         
   
         
