@@ -34,7 +34,7 @@ namespace HospitalAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<HospitalDbContext>(options =>
-            options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_CONNECTION")));
+            options.UseNpgsql(Configuration.GetConnectionString("HospitalDb")));
 
             services.AddControllers();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
