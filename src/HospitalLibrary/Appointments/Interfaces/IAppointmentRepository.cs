@@ -4,6 +4,7 @@ namespace HospitalLibrary.Appointments.Interfaces
 {
     public interface IAppointmentRepository: IBaseRepository<Appointment>
     {
-        
+
     }
+    
 }

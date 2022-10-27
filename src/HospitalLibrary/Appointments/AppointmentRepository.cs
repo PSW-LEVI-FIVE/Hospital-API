@@ -6,7 +6,10 @@ namespace HospitalLibrary.Appointments
 {
     public class AppointmentRepository:BaseRepository<Appointment>,IAppointmentRepository
     {
-        public AppointmentRepository(HospitalDbContext context): base(context) {}
-
+        public AppointmentRepository(HospitalDbContext context) : base(context)
+        {
+            
+        }
+        
     }
 }

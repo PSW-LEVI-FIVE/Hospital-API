@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Appointments.Interfaces;
+using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Interfaces;
+
 
 namespace HospitalLibrary.Appointments
 {
@@ -25,9 +28,17 @@ namespace HospitalLibrary.Appointments
             return appointment;
         }
 
-        public void CancelAppointment(Appointment appointment)
+        public SendEmailDto CancelAppointment(int appointmentId)
         {
-            appointment.State = AppointmentState.DELETED;
+            Appointment appointment = new Appointment{Id = appointmentId };
+            Appointment canceled=_unitOfWork.AppointmentRepository.GetOne(appointment);
+            canceled.State = AppointmentState.DELETED;
+            Patient toNotify=_unitOfWork.PatientRepository.GetOne(canceled.Patient);
+            SendEmailDto retDto=new SendEmailDto{ patientEmail = toNotify.Email, appointmentTime = canceled.StartAt.ToString()} ;
+            _unitOfWork.AppointmentRepository.Update(canceled);
+            _unitOfWork.AppointmentRepository.Save();
+            
+            return retDto;
         }
     }
 }

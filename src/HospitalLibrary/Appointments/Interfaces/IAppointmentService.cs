@@ -11,7 +11,7 @@ namespace HospitalLibrary.Appointments.Interfaces
 
         Appointment Create(Appointment appointment);
 
-        void CancelAppointment(Appointment appointment);
+        SendEmailDto CancelAppointment(int appointmentId);
         
     }
 }
