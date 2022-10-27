@@ -10,5 +10,8 @@ namespace HospitalLibrary.Appointments.Interfaces
         Task<IEnumerable<Appointment>> GetAll();
 
         Appointment Create(Appointment appointment);
+
+        void CancelAppointment(Appointment appointment);
+
     }
 }

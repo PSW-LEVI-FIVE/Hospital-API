@@ -24,6 +24,10 @@ namespace HospitalLibrary.Appointments
             _unitOfWork.AppointmentRepository.Save();
             return appointment;
         }
-
+        
+        public void CancelAppointment(Appointment appointment)
+        {
+            appointment.State = AppointmentState.DELETED;
+        }
     }
 }
