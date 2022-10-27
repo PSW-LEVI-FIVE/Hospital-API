@@ -36,6 +36,9 @@ namespace HospitalLibrary.Appointments
 
         public AppointmentState State { get; set; }
 
+        public Appointment()
+        {
+        }
     }
     
     
