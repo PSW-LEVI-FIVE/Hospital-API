@@ -1,3 +1,5 @@
+using HospitalLibrary.Appointments;
+using HospitalLibrary.Appointments.Interfaces;
 using System;
 using HospitalAPI.Emails;
 using HospitalLibrary.Doctors;
@@ -42,6 +44,7 @@ namespace HospitalAPI
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IDoctorService, DoctorService>();
             services.AddScoped<IPatientService, PatientService>();
+            services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<IEmailService, SendgridProvider>();
             services.AddSwaggerGen(c =>
             {

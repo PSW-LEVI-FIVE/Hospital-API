@@ -1,4 +1,5 @@
 ﻿using System;
+using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Feedbacks.Interfaces;
@@ -13,5 +14,6 @@ namespace HospitalLibrary.Shared.Interfaces
         IFeedbackRepository FeedbackRepository { get; }
         IDoctorRepository DoctorRepository { get; }
         IPatientRepository PatientRepository { get; }
+        IAppointmentRepository AppointmentRepository { get; }
     }
 }
