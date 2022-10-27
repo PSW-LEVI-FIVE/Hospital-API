@@ -18,5 +18,12 @@ namespace HospitalLibrary.Appointments
             return _unitOfWork.AppointmentRepository.GetAll();
         }
 
+        public Appointment Create(Appointment appointment)
+        {
+            _unitOfWork.AppointmentRepository.Add(appointment);
+            _unitOfWork.AppointmentRepository.Save();
+            return appointment;
+        }
+
     }
 }
