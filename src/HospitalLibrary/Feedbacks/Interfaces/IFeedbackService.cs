@@ -7,7 +7,7 @@ namespace HospitalLibrary.Feedbacks.Interfaces
     {
         Task<IEnumerable<Feedback>> GetAll();
 
-        void Add(Feedback NewFeedback);
+        Feedback Create(Feedback NewFeedback);
 
     }
 }

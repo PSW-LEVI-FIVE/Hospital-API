@@ -1,15 +1,13 @@
-﻿using HospitalLibrary.Feedbacks;
-using HospitalLibrary.Feedbacks.Interfaces;
-using HospitalLibrary.Rooms;
-using HospitalLibrary.Rooms.Interfaces;
+﻿using HospitalLibrary.Feedbacks.Interfaces;
+using HospitalLibrary.Feedbacks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace HospitalAPI.Controllers.Intranet
+namespace HospitalAPI.Controllers.Public
 {
-    [Route("api/intranet/feedbacks")]
+    [Route("api/public/feedbacks")]
     [ApiController]
     public class FeedbacksController : ControllerBase
     {
@@ -23,15 +21,8 @@ namespace HospitalAPI.Controllers.Intranet
         [HttpPost]
         public IActionResult Create(Feedback feedback)
         {
-            Feedback created =  _feedbackService.Create(feedback);
+            Feedback created = _feedbackService.Create(feedback);
             return Ok(created);
-        }
-        
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            IEnumerable<Feedback> feedbacks = await _feedbackService.GetAll();
-            return Ok(feedbacks);
         }
     }
 }
