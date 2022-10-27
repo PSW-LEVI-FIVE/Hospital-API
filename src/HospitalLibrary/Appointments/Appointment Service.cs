@@ -8,9 +8,10 @@ using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.Appointments
 {
-    public class AppointmentService:IAppointmentService
+    public class AppointmentService : IAppointmentService
     {
         private IUnitOfWork _unitOfWork;
+
         public AppointmentService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -30,14 +31,13 @@ namespace HospitalLibrary.Appointments
 
         public AppointmentCancelledDTO CancelAppointment(int appointmentId)
         {
-            Appointment appointment = new Appointment{Id = appointmentId };
-            Appointment canceled=_unitOfWork.AppointmentRepository.GetOne(appointment);
+            Appointment canceled = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
             canceled.State = AppointmentState.DELETED;
-            Patient toNotify=_unitOfWork.PatientRepository.GetOne(canceled.Patient);
-            AppointmentCancelledDTO retDto=new AppointmentCancelledDTO{ PatientEmail = toNotify.Email, AppointmentTime = canceled.StartAt.ToString()} ;
+            Patient toNotify = _unitOfWork.PatientRepository.GetOne(canceled.Patient.Id);
+            AppointmentCancelledDTO retDto = new AppointmentCancelledDTO
+                { PatientEmail = toNotify.Email, AppointmentTime = canceled.StartAt };
             _unitOfWork.AppointmentRepository.Update(canceled);
             _unitOfWork.AppointmentRepository.Save();
-            
             return retDto;
         }
     }

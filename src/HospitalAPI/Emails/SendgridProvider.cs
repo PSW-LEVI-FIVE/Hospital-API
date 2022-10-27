@@ -42,7 +42,7 @@ namespace HospitalAPI.Emails
             await _sendgrid.SendEmailAsync(message);
         }
         
-        public async Task SendAppointmentCanceledEmail(string email,string time)
+        public async Task SendAppointmentCanceledEmail(string email,DateTime time)
         {
             EmailAddress from = new EmailAddress("levifiveorg@gmail.com");
             EmailAddress to = new EmailAddress(email);
