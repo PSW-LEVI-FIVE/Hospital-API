@@ -12,10 +12,11 @@ namespace HospitalLibrary.Appointments
     public class AppointmentService : IAppointmentService
     {
         private IUnitOfWork _unitOfWork;
-
-        public AppointmentService(IUnitOfWork unitOfWork)
+        private ITimeIntervalValidationService _intervalValidation;
+        public AppointmentService(IUnitOfWork unitOfWork, ITimeIntervalValidationService intervalValidation)
         {
             _unitOfWork = unitOfWork;
+            _intervalValidation = intervalValidation;
         }
 
         public Task<IEnumerable<Appointment>> GetAll()
@@ -23,8 +24,9 @@ namespace HospitalLibrary.Appointments
             return _unitOfWork.AppointmentRepository.GetAll();
         }
 
-        public Appointment Create(Appointment appointment)
+        public async Task<Appointment> Create(Appointment appointment)
         {
+            await _intervalValidation.ValidateAppointment(appointment);
             _unitOfWork.AppointmentRepository.Add(appointment);
             _unitOfWork.AppointmentRepository.Save();
             return appointment;
