@@ -9,6 +9,6 @@ namespace HospitalLibrary.Appointments.Interfaces
     {
         Task<IEnumerable<Appointment>> GetAll();
 
-        Appointment Create(Appointment appointment);
+        Task<Appointment> Create(Appointment appointment);
     }
 }

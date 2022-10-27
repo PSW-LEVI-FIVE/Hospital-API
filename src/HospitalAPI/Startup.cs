@@ -14,6 +14,7 @@ using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Shared.Repository;
+using HospitalLibrary.Shared.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,7 @@ namespace HospitalAPI
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<IEmailService, SendgridProvider>();
+            services.AddScoped<ITimeIntervalValidationService, TimeIntervalValidationService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });

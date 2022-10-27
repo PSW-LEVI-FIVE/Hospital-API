@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Shared.Interfaces;
 
@@ -15,7 +16,7 @@ namespace HospitalLibrary.Shared.Service
             _unitOfWork = unitOfWork;
         }
         
-        public async void ValidateAppointment(Appointment appointment)
+        public async Task ValidateAppointment(Appointment appointment)
         {
             IEnumerable<TimeInterval> doctorTimeIntervals =
                 await _unitOfWork.AppointmentRepository.GetAllDoctorTakenIntervalsForDate(appointment.DoctorId,
@@ -26,10 +27,9 @@ namespace HospitalLibrary.Shared.Service
                     appointment.StartAt.Date);
             
             IEnumerable<TimeInterval> mixedIntervals = doctorTimeIntervals.Concat(roomTimeIntervals);
-            IEnumerable<TimeInterval> orderedIntervals = mixedIntervals.OrderBy(i => i.Start);
-            List<TimeInterval> compactedIntervals = CompactIntervals(orderedIntervals.ToList());
+
             TimeInterval requestedTimeInterval = new TimeInterval(appointment.StartAt, appointment.EndAt);
-            if (CheckIfIntervalsAreOverlaping(compactedIntervals, requestedTimeInterval))
+            if (CheckIfIntervalsAreOverlaping(mixedIntervals.ToList(), requestedTimeInterval))
             {
                 throw new Exception("Intervals are overlapping");
             }
@@ -37,7 +37,7 @@ namespace HospitalLibrary.Shared.Service
         
         private bool CheckIfIntervalsAreOverlaping(List<TimeInterval> intervals, TimeInterval ti)
         {
-            return intervals.All(interval => !interval.IsOverlaping(ti));
+            return intervals.Any(interval => interval.IsOverlaping(ti));
         }
         
         private List<TimeInterval> CompactIntervals(List<TimeInterval> intervals)
