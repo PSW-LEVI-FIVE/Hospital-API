@@ -9,5 +9,6 @@ namespace HospitalLibrary.Feedbacks
         public int Id { get; set; }
         public int PatientId { get; set; }
         public string FeedbackContent { get; set; }
+        public FeedbackStatus FeedbackStatus { get; set; }
     }
 }
