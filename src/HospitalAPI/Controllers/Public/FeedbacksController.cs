@@ -1,9 +1,12 @@
 ﻿using HospitalLibrary.Feedbacks.Interfaces;
 using HospitalLibrary.Feedbacks;
+using HospitalLibrary.Feedbacks.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
+using HospitalLibrary.Appointments.Dtos;
 
 namespace HospitalAPI.Controllers.Public
 {
@@ -19,10 +22,20 @@ namespace HospitalAPI.Controllers.Public
         }
 
         [HttpPost]
-        public IActionResult Create(Feedback feedback)
+        public IActionResult Create([FromBody] CreateFeedbackDto createFeedbackDto)
         {
-            Feedback created = _feedbackService.Create(feedback);
+            Feedback created = _feedbackService.Create(createFeedbackDto.MapToModel());
             return Ok(created);
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public IActionResult Update(int id,[FromBody] UpdateFeedbackDto updateFeedbackDto)
+        {
+            Feedback feedback = _feedbackService.Get(id);
+            feedback.Update(updateFeedbackDto);
+            Feedback updated = _feedbackService.Update(feedback);
+            return Ok(updated);
         }
     }
 }

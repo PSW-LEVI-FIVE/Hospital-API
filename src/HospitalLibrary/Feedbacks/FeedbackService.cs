@@ -28,5 +28,17 @@ namespace HospitalLibrary.Feedbacks
             return _unitOfWork.FeedbackRepository.GetAll();
         }
 
+        public Feedback Update(Feedback feedback)
+        {
+            _unitOfWork.FeedbackRepository.Update(feedback);
+            _unitOfWork.FeedbackRepository.Save();
+            return feedback;
+        }
+
+        public Feedback Get(int id)
+        {
+            return _unitOfWork.FeedbackRepository.GetOne(id);
+        }
+
     }
 }

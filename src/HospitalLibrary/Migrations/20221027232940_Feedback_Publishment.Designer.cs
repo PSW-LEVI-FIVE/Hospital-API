@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221027232940_Feedback_Publishment")]
+    partial class Feedback_Publishment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,24 +64,19 @@ namespace HospitalLibrary.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<bool>("AllowPublishment")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Anonimity")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("FeedbackContent")
                         .HasColumnType("text");
+
+                    b.Property<int>("FeedbackStatus")
+                        .HasColumnType("integer");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("Published")
+                    b.Property<bool>("Publishment")
                         .HasColumnType("boolean");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PatientId");
 
                     b.ToTable("Feedbacks");
                 });
@@ -177,17 +174,6 @@ namespace HospitalLibrary.Migrations
                     b.Navigation("Patient");
 
                     b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Feedbacks.Feedback", b =>
-                {
-                    b.HasOne("HospitalLibrary.Patients.Patient", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Doctors.Doctor", b =>
