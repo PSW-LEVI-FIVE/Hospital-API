@@ -24,6 +24,7 @@ namespace HospitalLibrary.Settings
             modelBuilder.Entity<Doctor>().ToTable("Doctors");
             modelBuilder.Entity<Patient>().ToTable("Patients");
             modelBuilder.Entity<Appointment>().ToTable("Appointments");
+            modelBuilder.Entity<Feedback>().ToTable("Feedbacks");
         }
     }
 }
