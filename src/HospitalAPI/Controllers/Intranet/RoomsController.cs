@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalAPI.ErrorHandling.Exceptions;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Interfaces;
 using Microsoft.AspNetCore.Mvc;
