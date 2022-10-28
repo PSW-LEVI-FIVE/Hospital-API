@@ -10,7 +10,7 @@ namespace HospitalLibrary.Shared.Interfaces
         void Add(T entity);
 
         int Save();
-        T GetOne(T entity);
+        T GetOne(int key);
         Task<IEnumerable<T>> GetAll();
     }
 }
