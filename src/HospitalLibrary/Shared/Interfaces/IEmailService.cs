@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace HospitalLibrary.Shared.Interfaces
 {
@@ -6,5 +7,7 @@ namespace HospitalLibrary.Shared.Interfaces
     {
         Task SendAppointmentEmail(string email);
         Task SendWelcomeEmail(string email);
+
+        Task SendAppointmentCanceledEmail(string email, DateTime time);
     }
 }
