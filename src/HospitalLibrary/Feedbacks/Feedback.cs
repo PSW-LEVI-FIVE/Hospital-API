@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 ﻿using HospitalLibrary.Feedbacks.Dtos;
 using HospitalLibrary.Patients;
 using Microsoft.EntityFrameworkCore.Update.Internal;
+=======
+﻿using HospitalLibrary.Patients;
+>>>>>>> 64352f55ca88e95cc7d593f1b2d127dfbc949313
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
