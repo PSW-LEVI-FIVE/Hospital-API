@@ -4,6 +4,8 @@ using HospitalLibrary.Patients;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Shared.Model;
 using HospitalLibrary.Appointments;
+using HospitalLibrary.Buildings;
+using HospitalLibrary.Floors;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Settings
@@ -16,6 +18,9 @@ namespace HospitalLibrary.Settings
         public DbSet<Person> Persons { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Floor> Floors { get; set; }
+        public DbSet<Building> Buildings { get; set; }
+
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

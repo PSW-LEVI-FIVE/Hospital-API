@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using HospitalLibrary.Floors;
 
 namespace HospitalLibrary.Rooms
 {
@@ -8,15 +9,12 @@ namespace HospitalLibrary.Rooms
         
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key()]
         public int Id { get; set; }
+        
         public string RoomNumber { get; set; }
-        public int Floor { get; set; }
-
-
-        public Room(int id, string roomNumber, int floor)
-        {
-            Id = id;
-            RoomNumber = roomNumber;
-            Floor = floor;
-        }
+        
+        public int FloorId { get; set; }
+        [ForeignKey("FloorId")]
+        public Floor Floor { get; set; }
+        
     }
 }

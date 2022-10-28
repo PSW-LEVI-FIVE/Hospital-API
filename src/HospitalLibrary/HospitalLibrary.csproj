@@ -34,4 +34,16 @@
     <Folder Include="Shared\Service" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Map\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Map\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Map\**" />
+  </ItemGroup>
+
 </Project>

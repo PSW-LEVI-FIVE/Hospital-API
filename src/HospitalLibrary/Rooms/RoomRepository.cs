@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HospitalLibrary.Floors;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
@@ -16,7 +17,7 @@ namespace HospitalLibrary.Rooms
 
         public async Task<IEnumerable<Room>> FindAllByFloor(int floor)
         {
-            return await _dataContext.Rooms.Where(r => r.Floor == floor).ToListAsync();
+            return await _dataContext.Rooms.Where(r => r.Floor.Id == floor).ToListAsync();
         }
     }
 }
