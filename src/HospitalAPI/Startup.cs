@@ -2,6 +2,7 @@ using HospitalLibrary.Appointments;
 using HospitalLibrary.Appointments.Interfaces;
 using System;
 using HospitalAPI.Emails;
+using HospitalAPI.ErrorHandling;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Feedbacks;
@@ -74,6 +75,8 @@ namespace HospitalAPI
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.ConfigureGlobalErrorHandling();
 
             app.UseEndpoints(endpoints =>
             {
