@@ -32,7 +32,7 @@ namespace HospitalAPI.Controllers.Public
         [Route("{id}")]
         public IActionResult Update(int id,[FromBody] UpdateFeedbackDto updateFeedbackDto)
         {
-            Feedback feedback = _feedbackService.Get(new Feedback(id));
+            Feedback feedback = _feedbackService.Get(id);
             feedback.Update(updateFeedbackDto);
             Feedback updated = _feedbackService.Update(feedback);
             return Ok(updated);

@@ -21,18 +21,13 @@ namespace HospitalLibrary.Feedbacks
         public Boolean Anonimity { get; set; }
 
         public Feedback () { }
-        public Feedback (int id)
-        {
-            Id = id;
-        }
 
-        public Boolean Update(UpdateFeedbackDto updateFeedbackDto)
+        public void Update(UpdateFeedbackDto updateFeedbackDto)
         {
             this.FeedbackContent = updateFeedbackDto.FeedbackContent;
             this.AllowPublishment = updateFeedbackDto.AllowPublishment;
             this.Published = updateFeedbackDto.Published;
             this.Anonimity = updateFeedbackDto.Anonimity;
-            return true;
         }
     }
 }

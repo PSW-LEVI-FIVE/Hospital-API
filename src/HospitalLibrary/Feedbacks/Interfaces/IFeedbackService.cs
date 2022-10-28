@@ -11,7 +11,7 @@ namespace HospitalLibrary.Feedbacks.Interfaces
 
         Feedback Update(Feedback Feedback);
 
-        Feedback Get(Feedback Feedback);
+        Feedback Get(int id);
 
     }
 }

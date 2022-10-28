@@ -35,9 +35,9 @@ namespace HospitalLibrary.Feedbacks
             return feedback;
         }
 
-        public Feedback Get(Feedback feedback)
+        public Feedback Get(int id)
         {
-            return _unitOfWork.FeedbackRepository.GetOne(feedback);
+            return _unitOfWork.FeedbackRepository.GetOne(id);
         }
 
     }
