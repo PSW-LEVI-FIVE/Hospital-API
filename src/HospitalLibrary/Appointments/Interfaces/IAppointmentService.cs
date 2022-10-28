@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments.Dtos;
+using HospitalLibrary.Doctors;
 using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.Appointments.Interfaces
@@ -12,5 +13,7 @@ namespace HospitalLibrary.Appointments.Interfaces
         Appointment Create(Appointment appointment);
 
         AppointmentCancelledDTO CancelAppointment(int appointmentId);
+
+        Task<IEnumerable<Appointment>> GetUpcomingForDoctor(Doctor doctor);
     }
 }
