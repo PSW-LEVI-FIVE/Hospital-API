@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HospitalAPI.ErrorHandling.Exceptions;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Shared.Interfaces;
 
-namespace HospitalLibrary.Shared.Service
+
+namespace HospitalAPI.Validators
 {
     public class TimeIntervalValidationService: ITimeIntervalValidationService
     {
@@ -31,7 +33,7 @@ namespace HospitalLibrary.Shared.Service
             TimeInterval requestedTimeInterval = new TimeInterval(appointment.StartAt, appointment.EndAt);
             if (CheckIfIntervalsAreOverlaping(mixedIntervals.ToList(), requestedTimeInterval))
             {
-                throw new Exception("Intervals are overlapping");
+                throw new CustomBadRequestException("This time interval is already in use");
             }
         }
         
