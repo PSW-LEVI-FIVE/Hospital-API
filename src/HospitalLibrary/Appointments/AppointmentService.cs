@@ -42,9 +42,9 @@ namespace HospitalLibrary.Appointments
             return retDto;
         }
         
-        public async Task<IEnumerable<Appointment>> GetUpcomingForDoctor(Doctor doctor)
+        public Task<IEnumerable<Appointment>> GetUpcomingForDoctor(Doctor doctor)
         {
-            return await _unitOfWork.AppointmentRepository.GetAllDoctorUpcomingAppointments(doctor.Id);
+            return _unitOfWork.AppointmentRepository.GetAllDoctorUpcomingAppointments(doctor.Id);
         }
     }
 }
