@@ -28,13 +28,13 @@ namespace HospitalLibrary.Appointments
             return appointment;
         }
 
-        public SendEmailDto CancelAppointment(int appointmentId)
+        public AppointmentCancelledDTO CancelAppointment(int appointmentId)
         {
             Appointment appointment = new Appointment{Id = appointmentId };
             Appointment canceled=_unitOfWork.AppointmentRepository.GetOne(appointment);
             canceled.State = AppointmentState.DELETED;
             Patient toNotify=_unitOfWork.PatientRepository.GetOne(canceled.Patient);
-            SendEmailDto retDto=new SendEmailDto{ patientEmail = toNotify.Email, appointmentTime = canceled.StartAt.ToString()} ;
+            AppointmentCancelledDTO retDto=new AppointmentCancelledDTO{ PatientEmail = toNotify.Email, AppointmentTime = canceled.StartAt.ToString()} ;
             _unitOfWork.AppointmentRepository.Update(canceled);
             _unitOfWork.AppointmentRepository.Save();
             

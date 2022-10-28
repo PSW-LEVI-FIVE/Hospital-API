@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HospitalLibrary.Appointments.Dtos
 {
-    public class CreateAppointmentDto
+    public class CreateAppointmentDTO
     {
         [Required]
         public int DoctorId { get; set; }

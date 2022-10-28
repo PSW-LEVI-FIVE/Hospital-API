@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 namespace HospitalLibrary.Appointments.Dtos
 {
-    public class SendEmailDto
+    public class AppointmentCancelledDTO
     {
         [Required]
-        public string patientEmail { get; set; }
+        public string PatientEmail { get; set; }
         [Required]
-        public string appointmentTime { get; set; }
+        public string AppointmentTime { get; set; }
     }
 }
