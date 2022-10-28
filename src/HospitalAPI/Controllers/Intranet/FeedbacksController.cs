@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using HospitalLibrary.Feedbacks.Dtos;
+using HospitalLibrary.Patients;
 
 namespace HospitalAPI.Controllers.Intranet
 {
@@ -46,8 +48,9 @@ namespace HospitalAPI.Controllers.Intranet
             List<AnonymousFeedbackDTO> anonymousFeedbacks = new List<AnonymousFeedbackDTO>();
             foreach (Feedback feedback in feedbacks)
             {
-                anonymousFeedbacks.Add(new AnonymousFeedbackDTO(
-                    _feedbackService.getPatientById(feedback.PatientId).Name,
+                Patient tempPatient = _feedbackService.getPatientById(feedback.PatientId);
+                anonymousFeedbacks.Add(new AnonymousFeedbackDTO(feedback.Id,
+                    tempPatient.Name + " " + tempPatient.Surname,
                     feedback.FeedbackContent));
             }
 
