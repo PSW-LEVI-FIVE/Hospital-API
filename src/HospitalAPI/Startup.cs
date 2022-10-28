@@ -75,6 +75,8 @@ namespace HospitalAPI
 
             app.UseAuthorization();
 
+            app.ConfigureGlobalErrorHandling();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
