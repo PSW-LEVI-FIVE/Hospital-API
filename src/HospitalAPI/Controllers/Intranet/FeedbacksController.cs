@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using HospitalLibrary.Feedbacks.Dtos;
 
 namespace HospitalAPI.Controllers.Intranet
 {
@@ -22,12 +24,30 @@ namespace HospitalAPI.Controllers.Intranet
             _feedbackService = feedbackService;
         }
 
+
+        [HttpPost]
+        public IActionResult Create(Feedback feedback)
+        {
+            Feedback created =  _feedbackService.Create(feedback);
+            return Ok(created);
+        }
+        
+        
+        
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             IEnumerable<Feedback> feedbacks = await _feedbackService.GetAll();
-            return Ok(feedbacks);
+            IEnumerable<AnonymousFeedbackDTO> anonymousFeedbacks = new AnonymousFeedbackDTO[feedbacks.Count()];
+            foreach (Feedback feedback in feedbacks)
+            {
+                anonymousFeedbacks.Append(new AnonymousFeedbackDTO(_feedbackService.getPatientById(feedback.PatientId).Name,
+                    feedback.FeedbackContent));
+
+            }
+            return Ok(anonymousFeedbacks);
         }
+
 
         [HttpPut]
         [Route("{id}")]
@@ -38,5 +58,6 @@ namespace HospitalAPI.Controllers.Intranet
             Feedback updated = _feedbackService.ChangePublishmentStatus(feedback);
             return Ok(updated);
         }
+
     }
 }

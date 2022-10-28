@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Feedbacks.Interfaces;
+using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Interfaces;
-using HospitalLibrary.Shared.Repository;
 
 namespace HospitalLibrary.Feedbacks
 {
@@ -27,6 +27,18 @@ namespace HospitalLibrary.Feedbacks
         {
             return _unitOfWork.FeedbackRepository.GetAll();
         }
+        
+        public Patient getPatientById(int patientId)
+        {
+           
+            Patient p = new Patient();
+            p.Id = patientId;
+            Console.WriteLine(p.Id);
+            Patient retPat = _unitOfWork.PatientRepository.GetOne(p);
+            Console.WriteLine(retPat.Name);
+            return retPat;
+        }
+
 
         public Feedback ChangePublishmentStatus(Feedback feedback)
         {

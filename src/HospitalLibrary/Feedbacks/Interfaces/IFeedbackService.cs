@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalLibrary.Patients;
 
 namespace HospitalLibrary.Feedbacks.Interfaces
 {
@@ -12,6 +13,8 @@ namespace HospitalLibrary.Feedbacks.Interfaces
         Feedback ChangePublishmentStatus(Feedback Feedback);
 
         Feedback Get(int id);
+        
+        public Patient getPatientById(int patientId);
 
         Task<IEnumerable<Feedback>> GetPublished();
 
