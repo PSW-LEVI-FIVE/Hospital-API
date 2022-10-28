@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Appointments.Interfaces;
+using HospitalLibrary.Doctors;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Interfaces;
 
@@ -39,6 +40,11 @@ namespace HospitalLibrary.Appointments
             _unitOfWork.AppointmentRepository.Update(canceled);
             _unitOfWork.AppointmentRepository.Save();
             return retDto;
+        }
+        
+        public Task<IEnumerable<Appointment>> GetUpcomingForDoctor(Doctor doctor)
+        {
+            return _unitOfWork.AppointmentRepository.GetAllDoctorUpcomingAppointments(doctor.Id);
         }
     }
 }
