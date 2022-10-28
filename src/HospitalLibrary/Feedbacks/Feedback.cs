@@ -1,4 +1,6 @@
-﻿using HospitalLibrary.Patients;
+﻿using HospitalLibrary.Feedbacks.Dtos;
+using HospitalLibrary.Patients;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,5 +19,20 @@ namespace HospitalLibrary.Feedbacks
         public Boolean AllowPublishment { get; set; }
         public Boolean Published { get; set; }
         public Boolean Anonimity { get; set; }
+
+        public Feedback () { }
+        public Feedback (int id)
+        {
+            Id = id;
+        }
+
+        public Boolean Update(UpdateFeedbackDto updateFeedbackDto)
+        {
+            this.FeedbackContent = updateFeedbackDto.FeedbackContent;
+            this.AllowPublishment = updateFeedbackDto.AllowPublishment;
+            this.Published = updateFeedbackDto.Published;
+            this.Anonimity = updateFeedbackDto.Anonimity;
+            return true;
+        }
     }
 }
