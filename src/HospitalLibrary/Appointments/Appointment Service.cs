@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments.Interfaces;
+using HospitalLibrary.Doctors;
 using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.Appointments
@@ -25,5 +26,9 @@ namespace HospitalLibrary.Appointments
             return appointment;
         }
 
+        public async Task<IEnumerable<Appointment>> GetUpcomingForDoctor(Doctor doctor)
+        {
+            return await _unitOfWork.AppointmentRepository.GetAllDoctorUpcomingAppointments(doctor.Id);
+        }
     }
 }
