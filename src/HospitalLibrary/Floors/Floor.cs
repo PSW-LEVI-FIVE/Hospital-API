@@ -15,8 +15,8 @@ namespace HospitalLibrary.Floors
         
         public virtual ICollection<Room> Rooms { get; set; }
 
+        [ForeignKey("Building")]
         public int BuildingId { get; set; }
-        [ForeignKey("BuildingId")]
-        public Building Building { get; set; }
+        public virtual Building Building { get; set; }
     }
 }

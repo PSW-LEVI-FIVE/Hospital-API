@@ -11,10 +11,10 @@ namespace HospitalLibrary.Rooms
         public int Id { get; set; }
         
         public string RoomNumber { get; set; }
-        
+
+        [ForeignKey("Floor")]
         public int FloorId { get; set; }
-        [ForeignKey("FloorId")]
-        public Floor Floor { get; set; }
+        public virtual Floor Floor { get; set; }
         
     }
 }

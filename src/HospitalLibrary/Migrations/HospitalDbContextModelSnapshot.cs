@@ -55,21 +55,6 @@ namespace HospitalLibrary.Migrations
                     b.ToTable("Appointments");
                 });
 
-            modelBuilder.Entity("HospitalLibrary.Buildings.Building", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Buildings");
-                });
-
             modelBuilder.Entity("HospitalLibrary.Feedbacks.Feedback", b =>
                 {
                     b.Property<int>("Id")
@@ -80,35 +65,12 @@ namespace HospitalLibrary.Migrations
                     b.Property<string>("FeedbackContent")
                         .HasColumnType("text");
 
-                    b.Property<int>("FeedbackStatus")
-                        .HasColumnType("integer");
-
                     b.Property<int>("PatientId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.ToTable("Feedbacks");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Floors.Floor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("BuildingId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Number")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BuildingId");
-
-                    b.ToTable("Floors");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Rooms.Room", b =>
@@ -118,15 +80,13 @@ namespace HospitalLibrary.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("FloorId")
+                    b.Property<int>("Floor")
                         .HasColumnType("integer");
 
                     b.Property<string>("RoomNumber")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("FloorId");
 
                     b.ToTable("Rooms");
                 });
@@ -208,28 +168,6 @@ namespace HospitalLibrary.Migrations
                     b.Navigation("Room");
                 });
 
-            modelBuilder.Entity("HospitalLibrary.Floors.Floor", b =>
-                {
-                    b.HasOne("HospitalLibrary.Buildings.Building", "Building")
-                        .WithMany("Floors")
-                        .HasForeignKey("BuildingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Building");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Rooms.Room", b =>
-                {
-                    b.HasOne("HospitalLibrary.Floors.Floor", "Floor")
-                        .WithMany("Rooms")
-                        .HasForeignKey("FloorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Floor");
-                });
-
             modelBuilder.Entity("HospitalLibrary.Doctors.Doctor", b =>
                 {
                     b.HasOne("HospitalLibrary.Shared.Model.Person", null)
@@ -246,16 +184,6 @@ namespace HospitalLibrary.Migrations
                         .HasForeignKey("HospitalLibrary.Patients.Patient", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Buildings.Building", b =>
-                {
-                    b.Navigation("Floors");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Floors.Floor", b =>
-                {
-                    b.Navigation("Rooms");
                 });
 #pragma warning restore 612, 618
         }
