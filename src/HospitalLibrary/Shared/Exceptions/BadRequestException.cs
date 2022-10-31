@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace HospitalAPI.ErrorHandling.Exceptions
+namespace HospitalLibrary.Shared.Exceptions
 {
     public class BadRequestException: BaseException
     {

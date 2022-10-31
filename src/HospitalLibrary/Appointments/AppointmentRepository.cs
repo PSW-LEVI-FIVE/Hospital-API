@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Shared.Repository;
@@ -14,6 +15,25 @@ namespace HospitalLibrary.Appointments
         {
         }
 
+        public async Task<IEnumerable<TimeInterval>> GetAllRoomTakenIntervalsForDate(int roomId, DateTime date)
+        {
+            return await _dataContext.Appointments
+                .Where(a => a.RoomId == roomId)
+                .Where(a => a.StartAt.Date.Equals(date.Date))
+                .Where(a => a.State.Equals(AppointmentState.PENDING))
+                .Select(a => new TimeInterval(a.StartAt, a.EndAt))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<TimeInterval>> GetAllDoctorTakenIntervalsForDate(int doctorId, DateTime date)
+        {
+            return await _dataContext.Appointments
+                .Where(a => a.DoctorId == doctorId)
+                .Where(a => a.StartAt.Date.Equals(date.Date))
+                .Where(a => a.State.Equals(AppointmentState.PENDING))
+                .Select(a => new TimeInterval(a.StartAt, a.EndAt))
+                .ToListAsync();
+        }
         public async Task<IEnumerable<Appointment>> GetAllDoctorUpcomingAppointments(int doctorId)
         {
             return await _dataContext.Appointments

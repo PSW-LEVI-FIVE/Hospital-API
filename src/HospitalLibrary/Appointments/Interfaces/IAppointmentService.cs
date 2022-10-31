@@ -10,10 +10,10 @@ namespace HospitalLibrary.Appointments.Interfaces
     {
         Task<IEnumerable<Appointment>> GetAll();
 
-        Appointment Create(Appointment appointment);
-
         AppointmentCancelledDTO CancelAppointment(int appointmentId);
 
         Task<IEnumerable<Appointment>> GetUpcomingForDoctor(Doctor doctor);
+        
+        Task<Appointment> Create(Appointment appointment);
     }
 }

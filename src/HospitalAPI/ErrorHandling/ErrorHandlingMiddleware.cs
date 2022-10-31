@@ -1,5 +1,6 @@
-﻿using System.Net;
-using HospitalAPI.ErrorHandling.Exceptions;
+﻿using System;
+using System.Net;
+using HospitalLibrary.Shared.Exceptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -23,6 +24,7 @@ namespace HospitalAPI.ErrorHandling
                                     
                                 if (exception.Error.GetType().IsSubclassOf(typeof(BaseException)))
                                 {
+                                    Console.WriteLine(exception.ToString());
                                     BaseException baseEx = (BaseException)exception.Error;
                                     statusCode = baseEx.StatusCode;
                                 }

@@ -27,9 +27,9 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateAppointmentDTO createAppointmentDto)
+        public async Task<IActionResult> Create([FromBody] CreateAppointmentDTO createAppointmentDto)
         {
-            Appointment appointment = _appointmentService.Create(createAppointmentDto.MapToModel());
+            Appointment appointment = await _appointmentService.Create(createAppointmentDto.MapToModel());
             return Ok(appointment);
         }
     }
