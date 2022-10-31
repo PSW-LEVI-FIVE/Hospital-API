@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Appointments.Interfaces;
@@ -46,6 +47,17 @@ namespace HospitalLibrary.Appointments
         public Task<IEnumerable<Appointment>> GetUpcomingForDoctor(Doctor doctor)
         {
             return _unitOfWork.AppointmentRepository.GetAllDoctorUpcomingAppointments(doctor.Id);
+        }
+
+        public async Task<Appointment> Reschedule(int appointmentId, DateTime start, DateTime end)
+        {
+            Appointment appointment = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
+            await _intervalValidation.ValidateRescheduling(appointment, start, end);
+            appointment.StartAt = start;
+            appointment.EndAt = end;
+            _unitOfWork.AppointmentRepository.Update(appointment);
+            _unitOfWork.AppointmentRepository.Save();
+            return appointment;
         }
 
     }

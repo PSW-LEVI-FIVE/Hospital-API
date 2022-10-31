@@ -19,7 +19,8 @@ namespace HospitalLibrary.Shared.Validators
         
         public async Task ValidateAppointment(Appointment appointment)
         {
-            ThrowIfAppointmentInPast(appointment);
+            ThrowIfEndBeforeStart(appointment.StartAt, appointment.EndAt);
+            ThrowIfInPast(appointment.StartAt);
             
             IEnumerable<TimeInterval> doctorTimeIntervals =
                 await _unitOfWork.AppointmentRepository.GetAllDoctorTakenIntervalsForDate(appointment.DoctorId,
@@ -36,9 +37,37 @@ namespace HospitalLibrary.Shared.Validators
             ThrowIfIntervalsAreOverlaping(mixedIntervals.ToList(), requestedTimeInterval);
         }
 
-        private void ThrowIfAppointmentInPast(Appointment appointment)
+        public async Task ValidateRescheduling(Appointment appointment, DateTime start, DateTime end)
         {
-            if (appointment.StartAt.Date.CompareTo(DateTime.Now.AddDays(1).Date) < 0)
+            ThrowIfEndBeforeStart(start, end);
+            ThrowIfInPast(start);
+            
+            IEnumerable<TimeInterval> doctorTimeIntervals =
+                await _unitOfWork.AppointmentRepository.GetAllDoctorTakenIntervalsForDate(appointment.DoctorId,
+                    start.Date);
+            
+            IEnumerable<TimeInterval> roomTimeIntervals =
+                await _unitOfWork.AppointmentRepository.GetAllRoomTakenIntervalsForDate(appointment.RoomId,
+                    end.Date);
+            
+            IEnumerable<TimeInterval> mixedIntervals = doctorTimeIntervals.Concat(roomTimeIntervals);
+
+            TimeInterval requestedTimeInterval = new TimeInterval(start, end);
+            TimeInterval except = new TimeInterval(appointment.StartAt, appointment.EndAt);
+            ThrowIfIntervalsAreOverlaping(mixedIntervals.ToList(), requestedTimeInterval, except);
+        }
+
+        private void ThrowIfEndBeforeStart(DateTime start, DateTime end)
+        {
+            if (start.CompareTo(end) >= 0)
+            {
+                throw new BadRequestException("Start time cannot be before end time");
+            }
+        }
+        
+        private void ThrowIfInPast(DateTime start)
+        {
+            if (start.Date.CompareTo(DateTime.Now.AddDays(1).Date) < 0)
             {
                 throw new BadRequestException("This time interval is in the past");
             }
@@ -47,6 +76,14 @@ namespace HospitalLibrary.Shared.Validators
         private void ThrowIfIntervalsAreOverlaping(List<TimeInterval> intervals, TimeInterval ti)
         {
             if (intervals.Any(interval => interval.IsOverlaping(ti)))
+            {
+                throw new BadRequestException("This time interval is already in use");
+            }
+        }
+        
+        private void ThrowIfIntervalsAreOverlaping(List<TimeInterval> intervals, TimeInterval ti, TimeInterval except)
+        {
+            if (intervals.Any(interval => interval.IsOverlaping(ti)) && !intervals.Any(interval => interval.IsOverlaping(except)))
             {
                 throw new BadRequestException("This time interval is already in use");
             }
