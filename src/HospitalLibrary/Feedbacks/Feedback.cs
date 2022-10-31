@@ -27,7 +27,8 @@ namespace HospitalLibrary.Feedbacks
         {
             this.FeedbackContent = updateFeedbackDto.FeedbackContent;
             this.AllowPublishment = updateFeedbackDto.AllowPublishment;
-            this.Published = updateFeedbackDto.Published;
+            if(AllowPublishment == true)
+                this.Published = updateFeedbackDto.Published;
             this.Anonimity = updateFeedbackDto.Anonimity;
         }
     }
