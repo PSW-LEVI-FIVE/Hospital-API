@@ -20,6 +20,11 @@ namespace HospitalAPI.Validators
         
         public async Task ValidateAppointment(Appointment appointment)
         {
+            if (IsAppointmentInPast(appointment))
+            {
+                throw new CustomBadRequestException("This time interval is in the past");
+            }
+            
             IEnumerable<TimeInterval> doctorTimeIntervals =
                 await _unitOfWork.AppointmentRepository.GetAllDoctorTakenIntervalsForDate(appointment.DoctorId,
                     appointment.StartAt.Date);
@@ -35,6 +40,11 @@ namespace HospitalAPI.Validators
             {
                 throw new CustomBadRequestException("This time interval is already in use");
             }
+        }
+
+        private bool IsAppointmentInPast(Appointment appointment)
+        {
+            return appointment.StartAt.CompareTo(DateTime.Now) < 0;
         }
         
         private bool CheckIfIntervalsAreOverlaping(List<TimeInterval> intervals, TimeInterval ti)
