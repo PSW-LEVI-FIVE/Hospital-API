@@ -1,4 +1,5 @@
 ﻿using HospitalLibrary.Feedbacks;
+using HospitalLibrary.Feedbacks.Dtos;
 using HospitalLibrary.Feedbacks.Interfaces;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Interfaces;
@@ -32,6 +33,16 @@ namespace HospitalAPI.Controllers.Intranet
         {
             IEnumerable<Feedback> feedbacks = await _feedbackService.GetAll();
             return Ok(feedbacks);
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public IActionResult Update(int id, [FromBody] UpdateFeedbackDto updateFeedbackDto)
+        {
+            Feedback feedback = _feedbackService.Get(id);
+            feedback.Update(updateFeedbackDto);
+            Feedback updated = _feedbackService.Update(feedback);
+            return Ok(updated);
         }
     }
 }

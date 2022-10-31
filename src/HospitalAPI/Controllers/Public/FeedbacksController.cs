@@ -28,14 +28,5 @@ namespace HospitalAPI.Controllers.Public
             return Ok(created);
         }
 
-        [HttpPut]
-        [Route("{id}")]
-        public IActionResult Update(int id,[FromBody] UpdateFeedbackDto updateFeedbackDto)
-        {
-            Feedback feedback = _feedbackService.Get(id);
-            feedback.Update(updateFeedbackDto);
-            Feedback updated = _feedbackService.Update(feedback);
-            return Ok(updated);
-        }
     }
 }
