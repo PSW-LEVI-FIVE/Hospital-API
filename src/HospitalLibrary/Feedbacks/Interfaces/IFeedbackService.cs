@@ -9,7 +9,7 @@ namespace HospitalLibrary.Feedbacks.Interfaces
 
         Feedback Create(Feedback Feedback);
 
-        Feedback Update(Feedback Feedback);
+        Feedback ChangePublishmentStatus(Feedback Feedback);
 
         Feedback Get(int id);
 
