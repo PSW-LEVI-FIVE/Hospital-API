@@ -23,13 +23,9 @@ namespace HospitalLibrary.Feedbacks
 
         public Feedback () { }
 
-        public void Update(UpdateFeedbackDto updateFeedbackDto)
+        public void Update(bool feedbackPublishmentStatus)
         {
-            this.FeedbackContent = updateFeedbackDto.FeedbackContent;
-            this.AllowPublishment = updateFeedbackDto.AllowPublishment;
-            if(AllowPublishment == true)
-                this.Published = updateFeedbackDto.Published;
-            this.Anonimity = updateFeedbackDto.Anonimity;
+            Published = feedbackPublishmentStatus && AllowPublishment;
         }
     }
 }
