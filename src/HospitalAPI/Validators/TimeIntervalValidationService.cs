@@ -44,7 +44,7 @@ namespace HospitalAPI.Validators
 
         private bool IsAppointmentInPast(Appointment appointment)
         {
-            return appointment.StartAt.CompareTo(DateTime.Now) < 0;
+            return appointment.StartAt.Date.CompareTo(DateTime.Now.AddDays(1).Date) < 0;
         }
         
         private bool CheckIfIntervalsAreOverlaping(List<TimeInterval> intervals, TimeInterval ti)
