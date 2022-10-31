@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HospitalAPI.ErrorHandling.Exceptions
+namespace HospitalLibrary.Shared.Exceptions
 {
     public class BaseException: Exception
     {

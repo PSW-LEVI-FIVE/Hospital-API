@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HospitalAPI.ErrorHandling.Exceptions;
 using HospitalLibrary.Appointments;
+using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 
-
-namespace HospitalAPI.Validators
+namespace HospitalLibrary.Shared.Validators
 {
     public class TimeIntervalValidationService: ITimeIntervalValidationService
     {
@@ -20,10 +19,7 @@ namespace HospitalAPI.Validators
         
         public async Task ValidateAppointment(Appointment appointment)
         {
-            if (IsAppointmentInPast(appointment))
-            {
-                throw new CustomBadRequestException("This time interval is in the past");
-            }
+            ThrowIfAppointmentInPast(appointment);
             
             IEnumerable<TimeInterval> doctorTimeIntervals =
                 await _unitOfWork.AppointmentRepository.GetAllDoctorTakenIntervalsForDate(appointment.DoctorId,
@@ -36,20 +32,24 @@ namespace HospitalAPI.Validators
             IEnumerable<TimeInterval> mixedIntervals = doctorTimeIntervals.Concat(roomTimeIntervals);
 
             TimeInterval requestedTimeInterval = new TimeInterval(appointment.StartAt, appointment.EndAt);
-            if (CheckIfIntervalsAreOverlaping(mixedIntervals.ToList(), requestedTimeInterval))
-            {
-                throw new CustomBadRequestException("This time interval is already in use");
-            }
+            
+            ThrowIfIntervalsAreOverlaping(mixedIntervals.ToList(), requestedTimeInterval);
         }
 
-        private bool IsAppointmentInPast(Appointment appointment)
+        private void ThrowIfAppointmentInPast(Appointment appointment)
         {
-            return appointment.StartAt.Date.CompareTo(DateTime.Now.AddDays(1).Date) < 0;
+            if (appointment.StartAt.Date.CompareTo(DateTime.Now.AddDays(1).Date) < 0)
+            {
+                throw new BadRequestException("This time interval is in the past");
+            }
         }
         
-        private bool CheckIfIntervalsAreOverlaping(List<TimeInterval> intervals, TimeInterval ti)
+        private void ThrowIfIntervalsAreOverlaping(List<TimeInterval> intervals, TimeInterval ti)
         {
-            return intervals.Any(interval => interval.IsOverlaping(ti));
+            if (intervals.Any(interval => interval.IsOverlaping(ti)))
+            {
+                throw new BadRequestException("This time interval is already in use");
+            }
         }
         
         private List<TimeInterval> CompactIntervals(List<TimeInterval> intervals)

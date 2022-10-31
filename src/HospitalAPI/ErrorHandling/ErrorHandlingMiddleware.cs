@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-using HospitalAPI.ErrorHandling.Exceptions;
+using HospitalLibrary.Shared.Exceptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
