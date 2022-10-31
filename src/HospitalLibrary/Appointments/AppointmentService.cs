@@ -6,10 +6,9 @@ using HospitalLibrary.Doctors;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Interfaces;
 
-
 namespace HospitalLibrary.Appointments
 {
-    public class AppointmentService : IAppointmentService
+    public class AppointmentService:IAppointmentService
     {
         private IUnitOfWork _unitOfWork;
         private ITimeIntervalValidationService _intervalValidation;
@@ -31,7 +30,7 @@ namespace HospitalLibrary.Appointments
             _unitOfWork.AppointmentRepository.Save();
             return appointment;
         }
-
+        
         public AppointmentCancelledDTO CancelAppointment(int appointmentId)
         {
             Appointment canceled = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
@@ -43,10 +42,11 @@ namespace HospitalLibrary.Appointments
             _unitOfWork.AppointmentRepository.Save();
             return retDto;
         }
-        
+
         public Task<IEnumerable<Appointment>> GetUpcomingForDoctor(Doctor doctor)
         {
             return _unitOfWork.AppointmentRepository.GetAllDoctorUpcomingAppointments(doctor.Id);
         }
+
     }
 }
