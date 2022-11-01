@@ -15,6 +15,14 @@ namespace HospitalLibrary.Appointments
             this.End = End;
         }
 
+        public TimeInterval(DateTime dateTime, TimeSpan timeSpanStart, TimeSpan timeSpanEnd)
+        {
+            this.Start = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, timeSpanStart.Hours,
+                timeSpanStart.Minutes, timeSpanStart.Seconds);
+            this.End = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, timeSpanEnd.Hours,
+                timeSpanEnd.Minutes, timeSpanEnd.Seconds);
+        }
+
         public TimeInterval(TimeInterval interval)
         {
             this.Start = interval.Start;
@@ -34,7 +42,7 @@ namespace HospitalLibrary.Appointments
             return (this.End - this.Start).TotalHours >= duration;
         }
 
-        private bool IsIntervalInside(TimeInterval outside, TimeInterval inside)
+        public static bool IsIntervalInside(TimeInterval outside, TimeInterval inside)
         {
             return outside.Start <= inside.Start && outside.End >= inside.End;
         }

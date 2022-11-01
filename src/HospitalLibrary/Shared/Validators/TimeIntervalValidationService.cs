@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Shared.Model;
 
 namespace HospitalLibrary.Shared.Validators
 {
@@ -21,7 +22,8 @@ namespace HospitalLibrary.Shared.Validators
         {
             ThrowIfEndBeforeStart(appointment.StartAt, appointment.EndAt);
             ThrowIfInPast(appointment.StartAt);
-            
+            ThrowIfNotInWorkingHours(appointment);
+
             IEnumerable<TimeInterval> doctorTimeIntervals =
                 await _unitOfWork.AppointmentRepository.GetAllDoctorTakenIntervalsForDate(appointment.DoctorId,
                     appointment.StartAt.Date);
@@ -36,11 +38,29 @@ namespace HospitalLibrary.Shared.Validators
             
             ThrowIfIntervalsAreOverlaping(mixedIntervals.ToList(), requestedTimeInterval);
         }
+        
+        private void ThrowIfNotInWorkingHours(Appointment appointment)
+        {
+            ThrowIfNotInWorkingHours(appointment.StartAt, appointment.EndAt, appointment.DoctorId);
+        }
+        
+        private void ThrowIfNotInWorkingHours(DateTime appointmentStartAt, DateTime appointmentEndAt, int doctorId)
+        {
+            WorkingHours workingHours = _unitOfWork.WorkingHoursRepository.GetOne(appointmentStartAt.Day, doctorId);
+            TimeInterval requestedTimeInterval = new TimeInterval(appointmentStartAt, appointmentEndAt);
+            TimeInterval workingHoursTimeInterval =
+                new TimeInterval(appointmentStartAt, workingHours.Start, workingHours.End);
+            if (!TimeInterval.IsIntervalInside(workingHoursTimeInterval, requestedTimeInterval))
+            {
+                throw new BadRequestException("Requested time does not follow the working hours rule");
+            }
+        }
 
         public async Task ValidateRescheduling(Appointment appointment, DateTime start, DateTime end)
         {
             ThrowIfEndBeforeStart(start, end);
             ThrowIfInPast(start);
+            ThrowIfNotInWorkingHours(start, end, appointment.DoctorId);
             
             IEnumerable<TimeInterval> doctorTimeIntervals =
                 await _unitOfWork.AppointmentRepository.GetAllDoctorTakenIntervalsForDate(appointment.DoctorId,

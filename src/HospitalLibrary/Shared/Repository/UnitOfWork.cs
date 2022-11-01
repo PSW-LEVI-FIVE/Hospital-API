@@ -12,7 +12,7 @@ using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Appointments.Interfaces;
-
+using HospitalLibrary.Shared.Model;
 
 
 namespace HospitalLibrary.Shared.Repository
@@ -27,6 +27,7 @@ namespace HospitalLibrary.Shared.Repository
         private IDoctorRepository _doctorRepository;
         private IPatientRepository _patientRepository;
         private IAppointmentRepository _appointmentRepository;
+        private IWorkingHoursRepository _workingHoursRepository;
 
         public UnitOfWork(HospitalDbContext dataContext)
         {
@@ -42,6 +43,8 @@ namespace HospitalLibrary.Shared.Repository
         public IDoctorRepository DoctorRepository => _doctorRepository ?? new DoctorRepository(_dataContext);
         public IPatientRepository PatientRepository => _patientRepository ?? new PatientRepository(_dataContext);
         public IAppointmentRepository AppointmentRepository => _appointmentRepository ?? new AppointmentRepository(_dataContext);
-        
+        public IWorkingHoursRepository WorkingHoursRepository =>
+            _workingHoursRepository ?? new WorkingHoursRepository(_dataContext);
+
     }
 }
