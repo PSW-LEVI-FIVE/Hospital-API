@@ -4,6 +4,6 @@ namespace HospitalLibrary.Shared.Interfaces
 {
     public interface IWorkingHoursRepository : IBaseRepository<WorkingHours>
     {
-        public WorkingHours GetOne(int day, int doctorId);
+        WorkingHours GetOne(int day, int doctorId);
     }
 }
