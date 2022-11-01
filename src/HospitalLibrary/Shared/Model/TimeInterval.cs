@@ -19,8 +19,8 @@ namespace HospitalLibrary.Appointments
         {
             this.Start = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, timeSpanStart.Hours,
                 timeSpanStart.Minutes, timeSpanStart.Seconds);
-            this.End = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, timeSpanStart.Hours,
-                timeSpanStart.Minutes, timeSpanStart.Seconds);
+            this.End = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, timeSpanEnd.Hours,
+                timeSpanEnd.Minutes, timeSpanEnd.Seconds);
         }
 
         public TimeInterval(TimeInterval interval)
