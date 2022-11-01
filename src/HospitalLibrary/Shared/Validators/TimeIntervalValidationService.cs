@@ -60,6 +60,7 @@ namespace HospitalLibrary.Shared.Validators
         {
             ThrowIfEndBeforeStart(start, end);
             ThrowIfInPast(start);
+            ThrowIfNotInWorkingHours(start, end, appointment.DoctorId);
             
             IEnumerable<TimeInterval> doctorTimeIntervals =
                 await _unitOfWork.AppointmentRepository.GetAllDoctorTakenIntervalsForDate(appointment.DoctorId,
