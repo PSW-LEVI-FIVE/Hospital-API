@@ -27,6 +27,15 @@ namespace HospitalAPI.Controllers.Public
             Feedback created = _feedbackService.Create(createFeedbackDto.MapToModel());
             return Ok(created);
         }
+        
+        [HttpGet]
+        [Route("published")]
+        public async Task<IActionResult> GetPublished()
+        {
+            IEnumerable<Feedback> feedbacks = await _feedbackService.GetPublished();
+            return Ok(feedbacks);
+        }
+        
 
     }
 }

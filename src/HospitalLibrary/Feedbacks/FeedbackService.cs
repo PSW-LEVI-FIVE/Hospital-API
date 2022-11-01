@@ -40,5 +40,9 @@ namespace HospitalLibrary.Feedbacks
             return _unitOfWork.FeedbackRepository.GetOne(id);
         }
 
+        public Task<IEnumerable<Feedback>> GetPublished()
+        {
+            return _unitOfWork.FeedbackRepository.GetPublished();
+        }
     }
 }
