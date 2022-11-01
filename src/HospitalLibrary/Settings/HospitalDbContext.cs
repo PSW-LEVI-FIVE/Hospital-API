@@ -16,10 +16,12 @@ namespace HospitalLibrary.Settings
         public DbSet<Person> Persons { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<WorkingHours> WorkingHours { get; set; }
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<WorkingHours>().HasKey(w => new { w.DoctorId, w.Day });
             modelBuilder.Entity<Person>().ToTable("Persons");
             modelBuilder.Entity<Doctor>().ToTable("Doctors");
             modelBuilder.Entity<Patient>().ToTable("Patients");

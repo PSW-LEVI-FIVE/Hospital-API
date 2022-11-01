@@ -15,5 +15,6 @@ namespace HospitalLibrary.Shared.Interfaces
         IDoctorRepository DoctorRepository { get; }
         IPatientRepository PatientRepository { get; }
         IAppointmentRepository AppointmentRepository { get; }
+        IWorkingHoursRepository WorkingHoursRepository { get; }
     }
 }
