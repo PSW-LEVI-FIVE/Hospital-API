@@ -6,5 +6,6 @@ namespace HospitalLibrary.Feedbacks.Interfaces
 {
     public interface IFeedbackRepository: IBaseRepository<Feedback>
     {
+        Task<IEnumerable<Feedback>> GetPublished();
     }
 }

@@ -13,5 +13,7 @@ namespace HospitalLibrary.Feedbacks.Interfaces
 
         Feedback Get(int id);
 
+        Task<IEnumerable<Feedback>> GetPublished();
+
     }
 }
