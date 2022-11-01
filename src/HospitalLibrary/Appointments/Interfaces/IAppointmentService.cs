@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Doctors;
@@ -15,5 +16,7 @@ namespace HospitalLibrary.Appointments.Interfaces
         Task<IEnumerable<Appointment>> GetUpcomingForDoctor(Doctor doctor);
         
         Task<Appointment> Create(Appointment appointment);
+
+        Task<Appointment> Reschedule(int appointmentId, DateTime start, DateTime end);
     }
 }

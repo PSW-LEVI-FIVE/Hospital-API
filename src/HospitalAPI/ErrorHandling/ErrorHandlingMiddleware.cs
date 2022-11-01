@@ -24,7 +24,6 @@ namespace HospitalAPI.ErrorHandling
                                     
                                 if (exception.Error.GetType().IsSubclassOf(typeof(BaseException)))
                                 {
-                                    Console.WriteLine(exception.ToString());
                                     BaseException baseEx = (BaseException)exception.Error;
                                     statusCode = baseEx.StatusCode;
                                 }

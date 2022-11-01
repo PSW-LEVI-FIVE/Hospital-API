@@ -32,5 +32,13 @@ namespace HospitalAPI.Controllers.Intranet
             Appointment appointment = await _appointmentService.Create(createAppointmentDto.MapToModel());
             return Ok(appointment);
         }
+
+        [Route("{id:int}")]
+        [HttpPatch]
+        public async Task<IActionResult> Reschedule(int id, [FromBody] RescheduleDTO rescheduleDto)
+        {
+            Appointment appointment = await _appointmentService.Reschedule(id, rescheduleDto.Start, rescheduleDto.End);
+            return Ok(appointment);
+        }
     }
 }
