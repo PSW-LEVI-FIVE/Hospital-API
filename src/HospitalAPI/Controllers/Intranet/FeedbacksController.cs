@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 ﻿using HospitalLibrary.Feedbacks;
 using HospitalLibrary.Feedbacks.Dtos;
+=======
+﻿using System;
+using HospitalLibrary.Feedbacks;
+>>>>>>> 4896b80 (Show feedback through DTO)
 using HospitalLibrary.Feedbacks.Interfaces;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Interfaces;
@@ -38,13 +43,14 @@ namespace HospitalAPI.Controllers.Intranet
         public async Task<IActionResult> GetAll()
         {
             IEnumerable<Feedback> feedbacks = await _feedbackService.GetAll();
-            IEnumerable<AnonymousFeedbackDTO> anonymousFeedbacks = new AnonymousFeedbackDTO[feedbacks.Count()];
+            List<AnonymousFeedbackDTO> anonymousFeedbacks = new List<AnonymousFeedbackDTO>();
             foreach (Feedback feedback in feedbacks)
             {
-                anonymousFeedbacks.Append(new AnonymousFeedbackDTO(_feedbackService.getPatientById(feedback.PatientId).Name,
+                anonymousFeedbacks.Add(new AnonymousFeedbackDTO(
+                    _feedbackService.getPatientById(feedback.PatientId).Name,
                     feedback.FeedbackContent));
-
             }
+
             return Ok(anonymousFeedbacks);
         }
 

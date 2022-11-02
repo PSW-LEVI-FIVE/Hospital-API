@@ -34,7 +34,7 @@ namespace HospitalLibrary.Feedbacks
             Patient p = new Patient();
             p.Id = patientId;
             Console.WriteLine(p.Id);
-            Patient retPat = _unitOfWork.PatientRepository.GetOne(p);
+            Patient retPat = _unitOfWork.PatientRepository.GetOne(p.Id);
             Console.WriteLine(retPat.Name);
             return retPat;
         }

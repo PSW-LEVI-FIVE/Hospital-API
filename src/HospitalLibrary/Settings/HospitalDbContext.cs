@@ -4,9 +4,13 @@ using HospitalLibrary.Patients;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Shared.Model;
 using HospitalLibrary.Appointments;
+<<<<<<< HEAD
 using HospitalLibrary.Buildings;
 using HospitalLibrary.Floors;
 using HospitalLibrary.Map;
+=======
+using HospitalLibrary.Feedbacks.Dtos;
+>>>>>>> 2b6f4f5 (Solved rebase conflicts)
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Settings

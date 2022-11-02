@@ -5,10 +5,10 @@
          public string Patient { get; set; }
          public string FeedbackContent { get; set; }
          
-         public AnonymousFeedbackDTO(string Patient , string FeedbackContent )
+         public AnonymousFeedbackDTO(string patient , string feedbackContent)
          {
-            this.Patient = Patient;
-            this.FeedbackContent = FeedbackContent;
+            Patient = patient;
+            FeedbackContent = feedbackContent;
          }
         
     }
