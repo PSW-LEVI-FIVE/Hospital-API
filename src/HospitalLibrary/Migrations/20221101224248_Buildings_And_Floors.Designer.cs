@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221101224248_Buildings_And_Floors")]
+    partial class Buildings_And_Floors
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,86 +116,6 @@ namespace HospitalLibrary.Migrations
                     b.HasIndex("BuildingId");
 
                     b.ToTable("Floors");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Map.MapBuilding", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("BuildingId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Coordinates")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RgbColour")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Shape")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BuildingId");
-
-                    b.ToTable("MapBuildings");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Map.MapFloor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("FloorId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("RgbColour")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Shape")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FloorId");
-
-                    b.ToTable("MapFloors");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Map.MapRoom", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("CoordinatesInsideFloor")
-                        .HasColumnType("text");
-
-                    b.Property<int>("MapFloorId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("RbgColour")
-                        .HasColumnType("text");
-
-                    b.Property<int>("RoomId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Shape")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MapFloorId");
-
-                    b.HasIndex("RoomId");
-
-                    b.ToTable("MapRooms");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Rooms.Room", b =>
@@ -334,47 +256,6 @@ namespace HospitalLibrary.Migrations
                     b.Navigation("Building");
                 });
 
-            modelBuilder.Entity("HospitalLibrary.Map.MapBuilding", b =>
-                {
-                    b.HasOne("HospitalLibrary.Buildings.Building", "Building")
-                        .WithMany()
-                        .HasForeignKey("BuildingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Building");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Map.MapFloor", b =>
-                {
-                    b.HasOne("HospitalLibrary.Floors.Floor", "Floor")
-                        .WithMany()
-                        .HasForeignKey("FloorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Floor");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Map.MapRoom", b =>
-                {
-                    b.HasOne("HospitalLibrary.Map.MapFloor", "MapFloor")
-                        .WithMany("MapRooms")
-                        .HasForeignKey("MapFloorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HospitalLibrary.Rooms.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MapFloor");
-
-                    b.Navigation("Room");
-                });
-
             modelBuilder.Entity("HospitalLibrary.Rooms.Room", b =>
                 {
                     b.HasOne("HospitalLibrary.Floors.Floor", "Floor")
@@ -423,11 +304,6 @@ namespace HospitalLibrary.Migrations
             modelBuilder.Entity("HospitalLibrary.Floors.Floor", b =>
                 {
                     b.Navigation("Rooms");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Map.MapFloor", b =>
-                {
-                    b.Navigation("MapRooms");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Doctors.Doctor", b =>

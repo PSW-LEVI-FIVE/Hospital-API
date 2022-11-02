@@ -16,7 +16,7 @@ namespace HospitalLibrary.Rooms
 
         public async Task<IEnumerable<Room>> FindAllByFloor(int floor)
         {
-            return await _dataContext.Rooms.Where(r => r.Floor == floor).ToListAsync();
+            return await _dataContext.Rooms.Where(r => r.FloorId == floor).ToListAsync();
         }
     }
 }
