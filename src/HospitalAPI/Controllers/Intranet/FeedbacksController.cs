@@ -1,9 +1,9 @@
-using AnonymousFeedbackDTO = HospitalLibrary.Feedbacks.Dtos.AnonymousFeedbackDTO;
 using Feedback = HospitalLibrary.Feedbacks.Feedback;
 using HospitalLibrary.Feedbacks.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalLibrary.Feedbacks.Dtos;
 using HospitalLibrary.Patients;
 
 namespace HospitalAPI.Controllers.Intranet
@@ -33,8 +33,8 @@ namespace HospitalAPI.Controllers.Intranet
         public async Task<IActionResult> GetAll()
         {
             IEnumerable<Feedback> feedbacks = await _feedbackService.GetAll();
-            List<AnonymousFeedbackDTO> anonymousFeedbacks = _feedbackService.anonymousList(feedbacks);
-            return Ok(anonymousFeedbacks);
+            List<ManagersFeedbackDto> managersFeedbacks = _feedbackService.GetManagersFeedbacks(feedbacks);
+            return Ok(managersFeedbacks);
         }
 
        

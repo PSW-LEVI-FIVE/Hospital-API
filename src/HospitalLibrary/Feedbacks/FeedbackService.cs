@@ -49,30 +49,17 @@ namespace HospitalLibrary.Feedbacks
         {
             return _unitOfWork.FeedbackRepository.GetOne(id);
         }
-        public List<AnonymousFeedbackDTO> anonymousList(IEnumerable<Feedback> feedbacks)
+        public List<ManagersFeedbackDto> GetManagersFeedbacks(IEnumerable<Feedback> feedbacks)
         {
-            List<AnonymousFeedbackDTO> anonymousFeedbacks = new List<AnonymousFeedbackDTO>();
+            List<ManagersFeedbackDto> managersFeedbacks = new List<ManagersFeedbackDto>();
             foreach (Feedback feedback in feedbacks)
             {
-                Patient tempPatient = getPatientById(feedback.PatientId);
-                if (feedback.Anonimity == false)
-                {
-                    anonymousFeedbacks.Add(new AnonymousFeedbackDTO(feedback.Id,
-                        tempPatient.Name + " " + tempPatient.Surname,
-                        feedback.FeedbackContent));
-                }
-                else
-                {
-                    anonymousFeedbacks.Add(new AnonymousFeedbackDTO(-1,
-                        "Anonymous",
-                        feedback.FeedbackContent));
-                }
+                Patient patient = getPatientById(feedback.PatientId);
+                managersFeedbacks.Add(new ManagersFeedbackDto(feedback.Id,patient.Name + " " + patient.Surname,
+                        feedback.FeedbackContent,feedback.AllowPublishment,feedback.Published,feedback.Anonimity));
             }
-
-            return anonymousFeedbacks;
+            return managersFeedbacks;
         }
-
-
         public Task<IEnumerable<Feedback>> GetPublished()
         {
             return _unitOfWork.FeedbackRepository.GetPublished();
