@@ -10,6 +10,8 @@ namespace HospitalLibrary.Floors
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key()]
         public int Id { get; set; }
+        public int Number { get; set; }
+        public float Area { get; set; }
         
         public virtual ICollection<Room> Rooms { get; set; }
         

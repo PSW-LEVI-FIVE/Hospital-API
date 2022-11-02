@@ -11,6 +11,7 @@ namespace HospitalLibrary.Rooms
         public int Id { get; set; }
 
         public string RoomNumber { get; set; }
+        public float Area { get; set; }
 
         [ForeignKey("Floor")]
         public int FloorId { get; set; }

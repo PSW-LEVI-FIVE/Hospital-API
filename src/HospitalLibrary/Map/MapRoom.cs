@@ -17,8 +17,11 @@ namespace HospitalLibrary.Map
         public int RoomId { get; set; }
         public virtual Room Room { get; set; }
         
-        public string CoordinatesInsideFloor { get; set; }
-        public string Shape { get; set; }
+        public float XCoordinate { get; set; }
+        public float YCoordinate { get; set; }
+        public float Width { get; set; }
+        public float Height { get; set; }
+
         public string RbgColour { get; set; }
         
         public MapRoom() {}

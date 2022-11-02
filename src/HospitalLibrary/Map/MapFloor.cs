@@ -14,7 +14,11 @@ namespace HospitalLibrary.Map
         public int FloorId { get; set; }
         public virtual Floor Floor { get; set; }
         
-        public string Shape { get; set; }
+        public float XCoordinate { get; set; }
+        public float YCoordinate { get; set; }
+        public float Width { get; set; }
+        public float Height { get; set; }
+
         public string RgbColour { get; set; }
         
         public virtual ICollection<MapRoom> MapRooms { get; set; }
