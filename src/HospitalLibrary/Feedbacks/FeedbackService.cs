@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Feedbacks.Dtos;
 using HospitalLibrary.Feedbacks.Interfaces;
@@ -49,8 +50,9 @@ namespace HospitalLibrary.Feedbacks
         {
             return _unitOfWork.FeedbackRepository.GetOne(id);
         }
-        public List<ManagersFeedbackDto> GetManagersFeedbacks(IEnumerable<Feedback> feedbacks)
-        {
+        public async Task<IEnumerable<ManagersFeedbackDto>> GetManagersFeedbacks()
+        { 
+            List<Feedback> feedbacks = Task.Run(() => _unitOfWork.FeedbackRepository.GetAll()).Result.ToList();
             List<ManagersFeedbackDto> managersFeedbacks = new List<ManagersFeedbackDto>();
             foreach (Feedback feedback in feedbacks)
             {
@@ -58,7 +60,7 @@ namespace HospitalLibrary.Feedbacks
                 managersFeedbacks.Add(new ManagersFeedbackDto(feedback.Id,patient.Name + " " + patient.Surname,
                         feedback.FeedbackContent,feedback.AllowPublishment,feedback.Published,feedback.Anonimity));
             }
-            return managersFeedbacks;
+            return await Task.FromResult(managersFeedbacks);
         }
         public Task<IEnumerable<Feedback>> GetPublished()
         {

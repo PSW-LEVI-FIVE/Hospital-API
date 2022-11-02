@@ -18,27 +18,21 @@ namespace HospitalAPI.Controllers.Intranet
         {
             _feedbackService = feedbackService;
         }
-
-
+        
         [HttpPost]
         public IActionResult Create(Feedback feedback)
         {
-            Feedback created =  _feedbackService.Create(feedback);
+            Feedback created = _feedbackService.Create(feedback);
             return Ok(created);
         }
-        
-        
-        
+
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetManagersFeedbacks()
         {
-            IEnumerable<Feedback> feedbacks = await _feedbackService.GetAll();
-            List<ManagersFeedbackDto> managersFeedbacks = _feedbackService.GetManagersFeedbacks(feedbacks);
+            IEnumerable<ManagersFeedbackDto> managersFeedbacks = await _feedbackService.GetManagersFeedbacks();
             return Ok(managersFeedbacks);
         }
-
-       
-
+        
         [HttpPut]
         [Route("{id}")]
         public IActionResult ChangePublishmentStatus(int id, [FromBody] bool feedbackPublishmentStatus)
@@ -49,6 +43,5 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(updated);
         }
         
-
     }
 }
