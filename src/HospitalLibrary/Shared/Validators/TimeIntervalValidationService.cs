@@ -48,8 +48,7 @@ namespace HospitalLibrary.Shared.Validators
         {
             WorkingHours workingHours = _unitOfWork.WorkingHoursRepository.GetOne(appointmentStartAt.Day, doctorId);
             TimeInterval requestedTimeInterval = new TimeInterval(appointmentStartAt, appointmentEndAt);
-            TimeInterval workingHoursTimeInterval =
-                new TimeInterval(appointmentStartAt, workingHours.Start, workingHours.End);
+            TimeInterval workingHoursTimeInterval = new TimeInterval(appointmentStartAt, workingHours.Start, workingHours.End);
             if (!TimeInterval.IsIntervalInside(workingHoursTimeInterval, requestedTimeInterval))
             {
                 throw new BadRequestException("Requested time does not follow the working hours rule");

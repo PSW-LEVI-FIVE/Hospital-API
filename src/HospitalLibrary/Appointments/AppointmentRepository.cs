@@ -41,5 +41,17 @@ namespace HospitalLibrary.Appointments
                 .Where(a => a.State.Equals(AppointmentState.PENDING))
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Appointment>> GetAllDoctorAppointmentsForRange(int doctorId, TimeInterval interval)
+        {
+            return await _dataContext.Appointments
+                .Where(a => a.DoctorId == doctorId)
+                .Where(a =>
+                    interval.Start.Date.CompareTo(a.StartAt.Date) <= 0
+                    && interval.End.Date.CompareTo(a.StartAt.Date) >= 0)
+                .Include(a => a.Patient)
+                .OrderBy(a => a.StartAt)
+                .ToListAsync();
+        }
     }
 }

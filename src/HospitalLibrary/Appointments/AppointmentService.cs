@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Appointments.Interfaces;
@@ -60,5 +61,51 @@ namespace HospitalLibrary.Appointments
             return appointment;
         }
 
+        public Task<IEnumerable<Appointment>> GetAllForDoctorAndRange(int doctorId, TimeInterval interval)
+        {
+            return _unitOfWork.AppointmentRepository.GetAllDoctorAppointmentsForRange(doctorId, interval);
+        }
+
+        public IEnumerable<CalendarAppointmentsDTO> FormatAppointmentsForCalendar(IEnumerable<Appointment> appointments, TimeInterval interval)
+        {
+            Dictionary<DateTime, List<CalendarInterval>> map = FillDictionaryWithStartDates(interval);
+            foreach (Appointment app in appointments)
+            {
+                DateTime date = app.StartAt.Date;
+                List<CalendarInterval> list = map[date];
+                list.Add(
+                    new CalendarInterval
+                    {
+                        StartsAt = app.StartAt.TimeOfDay, 
+                        EndsAt = app.EndAt.TimeOfDay, 
+                        Patient = app.Patient.Name = app.Patient.Surname,
+                        Id = app.Id
+                    });
+                map[date] = list;
+            }
+
+            return MapDictionaryToCalendarDTOs(map);
+        }
+
+        private Dictionary<DateTime, List<CalendarInterval>> FillDictionaryWithStartDates(TimeInterval interval)
+        {
+            Dictionary<DateTime, List<CalendarInterval>> map = new Dictionary<DateTime, List<CalendarInterval>>();
+            DateTime startDate = interval.Start.Date;
+            while (startDate.CompareTo(interval.End.Date) < 0)
+            {
+                map.Add(startDate, new List<CalendarInterval>());
+                startDate = startDate.AddDays(1).Date;
+            }
+
+            return map;
+        }
+
+        private IEnumerable<CalendarAppointmentsDTO> MapDictionaryToCalendarDTOs(Dictionary<DateTime, List<CalendarInterval>> map)
+        {
+            return (from dt in map.Keys let date = dt.Date.ToString("yyyy-MM-dd") 
+                select new CalendarAppointmentsDTO(date, map[dt]))
+                .ToList();
+        }
+        
     }
 }

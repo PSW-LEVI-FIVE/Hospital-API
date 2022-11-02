@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Appointments.Dtos;
@@ -40,5 +42,17 @@ namespace HospitalAPI.Controllers.Intranet
             Appointment appointment = await _appointmentService.Reschedule(id, rescheduleDto.Start, rescheduleDto.End);
             return Ok(appointment);
         }
+
+        [Route("{startDate}/week")]
+        [HttpGet]
+        public async Task<IActionResult> GetCalendarIntervals(DateTime startDate)
+        {
+            int doctorId = 2;
+            TimeInterval interval = new TimeInterval(startDate, startDate.AddDays(7).Date);
+            IEnumerable<Appointment> appointments = await _appointmentService.GetAllForDoctorAndRange(doctorId, interval);
+            IEnumerable<CalendarAppointmentsDTO> calendarIntervals = _appointmentService.FormatAppointmentsForCalendar(appointments, interval);
+            return Ok(calendarIntervals);
+        }
+        
     }
 }
