@@ -1,7 +1,4 @@
-using HospitalLibrary.Feedbacks.Dtos;
 using HospitalLibrary.Patients;
-using Microsoft.EntityFrameworkCore.Update.Internal;
-﻿using HospitalLibrary.Patients;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

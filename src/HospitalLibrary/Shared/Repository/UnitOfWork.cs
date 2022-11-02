@@ -10,10 +10,7 @@ using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Interfaces;
-using HospitalLibrary.Appointments;
-using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Shared.Model;
-
 
 namespace HospitalLibrary.Shared.Repository
 {

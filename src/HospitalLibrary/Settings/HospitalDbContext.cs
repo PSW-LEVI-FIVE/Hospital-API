@@ -5,6 +5,10 @@ using HospitalLibrary.Patients;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Shared.Model;
 using HospitalLibrary.Appointments;
+using HospitalLibrary.Buildings;
+using HospitalLibrary.Floors;
+using HospitalLibrary.Map;
+using HospitalLibrary.Feedbacks.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Settings
@@ -18,6 +22,12 @@ namespace HospitalLibrary.Settings
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<WorkingHours> WorkingHours { get; set; }
+        public DbSet<Floor> Floors { get; set; }
+        public DbSet<Building> Buildings { get; set; }
+        public DbSet<MapBuilding> MapBuildings { get; set; }
+        public DbSet<MapFloor> MapFloors { get; set; }
+        public DbSet<MapRoom> MapRooms { get; set; }
+
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -33,6 +43,12 @@ namespace HospitalLibrary.Settings
             modelBuilder.Entity<Patient>().ToTable("Patients");
             modelBuilder.Entity<Appointment>().ToTable("Appointments");
             modelBuilder.Entity<Feedback>().ToTable("Feedbacks");
+            modelBuilder.Entity<MapBuilding>().ToTable("MapBuildings");
+            modelBuilder.Entity<MapFloor>().ToTable("MapFloors");
+            modelBuilder.Entity<MapRoom>().ToTable("MapRooms");
+
+
+            
         }
     }
 }
