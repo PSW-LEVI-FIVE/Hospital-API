@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace HospitalAPI.Controllers.Intranet
 {
@@ -15,6 +16,7 @@ namespace HospitalAPI.Controllers.Intranet
         {
             _roomService = roomService;
         }
+        
 
         [HttpGet]
         public async Task<IActionResult> GetAll()

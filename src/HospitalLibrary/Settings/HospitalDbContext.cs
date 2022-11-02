@@ -1,4 +1,5 @@
-﻿using HospitalLibrary.Doctors;
+﻿using EntityFramework.Exceptions.PostgreSQL;
+using HospitalLibrary.Doctors;
 using HospitalLibrary.Feedbacks;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Rooms;
@@ -18,6 +19,11 @@ namespace HospitalLibrary.Settings
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<WorkingHours> WorkingHours { get; set; }
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseExceptionProcessor();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
