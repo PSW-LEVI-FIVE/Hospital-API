@@ -1,21 +1,9 @@
-<<<<<<< HEAD
-﻿using HospitalLibrary.Feedbacks;
-using HospitalLibrary.Feedbacks.Dtos;
-=======
-﻿using System;
-using HospitalLibrary.Feedbacks;
->>>>>>> 4896b80 (Show feedback through DTO)
+using AnonymousFeedbackDTO = HospitalLibrary.Feedbacks.Dtos.AnonymousFeedbackDTO;
+using Feedback = HospitalLibrary.Feedbacks.Feedback;
 using HospitalLibrary.Feedbacks.Interfaces;
-using HospitalLibrary.Rooms;
-using HospitalLibrary.Rooms.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
-using HospitalLibrary.Feedbacks.Dtos;
 using HospitalLibrary.Patients;
 
 namespace HospitalAPI.Controllers.Intranet
@@ -45,18 +33,11 @@ namespace HospitalAPI.Controllers.Intranet
         public async Task<IActionResult> GetAll()
         {
             IEnumerable<Feedback> feedbacks = await _feedbackService.GetAll();
-            List<AnonymousFeedbackDTO> anonymousFeedbacks = new List<AnonymousFeedbackDTO>();
-            foreach (Feedback feedback in feedbacks)
-            {
-                Patient tempPatient = _feedbackService.getPatientById(feedback.PatientId);
-                anonymousFeedbacks.Add(new AnonymousFeedbackDTO(feedback.Id,
-                    tempPatient.Name + " " + tempPatient.Surname,
-                    feedback.FeedbackContent));
-            }
-
+            List<AnonymousFeedbackDTO> anonymousFeedbacks = _feedbackService.anonymousList(feedbacks);
             return Ok(anonymousFeedbacks);
         }
 
+       
 
         [HttpPut]
         [Route("{id}")]
@@ -67,6 +48,7 @@ namespace HospitalAPI.Controllers.Intranet
             Feedback updated = _feedbackService.ChangePublishmentStatus(feedback);
             return Ok(updated);
         }
+        
 
     }
 }

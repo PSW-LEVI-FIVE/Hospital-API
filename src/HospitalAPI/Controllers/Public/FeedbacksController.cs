@@ -1,12 +1,9 @@
-﻿using HospitalLibrary.Feedbacks.Interfaces;
+﻿using System;
+using HospitalLibrary.Feedbacks.Interfaces;
 using HospitalLibrary.Feedbacks;
 using HospitalLibrary.Feedbacks.Dtos;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System;
-using HospitalLibrary.Appointments.Dtos;
+
 
 namespace HospitalAPI.Controllers.Public
 {

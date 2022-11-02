@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalLibrary.Feedbacks.Dtos;
 using HospitalLibrary.Patients;
 
 namespace HospitalLibrary.Feedbacks.Interfaces
@@ -12,6 +13,7 @@ namespace HospitalLibrary.Feedbacks.Interfaces
 
         Feedback ChangePublishmentStatus(Feedback Feedback);
 
+        public List<AnonymousFeedbackDTO> anonymousList(IEnumerable<Feedback> feedbacks);
         Feedback Get(int id);
         
         public Patient getPatientById(int patientId);
