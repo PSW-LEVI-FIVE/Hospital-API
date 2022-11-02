@@ -1,13 +1,10 @@
-﻿using HospitalLibrary.Feedbacks;
-using HospitalLibrary.Feedbacks.Dtos;
+using Feedback = HospitalLibrary.Feedbacks.Feedback;
 using HospitalLibrary.Feedbacks.Interfaces;
-using HospitalLibrary.Rooms;
-using HospitalLibrary.Rooms.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalLibrary.Feedbacks.Dtos;
+using HospitalLibrary.Patients;
 
 namespace HospitalAPI.Controllers.Intranet
 {
@@ -21,14 +18,21 @@ namespace HospitalAPI.Controllers.Intranet
         {
             _feedbackService = feedbackService;
         }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        
+        [HttpPost]
+        public IActionResult Create(Feedback feedback)
         {
-            IEnumerable<Feedback> feedbacks = await _feedbackService.GetAll();
-            return Ok(feedbacks);
+            Feedback created = _feedbackService.Create(feedback);
+            return Ok(created);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetManagersFeedbacks()
+        {
+            IEnumerable<ManagersFeedbackDto> managersFeedbacks = await _feedbackService.GetManagersFeedbacks();
+            return Ok(managersFeedbacks);
+        }
+        
         [HttpPut]
         [Route("{id}")]
         public IActionResult ChangePublishmentStatus(int id, [FromBody] bool feedbackPublishmentStatus)
@@ -38,5 +42,6 @@ namespace HospitalAPI.Controllers.Intranet
             Feedback updated = _feedbackService.ChangePublishmentStatus(feedback);
             return Ok(updated);
         }
+        
     }
 }

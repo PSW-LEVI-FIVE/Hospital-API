@@ -7,6 +7,7 @@ using HospitalLibrary.Appointments;
 using HospitalLibrary.Buildings;
 using HospitalLibrary.Floors;
 using HospitalLibrary.Map;
+using HospitalLibrary.Feedbacks.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Settings
