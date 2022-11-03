@@ -33,11 +33,11 @@ namespace HospitalLibrary.Appointments
             return appointment;
         }
         
-        public async Task<AppointmentCancelledDTO> CancelAppointment(int appointmentId)
+        public AppointmentCancelledDTO CancelAppointment(int appointmentId)
         {
             Appointment canceled = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
             canceled.State = AppointmentState.DELETED;
-            Patient toNotify = _unitOfWork.PatientRepository.GetOne(canceled.Patient.Id);
+            Patient toNotify = _unitOfWork.PatientRepository.GetOne(canceled.PatientId);
             AppointmentCancelledDTO retDto = new AppointmentCancelledDTO
                 { PatientEmail = toNotify.Email, AppointmentTime = canceled.StartAt };
             _unitOfWork.AppointmentRepository.Update(canceled);
@@ -50,15 +50,17 @@ namespace HospitalLibrary.Appointments
             return _unitOfWork.AppointmentRepository.GetAllDoctorUpcomingAppointments(doctor.Id);
         }
 
-        public async Task<Appointment> Reschedule(int appointmentId, DateTime start, DateTime end)
+        public async Task<AppointmentRescheduledDTO> Reschedule(int appointmentId, DateTime start, DateTime end)
         {
             Appointment appointment = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
+            DateTime preChange = appointment.StartAt;
             await _intervalValidation.ValidateRescheduling(appointment, start, end);
             appointment.StartAt = start;
             appointment.EndAt = end;
             _unitOfWork.AppointmentRepository.Update(appointment);
             _unitOfWork.AppointmentRepository.Save();
-            return appointment;
+            Patient toNotify = _unitOfWork.PatientRepository.GetOne(appointment.PatientId);
+            return new AppointmentRescheduledDTO{PatientEmail =toNotify.Email,AppointmentTimeBefore = preChange ,AppointmentTimeNew = start};
         }
 
         public Task<IEnumerable<Appointment>> GetAllForDoctorAndRange(int doctorId, TimeInterval interval)

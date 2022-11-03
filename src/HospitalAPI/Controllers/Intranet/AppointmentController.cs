@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Appointments.Interfaces;
+using HospitalLibrary.Shared.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
@@ -16,12 +17,14 @@ namespace HospitalAPI.Controllers.Intranet
     {
         
         private IAppointmentService _appointmentService;
-
-        public AppointmentController(IAppointmentService appointmentService)
+        private IEmailService _emailService;
+        
+        public AppointmentController(IAppointmentService appointmentService,IEmailService emailService)
         {
             _appointmentService = appointmentService;
+            _emailService = emailService;
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -40,7 +43,8 @@ namespace HospitalAPI.Controllers.Intranet
         [HttpPatch]
         public async Task<IActionResult> Reschedule(int id, [FromBody] RescheduleDTO rescheduleDto)
         {
-            Appointment appointment = await _appointmentService.Reschedule(id, rescheduleDto.Start, rescheduleDto.End);
+            AppointmentRescheduledDTO appointment = await _appointmentService.Reschedule(id, rescheduleDto.Start, rescheduleDto.End);
+            _emailService.SendAppointmentRescheduledEmail(appointment.PatientEmail,appointment.AppointmentTimeBefore,rescheduleDto.Start);
             return Ok(appointment);
         }
 
@@ -57,9 +61,10 @@ namespace HospitalAPI.Controllers.Intranet
 
         [Route("cancel/{id:int}")]
         [HttpPatch]
-        public async Task<IActionResult> Cancel(int id)
+        public IActionResult Cancel(int id)
         {
-            AppointmentCancelledDTO appointment = await _appointmentService.CancelAppointment(id);
+            AppointmentCancelledDTO appointment = _appointmentService.CancelAppointment(id);
+            _emailService.SendAppointmentCanceledEmail(appointment.PatientEmail,appointment.AppointmentTime);
             return Ok(appointment);
         }
 

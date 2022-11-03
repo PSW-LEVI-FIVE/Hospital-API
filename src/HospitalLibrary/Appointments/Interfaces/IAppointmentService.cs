@@ -11,13 +11,13 @@ namespace HospitalLibrary.Appointments.Interfaces
     {
         Task<IEnumerable<Appointment>> GetAll();
 
-       Task<AppointmentCancelledDTO> CancelAppointment(int appointmentId);
+       AppointmentCancelledDTO CancelAppointment(int appointmentId);
 
         Task<IEnumerable<Appointment>> GetUpcomingForDoctor(Doctor doctor);
         
         Task<Appointment> Create(Appointment appointment);
 
-        Task<Appointment> Reschedule(int appointmentId, DateTime start, DateTime end);
+        Task<AppointmentRescheduledDTO> Reschedule(int appointmentId, DateTime start, DateTime end);
 
         Task<IEnumerable<Appointment>> GetAllForDoctorAndRange(int doctorId, TimeInterval interval);
         IEnumerable<CalendarAppointmentsDTO> FormatAppointmentsForCalendar(IEnumerable<Appointment> appointments, TimeInterval interval);
