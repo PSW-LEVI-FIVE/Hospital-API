@@ -26,5 +26,10 @@ namespace HospitalLibrary.Rooms
             _unitOfWork.RoomRepository.Save();
             return room;
         }
+
+        public Room GetOne(int key)
+        {
+            return _unitOfWork.RoomRepository.GetOne(key);
+        }
     }
 }
