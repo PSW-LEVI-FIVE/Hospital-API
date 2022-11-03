@@ -94,19 +94,11 @@ namespace HospitalLibrary.Appointments
 
         public async Task<Appointment> GetById(int appointmentId)
         {
-            // Appointment appointment = new Appointment();
-            // appointment.PatientId = 2;
-            // appointment.RoomId = 1;
-            // appointment.Id = appointmentId;
-            // appointment.StartAt = new DateTime(2022, 11, 4, 17, 0, 0);
-            // appointment.EndAt = new DateTime(2022, 11, 4, 18, 0, 0);
-            // appointment.State = AppointmentState.PENDING;
             Appointment appointment= await _unitOfWork.AppointmentRepository.GetById(appointmentId);
             if (appointment == null)
             {
                 throw new BadRequestException("Appointment with ID " + appointmentId + "does not exist");
             }
-            // return appointment;
             return appointment;
         }
 
