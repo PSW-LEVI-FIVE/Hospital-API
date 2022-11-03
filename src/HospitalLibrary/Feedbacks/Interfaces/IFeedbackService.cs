@@ -13,6 +13,8 @@ namespace HospitalLibrary.Feedbacks.Interfaces
 
         Feedback ChangePublishmentStatus(Feedback Feedback);
 
+        Task<IEnumerable<PublishedFeedbackDto>> GetPublishedFeedbacks();
+
         public Task<IEnumerable<ManagersFeedbackDto>> GetManagersFeedbacks();
         Feedback Get(int id);
         

@@ -31,10 +31,8 @@ namespace HospitalAPI.Controllers.Public
         [Route("published")]
         public async Task<IActionResult> GetPublished()
         {
-            IEnumerable<Feedback> feedbacks = await _feedbackService.GetPublished();
-            return Ok(feedbacks);
+            IEnumerable<PublishedFeedbackDto> publishedFeedbacks = await _feedbackService.GetPublishedFeedbacks();
+            return Ok(publishedFeedbacks);
         }
-        
-
     }
 }

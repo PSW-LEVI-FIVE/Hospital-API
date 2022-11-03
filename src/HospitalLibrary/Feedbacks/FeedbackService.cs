@@ -62,6 +62,18 @@ namespace HospitalLibrary.Feedbacks
             }
             return await Task.FromResult(managersFeedbacks);
         }
+
+        public async Task<IEnumerable<PublishedFeedbackDto>> GetPublishedFeedbacks()
+        {
+            List<PublishedFeedbackDto> publishedFeedbacks = new List<PublishedFeedbackDto>();
+            foreach (Feedback feedback in _unitOfWork.FeedbackRepository.GetAll().Result.ToList())
+            {
+                Patient patient = _unitOfWork.PatientRepository.GetOne(feedback.PatientId);
+                if (feedback.Published) 
+                    publishedFeedbacks.Add(new PublishedFeedbackDto(patient.Name + " " + patient.Surname,feedback.FeedbackContent,feedback.Anonimity));
+            }
+            return await Task.FromResult(publishedFeedbacks);
+        }
         public Task<IEnumerable<Feedback>> GetPublished()
         {
             return _unitOfWork.FeedbackRepository.GetPublished();
