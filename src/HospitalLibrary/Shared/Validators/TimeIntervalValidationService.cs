@@ -46,7 +46,7 @@ namespace HospitalLibrary.Shared.Validators
         
         private void ThrowIfNotInWorkingHours(DateTime appointmentStartAt, DateTime appointmentEndAt, int doctorId)
         {
-            WorkingHours workingHours = _unitOfWork.WorkingHoursRepository.GetOne(appointmentStartAt.Day, doctorId);
+            WorkingHours workingHours = _unitOfWork.WorkingHoursRepository.GetOne((int) appointmentStartAt.DayOfWeek, doctorId);
             TimeInterval requestedTimeInterval = new TimeInterval(appointmentStartAt, appointmentEndAt);
             TimeInterval workingHoursTimeInterval = new TimeInterval(appointmentStartAt, workingHours.Start, workingHours.End);
             if (!TimeInterval.IsIntervalInside(workingHoursTimeInterval, requestedTimeInterval))
