@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace HospitalAPI.Controllers.Intranet
@@ -23,6 +24,16 @@ namespace HospitalAPI.Controllers.Intranet
         {
             IEnumerable<Room> rooms = await _roomService.GetAll();
             return Ok(rooms);
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public IActionResult UpdateName(int id, [FromBody] string name)
+        {
+            Room room = _roomService.GetOne(id);
+            room.RoomNumber = name;
+            _roomService.Update(room);
+            return Ok(room);
         }
 
     }

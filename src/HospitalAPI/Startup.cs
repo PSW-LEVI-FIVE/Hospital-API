@@ -3,10 +3,16 @@ using HospitalLibrary.Appointments.Interfaces;
 using System;
 using HospitalAPI.Emails;
 using HospitalAPI.ErrorHandling;
+using HospitalLibrary.Buildings;
+using HospitalLibrary.Buildings.Interfaces;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Feedbacks;
 using HospitalLibrary.Feedbacks.Interfaces;
+using HospitalLibrary.Floors;
+using HospitalLibrary.Floors.Interfaces;
+using HospitalLibrary.Map;
+using HospitalLibrary.Map.Interfaces;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Rooms;
@@ -48,6 +54,9 @@ namespace HospitalAPI
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<IEmailService, SendgridProvider>();
+            services.AddScoped<IMapService, MapService>();
+            services.AddScoped<IBuildingService, BuildingService>();
+            services.AddScoped<IFloorService, FloorService>();
             services.AddScoped<ITimeIntervalValidationService, TimeIntervalValidationService>();
             services.AddSwaggerGen(c =>
             {

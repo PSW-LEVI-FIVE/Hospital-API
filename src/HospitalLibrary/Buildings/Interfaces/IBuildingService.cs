@@ -8,5 +8,6 @@ namespace HospitalLibrary.Buildings.Interfaces
     {
         Task<IEnumerable<Building>> GetAll();
         Building Update(Building building);
+        Building GetOne(int key);
     }
 }

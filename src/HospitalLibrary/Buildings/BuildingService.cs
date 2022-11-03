@@ -27,5 +27,10 @@ namespace HospitalLibrary.Buildings
             _unitOfWork.BuildingRepository.Save();
             return building;
         }
+
+        public Building GetOne(int key)
+        {
+            return _unitOfWork.BuildingRepository.GetOne(key);
+        }
     }
 }
