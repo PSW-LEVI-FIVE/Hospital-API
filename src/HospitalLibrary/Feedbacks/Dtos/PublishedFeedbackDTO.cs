@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace HospitalLibrary.Feedbacks.Dtos
 {
-    public class PublishedFeedbackDto
+    public class PublishedFeedbackDTO
     {
         public string Patient { get; set; }
 
         public string FeedbackContent { get; set; }
 
-        public PublishedFeedbackDto(string patient, string feedbackContent, bool anonymous)
+        public PublishedFeedbackDTO(string patient, string feedbackContent, bool anonymous)
         {
             if (anonymous)
                 Patient = "Anonymous";

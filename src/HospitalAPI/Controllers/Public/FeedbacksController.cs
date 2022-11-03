@@ -21,7 +21,7 @@ namespace HospitalAPI.Controllers.Public
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateFeedbackDto createFeedbackDto)
+        public IActionResult Create([FromBody] CreateFeedbackDTO createFeedbackDto)
         {
             Feedback created = _feedbackService.Create(createFeedbackDto.MapToModel());
             return Ok(created);
@@ -31,7 +31,7 @@ namespace HospitalAPI.Controllers.Public
         [Route("published")]
         public async Task<IActionResult> GetPublished()
         {
-            IEnumerable<PublishedFeedbackDto> publishedFeedbacks = await _feedbackService.GetPublishedFeedbacks();
+            IEnumerable<PublishedFeedbackDTO> publishedFeedbacks = await _feedbackService.GetPublishedFeedbacks();
             return Ok(publishedFeedbacks);
         }
     }
