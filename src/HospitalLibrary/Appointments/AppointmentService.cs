@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Doctors;
+using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.Appointments
@@ -35,10 +36,10 @@ namespace HospitalLibrary.Appointments
 
         public AppointmentCancelledDTO CancelAppointment(int appointmentId)
         {
-            var canceled = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
+            Appointment canceled = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
             canceled.State = AppointmentState.DELETED;
-            var toNotify = _unitOfWork.PatientRepository.GetOne(canceled.PatientId);
-            var retDto = new AppointmentCancelledDTO
+            Patient toNotify = _unitOfWork.PatientRepository.GetOne(canceled.PatientId);
+            AppointmentCancelledDTO retDto = new AppointmentCancelledDTO
                 { PatientEmail = toNotify.Email, AppointmentTime = canceled.StartAt };
             _unitOfWork.AppointmentRepository.Update(canceled);
             _unitOfWork.AppointmentRepository.Save();
@@ -52,14 +53,14 @@ namespace HospitalLibrary.Appointments
 
         public async Task<AppointmentRescheduledDTO> Reschedule(int appointmentId, DateTime start, DateTime end)
         {
-            var appointment = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
-            var preChange = appointment.StartAt;
+            Appointment appointment = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
+            DateTime preChange = appointment.StartAt;
             await _intervalValidation.ValidateRescheduling(appointment, start, end);
             appointment.StartAt = start;
             appointment.EndAt = end;
             _unitOfWork.AppointmentRepository.Update(appointment);
             _unitOfWork.AppointmentRepository.Save();
-            var toNotify = _unitOfWork.PatientRepository.GetOne(appointment.PatientId);
+            Patient toNotify = _unitOfWork.PatientRepository.GetOne(appointment.PatientId);
             return new AppointmentRescheduledDTO { PatientEmail = toNotify.Email, AppointmentTimeBefore = preChange };
         }
 
@@ -71,11 +72,11 @@ namespace HospitalLibrary.Appointments
         public IEnumerable<CalendarAppointmentsDTO> FormatAppointmentsForCalendar(IEnumerable<Appointment> appointments,
             TimeInterval interval)
         {
-            var map = FillDictionaryWithStartDates(interval);
-            foreach (var app in appointments)
+            Dictionary<DateTime, List<CalendarInterval>> map = FillDictionaryWithStartDates(interval);
+            foreach (Appointment app in appointments)
             {
-                var date = app.StartAt.Date;
-                var list = map[date];
+                DateTime date = app.StartAt.Date;
+                List<CalendarInterval> list = map[date];
                 list.Add(
                     new CalendarInterval
                     {
@@ -92,8 +93,8 @@ namespace HospitalLibrary.Appointments
 
         private Dictionary<DateTime, List<CalendarInterval>> FillDictionaryWithStartDates(TimeInterval interval)
         {
-            var map = new Dictionary<DateTime, List<CalendarInterval>>();
-            var startDate = interval.Start.Date;
+            Dictionary<DateTime, List<CalendarInterval>> map = new Dictionary<DateTime, List<CalendarInterval>>();
+            DateTime startDate = interval.Start.Date;
             while (startDate.CompareTo(interval.End.Date) < 0)
             {
                 map.Add(startDate, new List<CalendarInterval>());
