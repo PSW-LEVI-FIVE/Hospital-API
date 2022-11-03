@@ -33,7 +33,7 @@ namespace HospitalLibrary.Appointments
             return appointment;
         }
         
-        public AppointmentCancelledDTO CancelAppointment(int appointmentId)
+        public async Task<AppointmentCancelledDTO> CancelAppointment(int appointmentId)
         {
             Appointment canceled = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
             canceled.State = AppointmentState.DELETED;

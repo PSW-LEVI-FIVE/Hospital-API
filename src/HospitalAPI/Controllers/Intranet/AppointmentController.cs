@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Appointments.Dtos;
@@ -53,6 +54,14 @@ namespace HospitalAPI.Controllers.Intranet
             IEnumerable<CalendarAppointmentsDTO> calendarIntervals = _appointmentService.FormatAppointmentsForCalendar(appointments, interval);
             return Ok(calendarIntervals);
         }
-        
+
+        [Route("cancel/{id:int}")]
+        [HttpPatch]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            AppointmentCancelledDTO appointment = await _appointmentService.CancelAppointment(id);
+            return Ok(appointment);
+        }
+
     }
 }

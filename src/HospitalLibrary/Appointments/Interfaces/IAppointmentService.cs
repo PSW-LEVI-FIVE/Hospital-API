@@ -11,7 +11,7 @@ namespace HospitalLibrary.Appointments.Interfaces
     {
         Task<IEnumerable<Appointment>> GetAll();
 
-        AppointmentCancelledDTO CancelAppointment(int appointmentId);
+       Task<AppointmentCancelledDTO> CancelAppointment(int appointmentId);
 
         Task<IEnumerable<Appointment>> GetUpcomingForDoctor(Doctor doctor);
         
