@@ -18,49 +18,49 @@ namespace HospitalAPI.Emails
 
         public async Task SendAppointmentEmail(string email)
         {
-            var from = new EmailAddress("levifiveorg@gmail.com");
-            var to = new EmailAddress(email);
+            EmailAddress from = new EmailAddress("levifiveorg@gmail.com");
+            EmailAddress to = new EmailAddress(email);
             const string subject = "Appointment assigned!";
             const string plainTextContent = "Your appointment has been successfully added!";
-            var htmlContent = "<strong>Sent from LEVI-FIVE Hospital Service!</strong>";
+            string htmlContent = "<strong>Sent from LEVI-FIVE Hospital Service!</strong>";
 
-            var message = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            SendGridMessage message = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             await _sendgrid.SendEmailAsync(message);
         }
 
         public async Task SendWelcomeEmail(string email)
         {
-            var from = new EmailAddress("levifiveorg@gmail.com");
-            var to = new EmailAddress(email);
+            EmailAddress from = new EmailAddress("levifiveorg@gmail.com");
+            EmailAddress to = new EmailAddress(email);
             const string subject = "Welcome!";
             const string plainTextContent = "Welcome to LEVI-FIVE Hospital Service!";
-            var htmlContent = "<strong>Sent from LEVI-FIVE Hospital Service!</strong>";
+            string htmlContent = "<strong>Sent from LEVI-FIVE Hospital Service!</strong>";
 
-            var message = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            SendGridMessage message = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             await _sendgrid.SendEmailAsync(message);
         }
 
         public async Task SendAppointmentCanceledEmail(string email, DateTime time)
         {
-            var from = new EmailAddress("levifiveorg@gmail.com");
-            var to = new EmailAddress(email);
+            EmailAddress from = new EmailAddress("levifiveorg@gmail.com");
+            EmailAddress to = new EmailAddress(email);
             const string subject = "Canceled appointment!";
-            var plainTextContent = "Your appointment for" + time + " has been canceled";
-            var htmlContent = "<strong>Sent from LEVI-FIVE Hospital Service!</strong>";
+            string plainTextContent = "Your appointment for" + time + " has been canceled";
+            string htmlContent = "<strong>Sent from LEVI-FIVE Hospital Service!</strong>";
 
-            var message = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            SendGridMessage message = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             await _sendgrid.SendEmailAsync(message);
         }
 
         public async Task SendAppointmentRescheduledEmail(string email, DateTime time, DateTime newTime)
         {
-            var from = new EmailAddress("levifiveorg@gmail.com");
-            var to = new EmailAddress(email);
-            const string subject = "Canceled appointment!";
-            var plainTextContent = "Your appointment for" + time + " has been moved to" + newTime;
-            var htmlContent = "<strong>Sent from LEVI-FIVE Hospital Service!</strong>";
+            EmailAddress from = new EmailAddress("levifiveorg@gmail.com");
+            EmailAddress to = new EmailAddress(email);
+            const string subject = "Rescheduled appointment!";
+            string plainTextContent = "Your appointment for" + time + " has been moved to" + newTime;
+            string htmlContent = "<strong>Sent from LEVI-FIVE Hospital Service!</strong>";
 
-            var message = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            SendGridMessage message = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             await _sendgrid.SendEmailAsync(message);
         }
     }
