@@ -20,7 +20,8 @@ namespace HospitalLibrary.Appointments.Interfaces
 
         Task<IEnumerable<Appointment>> GetAllForDoctorAndRange(int doctorId, TimeInterval interval);
 
-        IEnumerable<CalendarAppointmentsDTO> FormatAppointmentsForCalendar(IEnumerable<Appointment> appointments,
-            TimeInterval interval);
+        IEnumerable<CalendarAppointmentsDTO> FormatAppointmentsForCalendar(IEnumerable<Appointment> appointments, TimeInterval interval);
+        Task<Appointment> GetById(int appointmentId);
+
     }
 }
