@@ -1,9 +1,13 @@
 ﻿using HospitalLibrary.Appointments;
 using HospitalLibrary.Appointments.Interfaces;
+using HospitalLibrary.Buildings;
+using HospitalLibrary.Buildings.Interfaces;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Feedbacks;
 using HospitalLibrary.Feedbacks.Interfaces;
+using HospitalLibrary.Floors;
+using HospitalLibrary.Floors.Interfaces;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Rooms;
@@ -25,6 +29,8 @@ namespace HospitalLibrary.Shared.Repository
         private IPatientRepository _patientRepository;
         private IAppointmentRepository _appointmentRepository;
         private IWorkingHoursRepository _workingHoursRepository;
+        private IFloorRepository _floorRepository;
+        private IBuildingRepository _buildingRepository;
 
         public UnitOfWork(HospitalDbContext dataContext)
         {
@@ -42,6 +48,9 @@ namespace HospitalLibrary.Shared.Repository
         public IAppointmentRepository AppointmentRepository => _appointmentRepository ?? new AppointmentRepository(_dataContext);
         public IWorkingHoursRepository WorkingHoursRepository =>
             _workingHoursRepository ?? new WorkingHoursRepository(_dataContext);
+
+        public IFloorRepository FloorRepository => _floorRepository ?? new FloorRepository(_dataContext);
+        public IBuildingRepository BuildingRepository => _buildingRepository ?? new BuildingRepository(_dataContext);
 
     }
 }
