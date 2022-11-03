@@ -7,6 +7,5 @@ namespace HospitalLibrary.Appointments.Dtos
     {
         [Required] public string PatientEmail { get; set; }
         [Required] public DateTime AppointmentTimeBefore { get; set; }
-        [Required] public DateTime AppointmentTimeNew { get; set; }
     }
 }

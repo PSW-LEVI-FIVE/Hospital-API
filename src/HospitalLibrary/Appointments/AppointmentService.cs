@@ -60,7 +60,7 @@ namespace HospitalLibrary.Appointments
             _unitOfWork.AppointmentRepository.Update(appointment);
             _unitOfWork.AppointmentRepository.Save();
             Patient toNotify = _unitOfWork.PatientRepository.GetOne(appointment.PatientId);
-            return new AppointmentRescheduledDTO{PatientEmail =toNotify.Email,AppointmentTimeBefore = preChange ,AppointmentTimeNew = start};
+            return new AppointmentRescheduledDTO{PatientEmail =toNotify.Email,AppointmentTimeBefore = preChange };
         }
 
         public Task<IEnumerable<Appointment>> GetAllForDoctorAndRange(int doctorId, TimeInterval interval)
