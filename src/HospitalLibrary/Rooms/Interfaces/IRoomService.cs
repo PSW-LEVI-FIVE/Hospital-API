@@ -7,5 +7,6 @@ namespace HospitalLibrary.Rooms.Interfaces
     {
         Task<IEnumerable<Room>> GetAll();
         Room Update(Room room);
+        Room GetOne(int key);
     }
 }
