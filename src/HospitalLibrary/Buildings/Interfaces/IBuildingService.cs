@@ -7,6 +7,6 @@ namespace HospitalLibrary.Buildings.Interfaces
     public interface IBuildingService
     {
         Task<IEnumerable<Building>> GetAll();
-        Building UpdateBuildingData(Building building);
+        Building Update(Building building);
     }
 }

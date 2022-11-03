@@ -20,7 +20,7 @@ namespace HospitalLibrary.Floors
             return _unitOfWork.FloorRepository.GetAll();
         }
 
-        public Floor UpdateFloorData(Floor floor)
+        public Floor Update(Floor floor)
         {
             _unitOfWork.FloorRepository.Update(floor);
             _unitOfWork.FloorRepository.Save();

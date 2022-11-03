@@ -21,7 +21,7 @@ namespace HospitalLibrary.Buildings
             return _unitOfWork.BuildingRepository.GetAll();
         }
 
-        public Building UpdateBuildingData(Building building)
+        public Building Update(Building building)
         {
             _unitOfWork.BuildingRepository.Update(building);
             _unitOfWork.BuildingRepository.Save();
