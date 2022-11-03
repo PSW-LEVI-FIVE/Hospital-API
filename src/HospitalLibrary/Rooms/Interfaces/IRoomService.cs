@@ -6,5 +6,6 @@ namespace HospitalLibrary.Rooms.Interfaces
     public interface IRoomService
     {
         Task<IEnumerable<Room>> GetAll();
+        Room Update(Room room);
     }
 }

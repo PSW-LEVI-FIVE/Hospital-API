@@ -19,7 +19,12 @@ namespace HospitalLibrary.Rooms
         {
             return _unitOfWork.RoomRepository.GetAll();
         }
-        
-        
+
+        public Room Update(Room room)
+        {
+            _unitOfWork.RoomRepository.Update(room);
+            _unitOfWork.RoomRepository.Save();
+            return room;
+        }
     }
 }
