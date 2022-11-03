@@ -62,18 +62,17 @@ namespace HospitalLibrary.Shared.Validators
             ThrowIfNotInWorkingHours(start, end, appointment.DoctorId);
             
             IEnumerable<TimeInterval> doctorTimeIntervals =
-                await _unitOfWork.AppointmentRepository.GetAllDoctorTakenIntervalsForDate(appointment.DoctorId,
-                    start.Date);
+                await _unitOfWork.AppointmentRepository.GetAllDoctorTakenIntervalsForDateExcept(appointment.DoctorId,
+                    start.Date, appointment.Id);
             
             IEnumerable<TimeInterval> roomTimeIntervals =
-                await _unitOfWork.AppointmentRepository.GetAllRoomTakenIntervalsForDate(appointment.RoomId,
-                    end.Date);
+                await _unitOfWork.AppointmentRepository.GetAllRoomTakenIntervalsForDateExcept(appointment.RoomId,
+                    end.Date, appointment.Id);
             
             IEnumerable<TimeInterval> mixedIntervals = doctorTimeIntervals.Concat(roomTimeIntervals);
 
             TimeInterval requestedTimeInterval = new TimeInterval(start, end);
-            TimeInterval except = new TimeInterval(appointment.StartAt, appointment.EndAt);
-            ThrowIfIntervalsAreOverlaping(mixedIntervals.ToList(), requestedTimeInterval, except);
+            ThrowIfIntervalsAreOverlaping(mixedIntervals.ToList(), requestedTimeInterval);
         }
 
         private void ThrowIfEndBeforeStart(DateTime start, DateTime end)
@@ -99,15 +98,7 @@ namespace HospitalLibrary.Shared.Validators
                 throw new BadRequestException("This time interval is already in use");
             }
         }
-        
-        private void ThrowIfIntervalsAreOverlaping(List<TimeInterval> intervals, TimeInterval ti, TimeInterval except)
-        {
-            if (intervals.Any(interval => interval.IsOverlaping(ti)) && !intervals.Any(interval => interval.IsOverlaping(except)))
-            {
-                throw new BadRequestException("This time interval is already in use");
-            }
-        }
-        
+   
         private List<TimeInterval> CompactIntervals(List<TimeInterval> intervals)
         {
             List<TimeInterval> compactedIntervals = new List<TimeInterval>();

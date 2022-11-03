@@ -49,6 +49,7 @@ namespace HospitalLibrary.Appointments
                 .Where(a =>
                     interval.Start.Date.CompareTo(a.StartAt.Date) <= 0
                     && interval.End.Date.CompareTo(a.StartAt.Date) > 0)
+                .Where(a => a.State != AppointmentState.DELETED)
                 .Include(a => a.Patient)
                 .OrderBy(a => a.StartAt)
                 .ToListAsync();
@@ -61,6 +62,26 @@ namespace HospitalLibrary.Appointments
                 .Include(a => a.Patient)
                 .Include(a => a.Room)
                 .SingleAsync();
+        }
+
+        public async Task<IEnumerable<TimeInterval>>  GetAllDoctorTakenIntervalsForDateExcept(int doctorId, DateTime date, int ignore)
+        {
+            return await _dataContext.Appointments
+                .Where(a => a.DoctorId == doctorId && a.Id != ignore)
+                .Where(a => a.StartAt.Date.Equals(date.Date))
+                .Where(a => a.State.Equals(AppointmentState.PENDING))
+                .Select(a => new TimeInterval(a.StartAt, a.EndAt))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<TimeInterval>> GetAllRoomTakenIntervalsForDateExcept(int roomId, DateTime date, int ignore)
+        {
+            return await  _dataContext.Appointments
+                .Where(a => a.RoomId == roomId && a.Id != ignore)
+                .Where(a => a.StartAt.Date.Equals(date.Date))
+                .Where(a => a.State.Equals(AppointmentState.PENDING))
+                .Select(a => new TimeInterval(a.StartAt, a.EndAt))
+                .ToListAsync();
         }
     }
 }
