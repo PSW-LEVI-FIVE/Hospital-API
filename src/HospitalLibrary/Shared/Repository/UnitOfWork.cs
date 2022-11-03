@@ -8,6 +8,8 @@ using HospitalLibrary.Feedbacks;
 using HospitalLibrary.Feedbacks.Interfaces;
 using HospitalLibrary.Floors;
 using HospitalLibrary.Floors.Interfaces;
+using HospitalLibrary.Map;
+using HospitalLibrary.Map.Interfaces;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Rooms;
@@ -31,6 +33,9 @@ namespace HospitalLibrary.Shared.Repository
         private IWorkingHoursRepository _workingHoursRepository;
         private IFloorRepository _floorRepository;
         private IBuildingRepository _buildingRepository;
+        private IMapBuildingRepository _mapBuildingRepository;
+        private IMapFloorRepository _mapFloorRepository;
+        private IMapRoomRepository _mapRoomRepository;
 
         public UnitOfWork(HospitalDbContext dataContext)
         {
@@ -51,6 +56,14 @@ namespace HospitalLibrary.Shared.Repository
 
         public IFloorRepository FloorRepository => _floorRepository ?? new FloorRepository(_dataContext);
         public IBuildingRepository BuildingRepository => _buildingRepository ?? new BuildingRepository(_dataContext);
+
+        public IMapBuildingRepository MapBuildingRepository =>
+            _mapBuildingRepository ?? new MapBuildingRepository(_dataContext);
+        public IMapFloorRepository MapFloorRepository =>
+            _mapFloorRepository ?? new MapFloorRepository(_dataContext);
+        public IMapRoomRepository MapRoomRepository =>
+            _mapRoomRepository ?? new MapRoomRepository(_dataContext);
+
 
     }
 }
