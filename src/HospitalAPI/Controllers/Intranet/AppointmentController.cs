@@ -1,26 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Appointments.Interfaces;
+using HospitalLibrary.Shared.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
 {
     [Route("api/intranet/appointments")]
     [ApiController]
-    public class AppointmentController:ControllerBase
+    public class AppointmentController : ControllerBase
     {
-        
-        private IAppointmentService _appointmentService;
+        private readonly IAppointmentService _appointmentService;
+        private readonly IEmailService _emailService;
 
-        public AppointmentController(IAppointmentService appointmentService)
+        public AppointmentController(IAppointmentService appointmentService, IEmailService emailService)
         {
             _appointmentService = appointmentService;
+            _emailService = emailService;
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -39,7 +40,10 @@ namespace HospitalAPI.Controllers.Intranet
         [HttpPatch]
         public async Task<IActionResult> Reschedule(int id, [FromBody] RescheduleDTO rescheduleDto)
         {
-            Appointment appointment = await _appointmentService.Reschedule(id, rescheduleDto.Start, rescheduleDto.End);
+            AppointmentRescheduledDTO appointment =
+                await _appointmentService.Reschedule(id, rescheduleDto.Start, rescheduleDto.End);
+            _emailService.SendAppointmentRescheduledEmail(appointment.PatientEmail, appointment.AppointmentTimeBefore,
+                rescheduleDto.Start);
             return Ok(appointment);
         }
 
@@ -49,10 +53,20 @@ namespace HospitalAPI.Controllers.Intranet
         {
             int doctorId = 2;
             TimeInterval interval = new TimeInterval(startDate, startDate.AddDays(7).Date);
-            IEnumerable<Appointment> appointments = await _appointmentService.GetAllForDoctorAndRange(doctorId, interval);
-            IEnumerable<CalendarAppointmentsDTO> calendarIntervals = _appointmentService.FormatAppointmentsForCalendar(appointments, interval);
+            IEnumerable<Appointment> appointments =
+                await _appointmentService.GetAllForDoctorAndRange(doctorId, interval);
+            IEnumerable<CalendarAppointmentsDTO> calendarIntervals =
+                _appointmentService.FormatAppointmentsForCalendar(appointments, interval);
             return Ok(calendarIntervals);
         }
-        
+
+        [Route("cancel/{id:int}")]
+        [HttpPatch]
+        public IActionResult Cancel(int id)
+        {
+            AppointmentCancelledDTO appointment = _appointmentService.CancelAppointment(id);
+            _emailService.SendAppointmentCanceledEmail(appointment.PatientEmail, appointment.AppointmentTime);
+            return Ok(appointment);
+        }
     }
 }

@@ -9,5 +9,7 @@ namespace HospitalLibrary.Shared.Interfaces
         Task SendWelcomeEmail(string email);
 
         Task SendAppointmentCanceledEmail(string email, DateTime time);
+
+        Task SendAppointmentRescheduledEmail(string email, DateTime time, DateTime newTime);
     }
 }

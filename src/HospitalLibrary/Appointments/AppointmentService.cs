@@ -10,10 +10,11 @@ using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.Appointments
 {
-    public class AppointmentService:IAppointmentService
+    public class AppointmentService : IAppointmentService
     {
-        private IUnitOfWork _unitOfWork;
-        private ITimeIntervalValidationService _intervalValidation;
+        private readonly ITimeIntervalValidationService _intervalValidation;
+        private readonly IUnitOfWork _unitOfWork;
+
         public AppointmentService(IUnitOfWork unitOfWork, ITimeIntervalValidationService intervalValidation)
         {
             _unitOfWork = unitOfWork;
@@ -32,12 +33,12 @@ namespace HospitalLibrary.Appointments
             _unitOfWork.AppointmentRepository.Save();
             return appointment;
         }
-        
+
         public AppointmentCancelledDTO CancelAppointment(int appointmentId)
         {
             Appointment canceled = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
             canceled.State = AppointmentState.DELETED;
-            Patient toNotify = _unitOfWork.PatientRepository.GetOne(canceled.Patient.Id);
+            Patient toNotify = _unitOfWork.PatientRepository.GetOne(canceled.PatientId);
             AppointmentCancelledDTO retDto = new AppointmentCancelledDTO
                 { PatientEmail = toNotify.Email, AppointmentTime = canceled.StartAt };
             _unitOfWork.AppointmentRepository.Update(canceled);
@@ -50,15 +51,17 @@ namespace HospitalLibrary.Appointments
             return _unitOfWork.AppointmentRepository.GetAllDoctorUpcomingAppointments(doctor.Id);
         }
 
-        public async Task<Appointment> Reschedule(int appointmentId, DateTime start, DateTime end)
+        public async Task<AppointmentRescheduledDTO> Reschedule(int appointmentId, DateTime start, DateTime end)
         {
             Appointment appointment = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
+            DateTime preChange = appointment.StartAt;
             await _intervalValidation.ValidateRescheduling(appointment, start, end);
             appointment.StartAt = start;
             appointment.EndAt = end;
             _unitOfWork.AppointmentRepository.Update(appointment);
             _unitOfWork.AppointmentRepository.Save();
-            return appointment;
+            Patient toNotify = _unitOfWork.PatientRepository.GetOne(appointment.PatientId);
+            return new AppointmentRescheduledDTO { PatientEmail = toNotify.Email, AppointmentTimeBefore = preChange };
         }
 
         public Task<IEnumerable<Appointment>> GetAllForDoctorAndRange(int doctorId, TimeInterval interval)
@@ -66,7 +69,8 @@ namespace HospitalLibrary.Appointments
             return _unitOfWork.AppointmentRepository.GetAllDoctorAppointmentsForRange(doctorId, interval);
         }
 
-        public IEnumerable<CalendarAppointmentsDTO> FormatAppointmentsForCalendar(IEnumerable<Appointment> appointments, TimeInterval interval)
+        public IEnumerable<CalendarAppointmentsDTO> FormatAppointmentsForCalendar(IEnumerable<Appointment> appointments,
+            TimeInterval interval)
         {
             Dictionary<DateTime, List<CalendarInterval>> map = FillDictionaryWithStartDates(interval);
             foreach (Appointment app in appointments)
@@ -76,8 +80,8 @@ namespace HospitalLibrary.Appointments
                 list.Add(
                     new CalendarInterval
                     {
-                        StartsAt = app.StartAt.TimeOfDay, 
-                        EndsAt = app.EndAt.TimeOfDay, 
+                        StartsAt = app.StartAt.TimeOfDay,
+                        EndsAt = app.EndAt.TimeOfDay,
                         Patient = app.Patient.Name = app.Patient.Surname,
                         Id = app.Id
                     });
@@ -100,12 +104,13 @@ namespace HospitalLibrary.Appointments
             return map;
         }
 
-        private IEnumerable<CalendarAppointmentsDTO> MapDictionaryToCalendarDTOs(Dictionary<DateTime, List<CalendarInterval>> map)
+        private IEnumerable<CalendarAppointmentsDTO> MapDictionaryToCalendarDTOs(
+            Dictionary<DateTime, List<CalendarInterval>> map)
         {
-            return (from dt in map.Keys let date = dt.Date.ToString("yyyy-MM-dd") 
-                select new CalendarAppointmentsDTO(date, map[dt]))
+            return (from dt in map.Keys
+                    let date = dt.Date.ToString("yyyy-MM-dd")
+                    select new CalendarAppointmentsDTO(date, map[dt]))
                 .ToList();
         }
-        
     }
 }
