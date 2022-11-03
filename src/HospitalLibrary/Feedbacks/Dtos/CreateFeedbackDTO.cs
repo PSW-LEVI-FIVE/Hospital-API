@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HospitalLibrary.Feedbacks.Dtos
 {
-    public class CreateFeedbackDto
+    public class CreateFeedbackDTO
     {
         [Required]
         public int PatientId { get; set; }
