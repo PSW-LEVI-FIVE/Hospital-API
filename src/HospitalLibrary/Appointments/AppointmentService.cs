@@ -7,6 +7,7 @@ using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Interfaces;
+using SendGrid.Helpers.Errors.Model;
 
 namespace HospitalLibrary.Appointments
 {
@@ -89,6 +90,16 @@ namespace HospitalLibrary.Appointments
             }
 
             return MapDictionaryToCalendarDTOs(map);
+        }
+
+        public async Task<Appointment> GetById(int appointmentId)
+        {
+            Appointment appointment= await _unitOfWork.AppointmentRepository.GetById(appointmentId);
+            if (appointment == null)
+            {
+                throw new BadRequestException("Appointment with ID " + appointmentId + "does not exist");
+            }
+            return appointment;
         }
 
         private Dictionary<DateTime, List<CalendarInterval>> FillDictionaryWithStartDates(TimeInterval interval)

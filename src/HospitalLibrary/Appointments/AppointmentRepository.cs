@@ -53,5 +53,14 @@ namespace HospitalLibrary.Appointments
                 .OrderBy(a => a.StartAt)
                 .ToListAsync();
         }
+
+        public async Task<Appointment> GetById(int appointmentId)
+        {
+            return await _dataContext.Appointments
+                .Where(a => a.Id == appointmentId)
+                .Include(a => a.Patient)
+                .Include(a => a.Room)
+                .SingleAsync();
+        }
     }
 }

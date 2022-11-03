@@ -22,6 +22,14 @@ namespace HospitalAPI.Controllers.Intranet
             _emailService = emailService;
         }
 
+        [Route("{id:int}")]
+        [HttpGet]
+        public async Task<IActionResult> GetById(int id)
+        {
+            Appointment appointment = await _appointmentService.GetById(id);
+            return Ok(appointment);
+        }
+        
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
