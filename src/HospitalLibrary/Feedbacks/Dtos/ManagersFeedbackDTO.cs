@@ -2,7 +2,7 @@
 
 namespace HospitalLibrary.Feedbacks.Dtos
 {
-    public class ManagersFeedbackDto
+    public class ManagersFeedbackDTO
     {
         
          public int Id { get; set; }
@@ -11,7 +11,7 @@ namespace HospitalLibrary.Feedbacks.Dtos
          public bool AllowPublishment { get; set; }
          public bool Published { get; set; }
 
-         public ManagersFeedbackDto(int id, string patient, string feedbackContent, bool allowPublishment,bool published, bool anonymous)
+         public ManagersFeedbackDTO(int id, string patient, string feedbackContent, bool allowPublishment,bool published, bool anonymous)
          {
              if (anonymous)
                  Patient = "Anonymous";

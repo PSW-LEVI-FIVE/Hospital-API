@@ -19,17 +19,11 @@ namespace HospitalAPI.Controllers.Intranet
             _feedbackService = feedbackService;
         }
         
-        [HttpPost]
-        public IActionResult Create(Feedback feedback)
-        {
-            Feedback created = _feedbackService.Create(feedback);
-            return Ok(created);
-        }
-
         [HttpGet]
+        [Route("manager")]
         public async Task<IActionResult> GetManagersFeedbacks()
         {
-            IEnumerable<ManagersFeedbackDto> managersFeedbacks = await _feedbackService.GetManagersFeedbacks();
+            IEnumerable<ManagersFeedbackDTO> managersFeedbacks = await _feedbackService.GetManagersFeedbacks();
             return Ok(managersFeedbacks);
         }
         
