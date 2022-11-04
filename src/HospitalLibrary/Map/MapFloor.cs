@@ -12,7 +12,7 @@ namespace HospitalLibrary.Map
         
         [ForeignKey("Floor")]
         public int FloorId { get; set; }
-        public virtual Floor Floor { get; set; }
+        public Floor Floor { get; set; }
         
         public float XCoordinate { get; set; }
         public float YCoordinate { get; set; }

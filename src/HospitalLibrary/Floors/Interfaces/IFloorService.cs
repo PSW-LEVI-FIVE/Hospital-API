@@ -7,5 +7,6 @@ namespace HospitalLibrary.Floors.Interfaces
     {
         Task<IEnumerable<Floor>> GetAll();
         Floor Update(Floor floor);
+        Floor GetOne(int id);
     }
 }

@@ -24,5 +24,13 @@ namespace HospitalAPI.Controllers.Intranet
             _buildingService.Update(building);
             return Ok(building);
         }
+
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult GetbyId(int id)
+        {
+            Building building = _buildingService.GetOne(id);
+            return Ok(building);
+        }
     }
 } 
