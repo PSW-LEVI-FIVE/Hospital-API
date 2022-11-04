@@ -11,7 +11,7 @@ namespace HospitalLibrary.Map
         
         [ForeignKey("MapFloor")]
         public int MapFloorId { get; set; }
-        public virtual MapFloor MapFloor { get; set; }
+        public MapFloor MapFloor { get; set; }
         
         [ForeignKey("Room")]
         public int RoomId { get; set; }

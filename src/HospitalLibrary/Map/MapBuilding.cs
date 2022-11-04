@@ -11,7 +11,7 @@ namespace HospitalLibrary.Map
         
         [ForeignKey("Building")]
         public int BuildingId { get; set; }
-        public virtual Building Building { get; set; }
+        public Building Building { get; set; }
         
         public float XCoordinate { get; set; }
         public float YCoordinate { get; set; }

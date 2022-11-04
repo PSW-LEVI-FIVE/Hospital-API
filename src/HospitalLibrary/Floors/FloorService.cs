@@ -20,11 +20,17 @@ namespace HospitalLibrary.Floors
             return _unitOfWork.FloorRepository.GetAll();
         }
 
+        public Floor GetOne(int id)
+        {
+            return _unitOfWork.FloorRepository.GetOne(id);
+        }
+
         public Floor Update(Floor floor)
         {
             _unitOfWork.FloorRepository.Update(floor);
             _unitOfWork.FloorRepository.Save();
             return floor;
         }
+
     }
 }
