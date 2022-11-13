@@ -1,6 +1,7 @@
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Appointments.Interfaces;
 using System;
+using System.Linq;
 using HospitalAPI.Emails;
 using HospitalAPI.ErrorHandling;
 using HospitalLibrary.Buildings;
