@@ -40,8 +40,7 @@ namespace HospitalLibrary.Appointments
             Appointment canceled = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
             canceled.State = AppointmentState.DELETED;
             Patient toNotify = _unitOfWork.PatientRepository.GetOne(canceled.PatientId);
-            AppointmentCancelledDTO retDto = new AppointmentCancelledDTO
-                { PatientEmail = toNotify.Email, AppointmentTime = canceled.StartAt };
+            AppointmentCancelledDTO retDto = new AppointmentCancelledDTO { PatientEmail = toNotify.Email, AppointmentTime = canceled.StartAt };
             _unitOfWork.AppointmentRepository.Update(canceled);
             _unitOfWork.AppointmentRepository.Save();
             return retDto;
