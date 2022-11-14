@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Floors;
 
-namespace HospitalLibrary.Rooms
+namespace HospitalLibrary.Rooms.Model
 {
     public class Room
     {
@@ -16,6 +17,8 @@ namespace HospitalLibrary.Rooms
         [ForeignKey("Floor")]
         public int FloorId { get; set; }
         public Floor Floor { get; set; }
+
+        private List<RoomEquipment> RoomEquipment { get; set; }
 
 
         public Room() {}

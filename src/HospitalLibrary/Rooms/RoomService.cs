@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Rooms.Interfaces;
+using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.Rooms

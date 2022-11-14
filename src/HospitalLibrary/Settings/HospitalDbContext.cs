@@ -1,14 +1,20 @@
 ﻿using EntityFramework.Exceptions.PostgreSQL;
+using HospitalLibrary.Allergens;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Feedbacks;
 using HospitalLibrary.Patients;
-using HospitalLibrary.Rooms;
 using HospitalLibrary.Shared.Model;
 using HospitalLibrary.Appointments;
+using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Buildings;
 using HospitalLibrary.Floors;
 using HospitalLibrary.Map;
 using HospitalLibrary.Feedbacks.Dtos;
+using HospitalLibrary.Hospitalizations;
+using HospitalLibrary.MedicalRecords;
+using HospitalLibrary.Medicines;
+using HospitalLibrary.Rooms.Model;
+using HospitalLibrary.Therapies;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Settings
@@ -27,6 +33,15 @@ namespace HospitalLibrary.Settings
         public DbSet<MapBuilding> MapBuildings { get; set; }
         public DbSet<MapFloor> MapFloors { get; set; }
         public DbSet<MapRoom> MapRooms { get; set; }
+        
+        public DbSet<Allergen> Allergens { get; set; }
+        public DbSet<Medicine> Medicines { get; set; }
+        public DbSet<BloodStorage> BloodStorage { get; set; }
+        public DbSet<MedicalRecord> MedicalRecords { get; set; }
+        public DbSet<Rooms.Model.RoomEquipment> RoomEquipment { get; set; }
+        public DbSet<Hospitalization> Hospitalizations { get; set; }
+        public DbSet<Therapy> Therapies { get; set; }
+        public DbSet<Bed> Beds { get; set; }
 
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
@@ -46,9 +61,13 @@ namespace HospitalLibrary.Settings
             modelBuilder.Entity<MapBuilding>().ToTable("MapBuildings");
             modelBuilder.Entity<MapFloor>().ToTable("MapFloors");
             modelBuilder.Entity<MapRoom>().ToTable("MapRooms");
-
-
+            modelBuilder.Entity<Rooms.Model.RoomEquipment>().ToTable("RoomEquipment");
+            modelBuilder.Entity<Bed>().ToTable("Beds");
             
+            modelBuilder.Entity<Therapy>()
+                .HasDiscriminator<string>("therapy_type")
+                .HasValue<BloodTherapy>("blood")
+                .HasValue<MedicineTherapy>("medicine");
         }
     }
 }

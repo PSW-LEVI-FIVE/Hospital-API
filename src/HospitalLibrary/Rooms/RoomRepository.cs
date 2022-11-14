@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Rooms.Interfaces;
+using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
 using Microsoft.EntityFrameworkCore;
