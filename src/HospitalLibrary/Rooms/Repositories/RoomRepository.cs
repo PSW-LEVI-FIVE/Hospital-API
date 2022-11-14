@@ -7,7 +7,7 @@ using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
 using Microsoft.EntityFrameworkCore;
 
-namespace HospitalLibrary.Rooms
+namespace HospitalLibrary.Rooms.Repositories
 {
     public class RoomRepository: BaseRepository<Room>, IRoomRepository
     {

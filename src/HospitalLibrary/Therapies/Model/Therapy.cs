@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Hospitalizations;
 
-namespace HospitalLibrary.Therapies
+namespace HospitalLibrary.Therapies.Model
 {
     public class Therapy
     {

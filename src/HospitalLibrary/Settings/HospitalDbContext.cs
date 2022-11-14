@@ -15,6 +15,7 @@ using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.Medicines;
 using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Therapies;
+using HospitalLibrary.Therapies.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Settings

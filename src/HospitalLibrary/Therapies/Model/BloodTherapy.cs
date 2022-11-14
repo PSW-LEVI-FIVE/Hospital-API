@@ -1,8 +1,7 @@
 ﻿using System;
 using HospitalLibrary.BloodStorages;
-using HospitalLibrary.Hospitalizations;
 
-namespace HospitalLibrary.Therapies
+namespace HospitalLibrary.Therapies.Model
 {
     public class BloodTherapy: Therapy
     {

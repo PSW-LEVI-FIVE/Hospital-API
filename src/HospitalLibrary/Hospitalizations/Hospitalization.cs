@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.Therapies;
+using HospitalLibrary.Therapies.Model;
 
 namespace HospitalLibrary.Hospitalizations
 {
