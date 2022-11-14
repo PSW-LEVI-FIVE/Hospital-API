@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Interfaces;
+using HospitalLibrary.Rooms.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;

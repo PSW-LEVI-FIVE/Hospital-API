@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Rooms;
+using HospitalLibrary.Rooms.Model;
+
 public enum AppointmentState
 {
     DELETED,

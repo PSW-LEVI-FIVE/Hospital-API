@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Rooms;
+using HospitalLibrary.Rooms.Model;
 
 namespace HospitalLibrary.Map
 {
