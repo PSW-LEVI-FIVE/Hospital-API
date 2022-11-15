@@ -1,5 +1,7 @@
 ﻿using HospitalLibrary.Allergens;
 using HospitalLibrary.Allergens.Interfaces;
+using HospitalLibrary.AnnualLeaves;
+using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.BloodStorages;
@@ -57,6 +59,7 @@ namespace HospitalLibrary.Shared.Repository
         private IBloodStorageRepository _bloodStorageRepository;
         private IRoomEquipmentRepository _roomEquipmentRepository;
         private IBedRepository _bedRepository;
+        private IAnnualLeaveRepository _annualLeaveRepository;
 
         public UnitOfWork(HospitalDbContext dataContext)
         {
@@ -93,5 +96,8 @@ namespace HospitalLibrary.Shared.Repository
         public IBloodStorageRepository BloodStorageRepository => _bloodStorageRepository ??= new BloodStorageRepository(_dataContext);
         public IRoomEquipmentRepository RoomEquipmentRepository => _roomEquipmentRepository ??= new RoomEquipmentRepository(_dataContext);
         public IBedRepository BedRepository => _bedRepository ??= new BedRepository(_dataContext);
+
+        public IAnnualLeaveRepository AnnualLeaveRepository =>
+            _annualLeaveRepository ??= new AnnualLeaveRepository(_dataContext);
     }
 }
