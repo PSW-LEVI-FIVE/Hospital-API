@@ -12,7 +12,7 @@ namespace HospitalTests.Units.Hospitalizations;
 public class Hospitalization_Making
 {
 
-    public Mock<IUnitOfWork> SetupUOW()
+    private Mock<IUnitOfWork> SetupUOW()
     {
         var hospitalizationRepository = new Mock<IHospitalizationRepository>();
         var bedRepository = new Mock<IBedRepository>();
@@ -83,8 +83,8 @@ public class Hospitalization_Making
         
         unitOfWork.Setup(u => u.HospitalizationRepository.Add(It.IsAny<Hospitalization>())).Verifiable();
         unitOfWork.Setup(u => u.HospitalizationRepository.Save()).Returns(1);
-        unitOfWork.Setup(u => u.BedRepository.IsBedFree(It.IsAny<int>())).Returns(false);
-        unitOfWork.Setup(u => u.MedicalRecordRepository.Exists(It.IsAny<int>())).Returns(true);
+        unitOfWork.Setup(u => u.BedRepository.IsBedFree(It.IsAny<int>())).Returns(true);
+        unitOfWork.Setup(u => u.MedicalRecordRepository.Exists(It.IsAny<int>())).Returns(false);
 
         
         var validator = new HospitalizationValidator(unitOfWork.Object);
@@ -103,8 +103,8 @@ public class Hospitalization_Making
         
         unitOfWork.Setup(u => u.HospitalizationRepository.Add(It.IsAny<Hospitalization>())).Verifiable();
         unitOfWork.Setup(u => u.HospitalizationRepository.Save()).Verifiable();
-        unitOfWork.Setup(u => u.BedRepository.IsBedFree(It.IsAny<int>())).Returns(true);
-        unitOfWork.Setup(u => u.MedicalRecordRepository.Exists(It.IsAny<int>())).Returns(false);
+        unitOfWork.Setup(u => u.BedRepository.IsBedFree(It.IsAny<int>())).Returns(false);
+        unitOfWork.Setup(u => u.MedicalRecordRepository.Exists(It.IsAny<int>())).Returns(true);
 
         
         var validator = new HospitalizationValidator(unitOfWork.Object);

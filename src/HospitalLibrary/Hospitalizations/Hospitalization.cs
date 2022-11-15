@@ -18,9 +18,9 @@ namespace HospitalLibrary.Hospitalizations
         public int Id { get; set; }
 
         [ForeignKey("Bed")]
-        public int BedId;
+        public int BedId { get; set; }
 
-        public Bed bed;
+        public Bed Bed { get; set; }
 
         [ForeignKey("MedicalRecord")]
         public int MedicalRecordId { get; set; }
@@ -29,6 +29,7 @@ namespace HospitalLibrary.Hospitalizations
         public HospitalizationState State { get; set; }
         
         public DateTime StartTime { get; set; }
+        public DateTime? EndTime { get; set; }
         
         public List<Therapy> Therapies { get; set; }
 
