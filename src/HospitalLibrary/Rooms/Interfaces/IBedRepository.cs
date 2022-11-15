@@ -8,5 +8,6 @@ namespace HospitalLibrary.Rooms.Interfaces
     public interface IBedRepository: IBaseRepository<Bed>
     {
         Task<IEnumerable<Bed>> GetAllFreeBedsForRoom(int roomId);
+        bool IsBedFree(int bedId);
     }
 }

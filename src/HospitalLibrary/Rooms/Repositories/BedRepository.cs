@@ -22,5 +22,13 @@ namespace HospitalLibrary.Rooms.Repositories
                 .Where(bed => bed.Hospitalizations.TrueForAll(h => h.State == HospitalizationState.FINISHED))
                 .ToListAsync();
         }
+
+        public bool IsBedFree(int id)
+        {
+            return _dataContext.Beds
+                .Where(b => b.Id == id)
+                .Where(b => b.Hospitalizations.TrueForAll(h => h.State == HospitalizationState.FINISHED))
+                .ToList().Count == 0;
+        }
     }
 }
