@@ -32,7 +32,7 @@ namespace HospitalLibrary.Hospitalizations
         
         public List<Therapy> Therapies { get; set; }
 
-        public Hospitalization(int bedId, int id, int medicalRecordId, DateTime startTime, HospitalizationState state)
+        public Hospitalization(int id, int bedId, int medicalRecordId, DateTime startTime, HospitalizationState state)
         {
             BedId = bedId;
             Id = id;
