@@ -1,13 +1,10 @@
-﻿using HospitalAPI.Controllers.Intranet;
-using HospitalLibrary.Hospitalizations;
+﻿using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.Hospitalizations.Interfaces;
-using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.MedicalRecords.Interfaces;
 using HospitalLibrary.Rooms.Interfaces;
-using HospitalLibrary.Rooms.Model;
+using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using Moq;
-using SendGrid.Helpers.Errors.Model;
 using Shouldly;
 
 namespace HospitalTests.Units.Hospitalizations;
@@ -40,7 +37,7 @@ public class Hospitalization_Making
             .Callback<Hospitalization>(val => hospitalizationResult = val);
         unitOfWork.Setup(u => u.HospitalizationRepository.Save()).Verifiable();
         unitOfWork.Setup(u => u.BedRepository.IsBedFree(It.IsAny<int>())).Returns(true);
-        unitOfWork.Setup(u => u.BedRepository.IsBedFree(It.IsAny<int>())).Returns(true);
+        unitOfWork.Setup(u => u.MedicalRecordRepository.Exists(It.IsAny<int>())).Returns(true);
 
         
         var validator = new HospitalizationValidator(unitOfWork.Object);
@@ -63,7 +60,8 @@ public class Hospitalization_Making
         unitOfWork.Setup(u => u.HospitalizationRepository.Add(It.IsAny<Hospitalization>())).Verifiable();
         unitOfWork.Setup(u => u.HospitalizationRepository.Save()).Verifiable();
         unitOfWork.Setup(u => u.BedRepository.IsBedFree(It.IsAny<int>())).Returns(true);
-        unitOfWork.Setup(u => u.BedRepository.IsBedFree(It.IsAny<int>())).Returns(true);
+        unitOfWork.Setup(u => u.MedicalRecordRepository.Exists(It.IsAny<int>())).Returns(true);
+
 
         
         var validator = new HospitalizationValidator(unitOfWork.Object);
@@ -86,7 +84,8 @@ public class Hospitalization_Making
         unitOfWork.Setup(u => u.HospitalizationRepository.Add(It.IsAny<Hospitalization>())).Verifiable();
         unitOfWork.Setup(u => u.HospitalizationRepository.Save()).Returns(1);
         unitOfWork.Setup(u => u.BedRepository.IsBedFree(It.IsAny<int>())).Returns(false);
-        unitOfWork.Setup(u => u.BedRepository.IsBedFree(It.IsAny<int>())).Returns(true);
+        unitOfWork.Setup(u => u.MedicalRecordRepository.Exists(It.IsAny<int>())).Returns(true);
+
         
         var validator = new HospitalizationValidator(unitOfWork.Object);
         var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator);
@@ -101,14 +100,12 @@ public class Hospitalization_Making
     {
         var unitOfWork = SetupUOW();
 
-
-        Hospitalization hospitalizationResult = null;
         
-        unitOfWork.Setup(u => u.HospitalizationRepository.Add(It.IsAny<Hospitalization>()))
-            .Callback<Hospitalization>(val => hospitalizationResult = val);
+        unitOfWork.Setup(u => u.HospitalizationRepository.Add(It.IsAny<Hospitalization>())).Verifiable();
         unitOfWork.Setup(u => u.HospitalizationRepository.Save()).Verifiable();
         unitOfWork.Setup(u => u.BedRepository.IsBedFree(It.IsAny<int>())).Returns(true);
-        unitOfWork.Setup(u => u.BedRepository.IsBedFree(It.IsAny<int>())).Returns(false);
+        unitOfWork.Setup(u => u.MedicalRecordRepository.Exists(It.IsAny<int>())).Returns(false);
+
         
         var validator = new HospitalizationValidator(unitOfWork.Object);
         var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator);

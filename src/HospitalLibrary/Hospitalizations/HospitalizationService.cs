@@ -16,7 +16,10 @@ namespace HospitalLibrary.Hospitalizations
 
         public Hospitalization Create(Hospitalization hospObj)
         {
-            throw new System.NotImplementedException();
+            _validator.ValidateCreate(hospObj);
+            _unitOfWork.HospitalizationRepository.Add(hospObj);
+            _unitOfWork.HospitalizationRepository.Save();
+            return hospObj;
         }
     }
 }

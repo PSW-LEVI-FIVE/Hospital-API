@@ -1,4 +1,5 @@
 ﻿using HospitalLibrary.Hospitalizations.Interfaces;
+using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.Hospitalizations
@@ -14,7 +15,10 @@ namespace HospitalLibrary.Hospitalizations
         
         public void ValidateCreate(Hospitalization hospitalization)
         {
-            throw new System.NotImplementedException();
+            if (!_unitOfWork.MedicalRecordRepository.Exists(hospitalization.MedicalRecordId))
+                throw new BadRequestException("Medical record doesn't exist!");
+            if (!_unitOfWork.BedRepository.IsBedFree(hospitalization.BedId))
+                throw new BadRequestException("Bed is currently taken!");
         }
     }
 }
