@@ -5,6 +5,7 @@ using HospitalLibrary.Patients;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
 using Moq;
+using Shouldly;
 
 namespace HospitalTests.AnnualLeaves;
 
@@ -30,5 +31,37 @@ public class AnnualLeavesUnitTests
         annualLeaveRepository.Setup(unit => unit.GetAll()).ReturnsAsync(annualLeavesEnumerable);
         return unitOfWork;
     }
-    
+
+    [Fact]
+    public void Can_create_annual_leave_after_five_days()
+    {
+        AnnualLeave annualLeave =
+            new AnnualLeave(1, null, "First Reason", DateTime.Now.AddDays(7), DateTime.Now.AddDays(9), AnnualLeaveState.PENDING, false);
+        
+        bool isValid = annualLeave.IsValid();
+
+        isValid.ShouldBe(true);
+    }
+
+    [Fact]
+    public void Can_not_create_annual_leave_under_five_days()
+    {
+        AnnualLeave annualLeave =
+            new AnnualLeave(1, null, "Second Reason", DateTime.Now.AddDays(3), DateTime.Now.AddDays(5), AnnualLeaveState.PENDING, false);
+
+        bool isValid = annualLeave.IsValid();
+
+        isValid.ShouldBe(false);
+    }
+
+    [Fact]
+    public void Can_not_create_annual_leave_end_before_start()
+    {
+        AnnualLeave annualLeave =
+            new AnnualLeave(1, null, "Second Reason", DateTime.Now.AddDays(9), DateTime.Now.AddDays(7), AnnualLeaveState.PENDING, false);
+
+        bool isValid = annualLeave.IsValid();
+
+        isValid.ShouldBe(false);
+    }
 }
