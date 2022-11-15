@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
 {
-    [Route("api/intranet/annual_leaves")]
+    [Route("api/intranet/annual-leaves")]
     [ApiController]
     public class AnnualLeaveController : ControllerBase
     {
