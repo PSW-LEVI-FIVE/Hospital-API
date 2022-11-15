@@ -1,5 +1,6 @@
 ﻿using EntityFramework.Exceptions.PostgreSQL;
 using HospitalLibrary.Allergens;
+using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Feedbacks;
 using HospitalLibrary.Patients;
@@ -43,6 +44,7 @@ namespace HospitalLibrary.Settings
         public DbSet<Hospitalization> Hospitalizations { get; set; }
         public DbSet<Therapy> Therapies { get; set; }
         public DbSet<Bed> Beds { get; set; }
+        public DbSet<AnnualLeave> AnnualLeaves { get; set; }
 
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
