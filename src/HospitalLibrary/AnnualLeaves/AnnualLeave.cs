@@ -32,6 +32,17 @@ namespace HospitalLibrary.AnnualLeaves
         {
             
         }
+
+        public AnnualLeave(int doctorId, Doctor doctor, string reason, DateTime startAt, DateTime endAt, AnnualLeaveState state, bool isUrgent)
+        {
+            DoctorId = doctorId;
+            Doctor = doctor;
+            Reason = reason;
+            StartAt = startAt;
+            EndAt = endAt;
+            State = state;
+            IsUrgent = isUrgent;
+        }
     }
     
 }
