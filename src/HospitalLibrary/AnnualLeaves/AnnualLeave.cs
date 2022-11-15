@@ -43,6 +43,11 @@ namespace HospitalLibrary.AnnualLeaves
             State = state;
             IsUrgent = isUrgent;
         }
+
+        public bool IsValid()
+        {
+            return StartAt < EndAt && StartAt > DateTime.Today.AddDays(5);
+        }
     }
     
 }

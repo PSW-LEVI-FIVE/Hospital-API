@@ -18,5 +18,10 @@ namespace HospitalLibrary.AnnualLeaves
         {
             throw new System.NotImplementedException();
         }
+
+        public AnnualLeave Create(AnnualLeave annualLeave)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
