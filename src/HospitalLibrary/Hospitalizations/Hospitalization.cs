@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.MedicalRecords;
+using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Therapies;
 using HospitalLibrary.Therapies.Model;
 
 namespace HospitalLibrary.Hospitalizations
 {
+    
+    public enum HospitalizationState { ACTIVE, FINISHED }
     public class Hospitalization
     {
         [Key]
@@ -17,20 +20,25 @@ namespace HospitalLibrary.Hospitalizations
         [ForeignKey("Bed")]
         public int BedId;
 
+        public Bed bed;
+
         [ForeignKey("MedicalRecord")]
         public int MedicalRecordId { get; set; }
         public MedicalRecord MedicalRecord { get; set; }
+
+        public HospitalizationState State { get; set; }
         
         public DateTime StartTime { get; set; }
         
         public List<Therapy> Therapies { get; set; }
 
-        public Hospitalization(int bedId, int id, int medicalRecordId, DateTime startTime)
+        public Hospitalization(int bedId, int id, int medicalRecordId, DateTime startTime, HospitalizationState state)
         {
             BedId = bedId;
             Id = id;
             MedicalRecordId = medicalRecordId;
             StartTime = startTime;
+            State = state;
         }
         
         public Hospitalization() {}
