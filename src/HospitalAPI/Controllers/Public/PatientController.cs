@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Patients;
+using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Patients.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,9 +27,9 @@ namespace HospitalAPI.Controllers.Public
         }
         
         [HttpPost]
-        public async Task<IActionResult> Create(Patient patient)
+        public async Task<IActionResult> Create(CreatePatientDTO createPatientDTO)
         {
-            Patient created = await _patientService.Create(patient);
+            Patient created = await _patientService.Create(createPatientDTO.MapToModel());
             return Ok(created);
         }
     }

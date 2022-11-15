@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using HospitalLibrary.BloodStorages;
 
 namespace HospitalLibrary.Patients.Dtos
 {
@@ -21,6 +22,20 @@ namespace HospitalLibrary.Patients.Dtos
         public DateTime BirthDate { get; set;  }
         [Required]
         public string Address { get; set; }
+        [Required]
+        public BloodType BloodType { get; set; }
+        
+        public CreatePatientDTO(string name, string surname, string email, string uid, string phoneNumber, DateTime birthDate, string address, BloodType bloodType)
+        {
+            Name = name;
+            Surname = surname;
+            Email = email;
+            Uid = uid;
+            PhoneNumber = phoneNumber;
+            BirthDate = birthDate;
+            Address = address;
+            BloodType = bloodType;
+        }
         
         public Patient MapToModel()
         {
@@ -33,7 +48,8 @@ namespace HospitalLibrary.Patients.Dtos
                 Uid = Uid,
                 PhoneNumber = PhoneNumber,
                 BirthDate = BirthDate,
-                Address = Address
+                Address = Address,
+                BloodType = BloodType
             };
         } 
     }

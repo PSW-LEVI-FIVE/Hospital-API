@@ -26,13 +26,6 @@ namespace HospitalAPI.Controllers.Intranet
             IEnumerable<Patient> patients = await _patientService.GetAll();
             return Ok(patients);
         }
-        
-        [HttpPost]
-        public async Task<IActionResult> Create(Patient patient)
-        {
-            Patient created = await _patientService.Create(patient);
-            return Ok(created);
-        }
-        
+
     }
 }

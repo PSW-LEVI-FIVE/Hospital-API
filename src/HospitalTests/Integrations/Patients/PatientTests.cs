@@ -1,14 +1,15 @@
 ﻿using HospitalAPI;
-using HospitalAPI.Controllers.Intranet;
-using HospitalLibrary.Buildings.Interfaces;
+using HospitalAPI.Controllers.Public;
+using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Patients;
+using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalTests.Setup;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 
-namespace HospitalTests.Integrations;
+namespace HospitalTests.Integrations.Patients;
 
 public class PatientTests: BaseIntegrationTest
 {
@@ -25,8 +26,8 @@ public class PatientTests: BaseIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
-        Patient patient = new Patient("Pera", "Peric", "gmail@gmail.com","29857235","5455454",new DateTime(2000,2,25),"Mikse Dimitrijevica 42");
-        var result = ((OkObjectResult)controller.Create(patient).Result).Value as Patient;
+        CreatePatientDTO createPatientDTO = new CreatePatientDTO("Pera", "Peric", "gmail@gmail.com","29857235","5455454",new DateTime(2000,2,25),"Mikse Dimitrijevica 42",BloodType.ZERO_NEGATIVE);
+        var result = ((OkObjectResult)controller.Create(createPatientDTO).Result).Value as Patient;
         
         result.ShouldNotBeNull();
     }

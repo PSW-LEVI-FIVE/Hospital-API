@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221115171052_Patient_Added_Blood_Type")]
+    partial class Patient_Added_Blood_Type
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,9 +179,6 @@ namespace HospitalLibrary.Migrations
 
                     b.Property<int?>("BedId1")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("MedicalRecordId")
                         .HasColumnType("integer");
@@ -462,28 +461,6 @@ namespace HospitalLibrary.Migrations
                     b.HasDiscriminator<string>("therapy_type").HasValue("Therapy");
                 });
 
-            modelBuilder.Entity("HospitalLibrary.Users.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Role")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Username")
-                        .IsUnique();
-
-                    b.ToTable("Users");
-                });
-
             modelBuilder.Entity("HospitalLibrary.Rooms.Model.Bed", b =>
                 {
                     b.HasBaseType("HospitalLibrary.Rooms.Model.RoomEquipment");
@@ -716,17 +693,6 @@ namespace HospitalLibrary.Migrations
                         .IsRequired();
 
                     b.Navigation("Hospitalization");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Users.User", b =>
-                {
-                    b.HasOne("HospitalLibrary.Shared.Model.Person", "Person")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Rooms.Model.Bed", b =>
