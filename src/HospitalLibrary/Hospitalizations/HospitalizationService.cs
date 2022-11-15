@@ -1,4 +1,5 @@
-﻿using HospitalLibrary.Hospitalizations.Interfaces;
+﻿using HospitalLibrary.Hospitalizations.Dtos;
+using HospitalLibrary.Hospitalizations.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.Hospitalizations
@@ -20,6 +21,11 @@ namespace HospitalLibrary.Hospitalizations
             _unitOfWork.HospitalizationRepository.Add(hospObj);
             _unitOfWork.HospitalizationRepository.Save();
             return hospObj;
+        }
+
+        public Hospitalization EndHospitalization(int id, EndHospitalizationDTO dto)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
