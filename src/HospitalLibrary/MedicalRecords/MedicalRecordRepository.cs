@@ -15,5 +15,10 @@ namespace HospitalLibrary.MedicalRecords
         {
             return _dataContext.MedicalRecords.Any(m => m.Id == id);
         }
+
+        public MedicalRecord GetByPatient(int patientId)
+        {
+            return _dataContext.MedicalRecords.FirstOrDefault(m => m.PatientId == patientId);
+        }
     }
 }

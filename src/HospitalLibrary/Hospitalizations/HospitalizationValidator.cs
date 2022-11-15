@@ -1,4 +1,5 @@
-﻿using HospitalLibrary.Hospitalizations.Dtos;
+﻿using System;
+using HospitalLibrary.Hospitalizations.Dtos;
 using HospitalLibrary.Hospitalizations.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
@@ -22,9 +23,12 @@ namespace HospitalLibrary.Hospitalizations
                 throw new BadRequestException("Bed is currently taken!");
         }
 
-        public void ValidateEndHospitalization(EndHospitalizationDTO dto)
+        public void ValidateEndHospitalization(Hospitalization hospitalization, EndHospitalizationDTO dto)
         {
-            throw new System.NotImplementedException();
+            if (hospitalization == null)
+                throw new NotFoundException("Hospitalization with given id doesn't exist!");
+            if (hospitalization.StartTime.CompareTo(dto.EndTime) >= 0)
+                throw new BadRequestException("End Time should be after start time!");
         }
     }
 }

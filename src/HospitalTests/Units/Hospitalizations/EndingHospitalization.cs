@@ -42,7 +42,7 @@ public class EndingHospitalization
 
         var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator);
 
-        var dto = new EndHospitalizationDTO() { EndDate = DateTime.Now.AddDays(1) };
+        var dto = new EndHospitalizationDTO() { EndTime = DateTime.Now.AddDays(1) };
         var result = hospitalizationService.EndHospitalization(1, dto);
         
         result.State.ShouldBe(HospitalizationState.FINISHED);
@@ -55,26 +55,7 @@ public class EndingHospitalization
     public void Hospitalization_end_time_before_start_time()
     {
         var unitOfWork = SetupUOW();
-        var dbHospitalization = new Hospitalization(1, 1, 1, new DateTime(), HospitalizationState.ACTIVE);
-        var validator = new HospitalizationValidator(unitOfWork.Object);        
-        Hospitalization updateResult = null;
-        
-        unitOfWork
-            .Setup(u => u.HospitalizationRepository.Update(It.IsAny<Hospitalization>()))
-            .Callback((Hospitalization h ) => { updateResult = h; });
-        unitOfWork.Setup(u => u.HospitalizationRepository.GetOne(It.IsAny<int>())).Returns(dbHospitalization);
-
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator);
-
-        var dto = new EndHospitalizationDTO() { EndDate = DateTime.Now.AddDays(-1) };
-        Assert.Throws<BadRequestException>(() => hospitalizationService.EndHospitalization(1, dto));
-    }
-
-    [Fact]
-    public void Hospitalization_end_date_equal_to_start_date()
-    {
-        var unitOfWork = SetupUOW();
-        var today = new DateTime();
+        var today = DateTime.Now;
         var dbHospitalization = new Hospitalization(1, 1, 1, today, HospitalizationState.ACTIVE);
         var validator = new HospitalizationValidator(unitOfWork.Object);        
         Hospitalization updateResult = null;
@@ -86,8 +67,48 @@ public class EndingHospitalization
 
         var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator);
 
-        var dto = new EndHospitalizationDTO() { EndDate = today};
+        var dto = new EndHospitalizationDTO() { EndTime = today.AddDays(-10) };
         Assert.Throws<BadRequestException>(() => hospitalizationService.EndHospitalization(1, dto));
+    }
+
+    [Fact]
+    public void Hospitalization_end_date_equal_to_start_date()
+    {
+        var unitOfWork = SetupUOW();
+        var today = DateTime.Now;
+        var dbHospitalization = new Hospitalization(1, 1, 1, today, HospitalizationState.ACTIVE);
+        var validator = new HospitalizationValidator(unitOfWork.Object);        
+        Hospitalization updateResult = null;
+        
+        unitOfWork
+            .Setup(u => u.HospitalizationRepository.Update(It.IsAny<Hospitalization>()))
+            .Callback((Hospitalization h ) => { updateResult = h; });
+        unitOfWork.Setup(u => u.HospitalizationRepository.GetOne(It.IsAny<int>())).Returns(dbHospitalization);
+
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator);
+
+        var dto = new EndHospitalizationDTO() { EndTime = today};
+        Assert.Throws<BadRequestException>(() => hospitalizationService.EndHospitalization(1, dto));
+    }
+    
+    [Fact]
+    public void Hospitalization_doesnt_exist()
+    {
+        var unitOfWork = SetupUOW();
+        var today = DateTime.Now;
+        var dbHospitalization = new Hospitalization(1, 1, 1, today, HospitalizationState.ACTIVE);
+        var validator = new HospitalizationValidator(unitOfWork.Object);        
+        Hospitalization updateResult = null;
+        
+        unitOfWork
+            .Setup(u => u.HospitalizationRepository.Update(It.IsAny<Hospitalization>()))
+            .Callback((Hospitalization h ) => { updateResult = h; });
+        unitOfWork.Setup(u => u.HospitalizationRepository.GetOne(It.IsAny<int>())).Returns(null as Hospitalization);
+
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator);
+
+        var dto = new EndHospitalizationDTO() { EndTime = today};
+        Assert.Throws<NotFoundException>(() => hospitalizationService.EndHospitalization(1, dto));
     }
 
 

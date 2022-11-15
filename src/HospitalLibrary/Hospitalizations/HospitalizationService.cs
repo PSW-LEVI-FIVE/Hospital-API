@@ -25,7 +25,15 @@ namespace HospitalLibrary.Hospitalizations
 
         public Hospitalization EndHospitalization(int id, EndHospitalizationDTO dto)
         {
-            throw new System.NotImplementedException();
+            Hospitalization hospitalization = _unitOfWork.HospitalizationRepository.GetOne(id);
+            _validator.ValidateEndHospitalization(hospitalization, dto);
+
+            hospitalization.State = HospitalizationState.FINISHED;
+            hospitalization.EndTime = dto.EndTime;
+            
+            _unitOfWork.HospitalizationRepository.Update(hospitalization);
+            _unitOfWork.HospitalizationRepository.Save();
+            return hospitalization;
         }
     }
 }
