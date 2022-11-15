@@ -1,8 +1,6 @@
 ﻿using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.Doctors;
-using HospitalLibrary.Patients;
-using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
 using Moq;
 using Shouldly;
@@ -20,9 +18,11 @@ public class AnnualLeavesUnitTests
         Doctor doctor1 = new Doctor("Doctor1", "Doctor1", "Doctor1", "Doctor1",
             "5464",DateTime.Now, "asd", SpecialtyType.SURGERY);
         AnnualLeave annualLeave1 =
-            new AnnualLeave(1, doctor1, "asd", DateTime.Now, DateTime.Now, AnnualLeaveState.PENDING, true);
+            new AnnualLeave(1, doctor1, "asd", DateTime.Now, DateTime.Now,
+                AnnualLeaveState.PENDING, true);
         AnnualLeave annualLeave2 =
-            new AnnualLeave(1, doctor1, "asd", DateTime.Now, DateTime.Now, AnnualLeaveState.PENDING, true);
+            new AnnualLeave(1, doctor1, "asd", DateTime.Now, DateTime.Now,
+                AnnualLeaveState.PENDING, true);
     
         annualLeaves.Add(annualLeave1);
         annualLeaves.Add(annualLeave2);
