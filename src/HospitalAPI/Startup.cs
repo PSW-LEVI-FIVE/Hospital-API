@@ -4,6 +4,8 @@ using System;
 using System.Linq;
 using HospitalAPI.Emails;
 using HospitalAPI.ErrorHandling;
+using HospitalLibrary.AnnualLeaves;
+using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.Buildings;
 using HospitalLibrary.Buildings.Interfaces;
 using HospitalLibrary.Doctors;
@@ -59,6 +61,7 @@ namespace HospitalAPI
             services.AddScoped<IBuildingService, BuildingService>();
             services.AddScoped<IFloorService, FloorService>();
             services.AddScoped<ITimeIntervalValidationService, TimeIntervalValidationService>();
+            services.AddScoped<IAnnualLeaveService,AnnualLeaveService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });

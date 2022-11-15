@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.AnnualLeaves.Interfaces;
+using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.AnnualLeaves
@@ -21,7 +22,16 @@ namespace HospitalLibrary.AnnualLeaves
 
         public AnnualLeave Create(AnnualLeave annualLeave)
         {
-            throw new System.NotImplementedException();
+            if (annualLeave.IsValid())
+            { 
+                _unitOfWork.AnnualLeaveRepository.Add(annualLeave);
+                _unitOfWork.AnnualLeaveRepository.Save();
+                return annualLeave;
+            }
+            else
+            {
+                throw new BadRequestException("Date is Not Valid");
+            }
         }
     }
 }
