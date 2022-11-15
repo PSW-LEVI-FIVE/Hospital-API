@@ -17,6 +17,8 @@ namespace HospitalLibrary.AnnualLeaves
 
         public void Validate(AnnualLeave annualLeave)
         {
+            if(!annualLeave.IsValid())
+                throw new BadRequestException("Date is not valid!");
             var isDoctorAvailable = IsDoctorAvailable(annualLeave.DoctorId,
                 new TimeInterval(annualLeave.StartAt, annualLeave.EndAt));
             if (!isDoctorAvailable)

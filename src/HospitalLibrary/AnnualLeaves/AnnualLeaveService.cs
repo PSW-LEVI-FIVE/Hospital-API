@@ -9,29 +9,25 @@ namespace HospitalLibrary.AnnualLeaves
     public class AnnualLeaveService : IAnnualLeaveService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAnnualLeaveValidator _annualLeaveValidator;
 
-        public AnnualLeaveService(IUnitOfWork unitOfWork)
+        public AnnualLeaveService(IUnitOfWork unitOfWork,IAnnualLeaveValidator annualLeaveValidator)
         {
             _unitOfWork = unitOfWork;
-        }
-        
-        public Task<IEnumerable<AnnualLeave>> GetAllByDoctorId(int doctorId)
-        {
-            throw new System.NotImplementedException();
+            _annualLeaveValidator = annualLeaveValidator;
         }
 
-        public AnnualLeave Create(AnnualLeave annualLeave)
+        public IEnumerable<AnnualLeave> GetAllByDoctorId(int doctorId)
         {
-            if (annualLeave.IsValid())
-            { 
-                _unitOfWork.AnnualLeaveRepository.Add(annualLeave);
-                _unitOfWork.AnnualLeaveRepository.Save();
-                return annualLeave;
-            }
-            else
-            {
-                throw new BadRequestException("Date is Not Valid");
-            }
+            return _unitOfWork.AnnualLeaveRepository.GetAllByDoctorId(doctorId);
+        }
+
+        public async Task<AnnualLeave> Create(AnnualLeave annualLeave)
+        {
+            _annualLeaveValidator.Validate(annualLeave);
+            _unitOfWork.AnnualLeaveRepository.Add(annualLeave);
+            _unitOfWork.AnnualLeaveRepository.Save();
+            return annualLeave;
         }
     }
 }

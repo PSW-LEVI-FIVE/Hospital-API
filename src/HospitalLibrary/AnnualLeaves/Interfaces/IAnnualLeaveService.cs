@@ -5,8 +5,8 @@ namespace HospitalLibrary.AnnualLeaves.Interfaces
 {
     public interface IAnnualLeaveService
     {
-        Task<IEnumerable<AnnualLeave>> GetAllByDoctorId(int doctorId);
+        IEnumerable<AnnualLeave> GetAllByDoctorId(int doctorId);
 
-        AnnualLeave Create(AnnualLeave annualLeave);
+        Task<AnnualLeave> Create(AnnualLeave annualLeave);
     }
 }
