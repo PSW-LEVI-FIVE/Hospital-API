@@ -59,6 +59,7 @@ namespace HospitalAPI
             services.AddScoped<IBuildingService, BuildingService>();
             services.AddScoped<IFloorService, FloorService>();
             services.AddScoped<ITimeIntervalValidationService, TimeIntervalValidationService>();
+            services.AddScoped<IPatientRegistrationValidationService, PatientRegistrationValidationService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });

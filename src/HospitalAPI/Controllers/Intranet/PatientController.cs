@@ -28,9 +28,9 @@ namespace HospitalAPI.Controllers.Intranet
         }
         
         [HttpPost]
-        public IActionResult Create(Patient patient)
+        public async Task<IActionResult> Create(Patient patient)
         {
-            Patient created = _patientService.Create(patient);
+            Patient created = await _patientService.Create(patient);
             return Ok(created);
         }
         
