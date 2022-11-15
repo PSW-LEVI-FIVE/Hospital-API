@@ -54,6 +54,14 @@ namespace HospitalLibrary.Appointments
                 .OrderBy(a => a.StartAt)
                 .ToListAsync();
         }
+        
+        public int GetNumberOfDoctorAppointmentsForRange(int doctorId, TimeInterval interval)
+        {
+            return _dataContext.Appointments.Count(a =>
+                    a.DoctorId == doctorId && a.State == AppointmentState.PENDING &&
+                    interval.Start.Date.CompareTo(a.StartAt.Date) <= 0
+                    && interval.End.Date.CompareTo(a.StartAt.Date) > 0);
+        }
 
         public async Task<Appointment> GetById(int appointmentId)
         {
