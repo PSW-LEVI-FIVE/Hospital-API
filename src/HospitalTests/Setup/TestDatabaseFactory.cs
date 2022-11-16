@@ -1,5 +1,6 @@
 ﻿using HospitalAPI;
 using HospitalLibrary.Buildings;
+using HospitalLibrary.Patients;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Interfaces;
@@ -42,7 +43,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-        return "Host=localhost;Database=HospitalDbTest;Username=isa;Password=123";
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn";
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)

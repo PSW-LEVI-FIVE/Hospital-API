@@ -3,51 +3,23 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221114171424_Person_Unique_Constraints")]
+    partial class Person_Unique_Constraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-            modelBuilder.Entity("AllergenMedicine", b =>
-                {
-                    b.Property<int>("AllergensId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("MedicinesId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("AllergensId", "MedicinesId");
-
-                    b.HasIndex("MedicinesId");
-
-                    b.ToTable("AllergenMedicine");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Allergens.Allergen", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Allergens");
-                });
 
             modelBuilder.Entity("HospitalLibrary.Appointments.Appointment", b =>
                 {
@@ -83,19 +55,6 @@ namespace HospitalLibrary.Migrations
                     b.HasIndex("RoomId");
 
                     b.ToTable("Appointments");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.BloodStorages.BloodStorage", b =>
-                {
-                    b.Property<int>("BloodType")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("BloodType");
-
-                    b.ToTable("BloodStorage");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Buildings.Building", b =>
@@ -166,37 +125,6 @@ namespace HospitalLibrary.Migrations
                     b.HasIndex("BuildingId");
 
                     b.ToTable("Floors");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Hospitalizations.Hospitalization", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int?>("BedId1")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("MedicalRecordId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("State")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BedId1");
-
-                    b.HasIndex("MedicalRecordId");
-
-                    b.ToTable("Hospitalizations");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Map.MapBuilding", b =>
@@ -300,39 +228,7 @@ namespace HospitalLibrary.Migrations
                     b.ToTable("MapRooms");
                 });
 
-            modelBuilder.Entity("HospitalLibrary.MedicalRecords.MedicalRecord", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("PatientId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PatientId");
-
-                    b.ToTable("MedicalRecords");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Medicines.Medicine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Medicines");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Rooms.Model.Room", b =>
+            modelBuilder.Entity("HospitalLibrary.Rooms.Room", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -353,29 +249,6 @@ namespace HospitalLibrary.Migrations
                     b.HasIndex("FloorId");
 
                     b.ToTable("Rooms");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Rooms.Model.RoomEquipment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("RoomId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoomId");
-
-                    b.ToTable("RoomEquipment");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Shared.Model.Person", b =>
@@ -436,64 +309,6 @@ namespace HospitalLibrary.Migrations
                     b.ToTable("WorkingHours");
                 });
 
-            modelBuilder.Entity("HospitalLibrary.Therapies.Model.Therapy", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime>("GivenAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("HospitalizationId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("therapy_type")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HospitalizationId");
-
-                    b.ToTable("Therapies");
-
-                    b.HasDiscriminator<string>("therapy_type").HasValue("Therapy");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Users.User", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Role")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Username")
-                        .IsUnique();
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Rooms.Model.Bed", b =>
-                {
-                    b.HasBaseType("HospitalLibrary.Rooms.Model.RoomEquipment");
-
-                    b.Property<int>("Number")
-                        .HasColumnType("integer");
-
-                    b.ToTable("Beds");
-                });
-
             modelBuilder.Entity("HospitalLibrary.Doctors.Doctor", b =>
                 {
                     b.HasBaseType("HospitalLibrary.Shared.Model.Person");
@@ -508,54 +323,7 @@ namespace HospitalLibrary.Migrations
                 {
                     b.HasBaseType("HospitalLibrary.Shared.Model.Person");
 
-                    b.Property<int>("BloodType")
-                        .HasColumnType("integer");
-
                     b.ToTable("Patients");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Therapies.Model.BloodTherapy", b =>
-                {
-                    b.HasBaseType("HospitalLibrary.Therapies.Model.Therapy");
-
-                    b.Property<int>("BloodType")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("double precision")
-                        .HasColumnName("BloodTherapy_Quantity");
-
-                    b.HasDiscriminator().HasValue("blood");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Therapies.Model.MedicineTherapy", b =>
-                {
-                    b.HasBaseType("HospitalLibrary.Therapies.Model.Therapy");
-
-                    b.Property<int>("MedicineId")
-                        .HasColumnType("integer");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("double precision");
-
-                    b.HasIndex("MedicineId");
-
-                    b.HasDiscriminator().HasValue("medicine");
-                });
-
-            modelBuilder.Entity("AllergenMedicine", b =>
-                {
-                    b.HasOne("HospitalLibrary.Allergens.Allergen", null)
-                        .WithMany()
-                        .HasForeignKey("AllergensId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HospitalLibrary.Medicines.Medicine", null)
-                        .WithMany()
-                        .HasForeignKey("MedicinesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("HospitalLibrary.Appointments.Appointment", b =>
@@ -572,7 +340,7 @@ namespace HospitalLibrary.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HospitalLibrary.Rooms.Model.Room", "Room")
+                    b.HasOne("HospitalLibrary.Rooms.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -607,21 +375,6 @@ namespace HospitalLibrary.Migrations
                     b.Navigation("Building");
                 });
 
-            modelBuilder.Entity("HospitalLibrary.Hospitalizations.Hospitalization", b =>
-                {
-                    b.HasOne("HospitalLibrary.Rooms.Model.Bed", null)
-                        .WithMany("Hospitalizations")
-                        .HasForeignKey("BedId1");
-
-                    b.HasOne("HospitalLibrary.MedicalRecords.MedicalRecord", "MedicalRecord")
-                        .WithMany("Hospitalizations")
-                        .HasForeignKey("MedicalRecordId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MedicalRecord");
-                });
-
             modelBuilder.Entity("HospitalLibrary.Map.MapBuilding", b =>
                 {
                     b.HasOne("HospitalLibrary.Buildings.Building", "Building")
@@ -652,7 +405,7 @@ namespace HospitalLibrary.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HospitalLibrary.Rooms.Model.Room", "Room")
+                    b.HasOne("HospitalLibrary.Rooms.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -663,18 +416,7 @@ namespace HospitalLibrary.Migrations
                     b.Navigation("Room");
                 });
 
-            modelBuilder.Entity("HospitalLibrary.MedicalRecords.MedicalRecord", b =>
-                {
-                    b.HasOne("HospitalLibrary.Patients.Patient", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Rooms.Model.Room", b =>
+            modelBuilder.Entity("HospitalLibrary.Rooms.Room", b =>
                 {
                     b.HasOne("HospitalLibrary.Floors.Floor", "Floor")
                         .WithMany("Rooms")
@@ -683,17 +425,6 @@ namespace HospitalLibrary.Migrations
                         .IsRequired();
 
                     b.Navigation("Floor");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Rooms.Model.RoomEquipment", b =>
-                {
-                    b.HasOne("HospitalLibrary.Rooms.Model.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Shared.Model.WorkingHours", b =>
@@ -705,37 +436,6 @@ namespace HospitalLibrary.Migrations
                         .IsRequired();
 
                     b.Navigation("Doctor");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Therapies.Model.Therapy", b =>
-                {
-                    b.HasOne("HospitalLibrary.Hospitalizations.Hospitalization", "Hospitalization")
-                        .WithMany("Therapies")
-                        .HasForeignKey("HospitalizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Hospitalization");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Users.User", b =>
-                {
-                    b.HasOne("HospitalLibrary.Shared.Model.Person", "Person")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Person");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Rooms.Model.Bed", b =>
-                {
-                    b.HasOne("HospitalLibrary.Rooms.Model.RoomEquipment", null)
-                        .WithOne()
-                        .HasForeignKey("HospitalLibrary.Rooms.Model.Bed", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("HospitalLibrary.Doctors.Doctor", b =>
@@ -756,17 +456,6 @@ namespace HospitalLibrary.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("HospitalLibrary.Therapies.Model.MedicineTherapy", b =>
-                {
-                    b.HasOne("HospitalLibrary.Medicines.Medicine", "Medicine")
-                        .WithMany()
-                        .HasForeignKey("MedicineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Medicine");
-                });
-
             modelBuilder.Entity("HospitalLibrary.Buildings.Building", b =>
                 {
                     b.Navigation("Floors");
@@ -777,24 +466,9 @@ namespace HospitalLibrary.Migrations
                     b.Navigation("Rooms");
                 });
 
-            modelBuilder.Entity("HospitalLibrary.Hospitalizations.Hospitalization", b =>
-                {
-                    b.Navigation("Therapies");
-                });
-
             modelBuilder.Entity("HospitalLibrary.Map.MapFloor", b =>
                 {
                     b.Navigation("MapRooms");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.MedicalRecords.MedicalRecord", b =>
-                {
-                    b.Navigation("Hospitalizations");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Rooms.Model.Bed", b =>
-                {
-                    b.Navigation("Hospitalizations");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Doctors.Doctor", b =>

@@ -34,6 +34,7 @@
     <Folder Include="MedicalRecords\Service\" />
     <Folder Include="MedicalRecords\Repository\" />
     <Folder Include="Migrations" />
+    <Folder Include="Patients\Validators" />
     <Folder Include="Shared\Dtos" />
     <Folder Include="Shared\Service" />
   </ItemGroup>

@@ -7,6 +7,6 @@ namespace HospitalLibrary.Patients.Interfaces
     {
         Task<IEnumerable<Patient>> GetAll();
         
-        Patient Create(Patient patient);
+        Task<Patient>  Create(Patient patient);
     }
 }

@@ -1,13 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity.Core;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 using HospitalLibrary.Patients.Interfaces;
+using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Shared.Validators;
 
 namespace HospitalLibrary.Patients
 {
     public class PatientService: IPatientService
     {
-        private IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
 
         public PatientService(IUnitOfWork unitOfWork)
         {
@@ -19,10 +24,17 @@ namespace HospitalLibrary.Patients
             return _unitOfWork.PatientRepository.GetAll();
         }
         
-        public Patient Create(Patient patient)
+        public async Task<Patient> Create(Patient patient)
         {
-            _unitOfWork.PatientRepository.Add(patient);
-            _unitOfWork.PatientRepository.Save();
+            try
+            {
+                _unitOfWork.PatientRepository.Add(patient);
+                _unitOfWork.PatientRepository.Save();
+            }
+            catch(Exception  ex)
+            {
+                throw new BadRequestException("Uid or Email is already taken");
+            }
             return patient;
         }
     }

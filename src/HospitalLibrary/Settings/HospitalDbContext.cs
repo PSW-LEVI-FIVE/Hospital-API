@@ -65,12 +65,13 @@ namespace HospitalLibrary.Settings
             modelBuilder.Entity<MapRoom>().ToTable("MapRooms");
             modelBuilder.Entity<Rooms.Model.RoomEquipment>().ToTable("RoomEquipment");
             modelBuilder.Entity<Bed>().ToTable("Beds");
-            modelBuilder.Entity<Users.User>().HasIndex(u => u.Username).IsUnique();
-            
             modelBuilder.Entity<Therapy>()
                 .HasDiscriminator<string>("therapy_type")
                 .HasValue<BloodTherapy>("blood")
                 .HasValue<MedicineTherapy>("medicine");
+            modelBuilder.Entity<Person>().HasIndex(p => p.Uid).IsUnique();
+            modelBuilder.Entity<Person>().HasIndex(p => p.Email).IsUnique();
+            modelBuilder.Entity<Users.User>().HasIndex(u => u.Username).IsUnique();
         }
     }
 }
