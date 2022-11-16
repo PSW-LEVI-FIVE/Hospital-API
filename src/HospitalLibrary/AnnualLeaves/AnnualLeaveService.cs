@@ -29,5 +29,10 @@ namespace HospitalLibrary.AnnualLeaves
             _unitOfWork.AnnualLeaveRepository.Save();
             return annualLeave;
         }
+
+        public AnnualLeave Delete(int annualLeaveId,int doctorId)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
