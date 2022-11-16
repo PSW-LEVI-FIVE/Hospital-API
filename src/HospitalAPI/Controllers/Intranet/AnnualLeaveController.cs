@@ -34,7 +34,7 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(annualLeaves);
         }
 
-        [Route("cancel/{id:int}&{docId:int}")]
+        [Route("cancel/{id:int}/{docId:int}")]
         [HttpPatch]
         public IActionResult Cancel(int id,int docId)
         {
