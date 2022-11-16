@@ -6,6 +6,7 @@ using HospitalLibrary.Feedbacks;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Model;
 using HospitalLibrary.Appointments;
+using HospitalLibrary.BloodOrders;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Buildings;
 using HospitalLibrary.Floors;
@@ -46,6 +47,8 @@ namespace HospitalLibrary.Settings
         public DbSet<Bed> Beds { get; set; }
         public DbSet<Users.User> Users { get; set; }
         public DbSet<AnnualLeave> AnnualLeaves { get; set; }
+        
+        public DbSet<BloodOrder> BloodOrders { get; set; }
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
