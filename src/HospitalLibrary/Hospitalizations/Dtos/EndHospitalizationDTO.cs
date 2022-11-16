@@ -5,6 +5,12 @@ namespace HospitalLibrary.Hospitalizations.Dtos
 {
     public class EndHospitalizationDTO
     {
-        [Required] public DateTime EndTime;
+        [Required] 
+        public DateTime EndTime { get; set; }
+
+        public EndHospitalizationDTO(DateTime endTime)
+        {
+            EndTime = endTime;
+        }
     }
 }

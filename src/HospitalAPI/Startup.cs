@@ -2,6 +2,7 @@ using HospitalLibrary.Appointments;
 using HospitalLibrary.Appointments.Interfaces;
 using System;
 using System.Linq;
+using System.Text.Json.Serialization;
 using HospitalAPI.Emails;
 using HospitalAPI.ErrorHandling;
 using HospitalLibrary.Buildings;
@@ -12,8 +13,12 @@ using HospitalLibrary.Feedbacks;
 using HospitalLibrary.Feedbacks.Interfaces;
 using HospitalLibrary.Floors;
 using HospitalLibrary.Floors.Interfaces;
+using HospitalLibrary.Hospitalizations;
+using HospitalLibrary.Hospitalizations.Interfaces;
 using HospitalLibrary.Map;
 using HospitalLibrary.Map.Interfaces;
+using HospitalLibrary.MedicalRecords;
+using HospitalLibrary.MedicalRecords.Interfaces;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Rooms;
@@ -44,6 +49,11 @@ namespace HospitalAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddControllersWithViews()
+                .AddJsonOptions(options =>
+                   options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve
+                );
             services.AddDbContext<HospitalDbContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("HospitalDb")));
 
@@ -59,6 +69,9 @@ namespace HospitalAPI
             services.AddScoped<IBuildingService, BuildingService>();
             services.AddScoped<IFloorService, FloorService>();
             services.AddScoped<ITimeIntervalValidationService, TimeIntervalValidationService>();
+            services.AddScoped<IMedicalRecordService, MedicalRecordService>();
+            services.AddScoped<IHospitalizationService, HospitalizationService>();
+            services.AddScoped<IHospitalizationValidator, HospitalizationValidator>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });
@@ -83,6 +96,8 @@ namespace HospitalAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HospitalAPI v1"));
             }
+            
+            
 
             app.UseRouting();
 
