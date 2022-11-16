@@ -28,7 +28,7 @@ namespace HospitalAPI.Controllers.Intranet
 
         [Route("{id:int}")]
         [HttpGet]
-        public IActionResult GetAllByDoctorId(int id) //CANT BE ASYNC - DONT KNOW WHY. BOJANA HELP
+        public IActionResult GetAllByDoctorId(int id)
         {
             IEnumerable<AnnualLeave> annualLeaves = _annualLeaveService.GetAllByDoctorId(id);
             return Ok(annualLeaves);
