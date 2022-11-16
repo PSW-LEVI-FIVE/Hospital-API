@@ -15,6 +15,7 @@ using HospitalLibrary.Medicines.Interfaces;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Therapies.Interfaces;
+using HospitalLibrary.Users.Interfaces;
 
 namespace HospitalLibrary.Shared.Interfaces
 {
@@ -39,6 +40,7 @@ namespace HospitalLibrary.Shared.Interfaces
         ITherapyRepository TherapyRepository { get; }
         IBloodStorageRepository BloodStorageRepository { get; }
         IRoomEquipmentRepository RoomEquipmentRepository { get; }
+        IUserRepository UserRepository { get; }
         
         IBedRepository BedRepository { get; }
         

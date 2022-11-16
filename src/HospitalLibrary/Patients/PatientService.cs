@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
@@ -23,7 +24,6 @@ namespace HospitalLibrary.Patients
         {
             return _unitOfWork.PatientRepository.GetAll();
         }
-        
         public async Task<Patient> Create(Patient patient)
         {
             try
@@ -31,7 +31,7 @@ namespace HospitalLibrary.Patients
                 _unitOfWork.PatientRepository.Add(patient);
                 _unitOfWork.PatientRepository.Save();
             }
-            catch(Exception  ex)
+            catch(Exception ex)
             {
                 throw new BadRequestException("Uid or Email is already taken");
             }

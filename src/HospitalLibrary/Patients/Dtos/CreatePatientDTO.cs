@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Shared.DTOValidators;
+using HospitalLibrary.Users;
 using Newtonsoft.Json.Serialization;
 
 namespace HospitalLibrary.Patients.Dtos
@@ -11,10 +12,10 @@ namespace HospitalLibrary.Patients.Dtos
         [Required]
         public int Id { get; set; }
         [Required]
-        [RegularExpression(@"^[A-Z][a-z0-9_-]{3,19}$", ErrorMessage = "Name input not valid.")]
+        [RegularExpression(@"^[A-Z][a-z]+$", ErrorMessage = "Name input not valid.")]
         public string Name { get; set; }
         [Required]
-        [RegularExpression(@"^[A-Z][a-z0-9_-]{3,19}$", ErrorMessage = "Surname input not valid.")]
+        [RegularExpression(@"^[A-Z][a-z]+$", ErrorMessage = "Surname input not valid.")]
         public string Surname { get; set; }
         [Required]
         [DataType(DataType.EmailAddress)]
@@ -34,9 +35,16 @@ namespace HospitalLibrary.Patients.Dtos
         [RegularExpression(@"^[A-Z][A-Za-z0-9( )]+$", ErrorMessage = "Address input not valid.")]
         public string Address { get; set; }
         [Required]
+        public string Username { get; set; }
+        [Required]
+        [RegularExpression(@"^[A-Za-z0-9]{5}[A-Za-z0-9]+$", ErrorMessage = "Password not valid or must be longer.")]
+        public string Password { get; set; }
+        [Required]
         public BloodType BloodType { get; set; }
         
-        public CreatePatientDTO(string name, string surname, string email, string uid, string phoneNumber, DateTime birthDate, string address, BloodType bloodType)
+        public CreatePatientDTO(string name, string surname, string email, string uid, 
+            string phoneNumber, DateTime birthDate, string address, BloodType bloodType,
+            string username,string password)
         {
             Name = name;
             Surname = surname;
@@ -46,9 +54,11 @@ namespace HospitalLibrary.Patients.Dtos
             BirthDate = birthDate;
             Address = address;
             BloodType = bloodType;
+            Password = password;
+            Username = username;
         }
         
-        public Patient MapToModel()
+        public Patient MapPatientToModel()
         {
             return new Patient
             {
@@ -63,5 +73,15 @@ namespace HospitalLibrary.Patients.Dtos
                 BloodType = BloodType
             };
         } 
+        public Users.User MapUserToModel()
+        {
+            return new Users.User
+            {
+                Id = Id,
+                Username = Username,
+                Password = Password,
+                Role = Role.Patient
+            };
+        }
     }
 }

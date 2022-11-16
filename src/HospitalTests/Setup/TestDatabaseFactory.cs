@@ -85,9 +85,9 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Name = "Marko",
             Surname = "Markovic",
             Email = "asdasd@gmail.coma",
-            Uid = "asdasdasdaaa",
+            Uid = "67676767",
             PhoneNumber = "123123123",
-            BirthDate = DateTime.Now, 
+            BirthDate = new DateTime(2000,2,2), 
             Address = "ADRESA", 
             BloodType = BloodType.A_NEGATIVE
         };
@@ -98,9 +98,9 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Name = "Marko",
             Surname = "Markovic",
             Email = "asdasd@gmail.com",
-            Uid = "asdasdasda",
+            Uid = "78787878",
             PhoneNumber = "123123123",
-            BirthDate = DateTime.Now, 
+            BirthDate = new DateTime(2000,2,2), 
             Address = "ADRESA", 
             BloodType = BloodType.A_NEGATIVE
         };

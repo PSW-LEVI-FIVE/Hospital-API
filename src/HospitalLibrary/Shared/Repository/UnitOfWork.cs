@@ -32,6 +32,8 @@ using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Shared.Model;
 using HospitalLibrary.Therapies;
 using HospitalLibrary.Therapies.Interfaces;
+using HospitalLibrary.Users;
+using HospitalLibrary.Users.Interfaces;
 
 namespace HospitalLibrary.Shared.Repository
 {
@@ -60,6 +62,7 @@ namespace HospitalLibrary.Shared.Repository
         private IRoomEquipmentRepository _roomEquipmentRepository;
         private IBedRepository _bedRepository;
         private IAnnualLeaveRepository _annualLeaveRepository;
+        private IUserRepository _userRepository;
 
         public UnitOfWork(HospitalDbContext dataContext)
         {
@@ -96,8 +99,8 @@ namespace HospitalLibrary.Shared.Repository
         public IBloodStorageRepository BloodStorageRepository => _bloodStorageRepository ??= new BloodStorageRepository(_dataContext);
         public IRoomEquipmentRepository RoomEquipmentRepository => _roomEquipmentRepository ??= new RoomEquipmentRepository(_dataContext);
         public IBedRepository BedRepository => _bedRepository ??= new BedRepository(_dataContext);
-
         public IAnnualLeaveRepository AnnualLeaveRepository =>
             _annualLeaveRepository ??= new AnnualLeaveRepository(_dataContext);
+        public IUserRepository UserRepository => _userRepository ??= new UserRepository(_dataContext);
     }
 }
