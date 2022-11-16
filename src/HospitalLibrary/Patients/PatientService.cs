@@ -13,12 +13,10 @@ namespace HospitalLibrary.Patients
     public class PatientService: IPatientService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IPatientRegistrationValidationService _registrationValidation;
 
-        public PatientService(IUnitOfWork unitOfWork,IPatientRegistrationValidationService registrationValidation)
+        public PatientService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _registrationValidation = registrationValidation;
         }
         
         public Task<IEnumerable<Patient>> GetAll()
@@ -28,7 +26,6 @@ namespace HospitalLibrary.Patients
         
         public async Task<Patient> Create(Patient patient)
         {
-            await _registrationValidation.ValidatePatient(patient);
             try
             {
                 _unitOfWork.PatientRepository.Add(patient);

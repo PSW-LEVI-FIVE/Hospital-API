@@ -10,7 +10,7 @@ using Shouldly;
 
 namespace HospitalTests.Units.Patients
 {
-    public class InitTest
+    public class RegisterPatientTests
     {
         public PatientService PatientServiceSetup(string unique)
         {
@@ -29,31 +29,12 @@ namespace HospitalTests.Units.Patients
             patientsList.Add(p2);
             IEnumerable<Patient> patientsEnumerable = patientsList.AsEnumerable();
             
+            if (unique.Equals("throwException")) 
+                patientRepository.Setup(unit => unit.Save()).Throws(new IOException());
+            
             patientRepository.Setup(unit => unit.GetAll()).ReturnsAsync(patientsEnumerable);
-            if (unique.Equals(""))
-            {
-                patientRepository.Setup(unit => 
-                    unit.GetOneByUid("11111111")).ReturnsAsync((Patient)null);
-                patientRepository.Setup(unit => 
-                    unit.GetOneByEmail("gmail1@gmail.com")).ReturnsAsync((Patient)null);
-                
-            }else if(unique.Equals("uid"))
-            {
-                patientRepository.Setup(unit =>
-                    unit.GetOneByUid("11111111")).ReturnsAsync(p1);
-                patientRepository.Setup(unit => 
-                    unit.GetOneByEmail("gmail1@gmail.com")).ReturnsAsync((Patient)null);
-            }
-            else
-            {
-                patientRepository.Setup(unit => 
-                    unit.GetOneByUid("11111111")).ReturnsAsync((Patient)null);
-                patientRepository.Setup(unit =>
-                    unit.GetOneByEmail("gmail1@gmail.com")).ReturnsAsync(p1);
-            }
 
-            PatientService patientService = new PatientService(unitOfWork.Object,
-                new PatientRegistrationValidationService(unitOfWork.Object));
+            PatientService patientService = new PatientService(unitOfWork.Object);
             return patientService;
         }
 
@@ -81,8 +62,8 @@ namespace HospitalTests.Units.Patients
                 "11111111", "555555", new DateTime(2000,2,2), "Jovina 12",
                 BloodType.ZERO_NEGATIVE);
 
-            Should.Throw<BadRequestException>(() => PatientServiceSetup("uid").Create(patientToCreate))
-                .Message.ShouldBe("Uid is already taken");
+            Should.Throw<BadRequestException>(() => PatientServiceSetup("throwException").Create(patientToCreate))
+                .Message.ShouldBe("Uid or Email is already taken");
         }
         [Fact]
         public void Create_patient_not_unique_email_Exception()
@@ -91,8 +72,8 @@ namespace HospitalTests.Units.Patients
                 "99999999", "555555", new DateTime(2000,2,2), "Jovina 12",
                 BloodType.ZERO_NEGATIVE);
 
-            Should.Throw<BadRequestException>(() => PatientServiceSetup("mail").Create(patientToCreate))
-                .Message.ShouldBe("Email is already taken");
+            Should.Throw<BadRequestException>(() => PatientServiceSetup("throwException").Create(patientToCreate))
+                .Message.ShouldBe("Uid or Email is already taken");
         }
     }
 }
