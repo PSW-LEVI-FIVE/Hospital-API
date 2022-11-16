@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Doctors;
+using HospitalLibrary.Shared.Model;
 
 namespace HospitalLibrary.AnnualLeaves
 {
