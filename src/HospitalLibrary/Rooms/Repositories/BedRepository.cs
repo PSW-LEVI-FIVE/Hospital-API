@@ -25,10 +25,10 @@ namespace HospitalLibrary.Rooms.Repositories
 
         public bool IsBedFree(int id)
         {
-            return _dataContext.Beds
-                .Where(b => b.Id == id)
-                .Where(b => b.Hospitalizations.TrueForAll(h => h.State == HospitalizationState.FINISHED))
-                .ToList().Count == 0;
+            Hospitalization hsHospitalization = _dataContext.Hospitalizations
+                .Where(h => h.BedId == id)
+                .FirstOrDefault(h => h.State == HospitalizationState.ACTIVE);
+            return hsHospitalization == null;
         }
     }
 }
