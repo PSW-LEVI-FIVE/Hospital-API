@@ -12,5 +12,7 @@ namespace HospitalLibrary.Hospitalizations.Dtos
         {
             EndTime = endTime;
         }
+        
+        public EndHospitalizationDTO() {}
     }
 }
