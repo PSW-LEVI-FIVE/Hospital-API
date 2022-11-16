@@ -24,7 +24,7 @@ namespace HospitalLibrary.AnnualLeaves
 
         public async Task<AnnualLeave> Create(AnnualLeave annualLeave)
         {
-            _annualLeaveValidator.Validate(annualLeave);
+            await _annualLeaveValidator.Validate(annualLeave);
             _unitOfWork.AnnualLeaveRepository.Add(annualLeave);
             _unitOfWork.AnnualLeaveRepository.Save();
             return annualLeave;

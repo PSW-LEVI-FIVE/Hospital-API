@@ -26,7 +26,7 @@ namespace HospitalLibrary.AnnualLeaves
                 await _unitOfWork.AppointmentRepository.GetAllDoctorAppointmentsForRange(doctorId, timeInterval);
             
             IEnumerable<Doctor> doctors =
-               await _unitOfWork.DoctorRepository.GetAllDoctorsWithSpecialityExceptId(doctor.SpecialtyType, doctorId);
+                _unitOfWork.DoctorRepository.GetAllDoctorsWithSpecialityExceptId(doctor.SpecialtyType, doctorId);
 
             Dictionary<int, IEnumerable<Appointment>> otherDoctorsAppointments =
                await GetDoctorsAppointments(doctors, timeInterval);
@@ -78,7 +78,7 @@ namespace HospitalLibrary.AnnualLeaves
             foreach (var appointment in appointments.Keys)
             {
                 appointment.DoctorId = appointments[appointment];
-                _unitOfWork.AppointmentRepository.Add(appointment);
+                _unitOfWork.AppointmentRepository.Update(appointment);
             }
 
             _unitOfWork.AppointmentRepository.Save();

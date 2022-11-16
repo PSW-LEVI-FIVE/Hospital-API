@@ -56,11 +56,11 @@ public class AnnualLeavesUnitTests
     {
         var mock = AnnualLeaveRepositoryMock();
         AnnualLeave annualLeave = new AnnualLeave(1, null, "Annual Leave is PENDING",
-                DateTime.Now, DateTime.Now, AnnualLeaveState.PENDING, true);
+                DateTime.Now, DateTime.Now, AnnualLeaveState.PENDING, false);
         annualLeave.Id = 1;
         mock.Setup(work =>
             work.AnnualLeaveRepository.GetOne(It.IsAny<int>())).Returns(annualLeave);
-        IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object);
+        IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
         AnnualLeaveService service = new AnnualLeaveService(mock.Object,validator);
 
         AnnualLeave response=service.Delete(annualLeave.Id,1);
@@ -73,11 +73,11 @@ public class AnnualLeavesUnitTests
     {
         var mock = AnnualLeaveRepositoryMock();
         AnnualLeave annualLeave = new AnnualLeave(1, null, "Annual Leave is NOT-PENDING",
-            DateTime.Now, DateTime.Now, AnnualLeaveState.APPROVED, true);
+            DateTime.Now, DateTime.Now, AnnualLeaveState.APPROVED, false);
         annualLeave.Id = 1;
         mock.Setup(work =>
             work.AnnualLeaveRepository.GetOne(It.IsAny<int>())).Returns(annualLeave);
-        IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object);
+        IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
         AnnualLeaveService service = new AnnualLeaveService(mock.Object,validator);
         
         Assert.Throws<BadRequestException>(() => service.Delete(annualLeave.Id,1));
@@ -88,11 +88,11 @@ public class AnnualLeavesUnitTests
     {
         var mock = AnnualLeaveRepositoryMock();
         AnnualLeave annualLeave = new AnnualLeave(1, null, "Annual Leave is PENDING, but false DOCTOR_ID",
-            DateTime.Now, DateTime.Now, AnnualLeaveState.PENDING, true);
+            DateTime.Now, DateTime.Now, AnnualLeaveState.PENDING, false);
         annualLeave.Id = 1;
         mock.Setup(work =>
             work.AnnualLeaveRepository.GetOne(It.IsAny<int>())).Returns(annualLeave);
-        IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object);
+        IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
         AnnualLeaveService service = new AnnualLeaveService(mock.Object,validator);
 
         Assert.Throws<BadRequestException>(() => service.Delete(annualLeave.Id, 2));

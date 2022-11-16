@@ -10,12 +10,15 @@ namespace HospitalLibrary.AnnualLeaves
     {
         private IUnitOfWork _unitOfWork;
 
-        public AnnualLeaveValidator(IUnitOfWork unitOfWork)
+        private IAppointmentRescheduler _appointmentRescheduler;
+
+        public AnnualLeaveValidator(IUnitOfWork unitOfWork, IAppointmentRescheduler appointmentRescheduler)
         {
             _unitOfWork = unitOfWork;
+            _appointmentRescheduler = appointmentRescheduler;
         }
 
-        public void Validate(AnnualLeave annualLeave)
+        public async Task Validate(AnnualLeave annualLeave)
         {
             if(!annualLeave.IsValid())
                 throw new BadRequestException("Date is not valid!");
@@ -24,6 +27,10 @@ namespace HospitalLibrary.AnnualLeaves
             if (!annualLeave.IsUrgent && !isDoctorAvailable)
             {
                 throw new BadRequestException("There are appointments in given period");
+            }
+            if (annualLeave.IsUrgent)
+            {
+               await _appointmentRescheduler.Reschedule(annualLeave.DoctorId, new TimeInterval(annualLeave.StartAt, annualLeave.EndAt));
             }
         }
 

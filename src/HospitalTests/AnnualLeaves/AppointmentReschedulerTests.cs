@@ -34,7 +34,7 @@ public class AppointmentReschedulerTests
         unitOfWork.Setup(work => work.DoctorRepository.GetOne(It.IsAny<int>())).Returns(sessionDoctor);
         unitOfWork.Setup(work => work.DoctorRepository
                 .GetAllDoctorsWithSpecialityExceptId(It.IsAny<SpecialtyType>(), It.IsAny<int>()))
-            .ReturnsAsync(doctors);
+            .Returns(doctors);
 
         Appointment appointment1 = GetAppointment(1, 2, "11-16-2022 10:30", "11-16-2022 11:30");
         Appointment appointment2 = GetAppointment(2, 2, "11-17-2022 11:30", "11-17-2022 12:30");
@@ -66,7 +66,7 @@ public class AppointmentReschedulerTests
         IAppointmentRescheduler rescheduler = new AppointmentRescheduler(mock.Object);
         
         var args = new List<Appointment>();
-        mock.Setup(w => w.AppointmentRepository.Add(Capture.In(args)));
+        mock.Setup(w => w.AppointmentRepository.Update(Capture.In(args)));
         
         rescheduler.Reschedule(2, new TimeInterval(DateTime.Parse("11-13-2022"), DateTime.Parse("11-25-2022")));
         
@@ -91,13 +91,10 @@ public class AppointmentReschedulerTests
 
         IAppointmentRescheduler rescheduler = new AppointmentRescheduler(mock.Object);
         
-        var args = new List<Appointment>();
-        mock.Setup(w => w.AppointmentRepository.Add(Capture.In(args)));
         
         Assert.ThrowsAsync<BadRequestException>(() => rescheduler.Reschedule(2,
             new TimeInterval(DateTime.Parse("11-13-2022"), DateTime.Parse("11-25-2022"))));
         
-        args.Count.ShouldBe(0);
     }
 
     private Appointment GetAppointment(int id, int doctorId, String start, String end)

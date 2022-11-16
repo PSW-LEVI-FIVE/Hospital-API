@@ -28,12 +28,12 @@ public class AnnualLeaveValidatorTests
             .Setup(work =>
             work.AppointmentRepository.GetNumberOfDoctorAppointmentsForRange(It.IsAny<int>(), It.IsAny<TimeInterval>()))
             .Returns(5);
-        IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object);
+        IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
         AnnualLeave annualLeave =
             new AnnualLeave(1, null, "First Reason", DateTime.Now.AddDays(7),
                 DateTime.Now.AddDays(9), AnnualLeaveState.PENDING, false);
 
-        Assert.Throws<BadRequestException>(() => validator.Validate(annualLeave));
+        Assert.ThrowsAsync<BadRequestException>(() => validator.Validate(annualLeave));
     }
     
     [Fact]
@@ -44,12 +44,12 @@ public class AnnualLeaveValidatorTests
             .Setup(work =>
                 work.AppointmentRepository.GetNumberOfDoctorAppointmentsForRange(It.IsAny<int>(), It.IsAny<TimeInterval>()))
             .Returns(0);
-        IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object);
+        IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
         AnnualLeave annualLeave =
             new AnnualLeave(1, null, "First Reason", DateTime.Now.AddDays(7),
                 DateTime.Now.AddDays(9), AnnualLeaveState.PENDING, false);
 
-        var exception = Record.Exception(() => validator.Validate((annualLeave)));
-        exception.ShouldBeNull();
+        var exception = Record.ExceptionAsync(() => validator.Validate((annualLeave)));
+        exception.Result.ShouldBeNull();
     }
 }
