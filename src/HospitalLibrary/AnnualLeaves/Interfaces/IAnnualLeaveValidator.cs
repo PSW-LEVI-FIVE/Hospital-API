@@ -5,6 +5,6 @@ namespace HospitalLibrary.AnnualLeaves.Interfaces
     public interface IAnnualLeaveValidator
     {
         void Validate(AnnualLeave annualLeave);
-        void Cancel_Validation(AnnualLeave leave, int doctorId);
+        void CancelValidation(AnnualLeave leave, int doctorId);
     }
 }
