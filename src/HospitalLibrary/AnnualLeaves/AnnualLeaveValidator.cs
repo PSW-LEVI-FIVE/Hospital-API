@@ -21,7 +21,7 @@ namespace HospitalLibrary.AnnualLeaves
                 throw new BadRequestException("Date is not valid!");
             var isDoctorAvailable = IsDoctorAvailable(annualLeave.DoctorId,
                 new TimeInterval(annualLeave.StartAt, annualLeave.EndAt));
-            if (!isDoctorAvailable)
+            if (!annualLeave.IsUrgent && !isDoctorAvailable)
             {
                 throw new BadRequestException("There are appointments in given period");
             }
