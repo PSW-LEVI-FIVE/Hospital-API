@@ -33,6 +33,14 @@ namespace HospitalAPI.Controllers.Intranet
             IEnumerable<AnnualLeave> annualLeaves = _annualLeaveService.GetAllByDoctorId(id);
             return Ok(annualLeaves);
         }
-        
+
+        [Route("cancel/{id:int}&{docId:int}")]
+        [HttpPatch]
+        public IActionResult Cancel(int id,int docId)
+        {
+            AnnualLeave leave = _annualLeaveService.Delete(id, docId);
+            return Ok(leave);
+        }
+
     }
 }
