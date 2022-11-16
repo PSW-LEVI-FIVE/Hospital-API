@@ -7,7 +7,7 @@ namespace HospitalLibrary.AnnualLeaves
 {
     public enum AnnualLeaveState
     {
-        PENDING, APPROVED, DELETED
+        PENDING, APPROVED, DELETED, CANCELED
     }
     
     public class AnnualLeave
