@@ -76,6 +76,7 @@ namespace HospitalAPI
             services.AddScoped<IHospitalizationValidator, HospitalizationValidator>();
             services.AddScoped<IAnnualLeaveService,AnnualLeaveService>();
             services.AddScoped<IAnnualLeaveValidator, AnnualLeaveValidator>();
+            services.AddScoped<IAppointmentRescheduler, AppointmentRescheduler>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });

@@ -35,9 +35,5 @@ namespace HospitalLibrary.Doctors
         {
         }
 
-        public bool DoesAppointmentFollowWorkingHours(Appointment appointment)
-        {
-            return false;
-        }
     }
 }
