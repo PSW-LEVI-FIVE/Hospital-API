@@ -34,6 +34,19 @@ namespace HospitalLibrary.Appointments
                 .Select(a => new TimeInterval(a.StartAt, a.EndAt))
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<TimeInterval>> GetAllDoctorTakenIntervalsForTimeInterval(int doctorId, TimeInterval timeInterval)
+        {
+            return await _dataContext.Appointments
+                .Where(a => a.DoctorId == doctorId)
+                .Where(a =>
+                    timeInterval.Start.Date.CompareTo(a.StartAt.Date) <= 0
+                    && timeInterval.End.Date.CompareTo(a.StartAt.Date) > 0)
+                .Where(a => a.State != AppointmentState.DELETED)
+                .Select(a => new TimeInterval(a.StartAt, a.EndAt))
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Appointment>> GetAllDoctorUpcomingAppointments(int doctorId)
         {
             return await _dataContext.Appointments

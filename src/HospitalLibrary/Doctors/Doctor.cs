@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using HospitalLibrary.Appointments;
 using HospitalLibrary.Shared.Model;
 
 public enum SpecialtyType
@@ -32,6 +33,11 @@ namespace HospitalLibrary.Doctors
 
         public Doctor()
         {
+        }
+
+        public bool DoesAppointmentFollowWorkingHours(Appointment appointment)
+        {
+            return false;
         }
     }
 }
