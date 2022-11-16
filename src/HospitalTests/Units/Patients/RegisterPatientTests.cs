@@ -32,7 +32,6 @@ namespace HospitalTests.Units.Patients
             patientRepository.Setup(unit => unit.GetAll()).ReturnsAsync(patientsEnumerable);
             if (unique.Equals(""))
             {
-                
                 patientRepository.Setup(unit => 
                     unit.GetOneByUid("11111111")).ReturnsAsync((Patient)null);
                 patientRepository.Setup(unit => 
@@ -47,7 +46,6 @@ namespace HospitalTests.Units.Patients
             }
             else
             {
-                
                 patientRepository.Setup(unit => 
                     unit.GetOneByUid("11111111")).ReturnsAsync((Patient)null);
                 patientRepository.Setup(unit =>
@@ -66,7 +64,6 @@ namespace HospitalTests.Units.Patients
             IEnumerable<Patient> patients = await patientservice.GetAll();
             patients.ShouldNotBeEmpty();
         }
-
         [Fact]
         public async void Create_patient_success()
         {
@@ -76,36 +73,6 @@ namespace HospitalTests.Units.Patients
 
             Patient createdPatient = await PatientServiceSetup("").Create(patientToCreate);
             createdPatient.ShouldNotBeNull();
-        }
-        [Fact]
-        public void Create_patient_bad_name_Exception()
-        {
-            Patient patientToCreate = new Patient("zika", "Zikic", "gmail3@gmail.com",
-                "99999999", "555555", new DateTime(2000,2,2), "Jovina 12",
-                BloodType.ZERO_NEGATIVE);
-
-            Should.Throw<BadRequestException>(() => PatientServiceSetup("").Create(patientToCreate))
-                .Message.ShouldBe("Name input not valid");
-        }
-        [Fact]
-        public void Create_patient_bad_surname_Exception()
-        {
-            Patient patientToCreate = new Patient("Zika", "zikic", "gmail3@gmail.com",
-                "99999999", "555555", new DateTime(2000,2,2), "Jovina 12",
-                BloodType.ZERO_NEGATIVE);
-
-            Should.Throw<BadRequestException>(() => PatientServiceSetup("").Create(patientToCreate))
-                .Message.ShouldBe("Surname input not valid");
-        }
-        [Fact]
-        public async void Create_patient_bad_uid_Exception()
-        {
-            Patient patientToCreate = new Patient("Zika", "Zikic", "gmail3@gmail.com",
-                "ASDasd", "555555", new DateTime(2000,2,2), "Jovina 12",
-                BloodType.ZERO_NEGATIVE);
-
-            Should.Throw<BadRequestException>(() => PatientServiceSetup("").Create(patientToCreate))
-                .Message.ShouldBe("Uid input not valid");
         }
         [Fact]
         public void Create_patient_not_unique_uid_Exception()
@@ -126,46 +93,6 @@ namespace HospitalTests.Units.Patients
 
             Should.Throw<BadRequestException>(() => PatientServiceSetup("mail").Create(patientToCreate))
                 .Message.ShouldBe("Email is already taken");
-        }
-        [Fact]
-        public void Create_patient_bad_mail_Exception()
-        {
-            Patient patientToCreate = new Patient("Zika", "Zikic", "kdjbndjbn",
-                "99999999", "555555", new DateTime(2000,2,2), "Jovina 12",
-                BloodType.ZERO_NEGATIVE);
-            
-            Should.Throw<BadRequestException>(() => PatientServiceSetup("").Create(patientToCreate))
-                .Message.ShouldBe("Email input not valid");
-        }
-        [Fact]
-        public void Create_patient_bad_phone_number_Exception()
-        {
-            Patient patientToCreate = new Patient("Zika", "Zikic", "gmail3@gmail.com",
-                "99999999", "a938247", new DateTime(2000,2,2), "Jovina 12",
-                BloodType.ZERO_NEGATIVE);
-            
-            Should.Throw<BadRequestException>(() => PatientServiceSetup("").Create(patientToCreate))
-                .Message.ShouldBe("Phone number input not valid");
-        }
-        [Fact]
-        public void Create_patient_bad_birthday_Exception()
-        {
-            Patient patientToCreate = new Patient("Zika", "Zikic", "gmail3@gmail.com",
-                "99999999", "5555555", new DateTime(2033,2,2), "Jovina 12",
-                BloodType.ZERO_NEGATIVE);
-            
-            Should.Throw<BadRequestException>(() => PatientServiceSetup("").Create(patientToCreate))
-                .Message.ShouldBe("Birth date cant be in the future");
-        }
-        [Fact]
-        public void Create_patient_address_Exception()
-        {
-            Patient patientToCreate = new Patient("Zika", "Zikic", "gmail3@gmail.com",
-                "99999999", "5555555", new DateTime(2000,2,2), "2jovina",
-                BloodType.ZERO_NEGATIVE);
-            
-            Should.Throw<BadRequestException>(() => PatientServiceSetup("").Create(patientToCreate))
-                .Message.ShouldBe("Address input not valid");
         }
     }
 }
