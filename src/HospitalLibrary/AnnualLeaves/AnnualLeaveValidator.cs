@@ -27,6 +27,14 @@ namespace HospitalLibrary.AnnualLeaves
             }
         }
 
+        public void CancelValidation(AnnualLeave leave, int doctorId)
+        {
+            if(leave.State!=AnnualLeaveState.PENDING)
+                throw new BadRequestException("Annual Leave isn't PENDING,can not cancel it!");
+            if(leave.DoctorId!=doctorId)
+                throw new BadRequestException("Doctor and Annual-Leave don't match!");
+        }
+
         private bool IsDoctorAvailable(int doctorId, TimeInterval timeInterval)
         {
             var numberOfAppointments =
