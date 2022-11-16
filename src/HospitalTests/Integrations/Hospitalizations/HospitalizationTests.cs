@@ -19,17 +19,6 @@ public class HospitalizationTests: BaseIntegrationTest
     {
     }
 
-
-    // public HospitalizationController SetupController()
-    // {
-    //     using var scope = Factory.Services.CreateScope();
-    //     var controller = new HospitalizationController(
-    //         scope.ServiceProvider.GetRequiredService<IHospitalizationService>(),
-    //         scope.ServiceProvider.GetRequiredService<IMedicalRecordService>()
-    //     );
-    //     return controller;
-    // }
-
     [Fact]
     public void Hospitalization_created_successfully()
     {
