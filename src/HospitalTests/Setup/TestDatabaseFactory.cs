@@ -1,7 +1,12 @@
 ﻿using HospitalAPI;
+using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Buildings;
+using HospitalLibrary.Floors;
+using HospitalLibrary.Hospitalizations;
+using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Rooms;
+using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Shared.Repository;
@@ -43,7 +48,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn";
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=123";
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
@@ -57,8 +62,74 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Address = "NEKA ADRESA",
             Name = "Neko ime"
         };
+
+        Floor floor = new Floor()
+        {
+            Id = 1,
+            Area = 100,
+            BuildingId = 1,
+        };
+        Room room = new Room()
+        {
+            Id = 1,
+            Area = 10,
+            FloorId = 1,
+            RoomNumber= "1"
+        };
+        RoomEquipment equipment = new Bed(1, 10, "Bed", 1, 1);
+        RoomEquipment equipment2 = new Bed(2, 10, "Bed", 1, 1);
+
+        Patient patient = new Patient()
+        {
+            Id=1,
+            Name = "Marko",
+            Surname = "Markovic",
+            Email = "asdasd@gmail.coma",
+            Uid = "asdasdasdaaa",
+            PhoneNumber = "123123123",
+            BirthDate = DateTime.Now, 
+            Address = "ADRESA", 
+            BloodType = BloodType.A_NEGATIVE
+        };
+        
+        Patient patient2 = new Patient()
+        {
+            Id=2,
+            Name = "Marko",
+            Surname = "Markovic",
+            Email = "asdasd@gmail.com",
+            Uid = "asdasdasda",
+            PhoneNumber = "123123123",
+            BirthDate = DateTime.Now, 
+            Address = "ADRESA", 
+            BloodType = BloodType.A_NEGATIVE
+        };
+        
+        MedicalRecord record = new MedicalRecord()
+        {
+            Id = 2,
+            PatientId = 2
+        };
+
+        Hospitalization hospitalization = new Hospitalization()
+        {   
+            Id = 10,
+            BedId = 2,
+            State = HospitalizationState.ACTIVE,
+            StartTime = DateTime.Now,
+            MedicalRecordId = 2,
+        };
+        
         dbContext.Buildings.Add(building);
 
+        dbContext.Floors.Add(floor);
+        dbContext.Rooms.Add(room);
+        dbContext.RoomEquipment.Add(equipment);
+        dbContext.RoomEquipment.Add(equipment2);
+        dbContext.Patients.Add(patient);
+        dbContext.Patients.Add(patient2);
+        dbContext.MedicalRecords.Add(record);
+        dbContext.Hospitalizations.Add(hospitalization);
         dbContext.SaveChanges();
 
     }
