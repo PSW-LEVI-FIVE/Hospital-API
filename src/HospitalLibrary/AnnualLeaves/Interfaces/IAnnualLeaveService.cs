@@ -8,5 +8,7 @@ namespace HospitalLibrary.AnnualLeaves.Interfaces
         IEnumerable<AnnualLeave> GetAllByDoctorId(int doctorId);
 
         Task<AnnualLeave> Create(AnnualLeave annualLeave);
+
+        AnnualLeave Delete(int annualLeaveId, int doctorId);
     }
 }
