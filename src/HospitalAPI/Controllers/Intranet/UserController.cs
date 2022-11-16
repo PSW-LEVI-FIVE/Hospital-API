@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
 {
-    [Microsoft.AspNetCore.Components.Route("api/intranet/login")]
+    [Route("api/intranet/login")]
     [ApiController]
     public class UserController : ControllerBase
     {
