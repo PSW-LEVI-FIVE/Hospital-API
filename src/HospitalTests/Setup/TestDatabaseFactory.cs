@@ -48,7 +48,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=123";
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn";
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
@@ -84,7 +84,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Id=1,
             Name = "Marko",
             Surname = "Markovic",
-            Email = "asdasd@gmail.coma",
+            Email = "asdasd1@gmail.coma",
             Uid = "67676767",
             PhoneNumber = "123123123",
             BirthDate = new DateTime(2000,2,2), 
@@ -97,7 +97,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Id=2,
             Name = "Marko",
             Surname = "Markovic",
-            Email = "asdasd@gmail.com",
+            Email = "asdasd2@gmail.com",
             Uid = "78787878",
             PhoneNumber = "123123123",
             BirthDate = new DateTime(2000,2,2), 
