@@ -27,7 +27,7 @@ namespace HospitalLibrary.AnnualLeaves
             }
         }
 
-        public void Cancel_Validation(AnnualLeave leave, int doctorId)
+        public void CancelValidation(AnnualLeave leave, int doctorId)
         {
             if(leave.State!=AnnualLeaveState.PENDING)
                 throw new BadRequestException("Annual Leave isn't PENDING,can not cancel it!");
