@@ -30,6 +30,8 @@ namespace HospitalLibrary.Hospitalizations
         
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
+
+        public string PdfUrl { get; set; } = "";
         
         public List<Therapy> Therapies { get; set; }
 

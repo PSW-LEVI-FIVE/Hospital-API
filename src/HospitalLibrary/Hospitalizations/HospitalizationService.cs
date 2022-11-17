@@ -1,6 +1,16 @@
-﻿using HospitalLibrary.Hospitalizations.Dtos;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Intrinsics.X86;
+using System.Threading.Tasks;
+using HospitalAPI.Storage;
+using HospitalLibrary.BloodStorages;
+using HospitalLibrary.Hospitalizations.Dtos;
 using HospitalLibrary.Hospitalizations.Interfaces;
+using HospitalLibrary.Patients;
+using HospitalLibrary.PDFGeneration;
+using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Therapies.Model;
 
 namespace HospitalLibrary.Hospitalizations
 {
@@ -8,11 +18,15 @@ namespace HospitalLibrary.Hospitalizations
     {
         private IUnitOfWork _unitOfWork;
         private IHospitalizationValidator _validator;
+        private IStorage _storage;
+        private IPDFGenerator _generator;
 
-        public HospitalizationService(IUnitOfWork unitOfWork, IHospitalizationValidator validator)
+        public HospitalizationService(IUnitOfWork unitOfWork, IHospitalizationValidator validator, IStorage storage, IPDFGenerator generator)
         {
             _unitOfWork = unitOfWork;
             _validator = validator;
+            _storage = storage;
+            _generator = generator;
         }
 
         public Hospitalization Create(Hospitalization hospObj)
@@ -35,5 +49,16 @@ namespace HospitalLibrary.Hospitalizations
             _unitOfWork.HospitalizationRepository.Save();
             return hospitalization;
         }
+
+        public async Task<string> GenerateTherapyReport(int id)
+        {
+            Hospitalization hospitalization = _unitOfWork.HospitalizationRepository.GetOnePopulated(id);
+            if (hospitalization == null) throw new NotFoundException("Hospitalization with given id doesnt exist!");
+            Patient patient = _unitOfWork.PatientRepository.GetOne(hospitalization.MedicalRecord.PatientId);
+            byte[] pdf = _generator.GenerateTherapyPdf(hospitalization, patient);
+            return await _storage.UploadFile(pdf, "hospitalization-" + DateTime.Now + "-" + id);
+        }
+
+    
     }
 }

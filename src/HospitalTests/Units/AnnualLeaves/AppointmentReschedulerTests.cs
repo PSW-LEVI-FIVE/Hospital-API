@@ -90,7 +90,7 @@ public class AppointmentReschedulerTests
         IAppointmentRescheduler rescheduler = new AppointmentRescheduler(mock.Object);
         
         
-        Assert.ThrowsAsync<BadRequestException>(() => rescheduler.Reschedule(2,
+        Should.ThrowAsync<BadRequestException>(() => rescheduler.Reschedule(2,
             new TimeInterval(DateTime.Parse("11-13-2022"), DateTime.Parse("11-25-2022"))));
         
     }

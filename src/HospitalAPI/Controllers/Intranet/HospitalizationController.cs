@@ -1,4 +1,5 @@
-﻿using HospitalLibrary.Hospitalizations;
+﻿using System.Threading.Tasks;
+using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.Hospitalizations.Dtos;
 using HospitalLibrary.Hospitalizations.Interfaces;
 using HospitalLibrary.MedicalRecords;
@@ -35,6 +36,15 @@ namespace HospitalAPI.Controllers.Intranet
         {
             Hospitalization hospitalization = _hospitalizationService.EndHospitalization(id, endHospitalizationDto);
             return Ok(hospitalization);
+        }
+
+
+        [HttpGet]
+        [Route("{id:int}/generate/pdf")]
+        public async Task<IActionResult> GeneratePdf(int id)
+        {
+            string url = await _hospitalizationService.GenerateTherapyReport(id);
+            return Ok(url);
         }
     }
 }

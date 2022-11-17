@@ -4,6 +4,6 @@ namespace HospitalLibrary.Hospitalizations.Interfaces
 {
     public interface IHospitalizationRepository: IBaseRepository<Hospitalization>
     {
-        
+        public Hospitalization GetOnePopulated(int id);
     }
 }

@@ -64,38 +64,6 @@ namespace HospitalLibrary.Migrations
                     b.ToTable("Allergens");
                 });
 
-            modelBuilder.Entity("HospitalLibrary.AnnualLeaves.AnnualLeave", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("EndAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("IsUrgent")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Reason")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("StartAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("State")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
-
-                    b.ToTable("AnnualLeaves");
-                });
-
             modelBuilder.Entity("HospitalLibrary.Appointments.Appointment", b =>
                 {
                     b.Property<int>("Id")
@@ -257,17 +225,11 @@ namespace HospitalLibrary.Migrations
                     b.Property<int>("BedId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("EndTime")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<int>("MedicalRecordId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("State")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -490,12 +452,6 @@ namespace HospitalLibrary.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("Uid")
-                        .IsUnique();
-
                     b.ToTable("Persons");
                 });
 
@@ -594,9 +550,6 @@ namespace HospitalLibrary.Migrations
             modelBuilder.Entity("HospitalLibrary.Patients.Patient", b =>
                 {
                     b.HasBaseType("HospitalLibrary.Shared.Model.Person");
-
-                    b.Property<int>("BloodType")
-                        .HasColumnType("integer");
 
                     b.ToTable("Patients");
                 });

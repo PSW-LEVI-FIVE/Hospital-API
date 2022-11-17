@@ -55,4 +55,17 @@ public class HospitalizationTests: BaseIntegrationTest
         result.State.ShouldBe(HospitalizationState.FINISHED);
     
     }
+
+
+    [Fact]
+    public async Task PDF_generation()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = new HospitalizationController(
+            scope.ServiceProvider.GetRequiredService<IHospitalizationService>(),
+            scope.ServiceProvider.GetRequiredService<IMedicalRecordService>()
+        );
+        var result = await controller.GeneratePdf(1);
+        result.ShouldNotBeNull();
+    }
 }
