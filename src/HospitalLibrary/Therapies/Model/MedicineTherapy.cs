@@ -11,10 +11,14 @@ namespace HospitalLibrary.Therapies.Model
         public Medicine Medicine { get; set; }
         public double Quantity { get; set; }
         
-        public MedicineTherapy(int id, int hospitalizationId, DateTime givenAt, int medicineId, double quantity) : base(id, hospitalizationId, givenAt)
+        public MedicineTherapy(int hospitalizationId, DateTime givenAt, int medicineId, double quantity , int doctorId) : base(hospitalizationId, givenAt, doctorId)
         {
             MedicineId = medicineId;
             Quantity = quantity;
+        }
+
+        public MedicineTherapy() : base()
+        {
         }
     }
 }

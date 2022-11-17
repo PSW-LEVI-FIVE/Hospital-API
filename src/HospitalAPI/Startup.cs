@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.Allergens;
+using HospitalLibrary.BloodStorages;
+using HospitalLibrary.BloodStorages.Interfaces;
 using HospitalLibrary.Buildings;
 using HospitalLibrary.Buildings.Interfaces;
 using HospitalLibrary.Doctors;
@@ -21,6 +23,8 @@ using HospitalLibrary.Map;
 using HospitalLibrary.Map.Interfaces;
 using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.MedicalRecords.Interfaces;
+using HospitalLibrary.Medicines;
+using HospitalLibrary.Medicines.Interfaces;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Rooms;
@@ -31,6 +35,8 @@ using HospitalLibrary.Shared.Repository;
 using HospitalLibrary.Shared.Validators;
 using HospitalLibrary.User.Interfaces;
 using HospitalLibrary.Users;
+using HospitalLibrary.Therapies;
+using HospitalLibrary.Therapies.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -81,6 +87,9 @@ namespace HospitalAPI
             services.AddScoped<IAppointmentRescheduler, AppointmentRescheduler>();
             services.AddScoped<IAllergenService, AllergenService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITherapyService, TherapyService>();
+            services.AddScoped<IBloodStorageService, BloodStorageService>();
+            services.AddScoped<IMedicineService, MedicineService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });

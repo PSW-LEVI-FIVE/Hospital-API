@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
-using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.BloodStorages.Interfaces
 {
-    public interface IBloodStorageRepository: IBaseRepository<BloodStorage>
+    public interface IBloodStorageService
     {
+        bool GiveBlood(BloodStorage blood, double quantity);
+
         Task<BloodStorage> GetByType(BloodType type);
     }
 }

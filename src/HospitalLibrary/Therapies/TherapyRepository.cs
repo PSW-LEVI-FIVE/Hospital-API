@@ -10,5 +10,8 @@ namespace HospitalLibrary.Therapies
         public TherapyRepository(HospitalDbContext dataContext) : base(dataContext)
         {
         }
+        
+        
+        
     }
 }

@@ -10,16 +10,21 @@ namespace HospitalLibrary.Medicines
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
         public string Name { get; set; }
+        public double Quantity { get; set; }
         public List<Allergen> Allergens { get; set; }
 
 
-        public Medicine(int id, string name)
+        public Medicine(int id, string name, double quantity)
         {
             Id = id;
             Name = name;
+            Quantity = quantity;
         }
-        
-        public Medicine() {}
+
+        public Medicine()
+        {
+        }
     }
 }
