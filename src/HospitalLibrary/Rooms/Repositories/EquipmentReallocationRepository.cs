@@ -21,7 +21,7 @@ namespace HospitalLibrary.Rooms.Repositories
         public async Task<IEnumerable<TimeInterval>> GetAllRoomTakenInrevalsForDate(int roomId, DateTime date)
         {
             return await _dataContext.EquipmentReallocations
-                .Where(a => a.RoomId == roomId)
+                .Where(a => a.StartingRoomId == roomId|| a.DestinationRoomId == roomId)
                 .Where(a => a.StartAt.Date.Equals(date.Date))
                 .Select(a => new TimeInterval(a.StartAt, a.EndAt))
                 .OrderBy(a =>a.Start)
