@@ -2,6 +2,7 @@
 using HospitalLibrary.Allergens.Interfaces;
 using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.Appointments.Interfaces;
+using HospitalLibrary.BloodOrders.Interfaces;
 using HospitalLibrary.BloodStorages.Interfaces;
 using HospitalLibrary.Buildings.Interfaces;
 using HospitalLibrary.Doctors;
@@ -39,9 +40,9 @@ namespace HospitalLibrary.Shared.Interfaces
         ITherapyRepository TherapyRepository { get; }
         IBloodStorageRepository BloodStorageRepository { get; }
         IRoomEquipmentRepository RoomEquipmentRepository { get; }
-        
         IBedRepository BedRepository { get; }
-        
         IAnnualLeaveRepository AnnualLeaveRepository { get; }
+        IBloodOrderRepository BloodOrderRepository { get; }
+        
     }
 }
