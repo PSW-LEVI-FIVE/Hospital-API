@@ -4,15 +4,14 @@ using HospitalLibrary.BloodOrders;
 using HospitalLibrary.BloodOrders.Dtos;
 using HospitalLibrary.BloodOrders.Interfaces;
 using HospitalLibrary.BloodStorages;
-using HospitalLibrary.Shared.Interfaces;
 using HospitalTests.Setup;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Moq;
 using Shouldly;
 
-namespace HospitalTests.BloodOrders;
+namespace HospitalTests.Integrations.BloodOrders;
 
+[Collection("Test")]
 public class BloodOrderTests:BaseIntegrationTest
 {
     

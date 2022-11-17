@@ -6,13 +6,11 @@ using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
-using Microsoft.OpenApi.Any;
 using Moq;
-using SendGrid.Helpers.Errors.Model;
 using Shouldly;
 using BadRequestException = HospitalLibrary.Shared.Exceptions.BadRequestException;
 
-namespace HospitalTests.AnnualLeaves;
+namespace HospitalTests.Units.AnnualLeaves;
 
 public class AppointmentReschedulerTests
 {
