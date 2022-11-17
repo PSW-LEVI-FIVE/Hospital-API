@@ -8,7 +8,6 @@ namespace HospitalLibrary.Users.Interfaces
     { 
         User GetOneByUsername(string username);
         bool UsernameExist(string username);
-        bool PasswordExist(string password);
         public User UserExist(string username, string password);
     }
 }

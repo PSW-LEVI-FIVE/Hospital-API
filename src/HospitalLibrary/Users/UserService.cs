@@ -27,11 +27,7 @@ namespace HospitalLibrary.Users
         {
             return _unitOfWork.UserRepository.UsernameExist(username);
         }
-
-        public bool PasswordExist(string password)
-        {
-            return _unitOfWork.UserRepository.PasswordExist(password);
-        }
+        
 
         public User UserExist(string username, string password)
         {

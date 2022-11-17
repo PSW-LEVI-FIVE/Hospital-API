@@ -22,11 +22,6 @@ namespace HospitalLibrary.Users
             return _dataContext.Users.Any(m => m.Username.Equals(username));
         }
 
-        public bool PasswordExist(string password)
-        {
-            return _dataContext.Users.Any(m => m.Password.Equals(password));
-        }
-
         public User UserExist(string username, string password)
         {
             return _dataContext.Users.FirstOrDefault(m => m.Password.Equals(password) && m.Username.Equals(username));

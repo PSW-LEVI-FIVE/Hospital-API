@@ -11,8 +11,6 @@ namespace HospitalLibrary.User.Interfaces
         Task<IEnumerable<Users.User>> GetAll();
 
         bool UsernameExist(string username);
-        
-        bool PasswordExist(string password);
 
         public Users.User UserExist(string username, string password);
         
