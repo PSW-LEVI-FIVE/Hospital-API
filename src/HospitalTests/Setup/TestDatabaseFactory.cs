@@ -49,36 +49,28 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn";
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=123";
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
     {
-        //dbContext.Database.EnsureDeleted();
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"BloodStorage\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Therapies\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Hospitalizations\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"AllergenMedicine\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Allergens\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Medicines\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"AnnualLeaves\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Appointments\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Beds\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Feedbacks\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"MedicalRecords\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"RoomEquipment\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"MapRooms\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Rooms\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"MapFloors\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Floors\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"MapBuildings\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Buildings\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"WorkingHours\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Users\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Doctors\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Patients\"");
-        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Persons\"");
+
         dbContext.Database.EnsureCreated();
+        dbContext.Database.ExecuteSqlRaw(
+            "CREATE OR REPLACE FUNCTION truncate_tables(username IN VARCHAR) RETURNS void AS $$ " +
+            "DECLARE " +
+            "statements CURSOR FOR " +
+            "SELECT tablename FROM pg_tables " +
+            "WHERE tableowner = username AND schemaname = 'public'; " +
+            "BEGIN " +
+            "    FOR stmt IN statements LOOP " +
+            "EXECUTE 'TRUNCATE TABLE ' || quote_ident(stmt.tablename) || ' CASCADE;'; " +
+            "END LOOP; " +
+            "END; " +
+            "    $$ LANGUAGE plpgsql; " 
+            );
+        dbContext.Database.ExecuteSqlRaw("SELECT truncate_tables('postgres');");
+
 
         Building building = new Building()
         {
