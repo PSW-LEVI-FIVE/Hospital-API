@@ -7,6 +7,8 @@ using HospitalAPI.Emails;
 using HospitalAPI.ErrorHandling;
 using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.AnnualLeaves.Interfaces;
+using HospitalLibrary.BloodOrders;
+using HospitalLibrary.BloodOrders.Interfaces;
 using HospitalLibrary.Buildings;
 using HospitalLibrary.Buildings.Interfaces;
 using HospitalLibrary.Doctors;
@@ -77,6 +79,7 @@ namespace HospitalAPI
             services.AddScoped<IAnnualLeaveService,AnnualLeaveService>();
             services.AddScoped<IAnnualLeaveValidator, AnnualLeaveValidator>();
             services.AddScoped<IAppointmentRescheduler, AppointmentRescheduler>();
+            services.AddScoped<IBloodOrderService,BloodOrderService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });

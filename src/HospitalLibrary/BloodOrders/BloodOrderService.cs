@@ -1,4 +1,5 @@
-﻿using HospitalLibrary.BloodOrders.Interfaces;
+﻿using System.Threading.Tasks;
+using HospitalLibrary.BloodOrders.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.BloodOrders
@@ -11,6 +12,13 @@ namespace HospitalLibrary.BloodOrders
         public BloodOrderService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+        }
+
+        public async Task<BloodOrder> Create(BloodOrder bloodOrder)
+        {
+            _unitOfWork.BloodOrderRepository.Add(bloodOrder);
+            _unitOfWork.BloodOrderRepository.Save();
+            return bloodOrder;
         }
     }
 }
