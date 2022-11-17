@@ -19,14 +19,19 @@ namespace HospitalLibrary.Users
         public int Id { get; set; }
         public Person Person { get; set; }
         public string Username { get; set; }
-        
         public string Password { get; set; }
-        
         public Role Role { get; set; }
 
         public User()
         {
-            
+        }
+
+        public User(string username, string password, Role role,int id)
+        {
+            Username = username;
+            Password = password;
+            Role = role;
+            Id = id;
         }
     }
 }

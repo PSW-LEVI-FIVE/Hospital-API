@@ -1,12 +1,12 @@
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Appointments.Interfaces;
-using System;
-using System.Linq;
 using System.Text.Json.Serialization;
 using HospitalAPI.Emails;
 using HospitalAPI.ErrorHandling;
+using Microsoft.Extensions.Hosting;
 using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.AnnualLeaves.Interfaces;
+using HospitalLibrary.Allergens;
 using HospitalLibrary.Buildings;
 using HospitalLibrary.Buildings.Interfaces;
 using HospitalLibrary.Doctors;
@@ -29,6 +29,8 @@ using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Shared.Repository;
 using HospitalLibrary.Shared.Validators;
+using HospitalLibrary.User.Interfaces;
+using HospitalLibrary.Users;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -77,6 +79,8 @@ namespace HospitalAPI
             services.AddScoped<IAnnualLeaveService,AnnualLeaveService>();
             services.AddScoped<IAnnualLeaveValidator, AnnualLeaveValidator>();
             services.AddScoped<IAppointmentRescheduler, AppointmentRescheduler>();
+            services.AddScoped<IAllergenService, AllergenService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });

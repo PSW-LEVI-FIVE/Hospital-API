@@ -11,13 +11,9 @@ namespace HospitalLibrary.Patients
     public class PatientRepository: BaseRepository<Patient>,IPatientRepository
     {
         public PatientRepository(HospitalDbContext context): base(context) {}
-        public async Task<Patient> GetOneByUid(string uid)
+        public Patient GetOneByEmail(string email)
         {
-            return await _dataContext.Patients.Where(p => p.Uid.Equals(uid)).FirstOrDefaultAsync();
-        }
-        public async Task<Patient> GetOneByEmail(string email)
-        {
-            return await _dataContext.Patients.Where(p => p.Email.Equals(email)).FirstOrDefaultAsync();
+            return _dataContext.Patients.Where(p => p.Email.Equals(email)).FirstOrDefault();
         }
     }
 }

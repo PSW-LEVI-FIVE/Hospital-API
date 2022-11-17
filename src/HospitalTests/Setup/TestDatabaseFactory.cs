@@ -10,6 +10,7 @@ using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Shared.Repository;
+using HospitalLibrary.Users;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -48,13 +49,28 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=123";
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn";
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
     {
-        dbContext.Database.EnsureDeleted();
+
         dbContext.Database.EnsureCreated();
+        dbContext.Database.ExecuteSqlRaw(
+            "CREATE OR REPLACE FUNCTION truncate_tables(username IN VARCHAR) RETURNS void AS $$ " +
+            "DECLARE " +
+            "statements CURSOR FOR " +
+            "SELECT tablename FROM pg_tables " +
+            "WHERE tableowner = username AND schemaname = 'public'; " +
+            "BEGIN " +
+            "    FOR stmt IN statements LOOP " +
+            "EXECUTE 'TRUNCATE TABLE ' || quote_ident(stmt.tablename) || ' CASCADE;'; " +
+            "END LOOP; " +
+            "END; " +
+            "    $$ LANGUAGE plpgsql; " 
+            );
+        dbContext.Database.ExecuteSqlRaw("SELECT truncate_tables('postgres');");
+
 
         Building building = new Building()
         {
@@ -62,7 +78,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Address = "NEKA ADRESA",
             Name = "Neko ime"
         };
-
+        
         Floor floor = new Floor()
         {
             Id = 1,
@@ -78,18 +94,26 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         };
         RoomEquipment equipment = new Bed(1, 10, "Bed", 1, 1);
         RoomEquipment equipment2 = new Bed(2, 10, "Bed", 1, 1);
-
+        
         Patient patient = new Patient()
         {
             Id=1,
             Name = "Marko",
             Surname = "Markovic",
-            Email = "asdasd@gmail.coma",
-            Uid = "asdasdasdaaa",
+            Email = "asdasd1@gmail.coma",
+            Uid = "67676767",
             PhoneNumber = "123123123",
-            BirthDate = DateTime.Now, 
-            Address = "ADRESA", 
+            BirthDate = new DateTime(2000,2,2), 
+            Address = "Mike", 
             BloodType = BloodType.A_NEGATIVE
+        };
+        
+        User user = new User()
+        {
+            Username = "Mika",
+            Password = "plsradi",
+            Role = Role.Patient,
+            Id = 1
         };
         
         Patient patient2 = new Patient()
@@ -97,12 +121,19 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Id=2,
             Name = "Marko",
             Surname = "Markovic",
-            Email = "asdasd@gmail.com",
-            Uid = "asdasdasda",
+            Email = "asdasd2@gmail.com",
+            Uid = "78787878",
             PhoneNumber = "123123123",
-            BirthDate = DateTime.Now, 
-            Address = "ADRESA", 
+            BirthDate = new DateTime(2000,2,3), 
+            Address = "Zike", 
             BloodType = BloodType.A_NEGATIVE
+        };
+        User user2 = new User()
+        {
+            Username = "Mika1",
+            Password = "plsradi",
+            Role = Role.Patient,
+            Id = 2
         };
         
         MedicalRecord record = new MedicalRecord()
@@ -110,7 +141,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Id = 2,
             PatientId = 2
         };
-
+        
         Hospitalization hospitalization = new Hospitalization()
         {   
             Id = 10,
@@ -121,13 +152,15 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         };
         
         dbContext.Buildings.Add(building);
-
+        
         dbContext.Floors.Add(floor);
         dbContext.Rooms.Add(room);
         dbContext.RoomEquipment.Add(equipment);
         dbContext.RoomEquipment.Add(equipment2);
         dbContext.Patients.Add(patient);
         dbContext.Patients.Add(patient2);
+        dbContext.Users.Add(user);
+        dbContext.Users.Add(user2);
         dbContext.MedicalRecords.Add(record);
         dbContext.Hospitalizations.Add(hospitalization);
         dbContext.SaveChanges();

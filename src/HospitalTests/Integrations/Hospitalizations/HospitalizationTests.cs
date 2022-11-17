@@ -11,6 +11,7 @@ using Shouldly;
 
 namespace HospitalTests.Integrations.Hospitalizations;
 
+[Collection("Test")]
 public class HospitalizationTests: BaseIntegrationTest
 {
 
@@ -37,7 +38,7 @@ public class HospitalizationTests: BaseIntegrationTest
         var result = ((OkObjectResult)controller.CreateHospitalization(dto)).Value as Hospitalization;
         result.ShouldNotBeNull();
     }
-
+    
     [Fact]
     public void Hospitalization_ended()
     {
