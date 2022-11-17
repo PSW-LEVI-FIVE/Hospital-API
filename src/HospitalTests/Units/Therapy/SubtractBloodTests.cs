@@ -25,7 +25,7 @@ namespace HospitalTests.Units.Therapy
             BloodStorageService bloodservice = new BloodStorageService(BloodRepositorySetup().Object);
             BloodStorage blood = await bloodservice.GetByType(BloodType.A_NEGATIVE);
             
-            bloodservice.GiveBlood(blood,1.0).ShouldBe(true);
+            bloodservice.SubtractQuantity(blood,1.0).ShouldBe(true);
             blood.Quantity.ShouldBe(1.0);
         }
 
@@ -35,7 +35,7 @@ namespace HospitalTests.Units.Therapy
             BloodStorageService bloodservice = new BloodStorageService(BloodRepositorySetup().Object);
             BloodStorage blood = await bloodservice.GetByType(BloodType.A_NEGATIVE);
 
-            Assert.Throws<BadRequestException>(() => bloodservice.GiveBlood(blood, 3.0));
+            Assert.Throws<BadRequestException>(() => bloodservice.SubtractQuantity(blood, 3.0));
         }
     }
 }

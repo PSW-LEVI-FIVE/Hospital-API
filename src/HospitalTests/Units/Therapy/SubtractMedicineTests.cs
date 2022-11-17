@@ -28,7 +28,7 @@ namespace HospitalTests.Units.Therapy
                 .Callback<Medicine>(med => updatedMed = med);
             MedicineService medicineService = new MedicineService(unitOfWork.Object);
             
-            medicineService.GiveMedicine(1,2.0).ShouldBe(true);
+            medicineService.SubtractQuantity(1,2.0).ShouldBe(true);
             updatedMed.ShouldNotBeNull();
             updatedMed.Quantity.ShouldBe(3.0);
         }
@@ -42,7 +42,7 @@ namespace HospitalTests.Units.Therapy
                 .Callback<Medicine>(med => updatedMed = med);
             MedicineService medicineService = new MedicineService(unitOfWork.Object);
             
-            Assert.Throws<BadRequestException>(() => medicineService.GiveMedicine(1,6.0));
+            Assert.Throws<BadRequestException>(() => medicineService.SubtractQuantity(1,6.0));
             updatedMed.ShouldBeNull();
         }
     }

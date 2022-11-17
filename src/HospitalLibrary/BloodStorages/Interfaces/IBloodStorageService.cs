@@ -4,7 +4,7 @@ namespace HospitalLibrary.BloodStorages.Interfaces
 {
     public interface IBloodStorageService
     {
-        bool GiveBlood(BloodStorage blood, double quantity);
+        bool SubtractQuantity(BloodStorage blood, double quantity);
 
         Task<BloodStorage> GetByType(BloodType type);
     }

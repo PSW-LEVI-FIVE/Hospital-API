@@ -2,6 +2,6 @@
 {
     public interface IMedicineService
     {
-        bool GiveMedicine(int medicine, double quantity);
+        bool SubtractQuantity(int medicine, double quantity);
     }
 }

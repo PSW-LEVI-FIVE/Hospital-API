@@ -15,11 +15,10 @@ namespace HospitalLibrary.BloodStorages
             _unitOfWork = unitOfWork;
         }
 
-        public bool GiveBlood(BloodStorage blood, double quantity)
+        public bool SubtractQuantity(BloodStorage blood, double quantity)
         {
             CheckAmount(blood.Quantity, quantity);
-            double newQuantity = blood.Quantity - quantity;
-            blood.Quantity = newQuantity;
+            blood.Quantity -= quantity;
             _unitOfWork.BloodStorageRepository.Update(blood);
             return true;
         }
