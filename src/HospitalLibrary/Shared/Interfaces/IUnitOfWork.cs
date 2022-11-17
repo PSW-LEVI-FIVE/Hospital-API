@@ -42,6 +42,7 @@ namespace HospitalLibrary.Shared.Interfaces
         IBloodStorageRepository BloodStorageRepository { get; }
         IRoomEquipmentRepository RoomEquipmentRepository { get; }
         IUserRepository UserRepository { get; }
+        IEquipmentReallocationRepository EquipmentReallocationRepository { get; }
         IBedRepository BedRepository { get; }
         IAnnualLeaveRepository AnnualLeaveRepository { get; }
         IBloodOrderRepository BloodOrderRepository { get; }
