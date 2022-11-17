@@ -110,6 +110,7 @@ namespace HospitalAPI
             services.AddScoped<IBedService, BedService>();
             services.AddScoped<IRoomEquipmentService, RoomEquipmentService>();
             services.AddScoped<IRoomEquipmentValidator, RoomEquipmentValidator>();
+            services.AddScoped<IEquipmentReallocationService, EquipmentReallocationService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });

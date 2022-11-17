@@ -69,7 +69,7 @@ namespace HospitalLibrary.Shared.Repository
         private IBloodOrderRepository _bloodOrderRepository;
         private IUserRepository _userRepository;
         private IPersonRepository _personRepository;
-
+        private IEquipmentReallocationRepository _equipmentReallocationRepository;
         public UnitOfWork(HospitalDbContext dataContext)
         {
             _dataContext = dataContext;
@@ -111,5 +111,6 @@ namespace HospitalLibrary.Shared.Repository
             _bloodOrderRepository ??= new BloodOrderRepository(_dataContext);
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_dataContext);
         public IPersonRepository PersonRepository => _personRepository ??= new PersonRepository(_dataContext);
+        public IEquipmentReallocationRepository EquipmentReallocationRepository => _equipmentReallocationRepository ??= new EquipmentReallocationRepository(_dataContext);
     }
 }

@@ -20,7 +20,12 @@ namespace HospitalLibrary.Rooms.Repositories
 
         public async Task<IEnumerable<TimeInterval>> GetAllRoomTakenInrevalsForDate(int roomId, DateTime date)
         {
-            throw new NotImplementedException();
+            return await _dataContext.EquipmentReallocations
+                .Where(a => a.RoomId == roomId)
+                .Where(a => a.StartAt.Date.Equals(date.Date))
+                .Select(a => new TimeInterval(a.StartAt, a.EndAt))
+                .OrderBy(a =>a.Start)
+                .ToListAsync();
         }
 
         public Task<EquipmentReallocation> GetById(int appointmentId)
