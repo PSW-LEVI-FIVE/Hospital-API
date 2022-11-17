@@ -204,12 +204,11 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         dbContext.RoomEquipment.Add(equipment2);
         dbContext.Patients.Add(patient);
         dbContext.Patients.Add(patient2);
-        dbContext.Users.Add(user);
-        dbContext.Users.Add(user2);
         dbContext.MedicalRecords.Add(record);
         dbContext.Medicines.Add(medicine);
         dbContext.BloodStorage.Add(bloodStorage);
         dbContext.Users.Add(user);
+        dbContext.Users.Add(user2);
         dbContext.Users.Add(user3);
         dbContext.SaveChanges();
 
