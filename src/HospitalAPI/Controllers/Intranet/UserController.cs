@@ -1,4 +1,5 @@
 ﻿using HospitalLibrary.User.Interfaces;
+using HospitalLibrary.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
@@ -12,6 +13,14 @@ namespace HospitalAPI.Controllers.Intranet
         public UserController(IUserService userService)
         {
             _userService = userService;
+        }
+        
+        [HttpGet]
+        [Route("{id}")]
+        public IActionResult GetbyId(int id)
+        {
+            User user = _userService.getOne(id);
+            return Ok(user);
         }
     }
 }

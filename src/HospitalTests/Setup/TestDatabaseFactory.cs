@@ -10,6 +10,7 @@ using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Shared.Repository;
+using HospitalLibrary.Users;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -111,6 +112,8 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             PatientId = 2
         };
 
+        User user = new User(2, "username", "password", Role.Manager);
+
         Hospitalization hospitalization = new Hospitalization()
         {   
             Id = 10,
@@ -130,6 +133,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         dbContext.Patients.Add(patient2);
         dbContext.MedicalRecords.Add(record);
         dbContext.Hospitalizations.Add(hospitalization);
+        dbContext.Users.Add(user);
         dbContext.SaveChanges();
 
     }
