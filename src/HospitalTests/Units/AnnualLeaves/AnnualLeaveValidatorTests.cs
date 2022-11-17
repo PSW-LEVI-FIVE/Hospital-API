@@ -7,7 +7,7 @@ using HospitalLibrary.Shared.Interfaces;
 using Moq;
 using Shouldly;
 
-namespace HospitalTests.AnnualLeaves;
+namespace HospitalTests.Units.AnnualLeaves;
 
 public class AnnualLeaveValidatorTests
 {

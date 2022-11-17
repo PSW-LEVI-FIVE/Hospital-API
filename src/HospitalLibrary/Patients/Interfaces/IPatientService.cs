@@ -6,7 +6,5 @@ namespace HospitalLibrary.Patients.Interfaces
     public interface IPatientService
     {
         Task<IEnumerable<Patient>> GetAll();
-        
-        Task<Patient> Create(Patient patient);
     }
 }

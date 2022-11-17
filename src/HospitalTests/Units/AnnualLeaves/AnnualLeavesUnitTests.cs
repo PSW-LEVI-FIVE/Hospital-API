@@ -1,12 +1,11 @@
 ﻿using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.AnnualLeaves.Interfaces;
-using HospitalLibrary.Doctors;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using Moq;
 using Shouldly;
 
-namespace HospitalTests.AnnualLeaves;
+namespace HospitalTests.Units.AnnualLeaves;
 
 public class AnnualLeavesUnitTests
 {
