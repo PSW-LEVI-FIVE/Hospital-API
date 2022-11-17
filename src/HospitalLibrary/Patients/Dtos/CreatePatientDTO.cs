@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Shared.DTOValidators;
+using HospitalLibrary.Shared.Model;
 using HospitalLibrary.Users;
 using Newtonsoft.Json.Serialization;
 
@@ -80,7 +81,7 @@ namespace HospitalLibrary.Patients.Dtos
                 Id = Id,
                 Username = Username,
                 Password = Password,
-                Role = Role.Patient
+                Role = Role.Patient,
             };
         }
     }

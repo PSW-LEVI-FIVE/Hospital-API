@@ -6,6 +6,5 @@ namespace HospitalLibrary.Patients.Interfaces
 {
     public interface IPatientRepository: IBaseRepository<Patient>
     {
-        Patient GetOneByEmail(string email);
     }
 }

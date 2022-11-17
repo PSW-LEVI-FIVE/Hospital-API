@@ -11,6 +11,8 @@ using HospitalLibrary.BloodOrders.Interfaces;
 using HospitalLibrary.Allergens;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.BloodStorages.Interfaces;
+using HospitalLibrary.Auth;
+using HospitalLibrary.Auth.Interfaces;
 using HospitalLibrary.Buildings;
 using HospitalLibrary.Buildings.Interfaces;
 using HospitalLibrary.Doctors;
@@ -35,16 +37,16 @@ using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Shared.Repository;
 using HospitalLibrary.Shared.Validators;
-using HospitalLibrary.User.Interfaces;
-using HospitalLibrary.Users;
 using HospitalLibrary.Therapies;
 using HospitalLibrary.Therapies.Interfaces;
+using HospitalLibrary.User.Interfaces;
+using HospitalLibrary.Users;
+using HospitalLibrary.Users.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 namespace HospitalAPI
@@ -93,6 +95,8 @@ namespace HospitalAPI
             services.AddScoped<ITherapyService, TherapyService>();
             services.AddScoped<IBloodStorageService, BloodStorageService>();
             services.AddScoped<IMedicineService, MedicineService>();
+            services.AddScoped<IRegistrationValidationService, RegistrationValidationService>();
+            services.AddScoped<IAuthService, AuthService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });
