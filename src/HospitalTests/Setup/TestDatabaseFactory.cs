@@ -54,7 +54,30 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
     {
-        dbContext.Database.EnsureDeleted();
+        //dbContext.Database.EnsureDeleted();
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"BloodStorage\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Therapies\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Hospitalizations\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"AllergenMedicine\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Allergens\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Medicines\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"AnnualLeaves\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Appointments\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Beds\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Feedbacks\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"MedicalRecords\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"RoomEquipment\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"MapRooms\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Rooms\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"MapFloors\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Floors\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"MapBuildings\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Buildings\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"WorkingHours\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Users\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Doctors\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Patients\"");
+        dbContext.Database.ExecuteSqlRaw("TRUNCATE TABLE \"Persons\"");
         dbContext.Database.EnsureCreated();
 
         Building building = new Building()
