@@ -24,6 +24,8 @@ using HospitalLibrary.Medicines;
 using HospitalLibrary.Medicines.Interfaces;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Patients.Interfaces;
+using HospitalLibrary.Persons;
+using HospitalLibrary.Persons.Interfaces;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Repositories;
@@ -63,6 +65,7 @@ namespace HospitalLibrary.Shared.Repository
         private IBedRepository _bedRepository;
         private IAnnualLeaveRepository _annualLeaveRepository;
         private IUserRepository _userRepository;
+        private IPersonRepository _personRepository;
 
         public UnitOfWork(HospitalDbContext dataContext)
         {
@@ -102,5 +105,6 @@ namespace HospitalLibrary.Shared.Repository
         public IAnnualLeaveRepository AnnualLeaveRepository =>
             _annualLeaveRepository ??= new AnnualLeaveRepository(_dataContext);
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_dataContext);
+        public IPersonRepository PersonRepository => _personRepository ??= new PersonRepository(_dataContext);
     }
 }

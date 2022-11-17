@@ -19,5 +19,10 @@ namespace HospitalLibrary.Users
             _unitOfWork.UserRepository.Save();
             return user;
         }
+
+        public Users.User GetOneByUsername(string username)
+        {
+            return _unitOfWork.UserRepository.GetOneByUsername(username);
+        }
     }
 }

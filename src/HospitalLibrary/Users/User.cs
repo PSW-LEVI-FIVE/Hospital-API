@@ -24,7 +24,14 @@ namespace HospitalLibrary.Users
 
         public User()
         {
-            
+        }
+
+        public User(string username, string password, Role role,int id)
+        {
+            Username = username;
+            Password = password;
+            Role = role;
+            Id = id;
         }
     }
 }

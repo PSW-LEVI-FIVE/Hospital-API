@@ -26,16 +26,13 @@ namespace HospitalLibrary.Patients
         }
         public async Task<Patient> Create(Patient patient)
         {
-            try
-            {
-                _unitOfWork.PatientRepository.Add(patient);
-                _unitOfWork.PatientRepository.Save();
-            }
-            catch(Exception ex)
-            {
-                throw new BadRequestException("Uid or Email is already taken");
-            }
-            return patient;
+            if (_unitOfWork.PersonRepository.GetOneByEmail(patient.Email) != null)
+                throw new BadRequestException("Email is already taken"); 
+            else if(_unitOfWork.PersonRepository.GetOneByUid(patient.Uid) != null)
+                throw new BadRequestException("Uid is already taken");
+            _unitOfWork.PatientRepository.Add(patient);
+            _unitOfWork.PatientRepository.Save();
+            return _unitOfWork.PatientRepository.GetOneByEmail(patient.Email);
         }
     }
 }
