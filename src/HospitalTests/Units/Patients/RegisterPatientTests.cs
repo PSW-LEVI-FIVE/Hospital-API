@@ -20,28 +20,35 @@ namespace HospitalTests.Units.Patients
         {
             var unitOfWork = new Mock<IUnitOfWork>();
             var personRepository = new Mock<IPersonRepository>();
-            var patientRepository = new Mock<IPatientRepository>();
             var userRepository = new Mock<IUserRepository>();
             unitOfWork.Setup(unit => unit.PersonRepository).Returns(personRepository.Object);
-            unitOfWork.Setup(unit => unit.PatientRepository).Returns(patientRepository.Object);
             unitOfWork.Setup(unit => unit.UserRepository).Returns(userRepository.Object);
             
             Patient p1 = new Patient("Pera","Peric","gmail1@gmail.com",
                                             "11111111","420420",new DateTime(2000,2,2),
                                             "Mike Mikica",BloodType.ZERO_NEGATIVE);
+            User u1 = new User("kiki", "sifra", Role.Patient,1);
             switch (unique)
             {
                 case "throwEmail":
                     personRepository.Setup(unit => unit.GetOneByUid("asdasd")).Returns((Patient)null);
                     personRepository.Setup(unit => unit.GetOneByEmail("gmail2@gmail.com")).Returns(p1);
+                    userRepository.Setup(unit => unit.GetOneByUsername("asdasd")).Returns((User)null);
                     break;
                 case "throwUid":
                     personRepository.Setup(unit => unit.GetOneByUid("11111111")).Returns(p1);
                     personRepository.Setup(unit => unit.GetOneByEmail("gmail3@gmail.com")).Returns((Patient)null);
+                    userRepository.Setup(unit => unit.GetOneByUsername("asdasd")).Returns((User)null);
+                    break;
+                case "throwUsername":
+                    personRepository.Setup(unit => unit.GetOneByUid("asdasd")).Returns((Patient)null);
+                    personRepository.Setup(unit => unit.GetOneByEmail("gmail3@gmail.com")).Returns((Patient)null);
+                    userRepository.Setup(unit => unit.GetOneByUsername("kiki")).Returns(u1);
                     break;
                 default:
                     personRepository.Setup(unit => unit.GetOneByUid("asdasd")).Returns((Patient)null);
                     personRepository.Setup(unit => unit.GetOneByEmail("gmail3@gmail.com")).Returns((Patient)null);
+                    userRepository.Setup(unit => unit.GetOneByUsername("kiki")).Returns((User)null);
                     break;
             }
             AuthService authService = new AuthService(unitOfWork.Object,new RegistrationValidationService(unitOfWork.Object));
@@ -69,6 +76,17 @@ namespace HospitalTests.Units.Patients
             userToCreate.Person = patientToCreate;
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup("throwEmail").RegisterPatient(userToCreate))
                 .Message.ShouldBe("Email is already taken");
+        }
+        [Fact]
+        public void Create_patient_not_unique_username_Exception()
+        {
+            User userToCreate = new User("kiki", "sifra", Role.Patient,3);
+            Patient patientToCreate = new Patient("Zika", "Zikic", "gmail2@gmail.com",
+                "99999999", "555555", new DateTime(2000,2,2), "Jovina 12",
+                BloodType.ZERO_NEGATIVE);
+            userToCreate.Person = patientToCreate;
+            Should.Throw<BadRequestException>(() => RegistrationServiceSetup("throwUsername").RegisterPatient(userToCreate))
+                .Message.ShouldBe("Username is already taken");
         }
     }
 }
