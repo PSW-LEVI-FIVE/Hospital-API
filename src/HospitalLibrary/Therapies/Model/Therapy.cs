@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using HospitalLibrary.Doctors;
 using HospitalLibrary.Hospitalizations;
 
 namespace HospitalLibrary.Therapies.Model
@@ -15,12 +16,20 @@ namespace HospitalLibrary.Therapies.Model
         
         public DateTime GivenAt { get; set; }
         
+        [ForeignKey("Doctor")]
+        public int DoctorId { get; set; }
+        public Doctor Doctor { get; set; }
+        
     
-        public Therapy(int id, int hospitalizationId, DateTime givenAt)
+        public Therapy( int hospitalizationId, DateTime givenAt, int doctorId)
         {
-            Id = id;
             HospitalizationId = hospitalizationId;
             GivenAt = givenAt;
+            DoctorId = doctorId;
+        }
+
+        public Therapy()
+        {
         }
     }
 }

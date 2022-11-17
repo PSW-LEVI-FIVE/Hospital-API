@@ -67,6 +67,7 @@ namespace HospitalLibrary.Settings
             modelBuilder.Entity<MapBuilding>().ToTable("MapBuildings");
             modelBuilder.Entity<MapFloor>().ToTable("MapFloors");
             modelBuilder.Entity<MapRoom>().ToTable("MapRooms");
+            modelBuilder.Entity<Users.User>().ToTable("Users");
             modelBuilder.Entity<Rooms.Model.RoomEquipment>().ToTable("RoomEquipment");
             modelBuilder.Entity<Bed>().ToTable("Beds");
             modelBuilder.Entity<Therapy>()

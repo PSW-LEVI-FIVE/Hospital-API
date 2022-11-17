@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Patients.Interfaces;
+using HospitalLibrary.Shared.Exceptions;
+using HospitalLibrary.User.Interfaces;
+using HospitalLibrary.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Public
@@ -13,10 +17,12 @@ namespace HospitalAPI.Controllers.Public
     public class PatientController: ControllerBase
     {
         private IPatientService _patientService;
+        private IUserService _userService;
         
-        public PatientController(IPatientService patientService)
+        public PatientController(IPatientService patientService,IUserService userService)
         {
             _patientService = patientService;
+            _userService = userService;
         }
         
         [HttpGet]
@@ -29,8 +35,12 @@ namespace HospitalAPI.Controllers.Public
         [HttpPost]
         public async Task<IActionResult> Create(CreatePatientDTO createPatientDTO)
         {
-            Patient created = await _patientService.Create(createPatientDTO.MapToModel());
-            return Ok(created);
+            if(_userService.GetOneByUsername(createPatientDTO.Username) != null)
+                throw new BadRequestException("Username is already taken");
+            User user = createPatientDTO.MapUserToModel();
+            user.Person = createPatientDTO.MapPatientToModel();
+            User createdUser = await _userService.Create(user);
+            return Ok(createdUser);
         }
     }
 }
