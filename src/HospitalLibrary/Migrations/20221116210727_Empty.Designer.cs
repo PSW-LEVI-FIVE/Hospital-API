@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221116210727_Empty")]
+    partial class Empty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,38 +117,6 @@ namespace HospitalLibrary.Migrations
                     b.HasIndex("RoomId");
 
                     b.ToTable("Appointments");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.BloodOrders.BloodOrder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime>("Arrival")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("BloodType")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("Reason")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
-
-                    b.ToTable("BloodOrders");
                 });
 
             modelBuilder.Entity("HospitalLibrary.BloodStorages.BloodStorage", b =>
@@ -658,17 +628,6 @@ namespace HospitalLibrary.Migrations
                     b.Navigation("Patient");
 
                     b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.BloodOrders.BloodOrder", b =>
-                {
-                    b.HasOne("HospitalLibrary.Doctors.Doctor", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Doctor");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Feedbacks.Feedback", b =>
