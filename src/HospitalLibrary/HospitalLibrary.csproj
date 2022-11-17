@@ -10,6 +10,7 @@
     <PackageReference Include="dotenv.net" Version="3.1.1" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="EntityFrameworkCore.Exceptions.PostgreSQL" Version="3.1.4" />
+    <PackageReference Include="LinqKit.EntityFramework" Version="1.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.17">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

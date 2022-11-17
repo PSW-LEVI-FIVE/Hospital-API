@@ -1,5 +1,7 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using HospitalLibrary.Hospitalizations.Interfaces;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
@@ -16,10 +18,10 @@ namespace HospitalLibrary.Hospitalizations
         {
             return _dataContext.Hospitalizations
                 .Include(h => h.Bed)
-                .Include(h => h.Therapies)
                 .Include(h => h.MedicalRecord)
+                .Include(h => h.Therapies)
                 .FirstOrDefault();
         }
-        
+
     }
 }

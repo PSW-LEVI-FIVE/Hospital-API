@@ -11,12 +11,10 @@ using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Buildings;
 using HospitalLibrary.Floors;
 using HospitalLibrary.Map;
-using HospitalLibrary.Feedbacks.Dtos;
 using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.Medicines;
 using HospitalLibrary.Rooms.Model;
-using HospitalLibrary.Therapies;
 using HospitalLibrary.Therapies.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,7 +39,7 @@ namespace HospitalLibrary.Settings
         public DbSet<Medicine> Medicines { get; set; }
         public DbSet<BloodStorage> BloodStorage { get; set; }
         public DbSet<MedicalRecord> MedicalRecords { get; set; }
-        public DbSet<Rooms.Model.RoomEquipment> RoomEquipment { get; set; }
+        public DbSet<RoomEquipment> RoomEquipment { get; set; }
         public DbSet<Hospitalization> Hospitalizations { get; set; }
         public DbSet<Therapy> Therapies { get; set; }
         public DbSet<Bed> Beds { get; set; }
@@ -78,6 +76,16 @@ namespace HospitalLibrary.Settings
             modelBuilder.Entity<Person>().HasIndex(p => p.Uid).IsUnique();
             modelBuilder.Entity<Person>().HasIndex(p => p.Email).IsUnique();
             modelBuilder.Entity<Users.User>().HasIndex(u => u.Username).IsUnique();
+
+            modelBuilder.Entity<Hospitalization>()
+                .HasOne(h => h.Bed)
+                .WithMany(h => h.AllHospitalizations);
+            modelBuilder.Entity<Hospitalization>()
+                .HasOne(h => h.MedicalRecord)
+                .WithMany(m => m.Hospitalizations);
+            modelBuilder.Entity<Hospitalization>()
+                .HasMany(h => h.Therapies)
+                .WithOne(t => t.Hospitalization);
         }
     }
 }

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
+using ceTe.DynamicPDF.PageElements;
 using HospitalAPI.Storage;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Hospitalizations.Dtos;
 using HospitalLibrary.Hospitalizations.Interfaces;
+using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.Patients;
 using HospitalLibrary.PDFGeneration;
 using HospitalLibrary.Shared.Exceptions;
@@ -54,7 +57,10 @@ namespace HospitalLibrary.Hospitalizations
         {
             Hospitalization hospitalization = _unitOfWork.HospitalizationRepository.GetOnePopulated(id);
             if (hospitalization == null) throw new NotFoundException("Hospitalization with given id doesnt exist!");
-            Patient patient = _unitOfWork.PatientRepository.GetOne(hospitalization.MedicalRecord.PatientId);
+            MedicalRecord record = _unitOfWork.MedicalRecordRepository.GetOne(hospitalization.MedicalRecordId); 
+            Patient patient = _unitOfWork.PatientRepository.GetOne(record.PatientId);
+            IEnumerable<Therapy> therapies = _unitOfWork.TherapyRepository.GetAllByHospitalization(id);
+            hospitalization.Therapies = therapies.ToList();
             byte[] pdf = _generator.GenerateTherapyPdf(hospitalization, patient);
             return await _storage.UploadFile(pdf, "hospitalization-" + DateTime.Now + "-" + id);
         }
