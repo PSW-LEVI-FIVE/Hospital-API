@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Rooms;
+using HospitalLibrary.Rooms.Dtos;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
 using Microsoft.AspNetCore.Authorization;
@@ -51,12 +52,19 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(room);
         }
 
+<<<<<<< HEAD
         [HttpGet]
         [Route("{id}/beds")]
         public IActionResult GetRoomBeds(int id)
         {
             IEnumerable<Bed> beds = _roomService.GetBedsForRoom(id);
             return Ok(beds);
+=======
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateRoomDto createRoomDto)
+        {
+            return Ok(null);
+>>>>>>> 9109e0a (Add integration test for create room)
         }
 
     }
