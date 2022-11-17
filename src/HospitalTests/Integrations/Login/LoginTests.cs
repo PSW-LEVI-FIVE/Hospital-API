@@ -17,7 +17,7 @@ public class LoginTests : BaseIntegrationTest
     }
     
     [Fact]
-    public void login_user_successfully()
+    public void Login_user_successfully()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = new UserController(scope.ServiceProvider.GetRequiredService<IUserService>());
@@ -27,7 +27,7 @@ public class LoginTests : BaseIntegrationTest
         result.ShouldNotBeNull();
     }
     [Fact]
-    public void login_user_unsuccessfully()
+    public void Login_user_unsuccessfully()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = new UserController(scope.ServiceProvider.GetRequiredService<IUserService>());
