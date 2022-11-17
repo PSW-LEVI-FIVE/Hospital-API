@@ -33,5 +33,12 @@ namespace HospitalLibrary.Users
             Role = role;
             Id = id;
         }
+        public User(int id, string username, string password,Role role)
+        {
+            this.Id = id;
+            this.Username = username;
+            this.Password = password;
+            this.Role = role;
+        }
     }
 }
