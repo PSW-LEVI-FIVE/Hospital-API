@@ -6,6 +6,8 @@ using HospitalAPI.ErrorHandling;
 using Microsoft.Extensions.Hosting;
 using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.AnnualLeaves.Interfaces;
+using HospitalLibrary.BloodOrders;
+using HospitalLibrary.BloodOrders.Interfaces;
 using HospitalLibrary.Allergens;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.BloodStorages.Interfaces;
@@ -85,6 +87,7 @@ namespace HospitalAPI
             services.AddScoped<IAnnualLeaveService,AnnualLeaveService>();
             services.AddScoped<IAnnualLeaveValidator, AnnualLeaveValidator>();
             services.AddScoped<IAppointmentRescheduler, AppointmentRescheduler>();
+            services.AddScoped<IBloodOrderService,BloodOrderService>();
             services.AddScoped<IAllergenService, AllergenService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITherapyService, TherapyService>();

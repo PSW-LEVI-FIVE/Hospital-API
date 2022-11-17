@@ -2,6 +2,7 @@
 using HospitalLibrary.Allergens.Interfaces;
 using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.Appointments.Interfaces;
+using HospitalLibrary.BloodOrders.Interfaces;
 using HospitalLibrary.BloodStorages.Interfaces;
 using HospitalLibrary.Buildings.Interfaces;
 using HospitalLibrary.Doctors;
@@ -33,7 +34,6 @@ namespace HospitalLibrary.Shared.Interfaces
         IMapBuildingRepository MapBuildingRepository { get; }
         IMapFloorRepository MapFloorRepository { get; }
         IMapRoomRepository MapRoomRepository { get; }
-        
         IAllergenRepository AllergenRepository { get; }
         IMedicineRepository MedicineRepository { get; }
         IMedicalRecordRepository MedicalRecordRepository { get; }
@@ -42,10 +42,9 @@ namespace HospitalLibrary.Shared.Interfaces
         IBloodStorageRepository BloodStorageRepository { get; }
         IRoomEquipmentRepository RoomEquipmentRepository { get; }
         IUserRepository UserRepository { get; }
-        
         IBedRepository BedRepository { get; }
-        
         IAnnualLeaveRepository AnnualLeaveRepository { get; }
+        IBloodOrderRepository BloodOrderRepository { get; }
         IPersonRepository PersonRepository { get; }
     }
 }

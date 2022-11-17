@@ -4,6 +4,8 @@ using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Appointments.Interfaces;
+using HospitalLibrary.BloodOrders;
+using HospitalLibrary.BloodOrders.Interfaces;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.BloodStorages.Interfaces;
 using HospitalLibrary.Buildings;
@@ -64,6 +66,7 @@ namespace HospitalLibrary.Shared.Repository
         private IRoomEquipmentRepository _roomEquipmentRepository;
         private IBedRepository _bedRepository;
         private IAnnualLeaveRepository _annualLeaveRepository;
+        private IBloodOrderRepository _bloodOrderRepository;
         private IUserRepository _userRepository;
         private IPersonRepository _personRepository;
 
@@ -104,6 +107,8 @@ namespace HospitalLibrary.Shared.Repository
         public IBedRepository BedRepository => _bedRepository ??= new BedRepository(_dataContext);
         public IAnnualLeaveRepository AnnualLeaveRepository =>
             _annualLeaveRepository ??= new AnnualLeaveRepository(_dataContext);
+        public IBloodOrderRepository BloodOrderRepository =>
+            _bloodOrderRepository ??= new BloodOrderRepository(_dataContext);
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_dataContext);
         public IPersonRepository PersonRepository => _personRepository ??= new PersonRepository(_dataContext);
     }

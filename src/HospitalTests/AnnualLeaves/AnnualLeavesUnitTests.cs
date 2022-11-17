@@ -10,7 +10,7 @@ namespace HospitalTests.AnnualLeaves;
 
 public class AnnualLeavesUnitTests
 {
-    public Mock<IUnitOfWork> AnnualLeaveRepositoryMock()
+    private Mock<IUnitOfWork> AnnualLeaveRepositoryMock()
     {
         var unitOfWork = new Mock<IUnitOfWork>();
         var annualLeaveRepository = new Mock<IAnnualLeaveRepository>();
