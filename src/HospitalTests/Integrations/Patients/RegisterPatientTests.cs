@@ -6,6 +6,7 @@ using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.User.Interfaces;
+using HospitalLibrary.Users;
 using HospitalTests.Setup;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +14,7 @@ using Shouldly;
 
 namespace HospitalTests.Integrations.Patients;
 
+[Collection("Test")]
 public class PatientTests: BaseIntegrationTest
 {
     public PatientTests(TestDatabaseFactory<Startup> factory) : base(factory)
@@ -29,8 +31,7 @@ public class PatientTests: BaseIntegrationTest
             "5455454",new DateTime(2001,2,25),"Mikse Dimitrijevica 42",BloodType.ZERO_NEGATIVE,
             "pRoXm","radipls");
         createPatientDTO.Id = 3;
-        var result = ((OkObjectResult)controller.Create(createPatientDTO).Result).Value as Patient;
-        
+        var result = ((OkObjectResult)controller.Create(createPatientDTO).Result).Value as User;
         result.ShouldNotBeNull();
     }
     [Fact]

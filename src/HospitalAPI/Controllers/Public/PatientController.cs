@@ -37,11 +37,10 @@ namespace HospitalAPI.Controllers.Public
         {
             if(_userService.GetOneByUsername(createPatientDTO.Username) != null)
                 throw new BadRequestException("Username is already taken");
-            Patient createdPatient = await _patientService.Create(createPatientDTO.MapPatientToModel());
             User user = createPatientDTO.MapUserToModel();
-            user.Id = createdPatient.Id;
+            user.Person = createPatientDTO.MapPatientToModel();
             User createdUser = await _userService.Create(user);
-            return Ok(createdPatient);
+            return Ok(createdUser);
         }
     }
 }
