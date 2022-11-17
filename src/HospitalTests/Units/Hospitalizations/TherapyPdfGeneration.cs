@@ -66,8 +66,8 @@ public class PdfGeneration
 
         var therapies = new List<HospitalLibrary.Therapies.Model.Therapy>()
         {
-            new BloodTherapy(1, 1, DateTime.Now, BloodType.A_NEGATIVE, 10),
-            new MedicineTherapy(1, 1, DateTime.Now, 1, 10)
+            new BloodTherapy(1,  DateTime.Now, BloodType.A_NEGATIVE, 10, 4),
+            new MedicineTherapy(1,  DateTime.Now, 1, 10, 4)
         };
 
         var patient = new Patient()
