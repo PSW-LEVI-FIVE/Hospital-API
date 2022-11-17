@@ -22,7 +22,7 @@ public class BloodOrderTests:BaseIntegrationTest
 
     private static BloodOrderController SetupController(IServiceScope scope)
     {
-        return new BloodOrderController(scope.ServiceProvider.GetRequiredService<BloodOrderService>());
+        return new BloodOrderController(scope.ServiceProvider.GetRequiredService<IBloodOrderService>());
     }
 
 
