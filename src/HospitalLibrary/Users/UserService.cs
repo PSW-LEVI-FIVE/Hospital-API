@@ -1,8 +1,7 @@
-﻿using System.Threading.Tasks;
-using HospitalLibrary.Shared.Exceptions;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.User.Interfaces;
-using HospitalLibrary.Users.Interfaces;
 
 namespace HospitalLibrary.Users
 {
@@ -13,6 +12,26 @@ namespace HospitalLibrary.Users
         public UserService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+        }
+
+        public User getOne(int id)
+        {
+            return _unitOfWork.UserRepository.GetOne(id);
+        }
+        public Task<IEnumerable<User>> GetAll()
+        {
+            return _unitOfWork.UserRepository.GetAll();
+        }
+
+        public bool UsernameExist(string username)
+        {
+            return _unitOfWork.UserRepository.UsernameExist(username);
+        }
+        
+
+        public User UserExist(string username, string password)
+        {
+            return _unitOfWork.UserRepository.UserExist(username, password);
         }
     }
 }

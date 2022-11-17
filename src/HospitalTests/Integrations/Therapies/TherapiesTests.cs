@@ -29,7 +29,7 @@ public class TherapiesTests : BaseIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
-
+    
         var dto = new CreateBloodTherapyDTO()
         {
             HospitalizationId = 10,
@@ -42,13 +42,13 @@ public class TherapiesTests : BaseIntegrationTest
         result.ShouldNotBeNull();
         result.ShouldBeOfType<BloodTherapy>();
     }
-
+    
     [Fact]
     public void Create_medicine_therapy()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
-
+    
         var dto = new CreateMedicineTherapyDTO()
         {
             HospitalizationId = 10,

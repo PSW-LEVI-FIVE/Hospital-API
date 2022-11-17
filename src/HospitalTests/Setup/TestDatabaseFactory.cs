@@ -192,8 +192,8 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             PatientId = 2
         };
         
-
         Medicine medicine = new Medicine(1, "MedicineOne", 12.0);
+        User user3 = new User(4, "Menjdjer", "nekakulsifra", Role.Doctor);
         
         dbContext.Buildings.Add(building);
         dbContext.Floors.Add(floor);
@@ -204,13 +204,12 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         dbContext.RoomEquipment.Add(equipment2);
         dbContext.Patients.Add(patient);
         dbContext.Patients.Add(patient2);
-        dbContext.Users.Add(user);
-        dbContext.Users.Add(user2);
-        dbContext.Patients.Add(patient2);
         dbContext.MedicalRecords.Add(record);
         dbContext.Medicines.Add(medicine);
         dbContext.BloodStorage.Add(bloodStorage);
-        
+        dbContext.Users.Add(user);
+        dbContext.Users.Add(user2);
+        dbContext.Users.Add(user3);
         dbContext.SaveChanges();
 
     }
