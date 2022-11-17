@@ -13,10 +13,14 @@ namespace HospitalLibrary.Rooms.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key()]
         public int Id { get; set; }
 
-        [ForeignKey("Room")]
-        public int RoomId { get; set; }
+        [ForeignKey("StartingRoom")]
+        public int StartingRoomId { get; set; }
 
-        public Room Room { get; set; }
+        public Room StartingRoom { get; set; }
+        [ForeignKey("DestinationRoom")]
+        public int DestinationRoomId { get; set; }
+
+        public Room DestinationRoom { get; set; }
 
         public DateTime StartAt { get; set; }
         public DateTime EndAt { get; set; }
