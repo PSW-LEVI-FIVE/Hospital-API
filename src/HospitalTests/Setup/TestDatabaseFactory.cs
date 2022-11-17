@@ -10,6 +10,12 @@ using System.Xml.Schema;
 using HospitalAPI;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Buildings;
+using System.Collections;
+using System.Net;
+using System.Xml.Schema;
+using HospitalAPI;
+using HospitalLibrary.BloodStorages;
+using HospitalLibrary.Buildings;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Floors;
 using HospitalLibrary.Hospitalizations;
@@ -61,7 +67,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn";
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=123";
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
@@ -119,13 +125,14 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Address = "NEKA ADRESA",
             Name = "Neko ime"
         };
-        
+
         Floor floor = new Floor()
         {
             Id = 1,
             Area = 100,
             BuildingId = 1,
         };
+        
         Room room = new Room()
         {
             Id = 1,
@@ -149,7 +156,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Address = "Mike", 
             BloodType = BloodType.A_NEGATIVE
         };
-        
+
         User user = new User()
         {
             Username = "Mika",
@@ -157,7 +164,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Role = Role.Patient,
             Id = 1
         };
-        
+
         Patient patient2 = new Patient()
         {
             Id=2,
@@ -193,15 +200,16 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         dbContext.Rooms.Add(room);
         dbContext.Doctors.Add(doctor);
         dbContext.Hospitalizations.Add(hospitalization);
-        dbContext.BloodStorage.Add(bloodStorage);
         dbContext.RoomEquipment.Add(equipment);
         dbContext.RoomEquipment.Add(equipment2);
         dbContext.Patients.Add(patient);
         dbContext.Patients.Add(patient2);
         dbContext.Users.Add(user);
         dbContext.Users.Add(user2);
+        dbContext.Patients.Add(patient2);
         dbContext.MedicalRecords.Add(record);
         dbContext.Medicines.Add(medicine);
+        dbContext.BloodStorage.Add(bloodStorage);
         
         dbContext.SaveChanges();
 
