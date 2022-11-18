@@ -21,18 +21,23 @@ namespace HospitalLibrary.Auth
             _unitOfWork = unitOfWork;
             _registrationValidation = registrationValidation;
         }
-        
+        public async Task<List<Allergen>> GetPatientsAllergens(List<AllergenDTO> allergenDTOs)
+        {
+            List<Allergen> allergens = new List<Allergen>();
+            foreach (AllergenDTO allergenDTO in allergenDTOs)
+            {
+                Allergen allergen = await _unitOfWork.AllergenRepository.GetOneByName(allergenDTO.Name);
+                if (allergen == null)
+                    throw new BadRequestException("Allergen doesnt exist!");
+                allergens.Add(allergen);
+            }
+
+            return allergens;
+        }
         public async Task<Users.User> RegisterPatient(Users.User user,List<AllergenDTO> allergens)
         {
             await _registrationValidation.ValidatePatientRegistration(user);
-            List<Allergen> patientsAllergens = new List<Allergen>();
-            foreach (AllergenDTO allergenDTO in allergens)
-            {
-                Allergen allergen = await _unitOfWork.AllergenRepository.GetOneByName(allergenDTO.Name);
-                if (allergen == null) 
-                    throw new BadRequestException("Allergen doesnt exist!");
-                patientsAllergens.Add(allergen);
-            }
+            List<Allergen> patientsAllergens = await GetPatientsAllergens(allergens);
             _unitOfWork.UserRepository.Add(user);
             _unitOfWork.UserRepository.Save();
             
