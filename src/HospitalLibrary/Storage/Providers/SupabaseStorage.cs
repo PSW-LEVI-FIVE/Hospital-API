@@ -15,8 +15,6 @@ namespace HospitalAPI.Storage.Providers
         {
             string apiKey = Environment.GetEnvironmentVariable("SUPABASE_API_KEY");
             string url = Environment.GetEnvironmentVariable("SUPABASE_URL") ?? "";
-            Console.WriteLine(apiKey);
-            Console.WriteLine(url);
             _client = new Supabase.Client(url, apiKey);
         }
 

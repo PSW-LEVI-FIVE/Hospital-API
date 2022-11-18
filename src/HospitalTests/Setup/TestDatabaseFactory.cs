@@ -158,8 +158,9 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         {   
             Id = 10,
             BedId = 2,
-            State = HospitalizationState.ACTIVE,
+            State = HospitalizationState.FINISHED,
             StartTime = DateTime.Now,
+            PdfUrl = "",
             MedicalRecordId = 2,
         };
         

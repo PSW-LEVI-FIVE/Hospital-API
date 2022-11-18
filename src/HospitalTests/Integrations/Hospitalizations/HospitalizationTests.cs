@@ -53,7 +53,6 @@ public class HospitalizationTests: BaseIntegrationTest
         result.ShouldNotBeNull();
         result.EndTime.ShouldNotBeNull();
         result.State.ShouldBe(HospitalizationState.FINISHED);
-    
     }
 
 

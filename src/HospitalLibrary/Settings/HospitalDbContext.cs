@@ -77,15 +77,15 @@ namespace HospitalLibrary.Settings
             modelBuilder.Entity<Person>().HasIndex(p => p.Email).IsUnique();
             modelBuilder.Entity<Users.User>().HasIndex(u => u.Username).IsUnique();
 
-            modelBuilder.Entity<Hospitalization>()
-                .HasOne(h => h.Bed)
-                .WithMany(h => h.AllHospitalizations);
-            modelBuilder.Entity<Hospitalization>()
-                .HasOne(h => h.MedicalRecord)
-                .WithMany(m => m.Hospitalizations);
-            modelBuilder.Entity<Hospitalization>()
-                .HasMany(h => h.Therapies)
-                .WithOne(t => t.Hospitalization);
+            // modelBuilder.Entity<Hospitalization>()
+            //     .HasOne(h => h.Bed)
+            //     .WithMany(h => h.AllHospitalizations);
+            // modelBuilder.Entity<Hospitalization>()
+            //     .HasOne(h => h.MedicalRecord)
+            //     .WithMany(m => m.Hospitalizations);
+            // modelBuilder.Entity<Hospitalization>()
+            //     .HasMany(h => h.Therapies)
+            //     .WithOne(t => t.Hospitalization);
         }
     }
 }

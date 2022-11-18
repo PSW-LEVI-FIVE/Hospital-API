@@ -9,13 +9,12 @@ namespace HospitalLibrary.PDFGeneration
 {
     public class PdfGenerator: IPDFGenerator
     {
-        
         private const int THERAPY_LABEL_WIDTH = 504;
         private const int THERAPY_LABEL_HEIGHT = 20;
         private const int THERAPIES_HEADER_HEIGHT = 100;
         private const int HEADER_FONT_SIZE = 18;
         private const int LABEL_FONT_SIZE = 14;
-        public byte[] GenerateTherapyPdf(Hospitalization hospitalization, Patient patient)
+        public byte[] GenerateTherapyPdf(Hospitalization hospitalization)
         {
             List<Therapy> therapies = hospitalization.Therapies;
             Document document = new Document();
@@ -23,7 +22,7 @@ namespace HospitalLibrary.PDFGeneration
             Page page = new Page(PageSize.Letter, PageOrientation.Portrait, 54.0f);
             document.Pages.Add(page);
             
-            GenerateHeaderForTherapies(page, patient);
+            GenerateHeaderForTherapies(page, hospitalization.MedicalRecord.Patient);
             GenerateTherapiesList(page, therapies);
             return document.Draw();
         }
@@ -32,7 +31,7 @@ namespace HospitalLibrary.PDFGeneration
         {
             var y = 60;
             var x = 0;
-            foreach (Therapy therapy in therapies)
+            foreach (var therapy in therapies)
             {
                 GenerateTherapyListRow(page, therapy, x, y);
                 y += 20;
@@ -45,7 +44,6 @@ namespace HospitalLibrary.PDFGeneration
             Label lbl = new Label(txt, x, y, THERAPY_LABEL_WIDTH, THERAPY_LABEL_HEIGHT, Font.Helvetica, LABEL_FONT_SIZE, TextAlign.Left);
             page.Elements.Add(lbl);
         }
-        
 
         private void GenerateHeaderForTherapies(Page page, Patient patient)
         {
@@ -54,15 +52,13 @@ namespace HospitalLibrary.PDFGeneration
             page.Elements.Add(label);
         }
 
-
         private string GenerateTextByTherapyType(Therapy therapy)
         {
-            if (therapy is BloodTherapy)
+            if (therapy is BloodTherapy bt)
             {
-                BloodTherapy bt = therapy as BloodTherapy;
                 return $"Blood therapy given at {bt.GivenAt} BloodType: {bt.BloodType} Quantity: {bt.Quantity}";
             }
-            MedicineTherapy mt = therapy as MedicineTherapy;
+            var mt = therapy as MedicineTherapy;
             return $"Medicine therapy given at {mt.GivenAt} Medicine: {mt.MedicineId} Quantity: {mt.Quantity}";
         }
     }

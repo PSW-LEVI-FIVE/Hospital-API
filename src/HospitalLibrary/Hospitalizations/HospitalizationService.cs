@@ -53,24 +53,23 @@ namespace HospitalLibrary.Hospitalizations
             return hospitalization;
         }
 
+        public void Update(Hospitalization hospitalization)
+        {
+            _unitOfWork.HospitalizationRepository.Update(hospitalization);
+            _unitOfWork.HospitalizationRepository.Save();
+        }
+
         public async Task<string> GenerateTherapyReport(int id)
         {
             Hospitalization hospitalization = _unitOfWork.HospitalizationRepository.GetOnePopulated(id);
-            ValidateHospitalizationForPdfGeneration(hospitalization);
-            MedicalRecord record = _unitOfWork.MedicalRecordRepository.GetOne(hospitalization.MedicalRecordId); 
-            Patient patient = _unitOfWork.PatientRepository.GetOne(record.PatientId);
-            IEnumerable<Therapy> therapies = _unitOfWork.TherapyRepository.GetAllByHospitalization(id);
-            hospitalization.Therapies = therapies.ToList();
-            byte[] pdf = _generator.GenerateTherapyPdf(hospitalization, patient);
-            return await _storage.UploadFile(pdf, "hospitalization-" + DateTime.Now + "-" + id);
+            _validator.ValidateHospitalizationForPdfGeneration(hospitalization);
+            var pdf = _generator.GenerateTherapyPdf(hospitalization);
+            hospitalization.PdfUrl =  await _storage.UploadFile(pdf, $"hospitalization-{DateTime.Now.ToString("ddMMyyyy")}-{id}");
+            Update(hospitalization);
+            return hospitalization.PdfUrl;
         }
 
-        private void ValidateHospitalizationForPdfGeneration(Hospitalization hospitalization)
-        {
-            if (hospitalization == null) throw new NotFoundException("Hospitalization with given id doesnt exist!");
-            if (hospitalization.State != HospitalizationState.FINISHED) throw new BadRequestException("Hospitalization should be finished!");
-            if (!hospitalization.PdfUrl.Trim().Equals("")) throw new BadRequestException("Report already generated for given hospitalization!");
-        }
+
         
     }
 }

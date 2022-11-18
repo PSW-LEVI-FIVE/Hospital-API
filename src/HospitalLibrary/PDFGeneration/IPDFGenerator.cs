@@ -7,6 +7,6 @@ namespace HospitalLibrary.PDFGeneration
 {
     public interface IPDFGenerator
     {
-        byte[] GenerateTherapyPdf(Hospitalization hospitalization, Patient patient);
+        byte[] GenerateTherapyPdf(Hospitalization hospitalization);
     }
 }

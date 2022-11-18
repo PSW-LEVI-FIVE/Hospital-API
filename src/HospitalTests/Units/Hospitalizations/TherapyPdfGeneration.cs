@@ -25,15 +25,9 @@ public class PdfGeneration
     private Mock<IUnitOfWork> SetupUOW()
     {
         var hospitalizationRepository = new Mock<IHospitalizationRepository>();
-        var bedRepository = new Mock<IBedRepository>();
-        var medicalRecordRepository = new Mock<IMedicalRecordRepository>();
-        var patientRepository = new Mock<IPatientRepository>();
         var unitOfWork = new Mock<IUnitOfWork>();
 
         unitOfWork.Setup(u => u.HospitalizationRepository).Returns(hospitalizationRepository.Object);
-        unitOfWork.Setup(u => u.BedRepository).Returns(bedRepository.Object);
-        unitOfWork.Setup(u => u.MedicalRecordRepository).Returns(medicalRecordRepository.Object);
-        unitOfWork.Setup(u => u.PatientRepository).Returns(patientRepository.Object);
         return unitOfWork;
     }
 
@@ -59,18 +53,7 @@ public class PdfGeneration
         var validator = SetupValidator();
         var generator = new PdfGenerator();
 
-        var medRec = new MedicalRecord()
-        {
-            Id = 1,
-            PatientId = 1
-        };
-
-        var therapies = new List<HospitalLibrary.Therapies.Model.Therapy>()
-        {
-            new BloodTherapy(1,  DateTime.Now, BloodType.A_NEGATIVE, 10, 4),
-            new MedicineTherapy(1,  DateTime.Now, 1, 10, 4)
-        };
-
+        
         var patient = new Patient()
         {
             Id = 1,
@@ -83,6 +66,21 @@ public class PdfGeneration
             PhoneNumber = "213123",
             Uid = "ASDASDASDASD"
         };
+        
+        var medRec = new MedicalRecord()
+        {
+            Id = 1,
+            PatientId = 1,
+            Patient = patient
+        };
+
+        var therapies = new List<HospitalLibrary.Therapies.Model.Therapy>()
+        {
+            new BloodTherapy(1,  DateTime.Now, BloodType.A_NEGATIVE, 10, 4),
+            new MedicineTherapy(1,  DateTime.Now, 1, 10, 4)
+        };
+
+
 
         var hosp = new Hospitalization()
         {
@@ -99,10 +97,6 @@ public class PdfGeneration
         
 
         unitOfWork.Setup(u => u.HospitalizationRepository.GetOnePopulated(It.IsAny<int>())).Returns(hosp);
-        unitOfWork.Setup(u => u.MedicalRecordRepository.GetOne(It.IsAny<int>())).Returns(medRec);
-        unitOfWork.Setup(u => u.PatientRepository.GetOne(It.IsAny<int>())).Returns(patient);
-        unitOfWork.Setup(u => u.TherapyRepository.GetAllByHospitalization(It.IsAny<int>())).Returns(new List<HospitalLibrary.Therapies.Model.Therapy>());
-        
         var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator.Object, storage.Object, generator);
 
         var result = await hospitalizationService.GenerateTherapyReport(1);
@@ -115,14 +109,129 @@ public class PdfGeneration
     {
         var unitOfWork = SetupUOW();
         var storage = SetupStorage();
-        var validator = SetupValidator();
+        var validator = new HospitalizationValidator(unitOfWork.Object);
         var generator = new PdfGenerator();
-
-        unitOfWork.Setup(u => u.HospitalizationRepository.GetOnePopulated(It.IsAny<int>())).Returns(null as Hospitalization);
-        unitOfWork.Setup(u => u.PatientRepository.GetOne(It.IsAny<int>())).Returns(null as Patient);
         
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator.Object, storage.Object, generator);
+        unitOfWork.Setup(u => u.HospitalizationRepository.GetOnePopulated(It.IsAny<int>())).Returns(null as Hospitalization);
+        
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, storage.Object, generator);
 
         Should.Throw<NotFoundException>(async () => await hospitalizationService.GenerateTherapyReport(1));
+    }
+    
+    [Fact]
+    public void Hospitalization_not_finished()
+    {
+        var unitOfWork = SetupUOW();
+        var storage = SetupStorage();
+        var validator = new HospitalizationValidator(unitOfWork.Object);
+        var generator = new PdfGenerator();
+
+        
+        var patient = new Patient()
+        {
+            Id = 1,
+            Name = "Srdjan",
+            Surname = "Stjepanovic",
+            Address = "Neka adresa",
+            BirthDate = DateTime.Now,
+            BloodType = BloodType.A_NEGATIVE,
+            Email = "sasas@gmail.com",
+            PhoneNumber = "213123",
+            Uid = "ASDASDASDASD"
+        };
+        
+        var medRec = new MedicalRecord()
+        {
+            Id = 1,
+            PatientId = 1,
+            Patient = patient
+        };
+
+        var therapies = new List<HospitalLibrary.Therapies.Model.Therapy>()
+        {
+            new BloodTherapy(1,  DateTime.Now, BloodType.A_NEGATIVE, 10, 4),
+            new MedicineTherapy(1,  DateTime.Now, 1, 10, 4)
+        };
+
+
+
+        var hosp = new Hospitalization()
+        {
+            Id = 1,
+            BedId = 1,
+            EndTime = DateTime.Now,
+            StartTime = DateTime.Now,
+            MedicalRecordId = 1,
+            MedicalRecord = medRec,
+            PdfUrl = "",
+            State = HospitalizationState.ACTIVE,
+            Therapies = therapies
+        };
+        
+
+        unitOfWork.Setup(u => u.HospitalizationRepository.GetOnePopulated(It.IsAny<int>())).Returns(hosp);
+        
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, storage.Object, generator);
+
+        Should.Throw<BadRequestException>(async () => await hospitalizationService.GenerateTherapyReport(1));
+    }
+    
+    [Fact]
+    public void PDF_already_generated()
+    {
+        var unitOfWork = SetupUOW();
+        var storage = SetupStorage();
+        var validator = new HospitalizationValidator(unitOfWork.Object);
+        var generator = new PdfGenerator();
+
+        
+        var patient = new Patient()
+        {
+            Id = 1,
+            Name = "Srdjan",
+            Surname = "Stjepanovic",
+            Address = "Neka adresa",
+            BirthDate = DateTime.Now,
+            BloodType = BloodType.A_NEGATIVE,
+            Email = "sasas@gmail.com",
+            PhoneNumber = "213123",
+            Uid = "ASDASDASDASD"
+        };
+        
+        var medRec = new MedicalRecord()
+        {
+            Id = 1,
+            PatientId = 1,
+            Patient = patient
+        };
+
+        var therapies = new List<HospitalLibrary.Therapies.Model.Therapy>()
+        {
+            new BloodTherapy(1,  DateTime.Now, BloodType.A_NEGATIVE, 10, 4),
+            new MedicineTherapy(1,  DateTime.Now, 1, 10, 4)
+        };
+
+
+
+        var hosp = new Hospitalization()
+        {
+            Id = 1,
+            BedId = 1,
+            EndTime = DateTime.Now,
+            StartTime = DateTime.Now,
+            MedicalRecordId = 1,
+            MedicalRecord = medRec,
+            PdfUrl = "asadasda",
+            State = HospitalizationState.FINISHED,
+            Therapies = therapies
+        };
+        
+
+        unitOfWork.Setup(u => u.HospitalizationRepository.GetOnePopulated(It.IsAny<int>())).Returns(hosp);
+        
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, storage.Object, generator);
+
+        Should.Throw<BadRequestException>(async () => await hospitalizationService.GenerateTherapyReport(1));
     }
 }
