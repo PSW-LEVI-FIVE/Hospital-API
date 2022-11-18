@@ -70,6 +70,7 @@ namespace HospitalLibrary.Settings
             modelBuilder.Entity<Users.User>().ToTable("Users");
             modelBuilder.Entity<Rooms.Model.RoomEquipment>().ToTable("RoomEquipment");
             modelBuilder.Entity<Bed>().ToTable("Beds");
+            modelBuilder.Entity<Allergen>().ToTable("Allergens");
             modelBuilder.Entity<Therapy>()
                 .HasDiscriminator<string>("therapy_type")
                 .HasValue<BloodTherapy>("blood")

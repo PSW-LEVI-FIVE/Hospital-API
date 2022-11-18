@@ -66,8 +66,10 @@ namespace HospitalAPI
             
             services.AddControllersWithViews()
                 .AddJsonOptions(options =>
-                   options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve
-                );
+                {
+                    //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                    options.JsonSerializerOptions.MaxDepth = 0;
+                });
             services.AddDbContext<HospitalDbContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("HospitalDb")));
 
@@ -121,7 +123,6 @@ namespace HospitalAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HospitalAPI v1"));
             }
-            
             
 
             app.UseRouting();

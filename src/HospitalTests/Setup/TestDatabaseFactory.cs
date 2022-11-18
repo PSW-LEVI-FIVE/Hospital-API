@@ -14,6 +14,7 @@ using System.Collections;
 using System.Net;
 using System.Xml.Schema;
 using HospitalAPI;
+using HospitalLibrary.Allergens;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Buildings;
 using HospitalLibrary.Doctors;
@@ -194,7 +195,9 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         
         Medicine medicine = new Medicine(1, "MedicineOne", 12.0);
         User user3 = new User(4, "Menjdjer", "nekakulsifra", Role.Doctor);
-        
+        Allergen allergen1 = new Allergen(1,"Milk");
+        Allergen allergen2 = new Allergen(2,"Cetirizine");
+        Allergen allergen3 = new Allergen(3,"Budesonide");
         dbContext.Buildings.Add(building);
         dbContext.Floors.Add(floor);
         dbContext.Rooms.Add(room);
@@ -210,6 +213,9 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         dbContext.Users.Add(user);
         dbContext.Users.Add(user2);
         dbContext.Users.Add(user3);
+        dbContext.Allergens.Add(allergen1);
+        dbContext.Allergens.Add(allergen2);
+        dbContext.Allergens.Add(allergen3);
         dbContext.SaveChanges();
 
     }
