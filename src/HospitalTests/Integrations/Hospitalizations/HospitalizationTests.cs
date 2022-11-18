@@ -65,7 +65,7 @@ public class HospitalizationTests: BaseIntegrationTest
             scope.ServiceProvider.GetRequiredService<IHospitalizationService>(),
             scope.ServiceProvider.GetRequiredService<IMedicalRecordService>()
         );
-        var result = await controller.GeneratePdf(1);
+        var result = ((OkObjectResult)await controller.GeneratePdf(10)).Value as string;
         result.ShouldNotBeNull();
     }
 }

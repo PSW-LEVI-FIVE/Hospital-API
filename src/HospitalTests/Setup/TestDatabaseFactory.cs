@@ -87,14 +87,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             WorkingHours = new List<WorkingHours>()
         };
         
-        Hospitalization hospitalization = new Hospitalization()
-        {   
-            Id = 10,
-            BedId = 2,
-            State = HospitalizationState.ACTIVE,
-            StartTime = DateTime.Now,
-            MedicalRecordId = 2,
-        };
+
 
         BloodStorage bloodStorage = new BloodStorage()
         {
@@ -161,6 +154,15 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             BloodType = BloodType.A_NEGATIVE
         };
         
+        Hospitalization hospitalization = new Hospitalization()
+        {   
+            Id = 10,
+            BedId = 2,
+            State = HospitalizationState.ACTIVE,
+            StartTime = DateTime.Now,
+            MedicalRecordId = 2,
+        };
+        
         User user2 = new User()
         {
             Username = "Mika1",
@@ -181,8 +183,8 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         Allergen allergen2 = new Allergen(2,"Cetirizine");
         Allergen allergen3 = new Allergen(3,"Budesonide");
 
-        Therapy therapy = new BloodTherapy(1,  DateTime.Now, BloodType.A_NEGATIVE, 10, 4);
-        Therapy therapyMed = new MedicineTherapy(2, DateTime.Now, 1, 10, 4);
+        Therapy therapy = new BloodTherapy(10,  DateTime.Now, BloodType.A_NEGATIVE, 10, 4);
+        Therapy therapyMed = new MedicineTherapy(10, DateTime.Now, 1, 10, 4);
 
         dbContext.Buildings.Add(building);
         dbContext.Floors.Add(floor);
@@ -201,7 +203,6 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         dbContext.Allergens.Add(allergen1);
         dbContext.Allergens.Add(allergen2);
         dbContext.Allergens.Add(allergen3);
-        dbContext.Hospitalizations.Add(hospitalization);
         dbContext.Medicines.Add(medicine);
         dbContext.Therapies.Add(therapy);
         dbContext.Therapies.Add(therapyMed);

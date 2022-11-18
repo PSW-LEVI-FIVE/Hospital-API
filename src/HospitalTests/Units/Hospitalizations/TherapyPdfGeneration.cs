@@ -1,4 +1,5 @@
-﻿using ceTe.DynamicPDF.PageElements.BarCoding;
+﻿using ceTe.DynamicPDF.PageElements;
+using ceTe.DynamicPDF.PageElements.BarCoding;
 using HospitalAPI.Storage;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Hospitalizations;
@@ -98,7 +99,9 @@ public class PdfGeneration
         
 
         unitOfWork.Setup(u => u.HospitalizationRepository.GetOnePopulated(It.IsAny<int>())).Returns(hosp);
+        unitOfWork.Setup(u => u.MedicalRecordRepository.GetOne(It.IsAny<int>())).Returns(medRec);
         unitOfWork.Setup(u => u.PatientRepository.GetOne(It.IsAny<int>())).Returns(patient);
+        unitOfWork.Setup(u => u.TherapyRepository.GetAllByHospitalization(It.IsAny<int>())).Returns(new List<HospitalLibrary.Therapies.Model.Therapy>());
         
         var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator.Object, storage.Object, generator);
 
