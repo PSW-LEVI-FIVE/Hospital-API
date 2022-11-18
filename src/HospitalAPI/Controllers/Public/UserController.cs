@@ -1,5 +1,7 @@
-﻿using HospitalLibrary.User.Interfaces;
+﻿using System;
+using HospitalLibrary.User.Interfaces;
 using HospitalLibrary.Users;
+using HospitalLibrary.Users.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Public
@@ -15,11 +17,15 @@ namespace HospitalAPI.Controllers.Public
             _userService = userService;
         }
         
-        [HttpGet]
-        [Route("{id}")]
-        public IActionResult UserExist(string username,string password)
+        [HttpPost]
+        [Route("login")]
+        public IActionResult UserExist([FromBody] UserDTO userDto)
         {
-            User user = _userService.UserExist(username,password);
+            User user = _userService.UserExist(userDto.Username,userDto.Password);
+            if(user != null)
+                Console.WriteLine(user.Username + " " + user.Password);
+            else
+                Console.WriteLine("User je null");
             return Ok(user);
         }
     }
