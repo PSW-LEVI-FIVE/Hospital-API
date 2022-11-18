@@ -15,18 +15,17 @@ namespace HospitalLibrary.Managers.Dtos
         public string Surname { set; get; }
 
         public int NumberOfPatientsPicked { set; get; }
-
         public DoctorWithPopularityDTO()
         {
         }
-        public DoctorWithPopularityDTO(int doctorID, int numberOfPatientsPicked, string doctorName,string doctorSurname)
+        public DoctorWithPopularityDTO(int doctorID, int numberOfPatientsPicked, string doctorName, string doctorSurname)
         {
             Id = doctorID;
             Name = doctorName;
             Surname = doctorSurname;
             NumberOfPatientsPicked = numberOfPatientsPicked;
         }
-        
+
 
     }
 }
