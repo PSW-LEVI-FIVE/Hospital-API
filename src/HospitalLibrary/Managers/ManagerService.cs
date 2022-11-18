@@ -1,4 +1,6 @@
-﻿using HospitalLibrary.Managers.Dtos;
+﻿using HospitalLibrary.Appointments;
+using HospitalLibrary.Managers.Dtos;
+using HospitalLibrary.Managers.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HospitalLibrary.Managers
 {
-    public class ManagerService
+    public class ManagerService : IManagerService
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -17,14 +19,24 @@ namespace HospitalLibrary.Managers
             _unitOfWork = unitOfWork;
         }
 
-        public List<DoctorsPopularityDTO> GetMostPopularDoctorInRangeOfAge(int fromAge, int toAge)
-        {
-            throw new NotImplementedException();
+        public Task<IEnumerable<DoctorWithPopularityDTO>> GetMostPopularDoctorByAgeRange(int fromAge, int toAge)
+        {  
+         Dictionary<(int,int), int> doctorPatientCombinations = new Dictionary<(int, int), int>();
+         Dictionary<int, int> doctorNumberPatients = new Dictionary<int, int>();
+            doctorPatientCombinations.Add((3, 2), 5);
+            Console.WriteLine(doctorPatientCombinations.First().ToString());
+            Console.WriteLine("xd");
+            foreach (Appointment appointment in _unitOfWork.AppointmentRepository.GetAll().Result.ToList())
+            {
+                Console.WriteLine(doctorPatientCombinations.First().ToString());
+                //doctorPatientCombinations.ContainsKey((3, 2));
+            }
+            return null;
         }
 
-        public List<DoctorsPopularityDTO> GetMostPopularDoctors()
+        public Task<IEnumerable<DoctorWithPopularityDTO>> GetMostPopularDoctors()
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }

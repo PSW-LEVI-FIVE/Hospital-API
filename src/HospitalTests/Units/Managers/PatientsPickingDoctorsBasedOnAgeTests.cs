@@ -3,14 +3,12 @@ using HospitalLibrary.Appointments;
 using HospitalLibrary.Managers;
 using HospitalLibrary.Shared.Interfaces;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HospitalLibrary.Patients;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Managers.Dtos;
+using Shouldly;
+using HospitalLibrary.Appointments.Interfaces;
+using HospitalLibrary.Patients.Interfaces;
 
 namespace HospitalTests.Units.Managers
 {
@@ -19,8 +17,8 @@ namespace HospitalTests.Units.Managers
         public ManagerService ManagerServiceSetup(string Case)
         {
             var unitOfWork = new Mock<IUnitOfWork>();
-            var appointmentsRepository = new Mock<AppointmentRepository>();
-            var patientsRepository = new Mock<PatientRepository>();
+            var appointmentsRepository = new Mock<IAppointmentRepository>();
+            var patientsRepository = new Mock<IPatientRepository>();
 
             var appointments = new List<Appointment>();
             var patients = new List<Patient>();
@@ -37,6 +35,9 @@ namespace HospitalTests.Units.Managers
             patients.Add(p1);
             patients.Add(p2);
             patients.Add(p3);
+
+            appointments.Add(new CreateAppointmentDTO(1, 2, 3, new DateTime(2022, 3, 3), new DateTime(2022, 3, 4)).MapToModel());
+
 
             switch (Case)
             {
@@ -56,10 +57,22 @@ namespace HospitalTests.Units.Managers
                     appointments.Add(new CreateAppointmentDTO(2, 6, 3, new DateTime(2022, 3, 3), new DateTime(2022, 3, 4)).MapToModel());
                     appointments.Add(new CreateAppointmentDTO(2, 1, 3, new DateTime(2022, 3, 3), new DateTime(2022, 3, 4)).MapToModel());
                     break;
+                case "doctor1":
+                    appointments.Add(new CreateAppointmentDTO(1, 2, 3, new DateTime(2022, 3, 3), new DateTime(2022, 3, 4)).MapToModel());
+                    appointments.Add(new CreateAppointmentDTO(1, 3, 3, new DateTime(2022, 3, 3), new DateTime(2022, 3, 4)).MapToModel());
+                    appointments.Add(new CreateAppointmentDTO(2, 6, 3, new DateTime(2022, 3, 3), new DateTime(2022, 3, 4)).MapToModel());
+                    break;
+                case "doctor2":
+                    appointments.Add(new CreateAppointmentDTO(1, 2, 3, new DateTime(2022, 3, 3), new DateTime(2022, 3, 4)).MapToModel());
+                    appointments.Add(new CreateAppointmentDTO(1, 2, 3, new DateTime(2022, 3, 3), new DateTime(2022, 3, 4)).MapToModel());
+                    appointments.Add(new CreateAppointmentDTO(1, 2, 3, new DateTime(2022, 3, 3), new DateTime(2022, 3, 4)).MapToModel());
+                    appointments.Add(new CreateAppointmentDTO(2, 3, 3, new DateTime(2022, 3, 3), new DateTime(2022, 3, 4)).MapToModel());
+                    appointments.Add(new CreateAppointmentDTO(2, 4, 3, new DateTime(2022, 3, 3), new DateTime(2022, 3, 4)).MapToModel());
+                    break;
             }
-            appointmentsRepository.Setup(u => u.GetAll()).ReturnsAsync(appointments);
+            appointmentsRepository.Setup(u => u.GetAll()).ReturnsAsync(appointments.AsEnumerable());
             unitOfWork.Setup(u => u.AppointmentRepository).Returns(appointmentsRepository.Object);
-            patientsRepository.Setup(u => u.GetAll()).ReturnsAsync(patients);
+            patientsRepository.Setup(u => u.GetAll()).ReturnsAsync(patients.AsEnumerable());
             unitOfWork.Setup(u => u.PatientRepository).Returns(patientsRepository.Object);
             return new ManagerService(unitOfWork.Object);
         }
@@ -69,19 +82,19 @@ namespace HospitalTests.Units.Managers
         {
             ManagerService managerService = ManagerServiceSetup("doctor2(18-25)");
 
-            List<DoctorsPopularityDTO> docsPopularity = managerService.GetMostPopularDoctorInRangeOfAge(18,25);
+            IEnumerable<DoctorWithPopularityDTO> docsPopularity = (IEnumerable<DoctorWithPopularityDTO>)managerService.GetMostPopularDoctorByAgeRange(18,25);
 
-            Assert.Single(docsPopularity);
-            Assert.Equal(2, docsPopularity.First().DoctorID);
+            docsPopularity.ShouldNotBeEmpty();
+            docsPopularity.First().Id.ShouldBe(2);
         }
         [Fact]
         public void No_People_In_Input_Range()
         {
             ManagerService managerService = ManagerServiceSetup("NoPeopleInRange(18-25)");
 
-            List<DoctorsPopularityDTO> docsPopularity = managerService.GetMostPopularDoctorInRangeOfAge(18, 25);
+            IEnumerable<DoctorWithPopularityDTO> docsPopularity = (IEnumerable<DoctorWithPopularityDTO>)managerService.GetMostPopularDoctorByAgeRange(18, 25);
 
-            Assert.Empty(docsPopularity);
+            docsPopularity.ShouldBeEmpty();
         }
 
         [Fact]
@@ -89,10 +102,32 @@ namespace HospitalTests.Units.Managers
         {
             ManagerService managerService = ManagerServiceSetup("doctor1and2(18-25)");
 
-            List<DoctorsPopularityDTO> docsPopularity = managerService.GetMostPopularDoctors();
+            IEnumerable<DoctorWithPopularityDTO> docsPopularity = (IEnumerable<DoctorWithPopularityDTO>)managerService.GetMostPopularDoctors();
 
-            Assert.NotEmpty(docsPopularity);
-            Assert.Equal(2, docsPopularity.Count);
+            docsPopularity.ShouldNotBeEmpty();
+            docsPopularity.Count().ShouldBe(2);
+        }
+
+        [Fact]
+        public void One_Most_Popular_Doctor()
+        {
+            ManagerService managerService = ManagerServiceSetup("doctor1");
+
+            IEnumerable<DoctorWithPopularityDTO> docsPopularity = (IEnumerable<DoctorWithPopularityDTO>)managerService.GetMostPopularDoctors();
+
+            docsPopularity.ShouldNotBeEmpty();
+            docsPopularity.First().Id.ShouldBe(1);
+        }
+
+        [Fact]
+        public void One_Most_Popular_Doctor_Same_Patient_Problem()
+        {
+            ManagerService managerService = ManagerServiceSetup("doctor2");
+
+            IEnumerable<DoctorWithPopularityDTO> docsPopularity = (IEnumerable<DoctorWithPopularityDTO>)managerService.GetMostPopularDoctors();
+
+            docsPopularity.ShouldNotBeEmpty();
+            docsPopularity.First().Id.ShouldBe(2);
         }
     }
 }
