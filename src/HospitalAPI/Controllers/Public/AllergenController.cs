@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Allergens;
 using HospitalLibrary.Allergens.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace HospitalAPI.Controllers.Public
 {
@@ -18,18 +21,23 @@ namespace HospitalAPI.Controllers.Public
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateAllergenDTO createAllergenDTO)
+        public IActionResult Create([FromBody] AllergenDTO allergenDto)
         {
-            Allergen created = _allergenService.Create(createAllergenDTO.MapToModel());
+            Allergen created = _allergenService.Create(allergenDto.MapToModel());
             return Ok(created);
         }
 
         [HttpGet]
         [Route("all")]
-        public async Task<IActionResult> GetPublished()
+        public async Task<IActionResult> GetAll()
         {
-            IEnumerable<Allergen> publishedFeedbacks = await _allergenService.GetAll();
-            return Ok(publishedFeedbacks);
+            IEnumerable<Allergen> allergens = await _allergenService.GetAll();
+            List<AllergenDTO> allergensDTO = new List<AllergenDTO>();
+            foreach (Allergen allergen in allergens.ToList()) {
+                allergensDTO.Add(new AllergenDTO(allergen.Name));
+            }
+
+            return Ok(allergensDTO);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using HospitalLibrary.Allergens.Dtos;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Shared.DTOValidators;
 using HospitalLibrary.Shared.Model;
@@ -42,10 +44,12 @@ namespace HospitalLibrary.Patients.Dtos
         public string Password { get; set; }
         [Required]
         public BloodType BloodType { get; set; }
+        [Required]
+        public List<AllergenDTO> Allergens { get; set; }
         
         public CreatePatientDTO(string name, string surname, string email, string uid, 
             string phoneNumber, DateTime birthDate, string address, BloodType bloodType,
-            string username,string password)
+            string username,string password, List<AllergenDTO> allergens)
         {
             Name = name;
             Surname = surname;
@@ -57,6 +61,7 @@ namespace HospitalLibrary.Patients.Dtos
             BloodType = bloodType;
             Password = password;
             Username = username;
+            Allergens = allergens;
         }
         
         public Patient MapPatientToModel()

@@ -1,10 +1,12 @@
-﻿namespace HospitalLibrary.Allergens.Dtos
+﻿using Newtonsoft.Json;
+
+namespace HospitalLibrary.Allergens.Dtos
 {
-    public class CreateAllergenDTO
+    public class AllergenDTO
     {
         public string Name { get; set; }
         
-        public CreateAllergenDTO(string name)
+        public AllergenDTO(string name)
         {
             Name = name;
         }

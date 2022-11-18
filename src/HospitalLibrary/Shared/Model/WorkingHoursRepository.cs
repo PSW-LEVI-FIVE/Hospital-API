@@ -13,7 +13,7 @@ namespace HospitalLibrary.Shared.Model
 
         public WorkingHours GetOne(int day, int doctorId)
         {
-            return _dataContext.WorkingHours.Single(w => w.Day.Equals(day) && w.DoctorId.Equals(doctorId));
+            return _dataContext.WorkingHours.FirstOrDefault(w => w.Day.Equals(day) && w.DoctorId.Equals(doctorId));
         }
     }
 }
