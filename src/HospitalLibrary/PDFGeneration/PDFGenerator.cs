@@ -9,6 +9,12 @@ namespace HospitalLibrary.PDFGeneration
 {
     public class PdfGenerator: IPDFGenerator
     {
+        
+        private const int THERAPY_LABEL_WIDTH = 504;
+        private const int THERAPY_LABEL_HEIGHT = 20;
+        private const int THERAPIES_HEADER_HEIGHT = 100;
+        private const int HEADER_FONT_SIZE = 18;
+        private const int LABEL_FONT_SIZE = 14;
         public byte[] GenerateTherapyPdf(Hospitalization hospitalization, Patient patient)
         {
             List<Therapy> therapies = hospitalization.Therapies;
@@ -16,21 +22,36 @@ namespace HospitalLibrary.PDFGeneration
 
             Page page = new Page(PageSize.Letter, PageOrientation.Portrait, 54.0f);
             document.Pages.Add(page);
+            
+            GenerateHeaderForTherapies(page, patient);
+            GenerateTherapiesList(page, therapies);
+            return document.Draw();
+        }
 
-            string labelText = "Therapies(" + patient.Name + " " + patient.Surname + ")";
-            Label label = new Label(labelText, 0, 0, 504, 100, Font.Helvetica, 18, TextAlign.Center);
-            page.Elements.Add(label);
-
-            var starty = 60;
+        private void GenerateTherapiesList(Page page, List<Therapy> therapies)
+        {
+            var y = 60;
+            var x = 0;
             foreach (Therapy therapy in therapies)
             {
-                string txt = GenerateTextByTherapyType(therapy);
-                Label lbl = new Label(txt, 0, starty, 504, 20, Font.Helvetica, 14, TextAlign.Left);
-                page.Elements.Add(lbl);
-                starty += 20;
+                GenerateTherapyListRow(page, therapy, x, y);
+                y += 20;
             }
+        }
 
-            return document.Draw();
+        private void GenerateTherapyListRow(Page page, Therapy therapy, int x, int y)
+        {
+            string txt = GenerateTextByTherapyType(therapy);
+            Label lbl = new Label(txt, x, y, THERAPY_LABEL_WIDTH, THERAPY_LABEL_HEIGHT, Font.Helvetica, LABEL_FONT_SIZE, TextAlign.Left);
+            page.Elements.Add(lbl);
+        }
+        
+
+        private void GenerateHeaderForTherapies(Page page, Patient patient)
+        {
+            var labelText = $"Therapies({patient.Name} {patient.Surname})";
+            var label = new Label(labelText, 0, 0, THERAPY_LABEL_WIDTH, THERAPIES_HEADER_HEIGHT, Font.Helvetica, HEADER_FONT_SIZE, TextAlign.Center);
+            page.Elements.Add(label);
         }
 
 
@@ -39,10 +60,10 @@ namespace HospitalLibrary.PDFGeneration
             if (therapy is BloodTherapy)
             {
                 BloodTherapy bt = therapy as BloodTherapy;
-                return "Blood therapy given at " + bt.GivenAt + " BloodType: " + bt.BloodType + " Quantity: " + bt.Quantity;
+                return $"Blood therapy given at {bt.GivenAt} BloodType: {bt.BloodType} Quantity: {bt.Quantity}";
             }
             MedicineTherapy mt = therapy as MedicineTherapy;
-            return "Medicine therapy given at " + mt.GivenAt + " Medicine: " + mt.MedicineId + " Quantity: " + mt.Quantity;
+            return $"Medicine therapy given at {mt.GivenAt} Medicine: {mt.MedicineId} Quantity: {mt.Quantity}";
         }
     }
 }

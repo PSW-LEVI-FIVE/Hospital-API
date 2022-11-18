@@ -55,7 +55,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
     {
-
+        dbContext.Database.EnsureDeleted();
         dbContext.Database.EnsureCreated();
         dbContext.Database.ExecuteSqlRaw(
             "CREATE OR REPLACE FUNCTION truncate_tables(username IN VARCHAR) RETURNS void AS $$ " +

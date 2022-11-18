@@ -70,7 +70,7 @@ namespace HospitalLibrary.Settings
             modelBuilder.Entity<Bed>().ToTable("Beds");
             modelBuilder.Entity<Allergen>().ToTable("Allergens");
             modelBuilder.Entity<Therapy>()
-                .HasDiscriminator<string>("therapy_type")
+                .HasDiscriminator(t => t.InstanceType)
                 .HasValue<BloodTherapy>("blood")
                 .HasValue<MedicineTherapy>("medicine");
             modelBuilder.Entity<Person>().HasIndex(p => p.Uid).IsUnique();

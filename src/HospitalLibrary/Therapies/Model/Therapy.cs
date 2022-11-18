@@ -14,6 +14,8 @@ namespace HospitalLibrary.Therapies.Model
         public int HospitalizationId { get; set; }
         public Hospitalization Hospitalization { get; set; }
         
+        public string InstanceType { get; set; }
+        
         public DateTime GivenAt { get; set; }
         
         [ForeignKey("Doctor")]

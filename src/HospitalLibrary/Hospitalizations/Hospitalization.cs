@@ -20,11 +20,11 @@ namespace HospitalLibrary.Hospitalizations
         [ForeignKey("Bed")]
         public int BedId { get; set; }
 
-        public Bed Bed { get; set; }
+        public virtual Bed Bed { get; set; }
 
         [ForeignKey("MedicalRecord")]
         public int MedicalRecordId { get; set; }
-        public MedicalRecord MedicalRecord { get; set; }
+        public virtual MedicalRecord MedicalRecord { get; set; }
 
         public HospitalizationState State { get; set; }
         
@@ -33,7 +33,7 @@ namespace HospitalLibrary.Hospitalizations
 
         public string PdfUrl { get; set; } = "";
         
-        public List<Therapy> Therapies { get; set; }
+        public virtual List<Therapy> Therapies { get; set; }
 
         public Hospitalization(int id, int bedId, int medicalRecordId, DateTime startTime, HospitalizationState state)
         {
