@@ -19,24 +19,41 @@ namespace HospitalLibrary.Managers
             _unitOfWork = unitOfWork;
         }
 
-        public Task<IEnumerable<DoctorWithPopularityDTO>> GetMostPopularDoctorByAgeRange(int fromAge, int toAge)
+        public IEnumerable<DoctorWithPopularityDTO> GetMostPopularDoctorByAgeRange(int fromAge = 0, int toAge = 666)
         {  
-         Dictionary<(int,int), int> doctorPatientCombinations = new Dictionary<(int, int), int>();
-         Dictionary<int, int> doctorNumberPatients = new Dictionary<int, int>();
-            doctorPatientCombinations.Add((3, 2), 5);
-            Console.WriteLine(doctorPatientCombinations.First().ToString());
-            Console.WriteLine("xd");
+         Dictionary<int, List<int>> doctorPatientCombinations = new Dictionary<int, List<int>>();
             foreach (Appointment appointment in _unitOfWork.AppointmentRepository.GetAll().Result.ToList())
             {
-                Console.WriteLine(doctorPatientCombinations.First().ToString());
-                //doctorPatientCombinations.ContainsKey((3, 2));
+                int age = (int)((DateTime.Now - _unitOfWork.PersonRepository.GetOne(appointment.PatientId).BirthDate).TotalDays / 365.242199);
+                if (age > toAge || age < fromAge) continue;
+
+                if (!doctorPatientCombinations.ContainsKey(appointment.DoctorId))
+                {
+                    List<int> newList = new List<int>();
+                    newList.Add(appointment.PatientId);
+                    doctorPatientCombinations.Add(appointment.DoctorId, newList);
+                }
+                else if (!doctorPatientCombinations[appointment.DoctorId].Contains(appointment.PatientId))
+                    doctorPatientCombinations[appointment.DoctorId].Add(appointment.PatientId);
             }
-            return null;
+
+            List<DoctorWithPopularityDTO> mostPopularDoctors = new List<DoctorWithPopularityDTO>();
+            int max = 0;
+            foreach (List<int> list in doctorPatientCombinations.Values)
+            {
+                if (list.Count > max) max = list.Count;
+            }
+            foreach (int key in doctorPatientCombinations.Keys)
+            {
+                if (doctorPatientCombinations[key].Count == max)
+                {
+                    mostPopularDoctors.Add(
+                       new DoctorWithPopularityDTO(key, max, _unitOfWork.DoctorRepository.GetOne(key).Name, _unitOfWork.DoctorRepository.GetOne(key).Surname)
+                    );
+                }
+            }
+            return mostPopularDoctors.AsEnumerable();
         }
 
-        public Task<IEnumerable<DoctorWithPopularityDTO>> GetMostPopularDoctors()
-        {
-            return null;
-        }
     }
 }

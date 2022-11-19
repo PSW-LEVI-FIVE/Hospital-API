@@ -9,8 +9,7 @@ namespace HospitalLibrary.Managers.Interfaces
 {
     public interface IManagerService
     {
-        public Task<IEnumerable<DoctorWithPopularityDTO>> GetMostPopularDoctorByAgeRange(int fromAge, int toAge);
+        public IEnumerable<DoctorWithPopularityDTO> GetMostPopularDoctorByAgeRange(int fromAge =0, int toAge=666);
 
-        public Task<IEnumerable<DoctorWithPopularityDTO>> GetMostPopularDoctors();
     }
 }

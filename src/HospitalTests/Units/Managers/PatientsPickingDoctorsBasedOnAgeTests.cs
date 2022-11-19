@@ -9,6 +9,11 @@ using HospitalLibrary.Managers.Dtos;
 using Shouldly;
 using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Patients.Interfaces;
+using HospitalLibrary.Doctors.Interfaces;
+using HospitalLibrary.Doctors;
+using Microsoft.AspNetCore.Identity;
+using HospitalLibrary.Persons.Interfaces;
+using HospitalLibrary.Shared.Model;
 
 namespace HospitalTests.Units.Managers
 {
@@ -19,9 +24,27 @@ namespace HospitalTests.Units.Managers
             var unitOfWork = new Mock<IUnitOfWork>();
             var appointmentsRepository = new Mock<IAppointmentRepository>();
             var patientsRepository = new Mock<IPatientRepository>();
+            var doctorsRepository = new Mock<IDoctorRepository>();
+            var personsRepository = new Mock<IPersonRepository>();
 
             var appointments = new List<Appointment>();
             var patients = new List<Patient>();
+            var doctors = new List<Doctor>();
+            var persons = new List<Person>();
+
+            Person per = new Person("Pera", "Peric", "gmail1@gmail.com", "11111111", "420420", new DateTime(2000, 2, 2), "Mike Mikica");
+            Person per1 = new Person("Ivan", "Ivic", "gmail1@gmail.com", "23123213", "420420", new DateTime(2001, 2, 2), "Mike Mikica");
+            Person per2 = new Person("Sava", "Savic", "gmail1@gmail.com", "11411111", "420420", new DateTime(1960, 2, 2), "Mike Mikica");
+            Person per3 = new Person("Milan", "Milic", "gmail1@gmail.com", "11111151", "420420", new DateTime(1930, 2, 2), "Mike Mikica");
+
+            Doctor doc1 = new Doctor("Doca", "Docic", "gmail1@gmail.com", "11111651", "420420", new DateTime(2000, 2, 2), "Mike Mikica", SpecialtyType.PSYCHIATRY);
+            doc1.Id = 1;
+            doctors.Add(doc1);
+            Doctor doc2 = new Doctor("DocaId2", "Docic", "gmail1@gmail.com", "11111651", "420420", new DateTime(2000, 2, 2), "Mike Mikica", SpecialtyType.PSYCHIATRY);
+            doc2.Id = 2;
+            doctors.Add(doc2);
+
+
             Patient p = new Patient("Pera", "Peric", "gmail1@gmail.com", "11111111", "420420", new DateTime(2000, 2, 2), "Mike Mikica", BloodType.ZERO_NEGATIVE);
             p.Id = 6;   //Is between 18 and 25
             Patient p1 = new Patient("Ivan", "Ivic", "gmail1@gmail.com", "23123213", "420420", new DateTime(2001, 2, 2), "Mike Mikica", BloodType.ZERO_NEGATIVE);
@@ -35,8 +58,6 @@ namespace HospitalTests.Units.Managers
             patients.Add(p1);
             patients.Add(p2);
             patients.Add(p3);
-
-            appointments.Add(new CreateAppointmentDTO(1, 2, 3, new DateTime(2022, 3, 3), new DateTime(2022, 3, 4)).MapToModel());
 
 
             switch (Case)
@@ -67,13 +88,24 @@ namespace HospitalTests.Units.Managers
                     appointments.Add(new CreateAppointmentDTO(1, 2, 3, new DateTime(2022, 3, 3), new DateTime(2022, 3, 4)).MapToModel());
                     appointments.Add(new CreateAppointmentDTO(1, 2, 3, new DateTime(2022, 3, 3), new DateTime(2022, 3, 4)).MapToModel());
                     appointments.Add(new CreateAppointmentDTO(2, 3, 3, new DateTime(2022, 3, 3), new DateTime(2022, 3, 4)).MapToModel());
-                    appointments.Add(new CreateAppointmentDTO(2, 4, 3, new DateTime(2022, 3, 3), new DateTime(2022, 3, 4)).MapToModel());
+                    appointments.Add(new CreateAppointmentDTO(2, 1, 3, new DateTime(2022, 3, 3), new DateTime(2022, 3, 4)).MapToModel());
                     break;
             }
             appointmentsRepository.Setup(u => u.GetAll()).ReturnsAsync(appointments.AsEnumerable());
             unitOfWork.Setup(u => u.AppointmentRepository).Returns(appointmentsRepository.Object);
+
             patientsRepository.Setup(u => u.GetAll()).ReturnsAsync(patients.AsEnumerable());
             unitOfWork.Setup(u => u.PatientRepository).Returns(patientsRepository.Object);
+
+            doctorsRepository.Setup(u => u.GetOne(1)).Returns(doctors[0]);
+            doctorsRepository.Setup(u => u.GetOne(2)).Returns(doctors[1]);
+            unitOfWork.Setup(u => u.DoctorRepository).Returns(doctorsRepository.Object);
+
+            personsRepository.Setup(u => u.GetOne(1)).Returns(per1);
+            personsRepository.Setup(u => u.GetOne(2)).Returns(per2);
+            personsRepository.Setup(u => u.GetOne(3)).Returns(per3);
+            personsRepository.Setup(u => u.GetOne(6)).Returns(per);
+            unitOfWork.Setup(u => u.PersonRepository).Returns(personsRepository.Object);
             return new ManagerService(unitOfWork.Object);
         }
 
@@ -102,7 +134,7 @@ namespace HospitalTests.Units.Managers
         {
             ManagerService managerService = ManagerServiceSetup("doctor1and2(18-25)");
 
-            IEnumerable<DoctorWithPopularityDTO> docsPopularity = (IEnumerable<DoctorWithPopularityDTO>)managerService.GetMostPopularDoctors();
+            IEnumerable<DoctorWithPopularityDTO> docsPopularity = (IEnumerable<DoctorWithPopularityDTO>)managerService.GetMostPopularDoctorByAgeRange();
 
             docsPopularity.ShouldNotBeEmpty();
             docsPopularity.Count().ShouldBe(2);
@@ -113,7 +145,7 @@ namespace HospitalTests.Units.Managers
         {
             ManagerService managerService = ManagerServiceSetup("doctor1");
 
-            IEnumerable<DoctorWithPopularityDTO> docsPopularity = (IEnumerable<DoctorWithPopularityDTO>)managerService.GetMostPopularDoctors();
+            IEnumerable<DoctorWithPopularityDTO> docsPopularity = (IEnumerable<DoctorWithPopularityDTO>)managerService.GetMostPopularDoctorByAgeRange();
 
             docsPopularity.ShouldNotBeEmpty();
             docsPopularity.First().Id.ShouldBe(1);
@@ -124,7 +156,7 @@ namespace HospitalTests.Units.Managers
         {
             ManagerService managerService = ManagerServiceSetup("doctor2");
 
-            IEnumerable<DoctorWithPopularityDTO> docsPopularity = (IEnumerable<DoctorWithPopularityDTO>)managerService.GetMostPopularDoctors();
+            IEnumerable<DoctorWithPopularityDTO> docsPopularity = (IEnumerable<DoctorWithPopularityDTO>)managerService.GetMostPopularDoctorByAgeRange();
 
             docsPopularity.ShouldNotBeEmpty();
             docsPopularity.First().Id.ShouldBe(2);
