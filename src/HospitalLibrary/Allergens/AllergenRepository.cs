@@ -1,6 +1,9 @@
-﻿using HospitalLibrary.Allergens.Interfaces;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using HospitalLibrary.Allergens.Interfaces;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Allergens
 {
@@ -8,6 +11,11 @@ namespace HospitalLibrary.Allergens
     {
         public AllergenRepository(HospitalDbContext dataContext) : base(dataContext)
         {
+        }
+
+        public Task<Allergen> GetOneByName(string name)
+        {
+            return _dataContext.Allergens.Where(a => a.Name.Equals(name)).FirstOrDefaultAsync();
         }
     }
 }

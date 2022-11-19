@@ -53,6 +53,18 @@ public class HospitalizationTests: BaseIntegrationTest
         result.ShouldNotBeNull();
         result.EndTime.ShouldNotBeNull();
         result.State.ShouldBe(HospitalizationState.FINISHED);
-    
+    }
+
+
+    [Fact]
+    public async Task PDF_generation()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = new HospitalizationController(
+            scope.ServiceProvider.GetRequiredService<IHospitalizationService>(),
+            scope.ServiceProvider.GetRequiredService<IMedicalRecordService>()
+        );
+        var result = ((OkObjectResult)await controller.GeneratePdf(10)).Value as string;
+        result.ShouldNotBeNull();
     }
 }

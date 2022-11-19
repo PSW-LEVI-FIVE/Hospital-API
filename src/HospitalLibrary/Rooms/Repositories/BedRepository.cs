@@ -19,7 +19,7 @@ namespace HospitalLibrary.Rooms.Repositories
         public async Task<IEnumerable<Bed>> GetAllFreeBedsForRoom(int roomId)
         {
             return await _dataContext.Beds
-                .Where(bed => bed.Hospitalizations.TrueForAll(h => h.State == HospitalizationState.FINISHED))
+                .Where(bed => bed.AllHospitalizations.TrueForAll(h => h.State == HospitalizationState.FINISHED))
                 .ToListAsync();
         }
 

@@ -33,7 +33,7 @@ public class AnnualLeaveValidatorTests
             new AnnualLeave(1, null, "First Reason", DateTime.Now.AddDays(7),
                 DateTime.Now.AddDays(9), AnnualLeaveState.PENDING, false);
 
-        Assert.ThrowsAsync<BadRequestException>(() => validator.Validate(annualLeave));
+        Should.ThrowAsync<BadRequestException>(() => validator.Validate(annualLeave));
     }
     
     [Fact]

@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221117220224_Added_pdfUrl_field")]
+    partial class Added_pdfUrl_field
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,21 +34,6 @@ namespace HospitalLibrary.Migrations
                     b.HasIndex("MedicinesId");
 
                     b.ToTable("AllergenMedicine");
-                });
-
-            modelBuilder.Entity("AllergenPatient", b =>
-                {
-                    b.Property<int>("AllergensId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("PatientsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("AllergensId", "PatientsId");
-
-                    b.HasIndex("PatientsId");
-
-                    b.ToTable("AllergenPatient");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Allergens.Allergen", b =>
@@ -537,7 +524,7 @@ namespace HospitalLibrary.Migrations
                     b.Property<int>("HospitalizationId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("InstanceType")
+                    b.Property<string>("therapy_type")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -549,7 +536,7 @@ namespace HospitalLibrary.Migrations
 
                     b.ToTable("Therapies");
 
-                    b.HasDiscriminator<string>("InstanceType").HasValue("Therapy");
+                    b.HasDiscriminator<string>("therapy_type").HasValue("Therapy");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Users.User", b =>
@@ -648,21 +635,6 @@ namespace HospitalLibrary.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AllergenPatient", b =>
-                {
-                    b.HasOne("HospitalLibrary.Allergens.Allergen", null)
-                        .WithMany()
-                        .HasForeignKey("AllergensId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HospitalLibrary.Patients.Patient", null)
-                        .WithMany()
-                        .HasForeignKey("PatientsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("HospitalLibrary.AnnualLeaves.AnnualLeave", b =>
                 {
                     b.HasOne("HospitalLibrary.Doctors.Doctor", "Doctor")
@@ -737,7 +709,7 @@ namespace HospitalLibrary.Migrations
             modelBuilder.Entity("HospitalLibrary.Hospitalizations.Hospitalization", b =>
                 {
                     b.HasOne("HospitalLibrary.Rooms.Model.Bed", "Bed")
-                        .WithMany("AllHospitalizations")
+                        .WithMany("Hospitalizations")
                         .HasForeignKey("BedId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -933,7 +905,7 @@ namespace HospitalLibrary.Migrations
 
             modelBuilder.Entity("HospitalLibrary.Rooms.Model.Bed", b =>
                 {
-                    b.Navigation("AllHospitalizations");
+                    b.Navigation("Hospitalizations");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Doctors.Doctor", b =>

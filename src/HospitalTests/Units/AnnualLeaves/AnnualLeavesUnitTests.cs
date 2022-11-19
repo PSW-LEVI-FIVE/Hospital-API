@@ -79,7 +79,7 @@ public class AnnualLeavesUnitTests
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
         AnnualLeaveService service = new AnnualLeaveService(mock.Object,validator);
         
-        Assert.Throws<BadRequestException>(() => service.Delete(annualLeave.Id,1));
+        Should.Throw<BadRequestException>(() => service.Delete(annualLeave.Id,1));
     }
     
     [Fact]
@@ -94,6 +94,6 @@ public class AnnualLeavesUnitTests
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
         AnnualLeaveService service = new AnnualLeaveService(mock.Object,validator);
 
-        Assert.Throws<BadRequestException>(() => service.Delete(annualLeave.Id, 2));
+        Should.Throw<BadRequestException>(() => service.Delete(annualLeave.Id, 2));
     }
 }

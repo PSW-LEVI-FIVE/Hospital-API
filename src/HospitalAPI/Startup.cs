@@ -4,6 +4,8 @@ using System.Text.Json.Serialization;
 using HospitalAPI.Emails;
 using HospitalAPI.ErrorHandling;
 using Microsoft.Extensions.Hosting;
+using HospitalAPI.Storage;
+using HospitalAPI.Storage.Providers;
 using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.BloodOrders;
@@ -31,6 +33,7 @@ using HospitalLibrary.Medicines;
 using HospitalLibrary.Medicines.Interfaces;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Patients.Interfaces;
+using HospitalLibrary.PDFGeneration;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Settings;
@@ -66,8 +69,10 @@ namespace HospitalAPI
             
             services.AddControllersWithViews()
                 .AddJsonOptions(options =>
-                   options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve
-                );
+                {
+                    //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                    options.JsonSerializerOptions.MaxDepth = 0;
+                });
             services.AddDbContext<HospitalDbContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("HospitalDb")));
 
@@ -97,6 +102,8 @@ namespace HospitalAPI
             services.AddScoped<IMedicineService, MedicineService>();
             services.AddScoped<IRegistrationValidationService, RegistrationValidationService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IStorage, SupabaseStorage>();
+            services.AddScoped<IPDFGenerator, PdfGenerator>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });
@@ -121,7 +128,6 @@ namespace HospitalAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HospitalAPI v1"));
             }
-            
             
 
             app.UseRouting();

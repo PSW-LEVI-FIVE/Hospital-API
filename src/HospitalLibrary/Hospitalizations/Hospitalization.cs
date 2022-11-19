@@ -13,25 +13,25 @@ namespace HospitalLibrary.Hospitalizations
     public enum HospitalizationState { ACTIVE, FINISHED }
     public class Hospitalization
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [ForeignKey("Bed")]
         public int BedId { get; set; }
+        [ForeignKey("BedId")]
+        public virtual Bed Bed { get; set; }
 
-        public Bed Bed { get; set; }
-
-        [ForeignKey("MedicalRecord")]
         public int MedicalRecordId { get; set; }
-        public MedicalRecord MedicalRecord { get; set; }
+        [ForeignKey("MedicalRecordId")]
+        public virtual MedicalRecord MedicalRecord { get; set; }
 
         public HospitalizationState State { get; set; }
         
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
+
+        public string PdfUrl { get; set; } = "";
         
-        public List<Therapy> Therapies { get; set; }
+        public virtual List<Therapy> Therapies { get; set; }
 
         public Hospitalization(int id, int bedId, int medicalRecordId, DateTime startTime, HospitalizationState state)
         {

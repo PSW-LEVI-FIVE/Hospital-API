@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Medicines;
+using HospitalLibrary.Patients;
 
 namespace HospitalLibrary.Allergens
 {
@@ -14,6 +15,7 @@ namespace HospitalLibrary.Allergens
         public string Name { get; set; }
 
         public List<Medicine> Medicines { get; set; }
+        public List<Patient> Patients { get; set; }
 
         public Allergen(int id, string name)
         {
