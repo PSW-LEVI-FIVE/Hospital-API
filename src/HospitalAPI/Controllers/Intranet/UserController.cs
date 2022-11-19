@@ -37,7 +37,7 @@ namespace HospitalAPI.Controllers.Intranet
             if (user != null)
             {
                 var token = _authService.Generate(user);
-                return Ok(token);
+                return Ok(token + " " + user.Role);
             }
 
             return NotFound("User not found");
