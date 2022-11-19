@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221118181715_Added_Discriminator_To_Therapy")]
+    partial class Added_Discriminator_To_Therapy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,21 +34,6 @@ namespace HospitalLibrary.Migrations
                     b.HasIndex("MedicinesId");
 
                     b.ToTable("AllergenMedicine");
-                });
-
-            modelBuilder.Entity("AllergenPatient", b =>
-                {
-                    b.Property<int>("AllergensId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("PatientsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("AllergensId", "PatientsId");
-
-                    b.HasIndex("PatientsId");
-
-                    b.ToTable("AllergenPatient");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Allergens.Allergen", b =>
@@ -644,21 +631,6 @@ namespace HospitalLibrary.Migrations
                     b.HasOne("HospitalLibrary.Medicines.Medicine", null)
                         .WithMany()
                         .HasForeignKey("MedicinesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("AllergenPatient", b =>
-                {
-                    b.HasOne("HospitalLibrary.Allergens.Allergen", null)
-                        .WithMany()
-                        .HasForeignKey("AllergensId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HospitalLibrary.Patients.Patient", null)
-                        .WithMany()
-                        .HasForeignKey("PatientsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

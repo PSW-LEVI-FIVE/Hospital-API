@@ -8,10 +8,8 @@ namespace HospitalLibrary.MedicalRecords
 {
     public class MedicalRecord
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        
         
         [ForeignKey("Patient")]
         public int PatientId { get; set; }

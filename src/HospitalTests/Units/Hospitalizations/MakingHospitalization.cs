@@ -41,7 +41,7 @@ public class Hospitalization_Making
 
         
         var validator = new HospitalizationValidator(unitOfWork.Object);
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator);
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, null, null);
 
         var hospObj = new Hospitalization(1, 1, 1, new DateTime(), HospitalizationState.ACTIVE);
         
@@ -65,7 +65,7 @@ public class Hospitalization_Making
 
         
         var validator = new HospitalizationValidator(unitOfWork.Object);
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator);
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, null, null);
 
         var hospObj = new Hospitalization(1, 1, 1, new DateTime(), HospitalizationState.ACTIVE);
 
@@ -88,11 +88,11 @@ public class Hospitalization_Making
 
         
         var validator = new HospitalizationValidator(unitOfWork.Object);
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator);
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, null, null);
 
         var hospObj = new Hospitalization(1, 1, 1, new DateTime(), HospitalizationState.ACTIVE);
 
-        Assert.Throws<BadRequestException>(() => hospitalizationService.Create(hospObj));
+        Should.Throw<BadRequestException>(() => hospitalizationService.Create(hospObj));
     }
     
     [Fact]
@@ -108,11 +108,11 @@ public class Hospitalization_Making
 
         
         var validator = new HospitalizationValidator(unitOfWork.Object);
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator);
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, null, null);
 
         var hospObj = new Hospitalization(1, 1, 1, new DateTime(), HospitalizationState.ACTIVE);
 
-        Assert.Throws<BadRequestException>(() => hospitalizationService.Create(hospObj));
+        Should.Throw<BadRequestException>(() => hospitalizationService.Create(hospObj));
     }
     
     
