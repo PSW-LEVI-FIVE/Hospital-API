@@ -114,7 +114,6 @@ public class AnnualLeavesUnitTests
         AnnualLeaveService service = new AnnualLeaveService(mock.Object, validator);
         var dto = new ReviewLeaveRequestDTO() { State = AnnualLeaveState.CANCELED, Reason = "some reason" };
         Assert.Throws<NotFoundException>(() => service.ReviewRequest(dto, annualLeave.Id));
-
     }
 
     [Fact]
