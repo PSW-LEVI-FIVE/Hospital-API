@@ -11,6 +11,7 @@ using HospitalLibrary.Patients;
 using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Model;
+using HospitalLibrary.Shared.Repository;
 using HospitalLibrary.Therapies.Model;
 using HospitalLibrary.Users;
 using Microsoft.AspNetCore.Hosting;
@@ -197,7 +198,10 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
 
         Therapy therapy = new BloodTherapy(10,  DateTime.Now, BloodType.A_NEGATIVE, 10, 4);
         Therapy therapyMed = new MedicineTherapy(10, DateTime.Now, 1, 10, 4);
-
+        
+        BloodTherapy bloodTherapy1 = new BloodTherapy(10, DateTime.Now, BloodType.A_NEGATIVE, 2.0, 4);
+        BloodTherapy bloodTherapy2 = new BloodTherapy(10, DateTime.Now, BloodType.A_NEGATIVE, 3.0, 4);
+        
         dbContext.Buildings.Add(building);
         dbContext.Floors.Add(floor);
         dbContext.Rooms.Add(room);
@@ -219,6 +223,10 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         dbContext.Medicines.Add(medicine);
         dbContext.Therapies.Add(therapy);
         dbContext.Therapies.Add(therapyMed);
+        dbContext.BloodStorage.Add(bloodStorage);
+        dbContext.Therapies.Add(bloodTherapy1);
+        dbContext.Therapies.Add(bloodTherapy2);
+        
         dbContext.SaveChanges();
 
     }

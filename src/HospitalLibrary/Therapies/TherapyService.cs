@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.BloodStorages.Interfaces;
 using HospitalLibrary.Medicines.Interfaces;
@@ -26,7 +27,7 @@ namespace HospitalLibrary.Therapies
         {
             bool valid = await ValidateBloodAmount(bloodTherapy.BloodType, bloodTherapy.Quantity);
             if (valid) 
-            _unitOfWork.TherapyRepository.Add(bloodTherapy);
+                _unitOfWork.TherapyRepository.Add(bloodTherapy);
             _unitOfWork.TherapyRepository.Save();
             return bloodTherapy;
         }
@@ -35,9 +36,22 @@ namespace HospitalLibrary.Therapies
         {
             bool valid = ValidateMedicineAmount(medicineTherapy.MedicineId, medicineTherapy.Quantity);
             if (valid)
-            _unitOfWork.TherapyRepository.Add(medicineTherapy);
+                _unitOfWork.TherapyRepository.Add(medicineTherapy);
             _unitOfWork.TherapyRepository.Save();
             return medicineTherapy;
+        }
+
+        public async Task<List<BloodTherapy>> GetBloodConsumption()
+        {
+            List<BloodTherapy> bloodTherapies = null;
+            List<Therapy> therapies = await _unitOfWork.TherapyRepository.GetAllBloodTherapy();
+            foreach (var therapy in therapies)
+            {
+                BloodTherapy bloodTherapy = (BloodTherapy)therapy;
+                bloodTherapies.Add(bloodTherapy);
+            }
+
+            return bloodTherapies;
         }
 
         private async Task<bool> ValidateBloodAmount(BloodType type, double quantity)

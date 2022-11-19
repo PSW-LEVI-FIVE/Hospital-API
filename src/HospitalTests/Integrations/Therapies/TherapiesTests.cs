@@ -1,4 +1,5 @@
-﻿using HospitalAPI;
+﻿using System.Runtime.Serialization;
+using HospitalAPI;
 using HospitalAPI.Controllers.Intranet;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Therapies.Dtos;
@@ -60,5 +61,19 @@ public class TherapiesTests : BaseIntegrationTest
         var result = ((OkObjectResult)controller.CreateMedicineTherapy(dto)).Value as MedicineTherapy;
         result.ShouldNotBeNull();
         result.ShouldBeOfType<MedicineTherapy>();
+    }
+    
+    [Fact]
+    public async Task Get_blood_consumption()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupController(scope);
+        
+        
+        var result =((OkObjectResult)await controller.GetBloodConsumption()).Value as List<MedicineTherapy>;
+        
+        result.ShouldNotBeNull();
+        result.ShouldBeOfType<List<MedicineTherapy>>();
+        result.Count.ShouldBe(2);
     }
 }

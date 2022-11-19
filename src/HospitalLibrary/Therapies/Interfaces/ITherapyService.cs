@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using HospitalLibrary.Therapies.Model;
 
 namespace HospitalLibrary.Therapies.Interfaces
@@ -8,5 +9,7 @@ namespace HospitalLibrary.Therapies.Interfaces
         Task<BloodTherapy> CreateBloodTherapy(BloodTherapy bloodTherapy);
         
         MedicineTherapy CreateMedicineTherapy(MedicineTherapy medicineTherapy);
+
+        Task<List<BloodTherapy>> GetBloodConsumption();
     }
 }

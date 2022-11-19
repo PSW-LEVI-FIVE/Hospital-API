@@ -8,5 +8,6 @@ namespace HospitalLibrary.Therapies.Interfaces
     public interface ITherapyRepository: IBaseRepository<Therapy>
     {
         IEnumerable<Therapy> GetAllByHospitalization(int hospitalizationId);
+        public Task<List<Therapy>> GetAllBloodTherapy();
     }
 }
