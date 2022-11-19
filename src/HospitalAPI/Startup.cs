@@ -51,6 +51,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using HospitalLibrary.Managers.Interfaces;
+using HospitalLibrary.Managers;
 
 namespace HospitalAPI
 {
@@ -78,6 +80,7 @@ namespace HospitalAPI
 
             services.AddControllers();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IManagerService, ManagerService>();
             services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<IFeedbackService, FeedbackService>();
             services.AddScoped<IDoctorService, DoctorService>();

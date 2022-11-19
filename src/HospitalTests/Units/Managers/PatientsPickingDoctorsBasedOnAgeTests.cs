@@ -45,13 +45,13 @@ namespace HospitalTests.Units.Managers
             doctors.Add(doc2);
 
 
-            Patient p = new Patient("Pera", "Peric", "gmail1@gmail.com", "11111111", "420420", new DateTime(2000, 2, 2), "Mike Mikica", BloodType.ZERO_NEGATIVE);
+            Patient p = new Patient("Pera", "Peric", "gmail1@gmail.com", "11111111", "420420", new DateTime(2000, 2, 2), "Mike Mikica", BloodType.ZERO_NEGATIVE,null);
             p.Id = 6;   //Is between 18 and 25
-            Patient p1 = new Patient("Ivan", "Ivic", "gmail1@gmail.com", "23123213", "420420", new DateTime(2001, 2, 2), "Mike Mikica", BloodType.ZERO_NEGATIVE);
+            Patient p1 = new Patient("Ivan", "Ivic", "gmail1@gmail.com", "23123213", "420420", new DateTime(2001, 2, 2), "Mike Mikica", BloodType.ZERO_NEGATIVE, null);
             p.Id = 1;   //Is between 18 and 25
-            Patient p2 = new Patient("Sava", "Savic", "gmail1@gmail.com", "11411111", "420420", new DateTime(1960, 2, 2), "Mike Mikica", BloodType.ZERO_NEGATIVE);
+            Patient p2 = new Patient("Sava", "Savic", "gmail1@gmail.com", "11411111", "420420", new DateTime(1960, 2, 2), "Mike Mikica", BloodType.ZERO_NEGATIVE, null);
             p.Id = 2;   //Is NOT between 18 and 25
-            Patient p3 = new Patient("Milan", "Milic", "gmail1@gmail.com", "11111151", "420420", new DateTime(1930, 2, 2), "Mike Mikica", BloodType.ZERO_NEGATIVE);
+            Patient p3 = new Patient("Milan", "Milic", "gmail1@gmail.com", "11111151", "420420", new DateTime(1930, 2, 2), "Mike Mikica", BloodType.ZERO_NEGATIVE, null);
             p.Id = 3;   //Is NOT between 18 and 25
 
             patients.Add(p);
@@ -114,7 +114,7 @@ namespace HospitalTests.Units.Managers
         {
             ManagerService managerService = ManagerServiceSetup("doctor2(18-25)");
 
-            IEnumerable<DoctorWithPopularityDTO> docsPopularity = (IEnumerable<DoctorWithPopularityDTO>)managerService.GetMostPopularDoctorByAgeRange(18,25);
+            IEnumerable<DoctorWithPopularityDTO> docsPopularity = (IEnumerable<DoctorWithPopularityDTO>)managerService.GetMostPopularDoctorByAgeRange(18,25,true);
 
             docsPopularity.ShouldNotBeEmpty();
             docsPopularity.First().Id.ShouldBe(2);
@@ -124,7 +124,7 @@ namespace HospitalTests.Units.Managers
         {
             ManagerService managerService = ManagerServiceSetup("NoPeopleInRange(18-25)");
 
-            IEnumerable<DoctorWithPopularityDTO> docsPopularity = (IEnumerable<DoctorWithPopularityDTO>)managerService.GetMostPopularDoctorByAgeRange(18, 25);
+            IEnumerable<DoctorWithPopularityDTO> docsPopularity = (IEnumerable<DoctorWithPopularityDTO>)managerService.GetMostPopularDoctorByAgeRange(18, 25,true);
 
             docsPopularity.ShouldBeEmpty();
         }

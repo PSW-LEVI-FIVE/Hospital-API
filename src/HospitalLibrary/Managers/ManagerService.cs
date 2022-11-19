@@ -19,7 +19,7 @@ namespace HospitalLibrary.Managers
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<DoctorWithPopularityDTO> GetMostPopularDoctorByAgeRange(int fromAge = 0, int toAge = 666)
+        public IEnumerable<DoctorWithPopularityDTO> GetMostPopularDoctorByAgeRange(int fromAge=0, int toAge=666,bool onlyMostPopularDoctors=false)
         {  
          Dictionary<int, List<int>> doctorPatientCombinations = new Dictionary<int, List<int>>();
             foreach (Appointment appointment in _unitOfWork.AppointmentRepository.GetAll().Result.ToList())
@@ -39,18 +39,24 @@ namespace HospitalLibrary.Managers
 
             List<DoctorWithPopularityDTO> mostPopularDoctors = new List<DoctorWithPopularityDTO>();
             int max = 0;
-            foreach (List<int> list in doctorPatientCombinations.Values)
+            if (onlyMostPopularDoctors)
             {
-                if (list.Count > max) max = list.Count;
+                foreach (List<int> list in doctorPatientCombinations.Values)
+                {
+                    if (list.Count > max) max = list.Count;
+                }
             }
             foreach (int key in doctorPatientCombinations.Keys)
             {
-                if (doctorPatientCombinations[key].Count == max)
+                if (doctorPatientCombinations[key].Count == max && onlyMostPopularDoctors)
                 {
                     mostPopularDoctors.Add(
                        new DoctorWithPopularityDTO(key, max, _unitOfWork.DoctorRepository.GetOne(key).Name, _unitOfWork.DoctorRepository.GetOne(key).Surname)
                     );
                 }
+                else if(!onlyMostPopularDoctors) mostPopularDoctors.Add(
+                       new DoctorWithPopularityDTO(key, doctorPatientCombinations[key].Count, _unitOfWork.DoctorRepository.GetOne(key).Name, _unitOfWork.DoctorRepository.GetOne(key).Surname)
+                    );
             }
             return mostPopularDoctors.AsEnumerable();
         }
