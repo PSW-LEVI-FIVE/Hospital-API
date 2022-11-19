@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Doctors;
-using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.AnnualLeaves
@@ -13,9 +12,12 @@ namespace HospitalLibrary.AnnualLeaves
     {
         private IUnitOfWork _unitOfWork;
 
-        public AppointmentRescheduler(IUnitOfWork unitOfWork)
+        private IEmailService _emailService;
+
+        public AppointmentRescheduler(IUnitOfWork unitOfWork, IEmailService emailService)
         {
             _unitOfWork = unitOfWork;
+            _emailService = emailService;
         }
         
         public async Task Reschedule(int doctorId, TimeInterval timeInterval)
@@ -32,13 +34,20 @@ namespace HospitalLibrary.AnnualLeaves
                await GetDoctorsAppointments(doctors, timeInterval);
 
             Dictionary<Appointment, int> appointmentsToReschedule = new Dictionary<Appointment, int>();
-
+            List<Appointment> appointmentsToCancel = new List<Appointment>();
             foreach(Appointment appointment in doctorAppointments)
             {
-                appointmentsToReschedule.Add(appointment, FindDoctorForRescheduling(otherDoctorsAppointments, appointment));
+                int foundDoctorId = FindDoctorForRescheduling(otherDoctorsAppointments, appointment);
+                if (foundDoctorId == -1)
+                {
+                    appointmentsToCancel.Add(appointment);
+                } else {
+                    appointmentsToReschedule.Add(appointment, foundDoctorId);
+                }
             }
             
-            SaveAppointments(appointmentsToReschedule);
+            SaveAppointments(appointmentsToReschedule, appointmentsToCancel);
+            SendEmails(appointmentsToCancel);
         }
 
         private async Task<Dictionary<int, IEnumerable<Appointment>>> GetDoctorsAppointments(IEnumerable<Doctor> doctors, TimeInterval range)
@@ -63,7 +72,7 @@ namespace HospitalLibrary.AnnualLeaves
                 }
             }
 
-            throw new BadRequestException("There are no available doctors in period from " + appointment.StartAt + " to " + appointment.EndAt);
+            return -1;
         }
 
         private bool CanDoctorDoAppointment(IEnumerable<Appointment> appointments, Appointment appointment)
@@ -73,7 +82,7 @@ namespace HospitalLibrary.AnnualLeaves
                     new TimeInterval(a.StartAt, a.EndAt)));
         }
 
-        private void SaveAppointments(Dictionary<Appointment, int> appointments)
+        private void SaveAppointments(Dictionary<Appointment, int> appointments, List<Appointment> appointmentsToCancel)
         {
             foreach (var appointment in appointments.Keys)
             {
@@ -81,7 +90,21 @@ namespace HospitalLibrary.AnnualLeaves
                 _unitOfWork.AppointmentRepository.Update(appointment);
             }
 
+            foreach (var appointment in appointmentsToCancel)
+            {
+                appointment.State = AppointmentState.DELETED;
+                _unitOfWork.AppointmentRepository.Update(appointment);
+            }
+
             _unitOfWork.AppointmentRepository.Save();
+        }
+        
+        private void SendEmails(List<Appointment> appointmentsToCancel)
+        {
+            foreach (var appointment in appointmentsToCancel)
+            {
+                _emailService.SendAppointmentCanceledEmail(appointment.Patient.Email, appointment.StartAt);
+            }
         }
     }
 }

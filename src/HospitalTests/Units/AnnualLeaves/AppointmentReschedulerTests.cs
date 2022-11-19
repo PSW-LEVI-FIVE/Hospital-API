@@ -14,7 +14,6 @@ namespace HospitalTests.Units.AnnualLeaves;
 
 public class AppointmentReschedulerTests
 {
-    private static readonly CultureInfo Provider = CultureInfo.CurrentCulture;
     private Mock<IUnitOfWork> UnitOfWorkSetup()
     {
         var unitOfWork = new Mock<IUnitOfWork>();
@@ -61,7 +60,7 @@ public class AppointmentReschedulerTests
         mock.Setup(work => work.AppointmentRepository
             .GetAllDoctorAppointmentsForRange(1, It.IsAny<TimeInterval>())).ReturnsAsync(appointments);
 
-        IAppointmentRescheduler rescheduler = new AppointmentRescheduler(mock.Object);
+        IAppointmentRescheduler rescheduler = new AppointmentRescheduler(mock.Object, new Mock<IEmailService>().Object);
         
         var args = new List<Appointment>();
         mock.Setup(w => w.AppointmentRepository.Update(Capture.In(args)));
@@ -84,18 +83,23 @@ public class AppointmentReschedulerTests
             GetAppointment(4,1,"11-17-2022 13:30", "11-17-2022 14:30")
         };
 
+        var args = new List<Appointment>();
+        mock.Setup(w => w.AppointmentRepository.Update(Capture.In(args)));
+        
         mock.Setup(work => work.AppointmentRepository
             .GetAllDoctorAppointmentsForRange(1, It.IsAny<TimeInterval>())).ReturnsAsync(appointments);
 
-        IAppointmentRescheduler rescheduler = new AppointmentRescheduler(mock.Object);
+        IAppointmentRescheduler rescheduler = new AppointmentRescheduler(mock.Object, new Mock<IEmailService>().Object);
         
+        rescheduler.Reschedule(2, new TimeInterval(DateTime.Parse("11-13-2022"), DateTime.Parse("11-25-2022")));
         
-        Should.ThrowAsync<BadRequestException>(() => rescheduler.Reschedule(2,
-            new TimeInterval(DateTime.Parse("11-13-2022"), DateTime.Parse("11-25-2022"))));
+        args.Count.ShouldBe(2);
+        args.Find(a => a.Id == 1 && a.DoctorId == 2 && a.State == AppointmentState.DELETED).ShouldNotBeNull();
+        args.Find(a => a.Id == 2 && a.DoctorId == 1).ShouldNotBeNull();
         
     }
 
-    private Appointment GetAppointment(int id, int doctorId, String start, String end)
+    private Appointment GetAppointment(int id, int doctorId, string start, string end)
     {
         return new Appointment
         {
