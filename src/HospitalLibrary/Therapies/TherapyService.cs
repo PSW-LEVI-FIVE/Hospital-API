@@ -41,16 +41,15 @@ namespace HospitalLibrary.Therapies
             return medicineTherapy;
         }
 
-        public async Task<List<BloodTherapy>> GetBloodConsumption()
+        public List<BloodTherapy> GetBloodConsumption()
         {
-            List<BloodTherapy> bloodTherapies = null;
-            List<Therapy> therapies = await _unitOfWork.TherapyRepository.GetAllBloodTherapy();
+            List<BloodTherapy> bloodTherapies = new List<BloodTherapy>();
+            List<Therapy> therapies = _unitOfWork.TherapyRepository.GetAllBloodTherapy();
             foreach (var therapy in therapies)
             {
                 BloodTherapy bloodTherapy = (BloodTherapy)therapy;
                 bloodTherapies.Add(bloodTherapy);
             }
-
             return bloodTherapies;
         }
 

@@ -36,10 +36,10 @@ namespace HospitalAPI.Controllers.Intranet
         
         [Route("bloodConsumption")]
         [HttpGet]
-        public async Task<IActionResult> GetBloodConsumption()
+        public IActionResult GetBloodConsumption()
         {
-            List<BloodTherapy> bloodConsumpion = await _therapyService.GetBloodConsumption();
-            return Ok(bloodConsumpion);
+            List<BloodTherapy> bloodConsumption = _therapyService.GetBloodConsumption();
+            return Ok(bloodConsumption);
         }
     }
 }

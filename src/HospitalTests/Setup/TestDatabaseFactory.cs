@@ -196,7 +196,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         Allergen allergen2 = new Allergen(2,"Cetirizine");
         Allergen allergen3 = new Allergen(3,"Budesonide");
 
-        Therapy therapy = new BloodTherapy(10,  DateTime.Now, BloodType.A_NEGATIVE, 10, 4);
+        Therapy therapyBlo = new BloodTherapy(10,  DateTime.Now, BloodType.A_NEGATIVE, 10, 4);
         Therapy therapyMed = new MedicineTherapy(10, DateTime.Now, 1, 10, 4);
         
         BloodTherapy bloodTherapy1 = new BloodTherapy(10, DateTime.Now, BloodType.A_NEGATIVE, 2.0, 4);
@@ -221,7 +221,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         dbContext.Allergens.Add(allergen2);
         dbContext.Allergens.Add(allergen3);
         dbContext.Medicines.Add(medicine);
-        dbContext.Therapies.Add(therapy);
+        dbContext.Therapies.Add(therapyBlo);
         dbContext.Therapies.Add(therapyMed);
         dbContext.BloodStorage.Add(bloodStorage);
         dbContext.Therapies.Add(bloodTherapy1);

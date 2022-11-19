@@ -10,6 +10,6 @@ namespace HospitalLibrary.Therapies.Interfaces
         
         MedicineTherapy CreateMedicineTherapy(MedicineTherapy medicineTherapy);
 
-        Task<List<BloodTherapy>> GetBloodConsumption();
+        List<BloodTherapy> GetBloodConsumption();
     }
 }

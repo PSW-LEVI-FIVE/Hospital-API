@@ -64,16 +64,16 @@ public class TherapiesTests : BaseIntegrationTest
     }
     
     [Fact]
-    public async Task Get_blood_consumption()
+    public  void Get_blood_consumption()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
-        
-        
-        var result =((OkObjectResult)await controller.GetBloodConsumption()).Value as List<MedicineTherapy>;
+
+        List<BloodTherapy> result = new List<BloodTherapy>();
+        result =((OkObjectResult) controller.GetBloodConsumption()).Value as List<BloodTherapy>;
         
         result.ShouldNotBeNull();
-        result.ShouldBeOfType<List<MedicineTherapy>>();
-        result.Count.ShouldBe(2);
+        result.ShouldBeOfType<List<BloodTherapy>>();
+        result.Count.ShouldBe(4); // 3 postoje u bazi a 4 ako se svi testovi pokrenu jer se kreira jos 1
     }
 }

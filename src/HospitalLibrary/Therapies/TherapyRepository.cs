@@ -25,10 +25,11 @@ namespace HospitalLibrary.Therapies
                 .ToList();
         }
 
-        public async Task<List<Therapy>> GetAllBloodTherapy()
+        public  List<Therapy> GetAllBloodTherapy()
         {
-            return await  _dataContext.Therapies.FromSqlRaw($"SELECT * FROM public.Therapies WHERE therapy_type = 'blood';")
-                .ToListAsync();
+            return _dataContext.Therapies
+                .Where(therapy => therapy.InstanceType.Equals("blood"))
+                .ToList();
         }
         
     }
