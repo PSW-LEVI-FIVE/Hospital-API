@@ -83,12 +83,10 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Email = "nekimail@gmail.com",
             PhoneNumber = "063555333",
             SpecialtyType = SpecialtyType.SURGERY,
-            Uid = "5555788",
+            Uid = "55557888",
             WorkingHours = new List<WorkingHours>()
         };
         
-
-
         BloodStorage bloodStorage = new BloodStorage()
         {
             BloodType = BloodType.A_NEGATIVE,
@@ -171,6 +169,19 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Role = Role.Patient,
             Id = 2
         };
+        Doctor doctor2 = new Doctor()
+        {
+            Id = 5,
+            Name = "Prvi plus",
+            Surname = "Drugi plus",
+            Address = "Al bas daleko odavde",
+            BirthDate = DateTime.Now,
+            Email = "nekimail1@gmail.com",
+            PhoneNumber = "063555333",
+            SpecialtyType = SpecialtyType.ITERNAL_MEDICINE,
+            Uid = "67867867",
+            WorkingHours = new List<WorkingHours>()
+        };
         
         MedicalRecord record = new MedicalRecord()
         {
@@ -191,6 +202,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         dbContext.Floors.Add(floor);
         dbContext.Rooms.Add(room);
         dbContext.Doctors.Add(doctor);
+        dbContext.Doctors.Add(doctor2);
         dbContext.Hospitalizations.Add(hospitalization);
         dbContext.RoomEquipment.Add(equipment);
         dbContext.RoomEquipment.Add(equipment2);

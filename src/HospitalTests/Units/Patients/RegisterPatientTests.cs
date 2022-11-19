@@ -4,6 +4,8 @@ using HospitalLibrary.Allergens.Dtos;
 using HospitalLibrary.Allergens.Interfaces;
 using HospitalLibrary.Auth;
 using HospitalLibrary.BloodStorages;
+using HospitalLibrary.Doctors;
+using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Persons.Interfaces;
@@ -26,17 +28,45 @@ namespace HospitalTests.Units.Patients
             var personRepository = new Mock<IPersonRepository>();
             var userRepository = new Mock<IUserRepository>();
             var alergenRepository = new Mock<IAllergenRepository>();
+            var doctorRepository = new Mock<IDoctorRepository>();
             
             unitOfWork.Setup(unit => unit.PersonRepository).Returns(personRepository.Object);
             unitOfWork.Setup(unit => unit.UserRepository).Returns(userRepository.Object);
             unitOfWork.Setup(unit => unit.AllergenRepository).Returns(alergenRepository.Object);
+            unitOfWork.Setup(unit => unit.DoctorRepository).Returns(doctorRepository.Object);
             
             Patient p1 = new Patient("Pera","Peric","gmail1@gmail.com",
                                             "11111111","420420",new DateTime(2000,2,2),
                                             "Mike Mikica",BloodType.ZERO_NEGATIVE);
             
             User u1 = new User("kiki", "sifra", Role.Patient,1);
-            
+            Doctor d1 = new Doctor()
+            {
+                Id = 5,
+                Name = "Prvi plus",
+                Surname = "Drugi plus",
+                Address = "Al bas daleko odavde",
+                BirthDate = DateTime.Now,
+                Email = "nekimail1@gmail.com",
+                PhoneNumber = "063555333",
+                SpecialtyType = SpecialtyType.ITERNAL_MEDICINE,
+                Uid = "67676767",
+            };
+            Doctor d2 = new Doctor()
+            {
+                Id = 5,
+                Name = "Prvi minus",
+                Surname = "Drugi minus",
+                Address = "Al bas daleko odavde",
+                BirthDate = DateTime.Now,
+                Email = "nekimail2@gmail.com",
+                PhoneNumber = "063555333",
+                SpecialtyType = SpecialtyType.ITERNAL_MEDICINE,
+                Uid = "89898989",
+            };
+            var doctors = new List<Doctor>();
+            doctors.Add(d1);
+            doctors.Add(d2);
             Allergen allergen1 = new Allergen(1,"Milk");
             Allergen allergen2 = new Allergen(2,"Cetirizine");
             Allergen allergen3 = new Allergen(3,"Budesonide");
@@ -49,7 +79,7 @@ namespace HospitalTests.Units.Patients
             personRepository.Setup(unit => unit.GetOneByUid("11111111")).Returns(p1);
             
             userRepository.Setup(unit => unit.GetOneByUsername("kiki")).Returns(u1);
-                    
+            doctorRepository.Setup(unit => unit.GetTwoIternalMedicineDoctorsAscendingByPatientNumber()).ReturnsAsync(doctors.AsEnumerable());
             AuthService authService = new AuthService(unitOfWork.Object,new RegistrationValidationService(unitOfWork.Object));
             return authService;
         }
@@ -68,7 +98,7 @@ namespace HospitalTests.Units.Patients
                 BloodType.ZERO_NEGATIVE);
             userToCreate.Person = patientToCreate;
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup().
-                RegisterPatient(userToCreate,patientAllergens)).Message.ShouldBe("Uid is already taken");
+                RegisterPatient(userToCreate,patientAllergens,"67676767")).Message.ShouldBe("Uid is already taken");
         }
         [Fact]
         public void Create_patient_not_unique_email_Exception()
@@ -84,7 +114,7 @@ namespace HospitalTests.Units.Patients
                 BloodType.ZERO_NEGATIVE);
             userToCreate.Person = patientToCreate;
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup().
-                    RegisterPatient(userToCreate,patientAllergens)).Message.ShouldBe("Email is already taken");
+                    RegisterPatient(userToCreate,patientAllergens,"67676767")).Message.ShouldBe("Email is already taken");
         }
         [Fact]
         public void Allergen_doesnt_exist()
@@ -100,7 +130,7 @@ namespace HospitalTests.Units.Patients
                 BloodType.ZERO_NEGATIVE);
             userToCreate.Person = patientToCreate;
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup().
-                RegisterPatient(userToCreate,patientAllergens)).Message.ShouldBe("Allergen doesnt exist!");
+                RegisterPatient(userToCreate,patientAllergens,"67676767")).Message.ShouldBe("Allergen doesnt exist!");
         }
         [Fact]
         public void Create_patient_not_unique_username_Exception()
@@ -116,7 +146,24 @@ namespace HospitalTests.Units.Patients
                 BloodType.ZERO_NEGATIVE);
             userToCreate.Person = patientToCreate;
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup().
-                    RegisterPatient(userToCreate,patientAllergens)).Message.ShouldBe("Username is already taken");
+                    RegisterPatient(userToCreate,patientAllergens,"67676767")).Message.ShouldBe("Username is already taken");
+        }
+        [Fact]
+        public void Invalid_doctor()
+        {
+            List<AllergenDTO> patientAllergens = new List<AllergenDTO>
+            {
+                new AllergenDTO("Milk"),
+                new AllergenDTO("Cetirizine")
+            };
+            User userToCreate = new User("proxm", "sifra", Role.Patient,3);
+            Patient patientToCreate = new Patient("Zika", "Zikic", "gmail2@gmail.com",
+                "99999999", "555555", new DateTime(2000,2,2), "Jovina 12",
+                BloodType.ZERO_NEGATIVE);
+            userToCreate.Person = patientToCreate;
+            userToCreate.Person = patientToCreate;
+            Should.Throw<BadRequestException>(() => RegistrationServiceSetup().
+                RegisterPatient(userToCreate,patientAllergens,"88888888")).Message.ShouldBe("Doctor doesnt exist or not valid!");
         }
     }
 }

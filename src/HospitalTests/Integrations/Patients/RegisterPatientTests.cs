@@ -36,7 +36,7 @@ public class PatientTests: BaseIntegrationTest
         var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>());
         CreatePatientDTO createPatientDTO = new CreatePatientDTO("Pera", "Peric", "gmail123@gmail.com","29857236",
             "5455454",new DateTime(2001,2,25),"Mikse Dimitrijevica 42",BloodType.ZERO_NEGATIVE,
-            "pRoXm","radipls",allergens);
+            "pRoXm","radipls",allergens,"67867867");
         createPatientDTO.Id = 3;
         var result = ((OkObjectResult)controller.RegisterPatient(createPatientDTO).Result).Value as User;
         result.ShouldNotBeNull();
