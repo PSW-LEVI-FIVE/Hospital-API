@@ -33,7 +33,7 @@ namespace HospitalTests.Units.Patients
             
             Patient p1 = new Patient("Pera","Peric","gmail1@gmail.com",
                                             "11111111","420420",new DateTime(2000,2,2),
-                                            "Mike Mikica",BloodType.ZERO_NEGATIVE,new List<Allergen>());
+                                            "Mike Mikica",BloodType.ZERO_NEGATIVE);
             
             User u1 = new User("kiki", "sifra", Role.Patient,1);
             
@@ -65,7 +65,7 @@ namespace HospitalTests.Units.Patients
             User userToCreate = new User("proxm", "sifra", Role.Patient,3);
             Patient patientToCreate = new Patient("Zika", "Zikic", "gmail2@gmail.com",
                 "11111111", "555555", new DateTime(2000,2,2), "Jovina 12",
-                BloodType.ZERO_NEGATIVE,new List<Allergen>());
+                BloodType.ZERO_NEGATIVE);
             userToCreate.Person = patientToCreate;
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup().
                 RegisterPatient(userToCreate,patientAllergens)).Message.ShouldBe("Uid is already taken");
@@ -81,7 +81,7 @@ namespace HospitalTests.Units.Patients
             User userToCreate = new User("proxm", "sifra", Role.Patient,3);
             Patient patientToCreate = new Patient("Zika", "Zikic", "gmail1@gmail.com",
                 "99999999", "555555", new DateTime(2000,2,2), "Jovina 12",
-                BloodType.ZERO_NEGATIVE,new List<Allergen>());
+                BloodType.ZERO_NEGATIVE);
             userToCreate.Person = patientToCreate;
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup().
                     RegisterPatient(userToCreate,patientAllergens)).Message.ShouldBe("Email is already taken");
@@ -97,7 +97,7 @@ namespace HospitalTests.Units.Patients
             User userToCreate = new User("proxm", "sifra", Role.Patient,3);
             Patient patientToCreate = new Patient("Zika", "Zikic", "gmail2@gmail.com",
                 "99999999", "555555", new DateTime(2000,2,2), "Jovina 12",
-                BloodType.ZERO_NEGATIVE,new List<Allergen>());
+                BloodType.ZERO_NEGATIVE);
             userToCreate.Person = patientToCreate;
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup().
                 RegisterPatient(userToCreate,patientAllergens)).Message.ShouldBe("Allergen doesnt exist!");
@@ -113,7 +113,7 @@ namespace HospitalTests.Units.Patients
             User userToCreate = new User("kiki", "sifra", Role.Patient,3);
             Patient patientToCreate = new Patient("Zika", "Zikic", "gmail2@gmail.com",
                 "99999999", "555555", new DateTime(2000,2,2), "Jovina 12",
-                BloodType.ZERO_NEGATIVE,new List<Allergen>());
+                BloodType.ZERO_NEGATIVE);
             userToCreate.Person = patientToCreate;
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup().
                     RegisterPatient(userToCreate,patientAllergens)).Message.ShouldBe("Username is already taken");

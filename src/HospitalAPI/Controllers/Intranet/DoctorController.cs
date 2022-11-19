@@ -22,7 +22,19 @@ namespace HospitalAPI.Controllers.Intranet
             _emailService = emailService;
         }
 
-
+        [HttpGet]
+        [Route("internal-medicine/registration")]
+        public async Task<IActionResult> GetIternalMedicineDoctorsForPatientRegistration()
+        {
+            IEnumerable<Doctor> doctors = await _doctorService.GetIternalMedicineDoctorsForPatientRegistration();
+            List <PatientsDoctorDTO> doctorDTOs = new List<PatientsDoctorDTO>();
+            foreach (Doctor doctor in doctors)
+            {
+                PatientsDoctorDTO doctorDTO = new PatientsDoctorDTO(doctor.Name, doctor.Surname,doctor.Uid);
+                doctorDTOs.Add(doctorDTO);
+            }
+            return Ok(doctorDTOs);
+        }
         [HttpPost]
         public IActionResult Create([FromBody] CreateDoctorDTO doctorDto)
         {

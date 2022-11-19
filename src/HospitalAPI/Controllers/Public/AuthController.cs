@@ -23,7 +23,7 @@ namespace HospitalAPI.Controllers.Public
         {
             User user = createPatientDTO.MapUserToModel();
             user.Person = createPatientDTO.MapPatientToModel();
-            User createdUser = await _authService.RegisterPatient(user,createPatientDTO.Allergens);
+            User createdUser = await _authService.RegisterPatient(user,createPatientDTO.Allergens,createPatientDTO.DoctorUid);
             return Ok(createdUser);
         }
     }

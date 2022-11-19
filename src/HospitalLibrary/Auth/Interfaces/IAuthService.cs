@@ -6,6 +6,6 @@ namespace HospitalLibrary.Auth.Interfaces
 {
     public interface IAuthService
     {
-        Task<Users.User> RegisterPatient(Users.User user,List<AllergenDTO> allergens);
+        Task<Users.User> RegisterPatient(Users.User user,List<AllergenDTO> allergens,string doctorUid);
     }
 }
