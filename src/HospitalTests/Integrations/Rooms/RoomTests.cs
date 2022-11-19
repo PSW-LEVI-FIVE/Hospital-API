@@ -28,7 +28,12 @@ public class RoomTests: BaseIntegrationTest
         var dto = new CreateRoomDto()
         {
             RoomNumber = "20A",
-            Area = 45
+            Area = 45,
+            Height = 20,
+            Width = 20,
+            MapFloorId = 1,
+            XCoordinate = 10,
+            YCoordinate = 10
         };
 
         var result = ((OkObjectResult)controller.Create(dto)).Value as Room;

@@ -10,5 +10,6 @@ namespace HospitalLibrary.Rooms.Interfaces
         Room Update(Room room);
         Room GetOne(int key);
         IEnumerable<Bed> GetBedsForRoom(int id);
+
     }
 }
