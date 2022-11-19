@@ -7,5 +7,6 @@ namespace HospitalLibrary.Doctors.Interfaces
     {
         Doctor Create(Doctor doctor);
         Task<IEnumerable<Doctor>> GetAll();
+        Task<IEnumerable<Doctor>> GetIternalMedicineDoctorsForPatientRegistration();
     }
 }

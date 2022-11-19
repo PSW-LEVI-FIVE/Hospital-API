@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using HospitalLibrary.Allergens;
+using HospitalLibrary.Doctors;
 using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
@@ -23,6 +25,16 @@ namespace HospitalLibrary.Patients
         public Task<IEnumerable<Patient>> GetAll()
         {
             return _unitOfWork.PatientRepository.GetAll();
+        }
+
+        public async Task<Patient> AddAllergensAndDoctorToPatient(int patientId, List<Allergen> allergens, Doctor choosenDoctor)
+        {
+            Patient patient = _unitOfWork.PatientRepository.GetOne(patientId);
+            patient.Allergens = allergens;
+            patient.ChoosenDoctor = choosenDoctor;
+            _unitOfWork.PatientRepository.Update(patient);
+            _unitOfWork.PatientRepository.Save();
+            return patient;
         }
     }
 }

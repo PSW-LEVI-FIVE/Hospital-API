@@ -27,7 +27,14 @@ namespace HospitalLibrary.Users
         {
             return _unitOfWork.UserRepository.UsernameExist(username);
         }
-        
+
+        public async Task<User> Create(User user)
+        {
+            _unitOfWork.UserRepository.Add(user);
+            _unitOfWork.UserRepository.Save();
+            return user;
+        }
+
 
         public User UserExist(string username, string password)
         {

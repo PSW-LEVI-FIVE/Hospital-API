@@ -46,10 +46,13 @@ namespace HospitalLibrary.Patients.Dtos
         public BloodType BloodType { get; set; }
         [Required]
         public List<AllergenDTO> Allergens { get; set; }
+        [Required]
+        [RegularExpression(@"^\d{8}$", ErrorMessage = "Doctor uid not valid.")]
+        public string DoctorUid { get; set; }
         
         public CreatePatientDTO(string name, string surname, string email, string uid, 
             string phoneNumber, DateTime birthDate, string address, BloodType bloodType,
-            string username,string password, List<AllergenDTO> allergens)
+            string username,string password, List<AllergenDTO> allergens,string doctorUid)
         {
             Name = name;
             Surname = surname;
@@ -62,6 +65,7 @@ namespace HospitalLibrary.Patients.Dtos
             Password = password;
             Username = username;
             Allergens = allergens;
+            DoctorUid = doctorUid;
         }
         
         public Patient MapPatientToModel()

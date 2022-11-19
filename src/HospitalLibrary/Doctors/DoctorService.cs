@@ -13,8 +13,7 @@ namespace HospitalLibrary.Doctors
         {
             _unitOfWork = unitOfWork;
         }
-        
-        
+
         public Doctor Create(Doctor doctor)
         {
             _unitOfWork.DoctorRepository.Add(doctor);
@@ -25,6 +24,11 @@ namespace HospitalLibrary.Doctors
         public Task<IEnumerable<Doctor>> GetAll()
         {
             return _unitOfWork.DoctorRepository.GetAll();
+        }
+
+        public Task<IEnumerable<Doctor>> GetIternalMedicineDoctorsForPatientRegistration()
+        {
+            return _unitOfWork.DoctorRepository.GetTwoUnburdenedDoctors();
         }
     }
 }

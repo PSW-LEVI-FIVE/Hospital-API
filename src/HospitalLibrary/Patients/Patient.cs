@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using HospitalLibrary.Allergens;
 using HospitalLibrary.BloodStorages;
+using HospitalLibrary.Doctors;
 using HospitalLibrary.Shared.Model;
 
 namespace HospitalLibrary.Patients
@@ -10,11 +11,11 @@ namespace HospitalLibrary.Patients
     {
         public BloodType BloodType { get; set; }
         public List<Allergen> Allergens { get; set; }
+        public Doctor ChoosenDoctor { get; set; }
         public Patient() {}
-        public Patient(string name, string surname, string email, string uid, string phoneNumber, DateTime birthDate, string address, BloodType bloodType,List<Allergen> allergens) : base( name, surname, email, uid, phoneNumber, birthDate, address)
+        public Patient(string name, string surname, string email, string uid, string phoneNumber, DateTime birthDate, string address, BloodType bloodType) : base( name, surname, email, uid, phoneNumber, birthDate, address)
         {
             BloodType = bloodType;
-            Allergens = allergens;
         }
     }
 }
