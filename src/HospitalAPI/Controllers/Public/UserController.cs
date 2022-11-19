@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using HospitalLibrary.Auth.Interfaces;
 using HospitalLibrary.User.Interfaces;
 using HospitalLibrary.Users;
 using HospitalLibrary.Users.Dtos;
@@ -20,11 +21,11 @@ namespace HospitalAPI.Controllers.Public
     {
         private IUserService _userService;
         private IConfiguration _config;
+        private IAuthService _authService;
         
-        public UserController(IUserService userService,IConfiguration config)
+        public UserController(IAuthService authService)
         {
-            _userService = userService;
-            _config = config;
+            _authService = authService;
         }
         
         [AllowAnonymous]
@@ -32,11 +33,10 @@ namespace HospitalAPI.Controllers.Public
         [Route("login")]
         public IActionResult UserExist([FromBody] UserDTO userDto)
         {
-            Console.WriteLine("Salje usera: " + userDto.Username + " " + userDto.Password);
-            var user = Authenticate(userDto);
+            var user = _authService.Authenticate(userDto);
             if (user != null)
             {
-                var token = Generate(user);
+                var token = _authService.Generate(user);
                 return Ok(token);
             }
 
@@ -48,35 +48,7 @@ namespace HospitalAPI.Controllers.Public
         public IActionResult PatientsEndpoint()
         {
             var currentUser = GetCurrentUser();
-            Console.WriteLine("User: " + currentUser.Username);
             return Ok($"Hi {currentUser.Username}");
-        }
-
-        private string Generate(UserDTO user)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Username),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
-            };
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"], _config["Jwt:Audience"],
-                claims, expires: DateTime.Now.AddMinutes(15), signingCredentials: credentials);
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        private UserDTO Authenticate(UserDTO userDto)
-        {
-            var currentUser = _userService.UserExist(userDto.Username, userDto.Password);
-            if (currentUser != null)
-            {
-                return new UserDTO(currentUser.Username,currentUser.Password,currentUser.Role);
-            }
-
-            return null;
-
         }
 
         private UserDTO GetCurrentUser()
