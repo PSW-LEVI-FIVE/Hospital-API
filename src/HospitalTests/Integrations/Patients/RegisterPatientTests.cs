@@ -38,7 +38,23 @@ public class PatientTests: BaseIntegrationTest
             "5455454",new DateTime(2001,2,25),"Mikse Dimitrijevica 42",BloodType.ZERO_NEGATIVE,
             "pRoXm","radipls",allergens,"67867867");
         createPatientDTO.Id = 3;
-        var result = ((OkObjectResult)controller.RegisterPatient(createPatientDTO).Result).Value as User;
+        var result = ((OkObjectResult)controller.RegisterPatient(createPatientDTO).Result).Value as PatientDTO;
         result.ShouldNotBeNull();
+    }
+    [Fact]
+    public void Register_patient_failed()
+    {
+        using var scope = Factory.Services.CreateScope();
+        List<AllergenDTO> allergens = new List<AllergenDTO>
+        {
+            new AllergenDTO("Milk"),
+            new AllergenDTO("Cetirizine")
+        };
+        var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>());
+        CreatePatientDTO createPatientDTO = new CreatePatientDTO("Pera", "Peric", "gmail123@gmail.com","29857236",
+            "5455454",new DateTime(2001,2,25),"Mikse Dimitrijevica 42",BloodType.ZERO_NEGATIVE,
+            "pRoXm","radipls",allergens,"26549037");
+        createPatientDTO.Id = 3;
+        Should.Throw<AggregateException>(() => ((OkObjectResult)controller.RegisterPatient(createPatientDTO).Result).Value);
     }
 }

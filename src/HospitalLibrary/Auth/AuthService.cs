@@ -52,7 +52,7 @@ namespace HospitalLibrary.Auth
             }
             throw new BadRequestException("Doctor doesnt exist or not valid!");
         }
-        public async Task<Users.User> RegisterPatient(CreatePatientDTO createPatientDTO)
+        public async Task<PatientDTO> RegisterPatient(CreatePatientDTO createPatientDTO)
         {
             Users.User user = createPatientDTO.MapUserToModel();
             user.Person = createPatientDTO.MapPatientToModel();
@@ -65,8 +65,7 @@ namespace HospitalLibrary.Auth
             await _userService.Create(user);
             await _patientService.AddAllergensAndDoctorToPatient(user.Id,patientsAllergens, choosenDoctor);
             
-            user.Password = "";
-            return user;
+            return new PatientDTO(createPatientDTO);
         }
     }
 }

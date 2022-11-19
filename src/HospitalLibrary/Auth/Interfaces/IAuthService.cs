@@ -7,6 +7,6 @@ namespace HospitalLibrary.Auth.Interfaces
 {
     public interface IAuthService
     {
-        Task<Users.User> RegisterPatient(CreatePatientDTO createPatientDto);
+        Task<PatientDTO> RegisterPatient(CreatePatientDTO createPatientDto);
     }
 }
