@@ -28,7 +28,7 @@ namespace HospitalLibrary.Doctors
 
         public Task<IEnumerable<Doctor>> GetIternalMedicineDoctorsForPatientRegistration()
         {
-            return _unitOfWork.DoctorRepository.GetTwoIternalMedicineDoctorsAscendingByPatientNumber();
+            return _unitOfWork.DoctorRepository.GetTwoUnburdenedDoctors();
         }
     }
 }

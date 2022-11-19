@@ -7,6 +7,7 @@ using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Patients;
+using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Persons.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
@@ -79,8 +80,15 @@ namespace HospitalTests.Units.Patients
             personRepository.Setup(unit => unit.GetOneByUid("11111111")).Returns(p1);
             
             userRepository.Setup(unit => unit.GetOneByUsername("kiki")).Returns(u1);
-            doctorRepository.Setup(unit => unit.GetTwoIternalMedicineDoctorsAscendingByPatientNumber()).ReturnsAsync(doctors.AsEnumerable());
-            AuthService authService = new AuthService(unitOfWork.Object,new RegistrationValidationService(unitOfWork.Object));
+            doctorRepository.Setup(unit => unit.GetTwoUnburdenedDoctors()).ReturnsAsync(doctors.AsEnumerable());
+            
+            AuthService authService = new AuthService(
+                unitOfWork.Object,
+                new RegistrationValidationService(unitOfWork.Object),
+                new UserService(unitOfWork.Object),
+                new PatientService(unitOfWork.Object)
+            );
+            
             return authService;
         }
         
@@ -92,13 +100,11 @@ namespace HospitalTests.Units.Patients
                 new AllergenDTO("Milk"),
                 new AllergenDTO("Cetirizine")
             };
-            User userToCreate = new User("proxm", "sifra", Role.Patient,3);
-            Patient patientToCreate = new Patient("Zika", "Zikic", "gmail2@gmail.com",
+            CreatePatientDTO patientToCreate = new CreatePatientDTO("Zika", "Zikic", "gmail2@gmail.com",
                 "11111111", "555555", new DateTime(2000,2,2), "Jovina 12",
-                BloodType.ZERO_NEGATIVE);
-            userToCreate.Person = patientToCreate;
+                BloodType.ZERO_NEGATIVE,"proxm","sifra",patientAllergens,"67676767");
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup().
-                RegisterPatient(userToCreate,patientAllergens,"67676767")).Message.ShouldBe("Uid is already taken");
+                RegisterPatient(patientToCreate)).Message.ShouldBe("Uid is already taken");
         }
         [Fact]
         public void Create_patient_not_unique_email_Exception()
@@ -108,13 +114,11 @@ namespace HospitalTests.Units.Patients
                 new AllergenDTO("Milk"),
                 new AllergenDTO("Cetirizine")
             };
-            User userToCreate = new User("proxm", "sifra", Role.Patient,3);
-            Patient patientToCreate = new Patient("Zika", "Zikic", "gmail1@gmail.com",
+            CreatePatientDTO patientToCreate = new CreatePatientDTO("Zika", "Zikic", "gmail1@gmail.com",
                 "99999999", "555555", new DateTime(2000,2,2), "Jovina 12",
-                BloodType.ZERO_NEGATIVE);
-            userToCreate.Person = patientToCreate;
+                BloodType.ZERO_NEGATIVE,"proxm","sifra",patientAllergens,"67676767");
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup().
-                    RegisterPatient(userToCreate,patientAllergens,"67676767")).Message.ShouldBe("Email is already taken");
+                    RegisterPatient(patientToCreate)).Message.ShouldBe("Email is already taken");
         }
         [Fact]
         public void Allergen_doesnt_exist()
@@ -124,13 +128,12 @@ namespace HospitalTests.Units.Patients
                 new AllergenDTO("Milk"),
                 new AllergenDTO("notAllergen")
             };
-            User userToCreate = new User("proxm", "sifra", Role.Patient,3);
-            Patient patientToCreate = new Patient("Zika", "Zikic", "gmail2@gmail.com",
+            CreatePatientDTO patientToCreate = new CreatePatientDTO("Zika", "Zikic", "gmail2@gmail.com",
                 "99999999", "555555", new DateTime(2000,2,2), "Jovina 12",
-                BloodType.ZERO_NEGATIVE);
-            userToCreate.Person = patientToCreate;
+                BloodType.ZERO_NEGATIVE,"proxm","sifra",patientAllergens,"67676767");
+            
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup().
-                RegisterPatient(userToCreate,patientAllergens,"67676767")).Message.ShouldBe("Allergen doesnt exist!");
+                RegisterPatient(patientToCreate)).Message.ShouldBe("Allergen doesnt exist!");
         }
         [Fact]
         public void Create_patient_not_unique_username_Exception()
@@ -140,13 +143,12 @@ namespace HospitalTests.Units.Patients
                 new AllergenDTO("Milk"),
                 new AllergenDTO("Cetirizine")
             };
-            User userToCreate = new User("kiki", "sifra", Role.Patient,3);
-            Patient patientToCreate = new Patient("Zika", "Zikic", "gmail2@gmail.com",
+            CreatePatientDTO patientToCreate = new CreatePatientDTO("Zika", "Zikic", "gmail2@gmail.com",
                 "99999999", "555555", new DateTime(2000,2,2), "Jovina 12",
-                BloodType.ZERO_NEGATIVE);
-            userToCreate.Person = patientToCreate;
+                BloodType.ZERO_NEGATIVE,"kiki","sifra",patientAllergens,"67676767");
+            
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup().
-                    RegisterPatient(userToCreate,patientAllergens,"67676767")).Message.ShouldBe("Username is already taken");
+                    RegisterPatient(patientToCreate)).Message.ShouldBe("Username is already taken");
         }
         [Fact]
         public void Invalid_doctor()
@@ -156,14 +158,11 @@ namespace HospitalTests.Units.Patients
                 new AllergenDTO("Milk"),
                 new AllergenDTO("Cetirizine")
             };
-            User userToCreate = new User("proxm", "sifra", Role.Patient,3);
-            Patient patientToCreate = new Patient("Zika", "Zikic", "gmail2@gmail.com",
+            CreatePatientDTO patientToCreate = new CreatePatientDTO("Zika", "Zikic", "gmail2@gmail.com",
                 "99999999", "555555", new DateTime(2000,2,2), "Jovina 12",
-                BloodType.ZERO_NEGATIVE);
-            userToCreate.Person = patientToCreate;
-            userToCreate.Person = patientToCreate;
+                BloodType.ZERO_NEGATIVE,"proxm","sifra",patientAllergens,"88888888");
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup().
-                RegisterPatient(userToCreate,patientAllergens,"88888888")).Message.ShouldBe("Doctor doesnt exist or not valid!");
+                RegisterPatient(patientToCreate)).Message.ShouldBe("Doctor doesnt exist or not valid!");
         }
     }
 }

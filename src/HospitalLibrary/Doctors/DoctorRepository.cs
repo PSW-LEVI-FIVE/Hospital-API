@@ -15,10 +15,14 @@ namespace HospitalLibrary.Doctors
         {
             return _dataContext.Doctors.Where(doctor => doctor.SpecialtyType.Equals(specialtyType) && doctor.Id != doctorId).ToList();
         }
-        public async Task<IEnumerable<Doctor>> GetTwoIternalMedicineDoctorsAscendingByPatientNumber()
+        public async Task<IEnumerable<Doctor>> GetTwoUnburdenedDoctors()
         {
-            return await _dataContext.Doctors.Where(doctor => doctor.SpecialtyType.Equals(SpecialtyType.ITERNAL_MEDICINE)).
-                OrderBy(doctor => doctor.Patients.Count).Include(a => a.Patients).Take(2).ToListAsync();
+            return await _dataContext.Doctors
+                .Where(doctor => doctor.SpecialtyType
+                .Equals(SpecialtyType.ITERNAL_MEDICINE))
+                .OrderBy(doctor => doctor.Patients.Count)
+                .Include(a => a.Patients)
+                .Take(2).ToListAsync();
         }
     }
 }

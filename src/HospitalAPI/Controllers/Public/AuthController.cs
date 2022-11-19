@@ -21,9 +21,7 @@ namespace HospitalAPI.Controllers.Public
         [Route("register/patient")]
         public async Task<IActionResult> RegisterPatient(CreatePatientDTO createPatientDTO)
         {
-            User user = createPatientDTO.MapUserToModel();
-            user.Person = createPatientDTO.MapPatientToModel();
-            User createdUser = await _authService.RegisterPatient(user,createPatientDTO.Allergens,createPatientDTO.DoctorUid);
+            User createdUser = await _authService.RegisterPatient(createPatientDTO);
             return Ok(createdUser);
         }
     }

@@ -7,6 +7,6 @@ namespace HospitalLibrary.Doctors.Interfaces
     public interface IDoctorRepository: IBaseRepository<Doctor>
     {
         IEnumerable<Doctor> GetAllDoctorsWithSpecialityExceptId(SpecialtyType specialtyType, int doctorId);
-        Task<IEnumerable<Doctor>> GetTwoIternalMedicineDoctorsAscendingByPatientNumber();
+        Task<IEnumerable<Doctor>> GetTwoUnburdenedDoctors();
     }
 }
