@@ -32,29 +32,23 @@ namespace HospitalAPI.Controllers.Public
         [Route("login")]
         public IActionResult UserExist([FromBody] UserDTO userDto)
         {
+            Console.WriteLine("Salje usera: " + userDto.Username + " " + userDto.Password);
             var user = Authenticate(userDto);
             if (user != null)
             {
                 var token = Generate(user);
-                UserDTO userDTO = GetCurrentUser();
-                Console.WriteLine("CurrentUser: " + userDTO.Username);
                 return Ok(token);
             }
 
             return NotFound("User not found");
-            /*User user = _userService.UserExist(userDto.Username,userDto.Password);
-            if(user != null)
-                Console.WriteLine(user.Username + " " + user.Password);
-            else
-                Console.WriteLine("User je null");
-            return Ok(user);*/
         }
 
-        [HttpGet("Doctors")]
+        [HttpGet("user")]
         [Authorize]
         public IActionResult PatientsEndpoint()
         {
             var currentUser = GetCurrentUser();
+            Console.WriteLine("User: " + currentUser.Username);
             return Ok($"Hi {currentUser.Username}");
         }
 
@@ -66,7 +60,6 @@ namespace HospitalAPI.Controllers.Public
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Username),
-                new Claim(ClaimTypes.Name, user.Password),
                 new Claim(ClaimTypes.Role, user.Role.ToString())
             };
             var token = new JwtSecurityToken(_config["Jwt:Issuer"], _config["Jwt:Audience"],

@@ -7,6 +7,8 @@
         public string Password { get; set; }
 
         public Role Role { get; set; }
+        
+        
 
 
         public UserDTO()
