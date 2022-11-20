@@ -74,7 +74,7 @@ namespace HospitalAPI.Controllers.Intranet
         {
             AppointmentCancelledDTO appointment = _appointmentService.CancelAppointment(id);
             _emailService.SendAppointmentCanceledEmail(appointment.PatientEmail, appointment.AppointmentTime);
-            return Ok(appointment);
+                return Ok(appointment);
         }
     }
 }

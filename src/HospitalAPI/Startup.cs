@@ -86,7 +86,7 @@ namespace HospitalAPI
             services.AddScoped<IDoctorService, DoctorService>();
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
-            services.AddScoped<IEmailService, SendgridProvider>();
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IMapService, MapService>();
             services.AddScoped<IBuildingService, BuildingService>();
             services.AddScoped<IFloorService, FloorService>();
