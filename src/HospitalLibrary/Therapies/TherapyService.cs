@@ -9,25 +9,25 @@ using HospitalLibrary.Therapies.Model;
 
 namespace HospitalLibrary.Therapies
 {
-    public class TherapyService: ITherapyService
+    public class TherapyService : ITherapyService
     {
         private IUnitOfWork _unitOfWork;
         private IBloodStorageService _bloodStorageService;
         private IMedicineService _medicineService;
 
-        public TherapyService(IUnitOfWork unitOfWork,IBloodStorageService bloodStorageService,
+        public TherapyService(IUnitOfWork unitOfWork, IBloodStorageService bloodStorageService,
             IMedicineService medicineService)
         {
             _unitOfWork = unitOfWork;
             _medicineService = medicineService;
             _bloodStorageService = bloodStorageService;
         }
-        
+
         public async Task<BloodTherapy> CreateBloodTherapy(BloodTherapy bloodTherapy)
         {
             bool valid = await ValidateBloodAmount(bloodTherapy.BloodType, bloodTherapy.Quantity);
-            if (valid) 
-            _unitOfWork.TherapyRepository.Add(bloodTherapy);
+            if (valid)
+                _unitOfWork.TherapyRepository.Add(bloodTherapy);
             _unitOfWork.TherapyRepository.Save();
             return bloodTherapy;
         }
@@ -35,8 +35,8 @@ namespace HospitalLibrary.Therapies
         public MedicineTherapy CreateMedicineTherapy(MedicineTherapy medicineTherapy)
         {
             bool valid = ValidateMedicineAmount(medicineTherapy.MedicineId, medicineTherapy.Quantity);
-            if (valid) 
-            _unitOfWork.TherapyRepository.Add(medicineTherapy);
+            if (valid)
+                _unitOfWork.TherapyRepository.Add(medicineTherapy);
             _unitOfWork.TherapyRepository.Save();
             return medicineTherapy;
         }
@@ -50,6 +50,7 @@ namespace HospitalLibrary.Therapies
                 BloodTherapy bloodTherapy = (BloodTherapy)therapy;
                 bloodTherapies.Add(bloodTherapy);
             }
+
             return bloodTherapies;
         }
 
@@ -59,7 +60,7 @@ namespace HospitalLibrary.Therapies
             bool valid = _bloodStorageService.SubtractQuantity(blood, quantity);
             return valid;
         }
-        
+
         private bool ValidateMedicineAmount(int id, double quantity)
         {
             bool valid = _medicineService.SubtractQuantity(id, quantity);
