@@ -34,8 +34,7 @@ public class PatientTests: BaseIntegrationTest
             new AllergenDTO("Milk"),
             new AllergenDTO("Cetirizine")
         };
-        var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>(),
-                                    scope.ServiceProvider.GetRequiredService<IEmailService>());
+        var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>());
         CreatePatientDTO createPatientDTO = new CreatePatientDTO("Pera", "Peric", "dusanjanosevic007@gmail.com","29857236",
             "5455454",new DateTime(2001,2,25),"Mikse Dimitrijevica 42",BloodType.ZERO_NEGATIVE,
             "pRoXm","radipls",allergens,"67867867");
@@ -52,8 +51,7 @@ public class PatientTests: BaseIntegrationTest
             new AllergenDTO("Milk"),
             new AllergenDTO("Cetirizine")
         };
-        var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>(),
-                                    scope.ServiceProvider.GetRequiredService<IEmailService>());
+        var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>());
         CreatePatientDTO createPatientDTO = new CreatePatientDTO("Pera", "Peric", "gmail123@gmail.com","29857236",
             "5455454",new DateTime(2001,2,25),"Mikse Dimitrijevica 42",BloodType.ZERO_NEGATIVE,
             "pRoXm","radipls",allergens,"26549037");
