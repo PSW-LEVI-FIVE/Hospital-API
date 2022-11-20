@@ -14,7 +14,7 @@ namespace HospitalLibrary.Managers.Dtos
 
         public string Surname { set; get; }
 
-        public int NumberOfPatientsPicked { set; get; }
+        public int PatientsPicked { set; get; }
         public DoctorWithPopularityDTO()
         {
         }
@@ -23,7 +23,7 @@ namespace HospitalLibrary.Managers.Dtos
             Id = doctorID;
             Name = doctorName;
             Surname = doctorSurname;
-            NumberOfPatientsPicked = numberOfPatientsPicked;
+            PatientsPicked = numberOfPatientsPicked;
         }
 
 

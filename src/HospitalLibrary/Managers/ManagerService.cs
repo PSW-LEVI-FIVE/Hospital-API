@@ -36,6 +36,7 @@ namespace HospitalLibrary.Managers
         {
             _unitOfWork = unitOfWork;
         }
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -107,5 +108,7 @@ namespace HospitalLibrary.Managers
             return null;
         }
 >>>>>>> ff5b065 (added manager entity and tests for statistics of most popular doctors in hospital)
+=======
+>>>>>>> 039b3a0 (rebasing)
     }
 }

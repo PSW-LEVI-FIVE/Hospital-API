@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Dtos;
 using HospitalLibrary.Doctors.Interfaces;
+using HospitalLibrary.Managers.Dtos;
 using HospitalLibrary.Shared.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,6 +49,14 @@ namespace HospitalAPI.Controllers.Intranet
         {
             IEnumerable<Doctor> doctors = await _doctorService.GetAll();
             return Ok(doctors);
+        }
+
+        [HttpGet]
+        [Route("statistics/mostPopularDoc")]
+        public async Task<IActionResult> GetMostPopularDoctor([FromQuery(Name = "minAge")] int minAge = 0, [FromQuery(Name = "maxAge")] int maxAge = 666, [FromQuery(Name = "onlyMostPopularDoctors")] bool onlyMostPopularDoctors = true)
+        {
+            IEnumerable<DoctorWithPopularityDTO> mostPopularDoctors = _doctorService.GetMostPopularDoctorByAgeRange(minAge, maxAge, onlyMostPopularDoctors);
+            return Ok(mostPopularDoctors);
         }
     }
 }

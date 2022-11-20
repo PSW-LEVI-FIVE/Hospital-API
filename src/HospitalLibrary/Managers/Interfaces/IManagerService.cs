@@ -14,6 +14,7 @@ namespace HospitalLibrary.Managers.Interfaces
     public interface IManagerService
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         public IEnumerable<DoctorWithPopularityDTO> GetMostPopularDoctorByAgeRange(int fromAge=0, int toAge=666, bool onlyMostPopularDoctors = false);
 
 =======
@@ -21,5 +22,7 @@ namespace HospitalLibrary.Managers.Interfaces
 
         public Task<IEnumerable<DoctorWithPopularityDTO>> GetMostPopularDoctors();
 >>>>>>> 019126d (fixed all comments on PR)
+=======
+>>>>>>> 039b3a0 (rebasing)
     }
 }
