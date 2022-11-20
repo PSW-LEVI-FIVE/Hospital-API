@@ -7,5 +7,7 @@ namespace HospitalLibrary.MedicalRecords.Interfaces
         bool Exists(int id);
         MedicalRecord GetByPatient(int patientId);
 
+        MedicalRecord GetByPatientPopulated(int patientId);
+
     }
 }

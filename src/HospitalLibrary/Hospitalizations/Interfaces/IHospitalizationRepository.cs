@@ -7,5 +7,6 @@ namespace HospitalLibrary.Hospitalizations.Interfaces
     public interface IHospitalizationRepository: IBaseRepository<Hospitalization>
     {
         public Hospitalization GetOnePopulated(int id);
+        public Task<IEnumerable<Hospitalization>> GetAllForPatient(int id);
     }
 }

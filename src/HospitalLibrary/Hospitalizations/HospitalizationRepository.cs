@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using HospitalLibrary.Hospitalizations.Interfaces;
+using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -23,5 +26,12 @@ namespace HospitalLibrary.Hospitalizations
                 .FirstOrDefault();
         }
 
+        public async Task<IEnumerable<Hospitalization>> GetAllForPatient(int id)
+        {
+            return await _dataContext.Hospitalizations
+                .Where(h => h.MedicalRecord.PatientId == id)
+                .OrderBy(h => h.StartTime)
+                .ToListAsync();
+        }
     }
 }
