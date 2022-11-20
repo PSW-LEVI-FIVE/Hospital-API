@@ -4,22 +4,17 @@ using System.Threading.Tasks;
 using HospitalLibrary.Allergens;
 using HospitalLibrary.Allergens.Dtos;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
->>>>>>> 1773e5b (Refactored jwt)
 using HospitalLibrary.Auth.Interfaces;
 using HospitalLibrary.Doctors;
-using HospitalLibrary.Patients;
 using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
-using HospitalLibrary.Users;
+using HospitalLibrary.User.Interfaces;
 using HospitalLibrary.Users.Dtos;
 using HospitalLibrary.Users.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -31,7 +26,7 @@ namespace HospitalLibrary.Auth
         private readonly IUserService _userService;
         private readonly IPatientService _patientService;
         private readonly IUnitOfWork _unitOfWork;
-	private IConfiguration _config;
+	    private IConfiguration _config;
         
         public AuthService(IUnitOfWork unitOfWork,IRegistrationValidationService registrationValidation,IUserService userService,IPatientService patientService,IConfiguration config)
         {
@@ -39,6 +34,7 @@ namespace HospitalLibrary.Auth
             _registrationValidation = registrationValidation;
             _userService = userService;
             _patientService = patientService;
+            _config = config;
         }
         public async Task<List<Allergen>> GetPatientsAllergens(List<AllergenDTO> allergenDTOs)
         {
@@ -53,7 +49,7 @@ namespace HospitalLibrary.Auth
 
             return allergens;
         }
-        private async Task<Doctor> GetPatientsDoctor(string doctorUid)
+        public async Task<Doctor> GetPatientsDoctor(string doctorUid)
         {
             foreach (Doctor doctor in await _unitOfWork.DoctorRepository.GetTwoUnburdenedDoctors())
             {

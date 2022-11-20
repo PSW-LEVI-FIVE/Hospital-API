@@ -30,7 +30,7 @@ namespace HospitalTests.Units.Patients
             var userRepository = new Mock<IUserRepository>();
             var alergenRepository = new Mock<IAllergenRepository>();
             var doctorRepository = new Mock<IDoctorRepository>();
-            
+
             unitOfWork.Setup(unit => unit.PersonRepository).Returns(personRepository.Object);
             unitOfWork.Setup(unit => unit.UserRepository).Returns(userRepository.Object);
             unitOfWork.Setup(unit => unit.AllergenRepository).Returns(alergenRepository.Object);
@@ -43,7 +43,6 @@ namespace HospitalTests.Units.Patients
             User u1 = new User("kiki", "sifra", Role.Patient,1);
             Doctor d1 = new Doctor()
             {
-<<<<<<< HEAD
                 Id = 5,
                 Name = "Prvi plus",
                 Surname = "Drugi plus",
@@ -82,13 +81,13 @@ namespace HospitalTests.Units.Patients
             
             userRepository.Setup(unit => unit.GetOneByUsername("kiki")).Returns(u1);
             doctorRepository.Setup(unit => unit.GetTwoUnburdenedDoctors()).ReturnsAsync(doctors.AsEnumerable());
-             IConfiguration _config = new ConfigurationRoot(null);
+       
             AuthService authService = new AuthService(
                 unitOfWork.Object,
                 new RegistrationValidationService(unitOfWork.Object),
                 new UserService(unitOfWork.Object),
                 new PatientService(unitOfWork.Object),
-		_config
+		        null
             );
             return authService;
         }
