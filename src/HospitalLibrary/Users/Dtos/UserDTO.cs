@@ -8,9 +8,6 @@
 
         public Role Role { get; set; }
         
-        
-
-
         public UserDTO()
         {
             

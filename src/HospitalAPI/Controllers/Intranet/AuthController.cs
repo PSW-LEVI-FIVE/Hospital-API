@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using HospitalLibrary.Auth.Interfaces;
 using HospitalLibrary.User.Interfaces;
@@ -10,26 +9,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
 {
-    [Route("api/intranet/login")]
+    [Route("api/intranet/auth")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class AuthController: ControllerBase
     {
-        private IUserService _userService;
         private IAuthService _authService;
-
-        public UserController(IAuthService authService)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
         }
         
-        [HttpGet]
-        [Route("{id}")]
-        public IActionResult GetbyId(int id)
-        {
-            User user = _userService.getOne(id);
-            return Ok(user);
-        }
-        /*[AllowAnonymous]
+        [AllowAnonymous]
         [HttpPost]
         [Route("login")]
         public IActionResult UserExist([FromBody] UserDTO userDto)
@@ -67,6 +57,10 @@ namespace HospitalAPI.Controllers.Intranet
             }
 
             return null;
-        }*/
+        }
+        
     }
+    
+    
+    
 }

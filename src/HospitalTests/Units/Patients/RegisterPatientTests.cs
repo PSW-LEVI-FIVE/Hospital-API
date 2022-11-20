@@ -86,8 +86,8 @@ namespace HospitalTests.Units.Patients
                 unitOfWork.Object,
                 new RegistrationValidationService(unitOfWork.Object),
                 new UserService(unitOfWork.Object),
-                new PatientService(unitOfWork.Object),
-		        null
+                new PatientService(unitOfWork.Object), 
+                null
             );
             return authService;
         }

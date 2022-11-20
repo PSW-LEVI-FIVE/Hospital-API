@@ -28,7 +28,7 @@ namespace HospitalAPI.Controllers.Public
             _authService = authService;
         }
         
-        [AllowAnonymous]
+        /*[AllowAnonymous]
         [HttpPost]
         [Route("login")]
         public IActionResult UserExist([FromBody] UserDTO userDto)
@@ -66,6 +66,6 @@ namespace HospitalAPI.Controllers.Public
             }
 
             return null;
-        }
+        }*/
     }
 }
