@@ -1,16 +1,7 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 ﻿using HospitalLibrary.Appointments;
 using HospitalLibrary.Managers.Dtos;
 using HospitalLibrary.Managers.Interfaces;
-=======
-﻿using HospitalLibrary.Managers.Dtos;
->>>>>>> ff5b065 (added manager entity and tests for statistics of most popular doctors in hospital)
-=======
-﻿using HospitalLibrary.Appointments;
-using HospitalLibrary.Managers.Dtos;
-using HospitalLibrary.Managers.Interfaces;
->>>>>>> 019126d (fixed all comments on PR)
 using HospitalLibrary.Shared.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -20,15 +11,7 @@ using System.Threading.Tasks;
 
 namespace HospitalLibrary.Managers
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
     public class ManagerService : IManagerService
-=======
-    public class ManagerService
->>>>>>> ff5b065 (added manager entity and tests for statistics of most popular doctors in hospital)
-=======
-    public class ManagerService : IManagerService
->>>>>>> 019126d (fixed all comments on PR)
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -36,10 +19,7 @@ namespace HospitalLibrary.Managers
         {
             _unitOfWork = unitOfWork;
         }
-<<<<<<< HEAD
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         public IEnumerable<DoctorWithPopularityDTO> GetMostPopularDoctorByAgeRange(int fromAge=0, int toAge=666,bool onlyMostPopularDoctors=false)
         {  
          Dictionary<int, List<int>> doctorPatientCombinations = new Dictionary<int, List<int>>();
@@ -81,34 +61,5 @@ namespace HospitalLibrary.Managers
             }
             return mostPopularDoctors.AsEnumerable();
         }
-
-=======
-        public List<DoctorsPopularityDTO> GetMostPopularDoctorInRangeOfAge(int fromAge, int toAge)
-        {
-            throw new NotImplementedException();
-=======
-        public Task<IEnumerable<DoctorWithPopularityDTO>> GetMostPopularDoctorByAgeRange(int fromAge, int toAge)
-        {  
-         Dictionary<(int,int), int> doctorPatientCombinations = new Dictionary<(int, int), int>();
-         Dictionary<int, int> doctorNumberPatients = new Dictionary<int, int>();
-            doctorPatientCombinations.Add((3, 2), 5);
-            Console.WriteLine(doctorPatientCombinations.First().ToString());
-            Console.WriteLine("xd");
-            foreach (Appointment appointment in _unitOfWork.AppointmentRepository.GetAll().Result.ToList())
-            {
-                Console.WriteLine(doctorPatientCombinations.First().ToString());
-                //doctorPatientCombinations.ContainsKey((3, 2));
-            }
-            return null;
->>>>>>> 019126d (fixed all comments on PR)
-        }
-
-        public Task<IEnumerable<DoctorWithPopularityDTO>> GetMostPopularDoctors()
-        {
-            return null;
-        }
->>>>>>> ff5b065 (added manager entity and tests for statistics of most popular doctors in hospital)
-=======
->>>>>>> 039b3a0 (rebasing)
     }
 }

@@ -30,11 +30,10 @@ namespace HospitalLibrary.Doctors
             return _unitOfWork.DoctorRepository.GetAll();
         }
 
-<<<<<<< HEAD
         public Task<IEnumerable<Doctor>> GetIternalMedicineDoctorsForPatientRegistration()
         {
             return _unitOfWork.DoctorRepository.GetTwoUnburdenedDoctors();
-=======
+        }
         public IEnumerable<DoctorWithPopularityDTO> GetMostPopularDoctorByAgeRange(int fromAge = 0, int toAge = 666, bool onlyMostPopularDoctors = false)
         {
             Dictionary<int, List<int>> doctorPatientCombinations = new Dictionary<int, List<int>>();
@@ -78,12 +77,7 @@ namespace HospitalLibrary.Doctors
                        new DoctorWithPopularityDTO(key, doctorPatientCombinations[key].Count, doctor.Name, doctor.Surname));
                 }
             }
-<<<<<<< HEAD
-            return mostPopularDoctors.AsEnumerable();*/
->>>>>>> 039b3a0 (rebasing)
-=======
             return mostPopularDoctors.AsEnumerable();
->>>>>>> a16ec03 (errors)
         }
     }
 }
