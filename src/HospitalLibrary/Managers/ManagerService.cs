@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 ﻿using HospitalLibrary.Appointments;
 using HospitalLibrary.Managers.Dtos;
 using HospitalLibrary.Managers.Interfaces;
+=======
+﻿using HospitalLibrary.Managers.Dtos;
+>>>>>>> ff5b065 (added manager entity and tests for statistics of most popular doctors in hospital)
 using HospitalLibrary.Shared.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,7 +14,11 @@ using System.Threading.Tasks;
 
 namespace HospitalLibrary.Managers
 {
+<<<<<<< HEAD
     public class ManagerService : IManagerService
+=======
+    public class ManagerService
+>>>>>>> ff5b065 (added manager entity and tests for statistics of most popular doctors in hospital)
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -19,6 +27,7 @@ namespace HospitalLibrary.Managers
             _unitOfWork = unitOfWork;
         }
 
+<<<<<<< HEAD
         public IEnumerable<DoctorWithPopularityDTO> GetMostPopularDoctorByAgeRange(int fromAge=0, int toAge=666,bool onlyMostPopularDoctors=false)
         {  
          Dictionary<int, List<int>> doctorPatientCombinations = new Dictionary<int, List<int>>();
@@ -61,5 +70,16 @@ namespace HospitalLibrary.Managers
             return mostPopularDoctors.AsEnumerable();
         }
 
+=======
+        public List<DoctorsPopularityDTO> GetMostPopularDoctorInRangeOfAge(int fromAge, int toAge)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<DoctorsPopularityDTO> GetMostPopularDoctors()
+        {
+            throw new NotImplementedException();
+        }
+>>>>>>> ff5b065 (added manager entity and tests for statistics of most popular doctors in hospital)
     }
 }

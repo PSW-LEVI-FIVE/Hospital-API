@@ -1,3 +1,4 @@
+
 ﻿using HospitalLibrary.Feedbacks.Dtos;
 using HospitalLibrary.Managers.Dtos;
 using HospitalLibrary.Managers.Interfaces;
@@ -27,6 +28,5 @@ namespace HospitalAPI.Controllers.Intranet
             IEnumerable<DoctorWithPopularityDTO> mostPopularDoctors = _managerService.GetMostPopularDoctorByAgeRange(minAge,maxAge, onlyMostPopularDoctors);
             return Ok(mostPopularDoctors);
         }
-
     }
 }
