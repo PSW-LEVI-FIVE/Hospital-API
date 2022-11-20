@@ -41,4 +41,8 @@
       <ProjectReference Include="..\HospitalLibrary\HospitalLibrary.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Units\Managers\" />
+    </ItemGroup>
+
 </Project>

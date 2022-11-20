@@ -10,7 +10,7 @@ namespace HospitalLibrary.Doctors.Interfaces
         Doctor Create(Doctor doctor);
         Task<IEnumerable<Doctor>> GetAll();
         Task<IEnumerable<Doctor>> GetIternalMedicineDoctorsForPatientRegistration();
-        public Task<IEnumerable<Doctor>> GetDoctorsByAgeRange(int fromAge = 0, int toAge = 666);
+        public Task<IEnumerable<Doctor>> GetDoctorsByAgeRange(int fromAge, int toAge);
 
     }
 }
