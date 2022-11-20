@@ -37,13 +37,7 @@ namespace HospitalLibrary.Doctors
 =======
         public IEnumerable<DoctorWithPopularityDTO> GetMostPopularDoctorByAgeRange(int fromAge = 0, int toAge = 666, bool onlyMostPopularDoctors = false)
         {
-            return await _dataContext.Doctors
-                .Where(doctor => doctor.SpecialtyType
-                .Equals(SpecialtyType.ITERNAL_MEDICINE))
-                .OrderBy(doctor => doctor.Patients.Count)
-                .Include(a => a.Patients)
-                .Take(2).ToListAsync();
-            /*Dictionary<int, List<int>> doctorPatientCombinations = new Dictionary<int, List<int>>();
+            Dictionary<int, List<int>> doctorPatientCombinations = new Dictionary<int, List<int>>();
             foreach (Appointment appointment in _unitOfWork.AppointmentRepository.GetAll().Result.ToList())
             {
                 int age = (int)((DateTime.Now - _unitOfWork.PersonRepository.GetOne(appointment.PatientId).BirthDate).TotalDays / 365.242199);
@@ -84,8 +78,12 @@ namespace HospitalLibrary.Doctors
                        new DoctorWithPopularityDTO(key, doctorPatientCombinations[key].Count, doctor.Name, doctor.Surname));
                 }
             }
+<<<<<<< HEAD
             return mostPopularDoctors.AsEnumerable();*/
 >>>>>>> 039b3a0 (rebasing)
+=======
+            return mostPopularDoctors.AsEnumerable();
+>>>>>>> a16ec03 (errors)
         }
     }
 }
