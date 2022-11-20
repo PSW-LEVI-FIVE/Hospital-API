@@ -1,33 +1,24 @@
 ﻿using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using HospitalLibrary.Auth.Interfaces;
-using HospitalLibrary.Patients.Dtos;
+using HospitalLibrary.User.Interfaces;
 using HospitalLibrary.Users;
 using HospitalLibrary.Users.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HospitalAPI.Controllers.Public
+namespace HospitalAPI.Controllers.Intranet
 {
-    [Route("api/public/auth")]
+    [Route("api/intranet/auth")]
     [ApiController]
     public class AuthController: ControllerBase
     {
         private IAuthService _authService;
-
         public AuthController(IAuthService authService)
         {
             _authService = authService;
         }
         
-        [HttpPost]
-        [Route("register/patient")]
-        public async Task<IActionResult> RegisterPatient(CreatePatientDTO createPatientDTO)
-        {
-            PatientDTO createdPatient = await _authService.RegisterPatient(createPatientDTO);
-            return Ok(createdPatient);
-        }
         [AllowAnonymous]
         [HttpPost]
         [Route("login")]
@@ -37,7 +28,7 @@ namespace HospitalAPI.Controllers.Public
             if (user != null)
             {
                 var token = _authService.Generate(user);
-                return Ok(token);
+                return Ok(token + " " + user.Role);
             }
 
             return NotFound("User not found");
@@ -67,6 +58,9 @@ namespace HospitalAPI.Controllers.Public
 
             return null;
         }
+        
     }
-
+    
+    
+    
 }
