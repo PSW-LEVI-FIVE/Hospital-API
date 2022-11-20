@@ -2,10 +2,13 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
 using HospitalLibrary.Therapies.Interfaces;
 using HospitalLibrary.Therapies.Model;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 
 namespace HospitalLibrary.Therapies
 {
@@ -21,5 +24,13 @@ namespace HospitalLibrary.Therapies
                 .Where(t => t.HospitalizationId == hospitalizationId)
                 .ToList();
         }
+
+        public  List<Therapy> GetAllBloodTherapies()
+        {
+            return _dataContext.Therapies
+                .Where(therapy => therapy.InstanceType.Equals("blood"))
+                .ToList();
+        }
+        
     }
 }

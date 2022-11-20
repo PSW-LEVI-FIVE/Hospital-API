@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.BloodStorages.Interfaces;
 using HospitalLibrary.Medicines.Interfaces;
@@ -8,25 +9,25 @@ using HospitalLibrary.Therapies.Model;
 
 namespace HospitalLibrary.Therapies
 {
-    public class TherapyService: ITherapyService
+    public class TherapyService : ITherapyService
     {
         private IUnitOfWork _unitOfWork;
         private IBloodStorageService _bloodStorageService;
         private IMedicineService _medicineService;
 
-        public TherapyService(IUnitOfWork unitOfWork,IBloodStorageService bloodStorageService,
+        public TherapyService(IUnitOfWork unitOfWork, IBloodStorageService bloodStorageService,
             IMedicineService medicineService)
         {
             _unitOfWork = unitOfWork;
             _medicineService = medicineService;
             _bloodStorageService = bloodStorageService;
         }
-        
+
         public async Task<BloodTherapy> CreateBloodTherapy(BloodTherapy bloodTherapy)
         {
             bool valid = await ValidateBloodAmount(bloodTherapy.BloodType, bloodTherapy.Quantity);
-            if (valid) 
-            _unitOfWork.TherapyRepository.Add(bloodTherapy);
+            if (valid)
+                _unitOfWork.TherapyRepository.Add(bloodTherapy);
             _unitOfWork.TherapyRepository.Save();
             return bloodTherapy;
         }
@@ -35,9 +36,22 @@ namespace HospitalLibrary.Therapies
         {
             bool valid = ValidateMedicineAmount(medicineTherapy.MedicineId, medicineTherapy.Quantity);
             if (valid)
-            _unitOfWork.TherapyRepository.Add(medicineTherapy);
+                _unitOfWork.TherapyRepository.Add(medicineTherapy);
             _unitOfWork.TherapyRepository.Save();
             return medicineTherapy;
+        }
+
+        public List<BloodTherapy> GetBloodConsumption()
+        {
+            List<BloodTherapy> bloodTherapies = new List<BloodTherapy>();
+            List<Therapy> therapies = _unitOfWork.TherapyRepository.GetAllBloodTherapies();
+            foreach (var therapy in therapies)
+            {
+                BloodTherapy bloodTherapy = (BloodTherapy)therapy;
+                bloodTherapies.Add(bloodTherapy);
+            }
+
+            return bloodTherapies;
         }
 
         private async Task<bool> ValidateBloodAmount(BloodType type, double quantity)
@@ -46,7 +60,7 @@ namespace HospitalLibrary.Therapies
             bool valid = _bloodStorageService.SubtractQuantity(blood, quantity);
             return valid;
         }
-        
+
         private bool ValidateMedicineAmount(int id, double quantity)
         {
             bool valid = _medicineService.SubtractQuantity(id, quantity);

@@ -1,4 +1,5 @@
-﻿using HospitalAPI;
+﻿using System.Runtime.Serialization;
+using HospitalAPI;
 using HospitalAPI.Controllers.Intranet;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Therapies.Dtos;
@@ -60,5 +61,19 @@ public class TherapiesTests : BaseIntegrationTest
         var result = ((OkObjectResult)controller.CreateMedicineTherapy(dto)).Value as MedicineTherapy;
         result.ShouldNotBeNull();
         result.ShouldBeOfType<MedicineTherapy>();
+    }
+    
+    [Fact]
+    public  void Get_blood_consumption()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupController(scope);
+
+        List<BloodTherapy> result = new List<BloodTherapy>();
+        result =((OkObjectResult) controller.GetBloodConsumption()).Value as List<BloodTherapy>;
+        
+        result.ShouldNotBeNull();
+        result.ShouldBeOfType<List<BloodTherapy>>();
+        result.Count.ShouldBe(4); // 3 postoje u bazi a 4 ako se svi testovi pokrenu jer se kreira jos 1
     }
 }
