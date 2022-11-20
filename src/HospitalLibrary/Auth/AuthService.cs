@@ -73,6 +73,12 @@ namespace HospitalLibrary.Auth
             
             return new PatientDTO(createPatientDTO);
         }
+
+        public Task<PatientDTO> ActivateAccount(string code)
+        {
+            throw new NotImplementedException();
+        }
+
         public Users.User UserExist(string username, string password)
         {
             return _unitOfWork.UserRepository.UserExist(username, password);

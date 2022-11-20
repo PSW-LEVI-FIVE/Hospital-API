@@ -32,6 +32,13 @@ namespace HospitalAPI.Controllers.Public
             await _emailService.SendWelcomeEmailWithActivationLink(createdPatient.Email);
             return Ok(createdPatient);
         }
+        [HttpPatch]
+        [Route("activate")]
+        public async Task<IActionResult> ActivateAccount(string code)
+        {
+            PatientDTO activatedPatient = await _authService.ActivateAccount(code);
+            return Ok(activatedPatient);
+        }
         [AllowAnonymous]
         [HttpPost]
         [Route("login")]

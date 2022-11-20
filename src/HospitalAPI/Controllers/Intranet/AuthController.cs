@@ -33,7 +33,7 @@ namespace HospitalAPI.Controllers.Intranet
 
             return NotFound("User not found");
         }
-
+        
         [HttpGet("user")]
         [Authorize]
         public IActionResult PatientsEndpoint()
@@ -55,12 +55,7 @@ namespace HospitalAPI.Controllers.Intranet
                     Role = Role.Doctor
                 };
             }
-
             return null;
         }
-        
     }
-    
-    
-    
 }
