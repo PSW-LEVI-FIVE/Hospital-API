@@ -34,7 +34,7 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(medicineTherapy);
         }
         
-        [Route("bloodConsumption")]
+        [Route("blood-consumption")]
         [HttpGet]
         public IActionResult GetBloodConsumption()
         {

@@ -27,7 +27,7 @@ namespace HospitalLibrary.Therapies
         {
             bool valid = await ValidateBloodAmount(bloodTherapy.BloodType, bloodTherapy.Quantity);
             if (valid) 
-                _unitOfWork.TherapyRepository.Add(bloodTherapy);
+            _unitOfWork.TherapyRepository.Add(bloodTherapy);
             _unitOfWork.TherapyRepository.Save();
             return bloodTherapy;
         }
@@ -35,8 +35,8 @@ namespace HospitalLibrary.Therapies
         public MedicineTherapy CreateMedicineTherapy(MedicineTherapy medicineTherapy)
         {
             bool valid = ValidateMedicineAmount(medicineTherapy.MedicineId, medicineTherapy.Quantity);
-            if (valid)
-                _unitOfWork.TherapyRepository.Add(medicineTherapy);
+            if (valid) 
+            _unitOfWork.TherapyRepository.Add(medicineTherapy);
             _unitOfWork.TherapyRepository.Save();
             return medicineTherapy;
         }
@@ -44,7 +44,7 @@ namespace HospitalLibrary.Therapies
         public List<BloodTherapy> GetBloodConsumption()
         {
             List<BloodTherapy> bloodTherapies = new List<BloodTherapy>();
-            List<Therapy> therapies = _unitOfWork.TherapyRepository.GetAllBloodTherapy();
+            List<Therapy> therapies = _unitOfWork.TherapyRepository.GetAllBloodTherapies();
             foreach (var therapy in therapies)
             {
                 BloodTherapy bloodTherapy = (BloodTherapy)therapy;

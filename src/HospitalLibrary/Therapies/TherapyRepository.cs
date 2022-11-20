@@ -25,7 +25,7 @@ namespace HospitalLibrary.Therapies
                 .ToList();
         }
 
-        public  List<Therapy> GetAllBloodTherapy()
+        public  List<Therapy> GetAllBloodTherapies()
         {
             return _dataContext.Therapies
                 .Where(therapy => therapy.InstanceType.Equals("blood"))
