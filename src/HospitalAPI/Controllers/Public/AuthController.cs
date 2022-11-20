@@ -29,7 +29,7 @@ namespace HospitalAPI.Controllers.Public
         public async Task<IActionResult> RegisterPatient(CreatePatientDTO createPatientDTO)
         {
             PatientDTO createdPatient = await _authService.RegisterPatient(createPatientDTO);
-            await _emailService.SendWelcomeEmailWithActivationLink(createdPatient.Email);
+            _emailService.SendWelcomeEmail(createdPatient.Email);
             return Ok(createdPatient);
         }
         [AllowAnonymous]
