@@ -1,37 +1,24 @@
 ﻿using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using HospitalLibrary.Auth.Interfaces;
-using HospitalLibrary.Patients.Dtos;
-using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.User.Interfaces;
 using HospitalLibrary.Users;
 using HospitalLibrary.Users.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HospitalAPI.Controllers.Public
+namespace HospitalAPI.Controllers.Intranet
 {
-    [Route("api/public/auth")]
+    [Route("api/intranet/auth")]
     [ApiController]
     public class AuthController: ControllerBase
     {
-        private readonly IAuthService _authService;
-        private readonly IEmailService _emailService;
-
-        public AuthController(IAuthService authService,IEmailService emailService)
+        private IAuthService _authService;
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
-            _emailService = emailService;
         }
         
-        [HttpPost]
-        [Route("register/patient")]
-        public async Task<IActionResult> RegisterPatient(CreatePatientDTO createPatientDTO)
-        {
-            PatientDTO createdPatient = await _authService.RegisterPatient(createPatientDTO);
-            await _emailService.SendWelcomeEmailWithActivationLink(createdPatient.Email);
-            return Ok(createdPatient);
-        }
         [AllowAnonymous]
         [HttpPost]
         [Route("login")]
@@ -40,9 +27,10 @@ namespace HospitalAPI.Controllers.Public
             var user = _authService.Authenticate(userDto);
             if (user != null)
             {
-                string token = _authService.Generate(user);
-                return Ok(token);
+                var token = _authService.Generate(user);
+                return Ok(token + " " + user.Role);
             }
+
             return NotFound("User not found");
         }
 
@@ -70,6 +58,9 @@ namespace HospitalAPI.Controllers.Public
 
             return null;
         }
+        
     }
-
+    
+    
+    
 }

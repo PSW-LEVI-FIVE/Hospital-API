@@ -1,3 +1,4 @@
+using System.Text;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Appointments.Interfaces;
 using System.Text.Json.Serialization;
@@ -45,11 +46,13 @@ using HospitalLibrary.Therapies.Interfaces;
 using HospitalLibrary.User.Interfaces;
 using HospitalLibrary.Users;
 using HospitalLibrary.Users.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using HospitalLibrary.Managers.Interfaces;
 using HospitalLibrary.Managers;
@@ -68,7 +71,7 @@ namespace HospitalAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
             services.AddControllersWithViews()
                 .AddJsonOptions(options =>
                 {
@@ -76,7 +79,7 @@ namespace HospitalAPI
                     options.JsonSerializerOptions.MaxDepth = 0;
                 });
             services.AddDbContext<HospitalDbContext>(options =>
-            options.UseNpgsql(Configuration.GetConnectionString("HospitalDb")));
+                options.UseNpgsql(Configuration.GetConnectionString("HospitalDb")));
 
             services.AddControllers();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -86,7 +89,7 @@ namespace HospitalAPI
             services.AddScoped<IDoctorService, DoctorService>();
             services.AddScoped<IPatientService, PatientService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
-            services.AddScoped<IEmailService, SendgridProvider>();
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IMapService, MapService>();
             services.AddScoped<IBuildingService, BuildingService>();
             services.AddScoped<IFloorService, FloorService>();
@@ -94,10 +97,10 @@ namespace HospitalAPI
             services.AddScoped<IMedicalRecordService, MedicalRecordService>();
             services.AddScoped<IHospitalizationService, HospitalizationService>();
             services.AddScoped<IHospitalizationValidator, HospitalizationValidator>();
-            services.AddScoped<IAnnualLeaveService,AnnualLeaveService>();
+            services.AddScoped<IAnnualLeaveService, AnnualLeaveService>();
             services.AddScoped<IAnnualLeaveValidator, AnnualLeaveValidator>();
             services.AddScoped<IAppointmentRescheduler, AppointmentRescheduler>();
-            services.AddScoped<IBloodOrderService,BloodOrderService>();
+            services.AddScoped<IBloodOrderService, BloodOrderService>();
             services.AddScoped<IAllergenService, AllergenService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITherapyService, TherapyService>();
@@ -110,7 +113,43 @@ namespace HospitalAPI
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });
+                c.SwaggerDoc("v2", new OpenApiInfo {
+                    Title = "JWTToken_Auth_API", Version = "v1"
+                });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme() {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                    {
+                        new OpenApiSecurityScheme {
+                            Reference = new OpenApiReference {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
             });
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                }; 
+            });
+            services.AddMvc();
 
         }
 
@@ -135,6 +174,8 @@ namespace HospitalAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            
             app.UseAuthorization();
 
             app.ConfigureGlobalErrorHandling();

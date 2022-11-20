@@ -15,6 +15,7 @@ using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Shared.Validators;
 using HospitalLibrary.Users;
 using HospitalLibrary.Users.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using Shouldly;
 
@@ -25,12 +26,11 @@ namespace HospitalTests.Units.Patients
         public AuthService RegistrationServiceSetup()
         {
             var unitOfWork = new Mock<IUnitOfWork>();
-            
             var personRepository = new Mock<IPersonRepository>();
             var userRepository = new Mock<IUserRepository>();
             var alergenRepository = new Mock<IAllergenRepository>();
             var doctorRepository = new Mock<IDoctorRepository>();
-            
+
             unitOfWork.Setup(unit => unit.PersonRepository).Returns(personRepository.Object);
             unitOfWork.Setup(unit => unit.UserRepository).Returns(userRepository.Object);
             unitOfWork.Setup(unit => unit.AllergenRepository).Returns(alergenRepository.Object);
@@ -81,14 +81,14 @@ namespace HospitalTests.Units.Patients
             
             userRepository.Setup(unit => unit.GetOneByUsername("kiki")).Returns(u1);
             doctorRepository.Setup(unit => unit.GetTwoUnburdenedDoctors()).ReturnsAsync(doctors.AsEnumerable());
-            
+       
             AuthService authService = new AuthService(
                 unitOfWork.Object,
                 new RegistrationValidationService(unitOfWork.Object),
                 new UserService(unitOfWork.Object),
-                new PatientService(unitOfWork.Object)
+                new PatientService(unitOfWork.Object), 
+                null
             );
-            
             return authService;
         }
         

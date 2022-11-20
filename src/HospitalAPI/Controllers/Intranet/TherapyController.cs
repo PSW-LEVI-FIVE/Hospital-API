@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using HospitalLibrary.Therapies.Dtos;
 using HospitalLibrary.Therapies.Interfaces;
 using HospitalLibrary.Therapies.Model;
@@ -31,6 +32,14 @@ namespace HospitalAPI.Controllers.Intranet
         {
             MedicineTherapy medicineTherapy = _therapyService.CreateMedicineTherapy(createMedicineTherapyDto.MapToModel());
             return Ok(medicineTherapy);
+        }
+        
+        [Route("blood-consumption")]
+        [HttpGet]
+        public IActionResult GetBloodConsumption()
+        {
+            List<BloodTherapy> bloodConsumption = _therapyService.GetBloodConsumption();
+            return Ok(bloodConsumption);
         }
     }
 }

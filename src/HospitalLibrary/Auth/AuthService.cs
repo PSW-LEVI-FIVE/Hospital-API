@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Allergens;
 using HospitalLibrary.Allergens.Dtos;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using HospitalLibrary.Auth.Interfaces;
 using HospitalLibrary.Doctors;
-using HospitalLibrary.Patients;
 using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.User.Interfaces;
-using HospitalLibrary.Users;
+using HospitalLibrary.Users.Dtos;
 using HospitalLibrary.Users.Interfaces;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace HospitalLibrary.Auth
 {
@@ -22,13 +26,15 @@ namespace HospitalLibrary.Auth
         private readonly IUserService _userService;
         private readonly IPatientService _patientService;
         private readonly IUnitOfWork _unitOfWork;
+	    private IConfiguration _config;
         
-        public AuthService(IUnitOfWork unitOfWork,IRegistrationValidationService registrationValidation,IUserService userService,IPatientService patientService)
+        public AuthService(IUnitOfWork unitOfWork,IRegistrationValidationService registrationValidation,IUserService userService,IPatientService patientService,IConfiguration config)
         {
             _unitOfWork = unitOfWork;
             _registrationValidation = registrationValidation;
             _userService = userService;
             _patientService = patientService;
+            _config = config;
         }
         public async Task<List<Allergen>> GetPatientsAllergens(List<AllergenDTO> allergenDTOs)
         {
@@ -43,7 +49,7 @@ namespace HospitalLibrary.Auth
 
             return allergens;
         }
-        private async Task<Doctor> GetPatientsDoctor(string doctorUid)
+        public async Task<Doctor> GetPatientsDoctor(string doctorUid)
         {
             foreach (Doctor doctor in await _unitOfWork.DoctorRepository.GetTwoUnburdenedDoctors())
             {
@@ -67,5 +73,38 @@ namespace HospitalLibrary.Auth
             
             return new PatientDTO(createPatientDTO);
         }
+        public Users.User UserExist(string username, string password)
+        {
+            return _unitOfWork.UserRepository.UserExist(username, password);
+        }
+        public string Generate(UserDTO user)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Username),
+                new Claim(ClaimTypes.Role, user.Role.ToString())
+            };
+            var token = new JwtSecurityToken(_config["Jwt:Issuer"], _config["Jwt:Audience"],
+                claims, expires: DateTime.Now.AddMinutes(15), signingCredentials: credentials);
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public UserDTO Authenticate(UserDTO userDto)
+        {
+            var currentUser = UserExist(userDto.Username, userDto.Password);
+            if (currentUser != null)
+            {
+                return new UserDTO(currentUser.Username,currentUser.Password,currentUser.Role);
+            }
+
+            return null;
+
+        }
+        
+        
+        
     }
 }
