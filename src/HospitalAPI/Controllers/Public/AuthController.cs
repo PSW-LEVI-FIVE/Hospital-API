@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using HospitalLibrary.Auth.Interfaces;
 using HospitalLibrary.Patients.Dtos;
+using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Users;
 using HospitalLibrary.Users.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -14,11 +15,13 @@ namespace HospitalAPI.Controllers.Public
     [ApiController]
     public class AuthController: ControllerBase
     {
-        private IAuthService _authService;
+        private readonly IAuthService _authService;
+        private readonly IEmailService _emailService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService,IEmailService emailService)
         {
             _authService = authService;
+            _emailService = emailService;
         }
         
         [HttpPost]
@@ -26,6 +29,7 @@ namespace HospitalAPI.Controllers.Public
         public async Task<IActionResult> RegisterPatient(CreatePatientDTO createPatientDTO)
         {
             PatientDTO createdPatient = await _authService.RegisterPatient(createPatientDTO);
+            await _emailService.SendWelcomeEmailWithActivationLink(createdPatient.Email);
             return Ok(createdPatient);
         }
         [AllowAnonymous]

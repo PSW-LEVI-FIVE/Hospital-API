@@ -39,6 +39,17 @@ namespace HospitalAPI.Emails
             SendGridMessage message = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             await _sendgrid.SendEmailAsync(message);
         }
+        public async Task SendWelcomeEmailWithActivationLink(string email)
+        {
+            EmailAddress from = new EmailAddress("levifiveorg@gmail.com");
+            EmailAddress to = new EmailAddress(email);
+            const string subject = "Welcome!";
+            const string plainTextContent = "Welcome to LEVI-FIVE Hospital Service!";
+            string htmlContent = "<a href=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1s\">Here is your prize!</a>";
+
+            SendGridMessage message = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            await _sendgrid.SendEmailAsync(message);
+        }
 
         public async Task SendAppointmentCanceledEmail(string email, DateTime time)
         {
