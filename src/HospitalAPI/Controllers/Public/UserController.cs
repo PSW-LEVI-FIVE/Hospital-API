@@ -27,45 +27,5 @@ namespace HospitalAPI.Controllers.Public
         {
             _authService = authService;
         }
-        
-        /*[AllowAnonymous]
-        [HttpPost]
-        [Route("login")]
-        public IActionResult UserExist([FromBody] UserDTO userDto)
-        {
-            var user = _authService.Authenticate(userDto);
-            if (user != null)
-            {
-                var token = _authService.Generate(user);
-                return Ok(token);
-            }
-
-            return NotFound("User not found");
-        }
-
-        [HttpGet("user")]
-        [Authorize]
-        public IActionResult PatientsEndpoint()
-        {
-            var currentUser = GetCurrentUser();
-            return Ok($"Hi {currentUser.Username}");
-        }
-
-        private UserDTO GetCurrentUser()
-        {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-
-            if (identity != null)
-            {
-                var userClaims = identity.Claims;
-                return new UserDTO
-                {
-                    Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value,
-                    Role = Role.Doctor
-                };
-            }
-
-            return null;
-        }*/
     }
 }
