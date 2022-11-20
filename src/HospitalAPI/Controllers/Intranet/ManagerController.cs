@@ -21,7 +21,6 @@ namespace HospitalAPI.Controllers.Intranet
             _managerService = managerService;
         }
 
-<<<<<<< HEAD
         [HttpGet]
         [Route("statistics/mostPopularDoc")]
         public async Task<IActionResult> GetMostPopularDoctor([FromQuery(Name = "minAge")] int minAge = 0, [FromQuery(Name = "maxAge")] int maxAge = 666, [FromQuery(Name = "onlyMostPopularDoctors")] bool onlyMostPopularDoctors = true)
@@ -29,7 +28,6 @@ namespace HospitalAPI.Controllers.Intranet
             IEnumerable<DoctorWithPopularityDTO> mostPopularDoctors = _managerService.GetMostPopularDoctorByAgeRange(minAge,maxAge, onlyMostPopularDoctors);
             return Ok(mostPopularDoctors);
         }
-=======
->>>>>>> 039b3a0 (rebasing)
+
     }
 }
