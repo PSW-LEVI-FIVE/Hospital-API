@@ -69,7 +69,9 @@ namespace HospitalLibrary.Hospitalizations
             return hospitalization.PdfUrl;
         }
 
-
-        
+        public Task<IEnumerable<Hospitalization>> GetAllForPatient(int id)
+        {
+            return _unitOfWork.HospitalizationRepository.GetAllForPatient(id);
+        }
     }
 }

@@ -4,5 +4,8 @@
     {
         MedicalRecord Create(int patientId);
         MedicalRecord CreateOrGet(int patientId);
+
+        MedicalRecord GetByPatient(int id);
+
     }
 }

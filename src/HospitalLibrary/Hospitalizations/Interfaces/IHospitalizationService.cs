@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using HospitalLibrary.Hospitalizations.Dtos;
 
 namespace HospitalLibrary.Hospitalizations.Interfaces
@@ -8,6 +9,8 @@ namespace HospitalLibrary.Hospitalizations.Interfaces
         public Hospitalization Create(Hospitalization hospObj);
         public Hospitalization EndHospitalization(int id, EndHospitalizationDTO dto);
         public Task<string> GenerateTherapyReport(int id);
+
+        public Task<IEnumerable<Hospitalization>> GetAllForPatient(int id);
 
     }
 }

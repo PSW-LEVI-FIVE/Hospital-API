@@ -1,4 +1,6 @@
-﻿using HospitalLibrary.MedicalRecords.Interfaces;
+﻿using System.Collections.Generic;
+using HospitalLibrary.Hospitalizations;
+using HospitalLibrary.MedicalRecords.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.MedicalRecords
@@ -24,6 +26,11 @@ namespace HospitalLibrary.MedicalRecords
         {
             MedicalRecord medRec = _unitOfWork.MedicalRecordRepository.GetByPatient(patientId);
             return medRec ?? Create(patientId);
+        }
+
+        public MedicalRecord GetByPatient(int id)
+        {
+            return _unitOfWork.MedicalRecordRepository.GetByPatientPopulated(id);
         }
     }
 }

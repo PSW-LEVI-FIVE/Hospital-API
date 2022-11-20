@@ -2,6 +2,7 @@
 using HospitalLibrary.MedicalRecords.Interfaces;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.MedicalRecords
 {
@@ -19,6 +20,13 @@ namespace HospitalLibrary.MedicalRecords
         public MedicalRecord GetByPatient(int patientId)
         {
             return _dataContext.MedicalRecords.FirstOrDefault(m => m.PatientId == patientId);
+        }
+
+        public MedicalRecord GetByPatientPopulated(int patientId)
+        {
+            return _dataContext.MedicalRecords
+                .Include(m => m.Patient)
+                .FirstOrDefault();
         }
     }
 }

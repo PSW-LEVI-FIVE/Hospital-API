@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.Hospitalizations.Dtos;
 using HospitalLibrary.Hospitalizations.Interfaces;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HospitalAPI.Controllers.Intranet
 {
     [ApiController]
-    [Route("intranet/hospitalization")]
+    [Route("api/intranet/hospitalization")]
     public class HospitalizationController: ControllerBase
     {
         private IHospitalizationService _hospitalizationService;
@@ -31,7 +32,7 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
         [HttpPatch]
-        [Route("/end/{id:int}")]
+        [Route("end/{id:int}")]
         public IActionResult EndHospitalization([FromBody] EndHospitalizationDTO endHospitalizationDto, int id)
         {
             Hospitalization hospitalization = _hospitalizationService.EndHospitalization(id, endHospitalizationDto);
@@ -46,5 +47,15 @@ namespace HospitalAPI.Controllers.Intranet
             string url = await _hospitalizationService.GenerateTherapyReport(id);
             return Ok(url);
         }
+
+        [HttpGet]
+        [Route("patient/{id:int}")]
+        public async Task<IActionResult> GetAllForPatient(int id)
+        {
+            IEnumerable<Hospitalization> hospitalizations = await _hospitalizationService.GetAllForPatient(id);
+            return Ok(hospitalizations);
+        }
+        
+        
     }
 }
