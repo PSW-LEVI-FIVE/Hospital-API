@@ -20,12 +20,10 @@ namespace HospitalAPI.Controllers.Public
     public class UserController : ControllerBase
     {
         private IUserService _userService;
-        private IConfiguration _config;
-        private IAuthService _authService;
-        
-        public UserController(IAuthService authService)
+
+        public UserController(IUserService userService)
         {
-            _authService = authService;
+            _userService = userService;
         }
     }
 }

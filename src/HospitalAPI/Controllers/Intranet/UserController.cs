@@ -15,11 +15,10 @@ namespace HospitalAPI.Controllers.Intranet
     public class UserController : ControllerBase
     {
         private IUserService _userService;
-        private IAuthService _authService;
 
-        public UserController(IAuthService authService)
+        public UserController(IUserService userService)
         {
-            _authService = authService;
+            _userService = userService;
         }
 
         [HttpGet]
