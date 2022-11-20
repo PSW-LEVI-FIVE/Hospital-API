@@ -1,4 +1,5 @@
 ﻿using HospitalLibrary.Managers.Dtos;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,6 +10,7 @@ namespace HospitalLibrary.Doctors.Interfaces
         Doctor Create(Doctor doctor);
         Task<IEnumerable<Doctor>> GetAll();
         Task<IEnumerable<Doctor>> GetIternalMedicineDoctorsForPatientRegistration();
-        public IEnumerable<DoctorWithPopularityDTO> GetMostPopularDoctorByAgeRange(int fromAge = 0, int toAge = 666, bool onlyMostPopularDoctors = false);
+        public Task<IEnumerable<Doctor>> GetDoctorsByAgeRange(int fromAge = 0, int toAge = 666);
+
     }
 }

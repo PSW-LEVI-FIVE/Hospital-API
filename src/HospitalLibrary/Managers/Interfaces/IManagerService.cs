@@ -10,7 +10,5 @@ namespace HospitalLibrary.Managers.Interfaces
 {
     public interface IManagerService
     {
-        public IEnumerable<DoctorWithPopularityDTO> GetMostPopularDoctorByAgeRange(int fromAge=0, int toAge=666, bool onlyMostPopularDoctors = false);
-
     }
 }
