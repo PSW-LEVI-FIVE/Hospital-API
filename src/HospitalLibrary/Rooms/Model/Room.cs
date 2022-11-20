@@ -3,6 +3,13 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Floors;
 
+public enum RoomType
+{
+    OPERATION_ROOM,
+    EXAMINATION_ROOM,
+    HOSPITAL_ROOM,
+    CAFETERIA
+}
 namespace HospitalLibrary.Rooms.Model
 {
     public class Room
@@ -18,6 +25,7 @@ namespace HospitalLibrary.Rooms.Model
         public int FloorId { get; set; }
         public Floor Floor { get; set; }
 
+        public RoomType RoomType { get; set; }
         private List<RoomEquipment> RoomEquipment { get; set; }
 
 
