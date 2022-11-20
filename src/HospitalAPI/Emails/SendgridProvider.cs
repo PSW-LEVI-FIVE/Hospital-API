@@ -45,7 +45,7 @@ namespace HospitalAPI.Emails
             EmailAddress to = new EmailAddress(email);
             const string subject = "Welcome!";
             const string plainTextContent = "Welcome to LEVI-FIVE Hospital Service!";
-            string htmlContent = "<a href=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=1s\">Here is your prize!</a>";
+            string htmlContent = "<strong>Sent from LEVI-FIVE Hospital Service!</strong>";
 
             SendGridMessage message = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             await _sendgrid.SendEmailAsync(message);

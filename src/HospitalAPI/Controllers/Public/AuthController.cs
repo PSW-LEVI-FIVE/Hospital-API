@@ -16,10 +16,12 @@ namespace HospitalAPI.Controllers.Public
     public class AuthController: ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IEmailService _emailService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService,IEmailService emailService)
         {
             _authService = authService;
+            _emailService = emailService;
         }
         
         [HttpPost]
@@ -27,7 +29,7 @@ namespace HospitalAPI.Controllers.Public
         public async Task<IActionResult> RegisterPatient(CreatePatientDTO createPatientDTO)
         {
             PatientDTO createdPatient = await _authService.RegisterPatient(createPatientDTO);
-            //_emailService.SendWelcomeEmail(createdPatient.Email);
+            await _emailService.SendWelcomeEmailWithActivationLink(createdPatient.Email);
             return Ok(createdPatient);
         }
         [AllowAnonymous]
