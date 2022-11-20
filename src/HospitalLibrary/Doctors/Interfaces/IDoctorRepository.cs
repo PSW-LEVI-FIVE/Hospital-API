@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalLibrary.Managers.Dtos;
 using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.Doctors.Interfaces
@@ -8,5 +10,6 @@ namespace HospitalLibrary.Doctors.Interfaces
     {
         IEnumerable<Doctor> GetAllDoctorsWithSpecialityExceptId(SpecialtyType specialtyType, int doctorId);
         Task<IEnumerable<Doctor>> GetTwoUnburdenedDoctors();
+        public Task<IEnumerable<Doctor>> GetDoctorsByAgeRange(DateTime dateFromAge, DateTime dateToAge);
     }
 }

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
+using System;
+using HospitalLibrary.Patients;
 
 namespace HospitalLibrary.Doctors
 {
@@ -23,6 +25,17 @@ namespace HospitalLibrary.Doctors
                 .OrderBy(doctor => doctor.Patients.Count)
                 .Include(a => a.Patients)
                 .Take(2).ToListAsync();
+        }
+        
+        public async Task<IEnumerable<Doctor>> GetDoctorsByAgeRange(DateTime dateFromAge,DateTime dateToAge)
+        {
+            return await _dataContext.Doctors
+                .Where(doctor => doctor.SpecialtyType
+                .Equals(SpecialtyType.ITERNAL_MEDICINE))
+                .OrderByDescending(doctor => doctor.Patients.Count)
+                .Include(a => a.Patients
+                .Where(patient => patient.BirthDate < dateFromAge && patient.BirthDate > dateToAge))
+                .ToListAsync();
         }
     }
 }
