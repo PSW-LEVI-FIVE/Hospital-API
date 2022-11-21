@@ -5,6 +5,7 @@ using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.User.Interfaces;
 using HospitalLibrary.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Public
@@ -12,6 +13,7 @@ namespace HospitalAPI.Controllers.Public
 
     [Route("api/public/patients")]
     [ApiController]
+    [Authorize(Roles="Patient")]
     public class PatientController: ControllerBase
     {
         private IPatientService _patientService;

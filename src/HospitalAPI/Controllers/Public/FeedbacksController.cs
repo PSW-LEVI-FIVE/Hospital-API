@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HospitalLibrary.Feedbacks.Interfaces;
 using HospitalLibrary.Feedbacks;
 using HospitalLibrary.Feedbacks.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -22,6 +23,7 @@ namespace HospitalAPI.Controllers.Public
         }
 
         [HttpPost]
+        [Authorize(Roles="Patient")]
         public IActionResult Create([FromBody] CreateFeedbackDTO createFeedbackDto)
         {
             Feedback created = _feedbackService.Create(createFeedbackDto.MapToModel());

@@ -5,12 +5,14 @@ using HospitalLibrary.Appointments;
 using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
 {
     [Route("api/intranet/appointments")]
     [ApiController]
+    [Authorize(Roles="Doctor")]
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentService _appointmentService;

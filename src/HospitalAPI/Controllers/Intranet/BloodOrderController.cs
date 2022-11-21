@@ -2,6 +2,7 @@
 using HospitalLibrary.BloodOrders;
 using HospitalLibrary.BloodOrders.Dtos;
 using HospitalLibrary.BloodOrders.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
@@ -18,6 +19,7 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
         [HttpPost]
+        [Authorize(Roles="Doctor")]
         public async Task<IActionResult> Create([FromBody] CreateBloodOrderDto bloodOrderDto)
         {
             BloodOrder bloodOrder = await _bloodOrderService.Create(bloodOrderDto.MapToModel());

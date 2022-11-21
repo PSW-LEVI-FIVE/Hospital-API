@@ -2,12 +2,15 @@
 using System.Threading.Tasks;
 using HospitalLibrary.Map;
 using HospitalLibrary.Map.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
 {
     [Route("api/intranet/map")]
     [ApiController]
+    [Authorize(Roles="Manager")]
     public class MapController: ControllerBase
     {
         private IMapService _mapService;

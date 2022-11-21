@@ -1,5 +1,6 @@
 ﻿using HospitalLibrary.Buildings;
 using HospitalLibrary.Buildings.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
@@ -17,6 +18,7 @@ namespace HospitalAPI.Controllers.Intranet
         
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Roles="Manager")]
         public IActionResult UpdateName(int id, [FromBody] string name)
         {
             Building building = _buildingService.GetOne(id);
@@ -27,6 +29,7 @@ namespace HospitalAPI.Controllers.Intranet
 
         [HttpGet]
         [Route("{id}")]
+        [Authorize(Roles="Manager")]
         public IActionResult GetbyId(int id)
         {
             Building building = _buildingService.GetOne(id);

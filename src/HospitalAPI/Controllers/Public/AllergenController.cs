@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Allergens;
 using HospitalLibrary.Allergens.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -11,6 +12,7 @@ namespace HospitalAPI.Controllers.Public
 {
     [Route("api/public/allergen")]
     [ApiController]
+    [Authorize(Roles="Patient")]
     public class AllergenController : ControllerBase
     {
         private IAllergenService _allergenService;
