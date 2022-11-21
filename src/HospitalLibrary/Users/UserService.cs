@@ -28,13 +28,29 @@ namespace HospitalLibrary.Users
             return _unitOfWork.UserRepository.UsernameExist(username);
         }
 
+        public bool IsCodeUnique(string code)
+        {
+            return _unitOfWork.UserRepository.IsCodeUnique(code);
+        }
+
         public async Task<User> Create(User user)
         {
             _unitOfWork.UserRepository.Add(user);
             _unitOfWork.UserRepository.Save();
             return user;
         }
+        public async Task<User> ActivateAccount(User user)
+        {
+            user.ActivateAccount();
+            _unitOfWork.UserRepository.Update(user);
+            _unitOfWork.UserRepository.Save();
+            return user;
+        }
 
+        public async Task<User> GetOneByCode(string code)
+        {
+            return await _unitOfWork.UserRepository.GetOneByCode(code);
+        }
 
         public User UserExist(string username, string password)
         {

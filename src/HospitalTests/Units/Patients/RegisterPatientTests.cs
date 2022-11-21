@@ -40,7 +40,7 @@ namespace HospitalTests.Units.Patients
                                             "11111111","420420",new DateTime(2000,2,2),
                                             "Mike Mikica",BloodType.ZERO_NEGATIVE);
             
-            User u1 = new User("kiki", "sifra", Role.Patient,1);
+            User u1 = new User("kiki", "sifra", Role.Patient,1,ActiveStatus.Active);
             Doctor d1 = new Doctor()
             {
                 Id = 5,

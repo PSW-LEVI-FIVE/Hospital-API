@@ -1,8 +1,10 @@
 
 using System.Linq;
+using System.Threading.Tasks;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
 using HospitalLibrary.Users.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Users
 {
@@ -25,6 +27,18 @@ namespace HospitalLibrary.Users
         public User UserExist(string username, string password)
         {
             return _dataContext.Users.FirstOrDefault(m => m.Password.Equals(password) && m.Username.Equals(username));
+        }
+
+        public bool IsCodeUnique(string code)
+        {
+            return (_dataContext.Users.FirstOrDefault(u => u.ActivationCode.Equals(code)) == null);
+        }
+        public Task<User> GetOneByCode(string code)
+        {
+            return _dataContext.Users
+                .Where(u => u.ActivationCode.Equals(code))
+                .Include(u => u.Person)
+                .FirstOrDefaultAsync();
         }
     }
 }

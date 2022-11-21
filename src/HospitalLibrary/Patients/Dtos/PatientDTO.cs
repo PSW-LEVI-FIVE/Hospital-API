@@ -17,6 +17,12 @@ namespace HospitalLibrary.Patients.Dtos
             Surname = createPatientDto.Surname;
             Email = createPatientDto.Email;
         }
+        public PatientDTO(Users.User user)
+        {
+            Name = user.Person.Name;
+            Surname = user.Person.Surname;
+            Email = user.Person.Email;
+        }
     }
     
 }

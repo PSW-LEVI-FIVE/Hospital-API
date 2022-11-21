@@ -33,7 +33,7 @@ namespace HospitalAPI.Controllers.Public
             return Ok(createdPatient);
         }
         [HttpPatch]
-        [Route("activate")]
+        [Route("activate/{code}")]
         public async Task<IActionResult> ActivateAccount(string code)
         {
             PatientDTO activatedPatient = await _authService.ActivateAccount(code);

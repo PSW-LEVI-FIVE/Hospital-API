@@ -10,7 +10,11 @@ namespace HospitalLibrary.Users
         Doctor,
         Manager,
         Secretary
-
+    };
+    public enum ActiveStatus
+    {
+        Active,
+        Pending
     };
     public class User
     {
@@ -21,24 +25,25 @@ namespace HospitalLibrary.Users
         public string Username { get; set; }
         public string Password { get; set; }
         public Role Role { get; set; }
+        public string ActivationCode { get; set; }
+        public ActiveStatus ActiveStatus { get; set; }
 
         public User()
         {
         }
 
-        public User(string username, string password, Role role,int id)
+        public void ActivateAccount()
+        {
+            ActiveStatus = ActiveStatus.Active;
+        }
+
+        public User(string username, string password, Role role,int id,ActiveStatus activeStatus)
         {
             Username = username;
             Password = password;
             Role = role;
             Id = id;
-        }
-        public User(int id, string username, string password,Role role)
-        {
-            this.Id = id;
-            this.Username = username;
-            this.Password = password;
-            this.Role = role;
+            ActiveStatus = activeStatus;
         }
     }
 }
