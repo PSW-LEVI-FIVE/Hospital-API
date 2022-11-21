@@ -69,5 +69,13 @@ namespace HospitalAPI.Controllers.Intranet
             return null;
         }
 
+        [Route("getPending")]
+        [HttpGet]
+        public IActionResult GetAllPending()
+        {
+            IEnumerable<AnnualLeave> annualLeaves = _annualLeaveService.GetAllPending();
+            return Ok(annualLeaves);
+        }
+
     }
 }

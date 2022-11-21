@@ -22,7 +22,7 @@ public class AnnualLeavesUnitTests
     {
         AnnualLeave annualLeave =
             new AnnualLeave(1, null, "First Reason", DateTime.Now.AddDays(7), DateTime.Now.AddDays(9), AnnualLeaveState.PENDING, false);
-        
+
         bool isValid = annualLeave.IsValid();
 
         isValid.ShouldBe(true);
@@ -60,13 +60,13 @@ public class AnnualLeavesUnitTests
         mock.Setup(work =>
             work.AnnualLeaveRepository.GetOne(It.IsAny<int>())).Returns(annualLeave);
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
-        AnnualLeaveService service = new AnnualLeaveService(mock.Object,validator);
+        AnnualLeaveService service = new AnnualLeaveService(mock.Object, validator);
 
-        AnnualLeave response=service.Delete(annualLeave.Id,1);
-        
+        AnnualLeave response = service.Delete(annualLeave.Id, 1);
+
         response.ShouldNotBeNull();
     }
-    
+
     [Fact]
     public void Can_not_delete_annual_leave()
     {
@@ -81,7 +81,7 @@ public class AnnualLeavesUnitTests
         
         Should.Throw<BadRequestException>(() => service.Delete(annualLeave.Id,1));
     }
-    
+
     [Fact]
     public void Can_not_delete_annual_leave_false_doctorId()
     {
@@ -92,7 +92,7 @@ public class AnnualLeavesUnitTests
         mock.Setup(work =>
             work.AnnualLeaveRepository.GetOne(It.IsAny<int>())).Returns(annualLeave);
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
-        AnnualLeaveService service = new AnnualLeaveService(mock.Object,validator);
+        AnnualLeaveService service = new AnnualLeaveService(mock.Object, validator);
 
         Should.Throw<BadRequestException>(() => service.Delete(annualLeave.Id, 2));
     }

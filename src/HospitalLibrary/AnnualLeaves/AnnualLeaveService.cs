@@ -22,6 +22,11 @@ namespace HospitalLibrary.AnnualLeaves
             return _unitOfWork.AnnualLeaveRepository.GetAllByDoctorId(doctorId);
         }
 
+        public IEnumerable<AnnualLeave> GetAllPending()
+        {
+            return _unitOfWork.AnnualLeaveRepository.GetAllPending();
+        }
+
         public async Task<AnnualLeave> Create(AnnualLeave annualLeave)
         {
             await _annualLeaveValidator.Validate(annualLeave);
