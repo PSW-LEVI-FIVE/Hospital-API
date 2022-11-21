@@ -1,5 +1,6 @@
 ﻿using HospitalAPI;
 using HospitalAPI.Controllers.Intranet;
+using HospitalLibrary.Buildings.Interfaces;
 using HospitalLibrary.Floors;
 using HospitalLibrary.Floors.Dtos;
 using HospitalLibrary.Floors.Interfaces;
@@ -26,7 +27,8 @@ public class FloorTests: BaseIntegrationTest
         var controller = new MapController(
             scope.ServiceProvider.GetRequiredService<IMapService>(),
             scope.ServiceProvider.GetRequiredService<IRoomService>(),
-            scope.ServiceProvider.GetRequiredService<IFloorService>()
+            scope.ServiceProvider.GetRequiredService<IFloorService>(),
+            scope.ServiceProvider.GetRequiredService<IBuildingService>()
             );
 
         var dto = new CreateFloorDto()

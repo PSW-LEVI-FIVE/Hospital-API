@@ -97,7 +97,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         
         Building building = new Building()
         {
-            Id = 1,
+            Id = 2,
             Address = "NEKA ADRESA",
             Name = "Neko ime"
         };
@@ -117,7 +117,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         {
             Id = 2,
             Area = 100,
-            BuildingId = 1,
+            BuildingId = 2,
         };
 
 

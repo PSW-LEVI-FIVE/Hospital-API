@@ -36,7 +36,9 @@ namespace HospitalLibrary.Buildings
 
         public Building Create(Building building)
         {
-            throw new NotImplementedException();
+            _unitOfWork.BuildingRepository.Add(building);
+            _unitOfWork.BuildingRepository.Save();
+            return building;
         }
     }
 }

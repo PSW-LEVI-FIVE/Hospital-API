@@ -29,4 +29,5 @@ public class CreateBuilding
         var result = buildingService.Create(building);
         result.ShouldNotBeNull();
     }
+    
 }

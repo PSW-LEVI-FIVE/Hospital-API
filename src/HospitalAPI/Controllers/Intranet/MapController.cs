@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalLibrary.Buildings;
 using HospitalLibrary.Buildings.Dtos;
+using HospitalLibrary.Buildings.Interfaces;
 using HospitalLibrary.Floors;
 using HospitalLibrary.Floors.Dtos;
 using HospitalLibrary.Floors.Interfaces;
@@ -23,11 +25,13 @@ namespace HospitalAPI.Controllers.Intranet
         private IMapService _mapService;
         private IRoomService _roomService;
         private IFloorService _floorService;
-        public MapController(IMapService mapService, IRoomService roomService, IFloorService floorService)
+        private IBuildingService _buildingService;
+        public MapController(IMapService mapService, IRoomService roomService, IFloorService floorService, IBuildingService buildingService)
         {
             _mapService = mapService;
             _roomService = roomService;
             _floorService = floorService;
+            _buildingService = buildingService;
         }
 
         [HttpGet]
@@ -89,7 +93,6 @@ namespace HospitalAPI.Controllers.Intranet
             mapFloor.FloorId = floor.Id;
 
             mapFloor = _mapService.CreateFloor(mapFloor);
-            
             return Ok(mapFloor);
         }
 
@@ -97,7 +100,14 @@ namespace HospitalAPI.Controllers.Intranet
         [Route("buildings")]
         public IActionResult CreateBuilding([FromBody] CreateBuildingDto createBuildingDto)
         {
-            return Ok(null);
+            Building building = _buildingService.Create(createBuildingDto.DtoToBuilding());
+            if (building == null) return Problem("Error: building was not created");
+
+            MapBuilding mapBuilding = createBuildingDto.DtoToMapBuilding();
+            mapBuilding.BuildingId = building.Id;
+
+            mapBuilding = _mapService.CreateBuilding(mapBuilding);
+            return Ok(mapBuilding);
         }
     }
 }

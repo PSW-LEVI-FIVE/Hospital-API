@@ -1,6 +1,7 @@
 ﻿using HospitalAPI;
 using HospitalAPI.Controllers.Intranet;
 using HospitalLibrary.Buildings.Dtos;
+using HospitalLibrary.Buildings.Interfaces;
 using HospitalLibrary.Floors.Interfaces;
 using HospitalLibrary.Map;
 using HospitalLibrary.Map.Interfaces;
@@ -25,12 +26,22 @@ public class BuildingTests: BaseIntegrationTest
         var controller = new MapController(
             scope.ServiceProvider.GetRequiredService<IMapService>(),
             scope.ServiceProvider.GetRequiredService<IRoomService>(),
-            scope.ServiceProvider.GetRequiredService<IFloorService>()
+            scope.ServiceProvider.GetRequiredService<IFloorService>(),
+            scope.ServiceProvider.GetRequiredService<IBuildingService>()
             );
 
-        var dto = new CreateBuildingDto();
+        var dto = new CreateBuildingDto()
+        {
+            Address = "Vojvode Misica 9",
+            Name = "Block 17",
+            XCoordinate = 50,
+            YCoordinate = 50,
+            Width = 50,
+            Height = 50,
+            RgbColour = "#FFFFFF"
+        };
 
-        var result = ((OkObjectResult)controller.CreateBuilding(dto)).Value as MapRoom;
+        var result = ((OkObjectResult)controller.CreateBuilding(dto)).Value as MapBuilding;
         result.ShouldNotBeNull();
     }
 }

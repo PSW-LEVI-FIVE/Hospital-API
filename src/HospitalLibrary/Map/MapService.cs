@@ -45,6 +45,13 @@ namespace HospitalLibrary.Map
             return floor;
         }
 
+        public MapBuilding CreateBuilding(MapBuilding building)
+        {
+            _unitOfWork.MapBuildingRepository.Add(building);
+            _unitOfWork.MapBuildingRepository.Save();
+            return building;
+        }
+
         public MapFloor GetFloorById(int floorId)
         {
             return _unitOfWork.MapFloorRepository.GetOne(floorId);
@@ -54,5 +61,6 @@ namespace HospitalLibrary.Map
         {
             return _unitOfWork.MapBuildingRepository.GetOne(buildingId);
         }
+        
     }
 }
