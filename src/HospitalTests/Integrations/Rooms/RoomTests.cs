@@ -40,7 +40,7 @@ public class RoomTests: BaseIntegrationTest
             YCoordinate = 10
         };
 
-        var result = ((OkObjectResult)controller.Create(dto)).Value as MapRoom;
+        var result = ((OkObjectResult)controller.CreateRoom(dto)).Value as MapRoom;
         result.ShouldNotBeNull();
     }
 }
