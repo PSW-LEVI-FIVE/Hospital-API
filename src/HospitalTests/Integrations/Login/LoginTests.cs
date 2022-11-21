@@ -1,4 +1,5 @@
-﻿using HospitalAPI;
+﻿using System.Transactions;
+using HospitalAPI;
 using HospitalAPI.Controllers.Public;
 using HospitalLibrary.Auth.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
@@ -13,8 +14,7 @@ using Shouldly;
 namespace HospitalTests.Integrations.Login;
 
 [Collection("Test")]
-public class LoginTests : BaseIntegrationTest
-{
+public class LoginTests : BaseIntegrationTest {
     public LoginTests(TestDatabaseFactory<Startup> factory) : base(factory)
     {
     }
@@ -39,4 +39,5 @@ public class LoginTests : BaseIntegrationTest
         var result = ((NotFoundObjectResult)controller.UserExist(new UserDTO(user.Username,user.Password,user.Role))).Value as string;
         result.ShouldNotBeNull();
     }
+
 }

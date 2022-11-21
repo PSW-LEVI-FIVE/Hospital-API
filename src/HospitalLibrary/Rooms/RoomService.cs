@@ -32,5 +32,10 @@ namespace HospitalLibrary.Rooms
         {
             return _unitOfWork.RoomRepository.GetOne(key);
         }
+
+        public IEnumerable<Bed> GetBedsForRoom(int id)
+        {
+            return _unitOfWork.BedRepository.GetAllByRoom(id);
+        }
     }
 }

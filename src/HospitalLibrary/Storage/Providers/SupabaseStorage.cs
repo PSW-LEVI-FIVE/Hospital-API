@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Supabase.Interfaces;
 using Supabase.Storage;
 
@@ -11,10 +12,10 @@ namespace HospitalAPI.Storage.Providers
     {
         private Supabase.Client _client;
 
-        public SupabaseStorage()
+        public SupabaseStorage(IConfiguration configuration)
         {
-            string apiKey = Environment.GetEnvironmentVariable("SUPABASE_API_KEY");
-            string url = Environment.GetEnvironmentVariable("SUPABASE_URL") ?? "";
+            string apiKey = configuration["Supabase:Secret"];
+            string url = configuration["Supabase:Url"];
             _client = new Supabase.Client(url, apiKey);
         }
 

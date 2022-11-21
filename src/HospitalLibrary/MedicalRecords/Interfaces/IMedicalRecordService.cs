@@ -7,5 +7,6 @@
 
         MedicalRecord GetByPatient(int id);
 
+        MedicalRecord GetByPatientUid(string patientUid);
     }
 }

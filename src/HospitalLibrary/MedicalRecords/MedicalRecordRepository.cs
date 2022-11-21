@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using HospitalLibrary.BloodStorages;
 using HospitalLibrary.MedicalRecords.Interfaces;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
@@ -25,8 +26,16 @@ namespace HospitalLibrary.MedicalRecords
         public MedicalRecord GetByPatientPopulated(int patientId)
         {
             return _dataContext.MedicalRecords
+                .Where(m => m.PatientId == patientId)
                 .Include(m => m.Patient)
                 .FirstOrDefault();
+        }
+
+        public MedicalRecord GetByPatientUidPopulated(string patientUid)
+        {
+            return _dataContext.MedicalRecords
+                .Include(m => m.Patient)
+                .FirstOrDefault(m => m.Patient.Uid.Equals(patientUid));
         }
     }
 }

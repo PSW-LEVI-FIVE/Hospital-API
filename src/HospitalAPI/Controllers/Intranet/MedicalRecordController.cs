@@ -1,4 +1,5 @@
-﻿using HospitalLibrary.MedicalRecords;
+﻿using System;
+using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.MedicalRecords.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,5 +25,12 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(record);
         }
 
+        [HttpGet]
+        [Route("uid/{uid}")]
+        public IActionResult GetOneByUid(string uid)
+        {
+            MedicalRecord record = _medicalRecordService.GetByPatientUid(uid);
+            return Ok(record);
+        }
     }
 }

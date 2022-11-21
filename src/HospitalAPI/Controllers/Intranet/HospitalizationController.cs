@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.Hospitalizations.Dtos;
@@ -45,7 +46,7 @@ namespace HospitalAPI.Controllers.Intranet
         public async Task<IActionResult> GeneratePdf(int id)
         {
             string url = await _hospitalizationService.GenerateTherapyReport(id);
-            return Ok(url);
+            return Ok(new PdfGeneratedDTO(url));
         }
 
         [HttpGet]

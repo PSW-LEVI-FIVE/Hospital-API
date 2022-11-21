@@ -9,5 +9,6 @@ namespace HospitalLibrary.Rooms.Interfaces
         Task<IEnumerable<Room>> GetAll();
         Room Update(Room room);
         Room GetOne(int key);
+        IEnumerable<Bed> GetBedsForRoom(int id);
     }
 }
