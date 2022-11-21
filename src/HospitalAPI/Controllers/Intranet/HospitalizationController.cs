@@ -6,6 +6,7 @@ using HospitalLibrary.Hospitalizations.Dtos;
 using HospitalLibrary.Hospitalizations.Interfaces;
 using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.MedicalRecords.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
@@ -24,6 +25,7 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
         [HttpPost]
+        [Authorize(Roles="Doctor")]
         public IActionResult CreateHospitalization([FromBody] CreateHospitalizationDTO createHospitalizationDTO )
         {
             MedicalRecord medicalRecord = _medicalRecordService.CreateOrGet(createHospitalizationDTO.PatientId);
@@ -34,6 +36,7 @@ namespace HospitalAPI.Controllers.Intranet
 
         [HttpPatch]
         [Route("end/{id:int}")]
+        [Authorize(Roles="Doctor")]
         public IActionResult EndHospitalization([FromBody] EndHospitalizationDTO endHospitalizationDto, int id)
         {
             Hospitalization hospitalization = _hospitalizationService.EndHospitalization(id, endHospitalizationDto);
@@ -43,6 +46,7 @@ namespace HospitalAPI.Controllers.Intranet
 
         [HttpGet]
         [Route("{id:int}/generate/pdf")]
+        [Authorize(Roles="Doctor")]
         public async Task<IActionResult> GeneratePdf(int id)
         {
             string url = await _hospitalizationService.GenerateTherapyReport(id);
@@ -51,6 +55,7 @@ namespace HospitalAPI.Controllers.Intranet
 
         [HttpGet]
         [Route("patient/{id:int}")]
+        [Authorize(Roles="Doctor")]
         public async Task<IActionResult> GetAllForPatient(int id)
         {
             IEnumerable<Hospitalization> hospitalizations = await _hospitalizationService.GetAllForPatient(id);

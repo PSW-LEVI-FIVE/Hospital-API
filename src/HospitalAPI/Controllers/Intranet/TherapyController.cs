@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HospitalLibrary.Therapies.Dtos;
 using HospitalLibrary.Therapies.Interfaces;
 using HospitalLibrary.Therapies.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
@@ -20,6 +21,7 @@ namespace HospitalAPI.Controllers.Intranet
         
         [Route("blood")]
         [HttpPost]
+        [Authorize(Roles="Doctor")]
         public async Task<IActionResult> CreateBloodTherapy([FromBody] CreateBloodTherapyDTO createBloodTherapyDto)
         {
             BloodTherapy bloodTherapy = await _therapyService.CreateBloodTherapy(createBloodTherapyDto.MapToModel());
@@ -28,6 +30,7 @@ namespace HospitalAPI.Controllers.Intranet
         
         [Route("medicine")]
         [HttpPost]
+        [Authorize(Roles="Doctor")]
         public IActionResult CreateMedicineTherapy([FromBody] CreateMedicineTherapyDTO createMedicineTherapyDto)
         {
             MedicineTherapy medicineTherapy = _therapyService.CreateMedicineTherapy(createMedicineTherapyDto.MapToModel());
@@ -36,6 +39,7 @@ namespace HospitalAPI.Controllers.Intranet
         
         [Route("blood-consumption")]
         [HttpGet]
+        [Authorize(Roles="Doctor")]
         public IActionResult GetBloodConsumption()
         {
             List<BloodTherapy> bloodConsumption = _therapyService.GetBloodConsumption();

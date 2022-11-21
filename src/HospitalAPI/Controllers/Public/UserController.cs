@@ -17,6 +17,7 @@ namespace HospitalAPI.Controllers.Public
 {
     [Route("api/public/login")]
     [ApiController]
+    [Authorize(Roles="Patient")]
     public class UserController : ControllerBase
     {
         private IUserService _userService;

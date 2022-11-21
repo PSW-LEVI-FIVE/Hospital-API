@@ -16,6 +16,7 @@ namespace HospitalAPI.Controllers.Intranet
     // [Authorize]
     [Route("api/intranet/annual-leaves")]
     [ApiController]
+    [Authorize(Roles="Doctor")]
     public class AnnualLeaveController : ControllerBase
     {
         private IAnnualLeaveService _annualLeaveService;

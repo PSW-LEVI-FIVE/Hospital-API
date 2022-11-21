@@ -8,6 +8,7 @@ using HospitalLibrary.Users;
 using HospitalLibrary.Users.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.SqlServer.Server;
 
 namespace HospitalAPI.Controllers.Public
 {
@@ -48,7 +49,7 @@ namespace HospitalAPI.Controllers.Public
             if (user != null)
             {
                 string token = _authService.Generate(user);
-                return Ok(token);
+                return Ok(token + " " + user.Role);
             }
             return NotFound("User not found");
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.MedicalRecords.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
@@ -19,6 +20,7 @@ namespace HospitalAPI.Controllers.Intranet
 
         [HttpGet]
         [Route("patient/{id:int}")]
+        [Authorize(Roles="Doctor")]
         public IActionResult GetOne(int id)
         {
             MedicalRecord record = _medicalRecordService.GetByPatient(id);

@@ -7,6 +7,7 @@ using HospitalLibrary.Doctors.Dtos;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Managers.Dtos;
 using HospitalLibrary.Shared.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
@@ -26,6 +27,7 @@ namespace HospitalAPI.Controllers.Intranet
 
         [HttpGet]
         [Route("internal-medicine/registration")]
+        [Authorize(Roles="Patient")]
         public async Task<IActionResult> GetIternalMedicineDoctorsForPatientRegistration()
         {
             IEnumerable<Doctor> doctors = await _doctorService.GetIternalMedicineDoctorsForPatientRegistration();
@@ -38,6 +40,7 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(doctorDTOs);
         }
         [HttpPost]
+        [Authorize(Roles="Doctor")]
         public IActionResult Create([FromBody] CreateDoctorDTO doctorDto)
         {
             Doctor created = _doctorService.Create(doctorDto.MapToModel());
@@ -46,6 +49,7 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
         [HttpGet]
+        [Authorize(Roles="Doctor")]
         public async Task<IActionResult> GetAll()
         {
             IEnumerable<Doctor> doctors = await _doctorService.GetAll();
@@ -53,6 +57,7 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
         [HttpGet]
+        [Authorize(Roles="Manager")]
         [Route("statistics/DocsWithPopularity")]
         public async Task<IActionResult> GetDoctorsWithPopularity([FromQuery(Name = "minAge")] int minAge = 0, [FromQuery(Name = "maxAge")] int maxAge = 666)
         {

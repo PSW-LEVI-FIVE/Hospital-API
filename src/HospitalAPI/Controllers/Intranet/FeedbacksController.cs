@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Feedbacks.Dtos;
 using HospitalLibrary.Patients;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HospitalAPI.Controllers.Intranet
 {
@@ -21,6 +22,7 @@ namespace HospitalAPI.Controllers.Intranet
         
         [HttpGet]
         [Route("manager")]
+        [Authorize(Roles="Manager")]
         public async Task<IActionResult> GetManagersFeedbacks()
         {
             IEnumerable<ManagersFeedbackDTO> managersFeedbacks = await _feedbackService.GetManagersFeedbacks();
@@ -29,6 +31,7 @@ namespace HospitalAPI.Controllers.Intranet
         
         [HttpPut]
         [Route("{id}")]
+        [Authorize(Roles="Manager")]
         public IActionResult ChangePublishmentStatus(int id, [FromBody] bool feedbackPublishmentStatus)
         {
             Feedback feedback = _feedbackService.Get(id);
