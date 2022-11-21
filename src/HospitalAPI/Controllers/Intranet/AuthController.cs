@@ -51,8 +51,9 @@ namespace HospitalAPI.Controllers.Intranet
                 var userClaims = identity.Claims;
                 return new UserDTO
                 {
-                    Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value,
-                    Role = Role.Doctor
+                    Id = int.Parse(userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value),
+                    Role = Role.Doctor,
+                    Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value
                 };
             }
 

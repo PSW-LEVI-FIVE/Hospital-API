@@ -81,11 +81,12 @@ namespace HospitalLibrary.Auth
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
+            
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Username),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, user.Role.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             };
             var token = new JwtSecurityToken(_config["Jwt:Issuer"], _config["Jwt:Audience"],
                 claims, expires: DateTime.Now.AddMinutes(15), signingCredentials: credentials);
@@ -97,7 +98,7 @@ namespace HospitalLibrary.Auth
             var currentUser = UserExist(userDto.Username, userDto.Password);
             if (currentUser != null)
             {
-                return new UserDTO(currentUser.Username,currentUser.Password,currentUser.Role);
+                return new UserDTO(currentUser.Username,currentUser.Password,currentUser.Role, currentUser.Id);
             }
 
             return null;

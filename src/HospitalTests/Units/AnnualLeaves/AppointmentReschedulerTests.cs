@@ -59,7 +59,10 @@ public class AppointmentReschedulerTests
 
         mock.Setup(work => work.AppointmentRepository
             .GetAllDoctorAppointmentsForRange(1, It.IsAny<TimeInterval>())).ReturnsAsync(appointments);
-
+        mock.Setup(unit =>
+                unit.AnnualLeaveRepository.GetDoctorsThatHaveAnnualLeaveInRange(It.IsAny<TimeInterval>()))
+            .Returns(new List<int>());
+        
         IAppointmentRescheduler rescheduler = new AppointmentRescheduler(mock.Object, new Mock<IEmailService>().Object);
         
         var args = new List<Appointment>();
@@ -76,7 +79,9 @@ public class AppointmentReschedulerTests
     public void Cant_reschedule_appointments()
     {
         var mock = UnitOfWorkSetup();
-
+        mock.Setup(unit =>
+                unit.AnnualLeaveRepository.GetDoctorsThatHaveAnnualLeaveInRange(It.IsAny<TimeInterval>()))
+            .Returns(new List<int>());
         List<Appointment> appointments = new List<Appointment>
         {
             GetAppointment(3,1,"11-16-2022 09:30", "11-16-2022 10:45"),
