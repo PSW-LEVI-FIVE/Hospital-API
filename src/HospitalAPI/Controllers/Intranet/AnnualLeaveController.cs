@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
 {
-    [Authorize]
+    // [Authorize]
     [Route("api/intranet/annual-leaves")]
     [ApiController]
     public class AnnualLeaveController : ControllerBase
