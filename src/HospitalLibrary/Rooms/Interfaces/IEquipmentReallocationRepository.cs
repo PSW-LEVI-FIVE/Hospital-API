@@ -11,6 +11,7 @@ namespace HospitalLibrary.Rooms.Interfaces
     public interface IEquipmentReallocationRepository
     {
         Task<IEnumerable<TimeInterval>> GetAllRoomTakenInrevalsForDate(int roomId, DateTime date);
+        List<TimeInterval> GetAllRoomTakenInrevalsForDateList(int roomId, DateTime date);
         Task<EquipmentReallocation> GetById(int appointmentId);
 
     }

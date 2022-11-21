@@ -2,6 +2,7 @@
 using HospitalLibrary.Migrations;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,32 +37,86 @@ namespace HospitalLibrary.Rooms
 
         }
 
-        public async Task<IEnumerable<TimeInterval>> GetPossibleInterval(int Starting_roomId, int Destination_roomId,DateTime date, TimeSpan duration)
+        public List<TimeInterval> GetPossibleInterval(int Starting_roomId, int Destination_roomId,DateTime date, TimeSpan duration)
         {
-            Task<IEnumerable<TimeInterval>> intervalsA = getIntevals(Starting_roomId,date); 
-            Task<IEnumerable<TimeInterval>> intervalsB = getIntevals(Destination_roomId,date);
+            List<TimeInterval> intervalsA = GetIntevals(Starting_roomId,date, duration);
+            List<TimeInterval> intervalsB = GetIntevals(Destination_roomId, date, duration);
 
-            return null;      
+            List<TimeInterval> intervals = getShared(intervalsA, intervalsB, duration);
+
+            return intervals;      
         }
-
-        public Task<IEnumerable<TimeInterval>> GetPossibleInterval(int Starting_roomId, int Destination_roomId, TimeSpan duration)
+        List<TimeInterval> GetIntevals(int roomId, DateTime date, TimeSpan duration)
         {
-            return null;
-        }
-
-        async Task<IEnumerable<TimeInterval>> getIntevals(int roomId, DateTime date) {
-
             IEnumerable<TimeInterval> roomTimeIntervals =
-                await _unitOfWork.AppointmentRepository.GetAllRoomTakenIntervalsForDate(roomId,date) ;
+                 (IEnumerable<TimeInterval>)_unitOfWork.AppointmentRepository.GetAllRoomTakenIntervalsForDate(roomId, date);
             IEnumerable<TimeInterval> roomReallocationsIntervals =
-                await _unitOfWork.EquipmentReallocationRepository.GetAllRoomTakenInrevalsForDate(roomId,date);
+                 (IEnumerable<TimeInterval>)_unitOfWork.EquipmentReallocationRepository.GetAllRoomTakenInrevalsForDate(roomId, date);
 
 
-            IEnumerable<TimeInterval> mixedIntervals = roomReallocationsIntervals.Concat(roomTimeIntervals);
+            List<TimeInterval> mixedIntervals = (List<TimeInterval>)roomReallocationsIntervals.Concat(roomTimeIntervals).GetEnumerator();
 
-            return mixedIntervals;
-            
+
+            return GetAvailableIntervals(mixedIntervals, date, duration);
+        }
+        List<TimeInterval> GetAvailableIntervals(List<TimeInterval> takenIntervals, DateTime date, TimeSpan duration)
+        {
+            List<TimeInterval> available = new List<TimeInterval>();
+            DateTime b = date.AddHours(8);
+
+            foreach (TimeInterval interval in takenIntervals)
+            {
+                if (b.Subtract(interval.Start) >= duration)
+                    available.Add(new TimeInterval(date, interval.Start));
+                b = interval.End;
+            }
+            if (b.Subtract(date.AddHours(10)) >= duration)
+                available.Add(new TimeInterval(b, date));
+            return available;
+        }
+        private List<TimeInterval> getShared(List<TimeInterval> intervalsA, List<TimeInterval> intervalsB ,TimeSpan duration)
+        {
+            List<TimeInterval> shared = new List<TimeInterval>(); 
+            foreach(TimeInterval interval in intervalsA)
+            {
+                foreach(TimeInterval interval2 in intervalsB)
+                {
+                    if (interval.IsOverlaping(interval2)) 
+                    {
+                       var a = makeShared(interval, interval2, duration);
+                       if (a != null) 
+                        shared.Add(a);
+                    }
+                }
+            }
+            return shared;
         }
 
+        private  TimeInterval makeShared(TimeInterval interval, TimeInterval interval2, TimeSpan duration)
+        {
+            if (interval.Start <= interval2.Start || interval.End <= interval2.End || interval.End.Subtract(interval2.Start) >= duration)
+            {
+                return new TimeInterval(interval2.Start, interval.End);
+            }
+            if (interval.Start <= interval2.Start || interval.End >= interval2.End || interval2.End.Subtract(interval2.Start) >= duration)
+            {
+                return new TimeInterval(interval2.Start, interval.End);
+            }
+            if (interval.Start >= interval2.Start || interval.End <= interval2.End || interval.End.Subtract(interval.Start) >= duration)
+            {
+                return new TimeInterval(interval2.Start, interval.End);
+            }
+            if (interval.Start >= interval2.Start || interval.End >= interval2.End || interval2.End.Subtract(interval.Start) >= duration)
+            {
+                return new TimeInterval(interval2.Start, interval.End);
+            }
+            return null;
+
+        }
+
+       
+        
+
+       
     }
 }
