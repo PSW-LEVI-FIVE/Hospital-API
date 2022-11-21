@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
+﻿
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Hospitalizations;
@@ -7,6 +7,7 @@ using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Rooms.Repositories
 {
@@ -16,11 +17,11 @@ namespace HospitalLibrary.Rooms.Repositories
         {
         }
 
-        public async Task<IEnumerable<Bed>> GetAllFreeBedsForRoom(int roomId)
+        public IEnumerable<Bed> GetAllFreeBedsForRoom(int roomId)
         {
-            return await _dataContext.Beds
-                .Where(bed => bed.AllHospitalizations.TrueForAll(h => h.State == HospitalizationState.FINISHED))
-                .ToListAsync();
+            return _dataContext.Beds
+                .Where(bed => bed.AllHospitalizations.All(h => h.State != HospitalizationState.ACTIVE))
+                .ToList();
         }
 
         public bool IsBedFree(int id)

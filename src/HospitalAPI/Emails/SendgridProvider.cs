@@ -12,7 +12,6 @@ namespace HospitalAPI.Emails
 
         public SendgridProvider()
         {
-            Console.WriteLine(Environment.GetEnvironmentVariable("SENDGRID_API_KEY"));
             _sendgrid = new SendGridClient(Environment.GetEnvironmentVariable("SENDGRID_API_KEY"));
         }
 

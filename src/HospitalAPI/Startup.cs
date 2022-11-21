@@ -1,7 +1,6 @@
 using System.Text;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Appointments.Interfaces;
-using System.Text.Json.Serialization;
 using HospitalAPI.Emails;
 using HospitalAPI.ErrorHandling;
 using Microsoft.Extensions.Hosting;
@@ -73,14 +72,13 @@ namespace HospitalAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddDbContext<HospitalDbContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("HospitalDb")));
+
             services.AddControllers().AddNewtonsoftJson(builder =>
             {
                 builder.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
-            services.AddDbContext<HospitalDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("HospitalDb")));
-
-            services.AddControllers();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IManagerService, ManagerService>();
             services.AddScoped<IRoomService, RoomService>();
@@ -109,6 +107,7 @@ namespace HospitalAPI
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IStorage, SupabaseStorage>();
             services.AddScoped<IPDFGenerator, PdfGenerator>();
+            services.AddScoped<IBedService, BedService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });
