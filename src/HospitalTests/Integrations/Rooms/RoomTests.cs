@@ -26,7 +26,8 @@ public class RoomTests: BaseIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = new MapController(
             scope.ServiceProvider.GetRequiredService<IMapService>(),
-            scope.ServiceProvider.GetRequiredService<IRoomService>()
+            scope.ServiceProvider.GetRequiredService<IRoomService>(),
+            scope.ServiceProvider.GetRequiredService<IFloorService>()
             );
 
         var dto = new CreateRoomDto()
@@ -35,7 +36,7 @@ public class RoomTests: BaseIntegrationTest
             Area = 45,
             Height = 20,
             Width = 20,
-            MapFloorId = 1,
+            MapFloorId = 2,
             XCoordinate = 10,
             YCoordinate = 10
         };

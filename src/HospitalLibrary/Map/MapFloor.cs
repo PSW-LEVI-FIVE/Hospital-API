@@ -14,6 +14,10 @@ namespace HospitalLibrary.Map
         public int FloorId { get; set; }
         public Floor Floor { get; set; }
         
+        [ForeignKey("MapBuilding")]
+        public int MapBuildingId { get; set; }
+        public MapFloor MapBuilding { get; set; }
+        
         public float XCoordinate { get; set; }
         public float YCoordinate { get; set; }
         public float Width { get; set; }

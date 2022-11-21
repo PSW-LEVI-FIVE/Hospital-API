@@ -1,5 +1,7 @@
 ﻿using HospitalLibrary.Floors;
 using HospitalLibrary.Floors.Interfaces;
+using HospitalLibrary.Map;
+using HospitalLibrary.Map.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
 using Moq;
 using Shouldly;
@@ -27,6 +29,29 @@ public class CreateFloorTests
         };
 
         var result = floorService.Create(floor);
+        result.ShouldNotBeNull();
+    }
+
+    [Fact]
+    public void Creates_map_floor_successfully()
+    {
+        var mapFloorRepository = new Mock<IMapFloorRepository>();
+        var unitOfWork = new Mock<IUnitOfWork>();
+        
+        unitOfWork.Setup(u => u.MapFloorRepository).Returns(mapFloorRepository.Object);
+        unitOfWork.Setup(u => u.MapFloorRepository.Add(It.IsAny<MapFloor>())).Verifiable();
+        unitOfWork.Setup(u => u.MapFloorRepository.Save()).Verifiable();
+
+        var mapService = new MapService(unitOfWork.Object);
+            
+        MapFloor floor = new MapFloor()
+        {
+            MapBuildingId = 2,
+            Width = 100,
+            Height = 100
+        };
+
+        var result = mapService.CreateFloor(floor);
         result.ShouldNotBeNull();
     }
 }

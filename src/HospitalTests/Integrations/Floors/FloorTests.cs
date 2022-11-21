@@ -2,6 +2,7 @@
 using HospitalAPI.Controllers.Intranet;
 using HospitalLibrary.Floors;
 using HospitalLibrary.Floors.Dtos;
+using HospitalLibrary.Floors.Interfaces;
 using HospitalLibrary.Map;
 using HospitalLibrary.Map.Interfaces;
 using HospitalLibrary.Rooms.Interfaces;
@@ -24,10 +25,21 @@ public class FloorTests: BaseIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = new MapController(
             scope.ServiceProvider.GetRequiredService<IMapService>(),
-            scope.ServiceProvider.GetRequiredService<IRoomService>()
+            scope.ServiceProvider.GetRequiredService<IRoomService>(),
+            scope.ServiceProvider.GetRequiredService<IFloorService>()
             );
 
-        var dto = new CreateFloorDto();
+        var dto = new CreateFloorDto()
+        {
+            BuildingId = 2,
+            Area = 150,
+            Height = 100,
+            Width = 100,
+            XCoordinate = 150,
+            YCoordinate = 150,
+            Number = 1,
+            RgbColour = "#FFFFFF"
+        };
 
         var result = ((OkObjectResult)controller.CreateFloor(dto)).Value as MapFloor;
         result.ShouldNotBeNull();

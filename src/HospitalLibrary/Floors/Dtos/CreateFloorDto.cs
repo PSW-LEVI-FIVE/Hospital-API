@@ -39,7 +39,8 @@ namespace HospitalLibrary.Floors.Dtos
                 YCoordinate = YCoordinate,
                 Width = Width,
                 Height = Height,
-                RgbColour = RgbColour
+                RgbColour = RgbColour,
+                MapBuildingId = BuildingId
             };  
         }
     }

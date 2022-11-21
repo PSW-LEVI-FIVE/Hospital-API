@@ -102,9 +102,20 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Name = "Neko ime"
         };
 
+        MapBuilding mapBuilding = new MapBuilding()
+        {
+            Id = 2,
+            BuildingId = building.Id,
+            Height = 200,
+            Width = 1000,
+            XCoordinate = 50,
+            YCoordinate = 50,
+            RgbColour = "#FFFFFF"
+        };
+
         Floor floor = new Floor()
         {
-            Id = 1,
+            Id = 2,
             Area = 100,
             BuildingId = 1,
         };
@@ -112,20 +123,21 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
 
         MapFloor mapFloor = new MapFloor()
         {
-            Id = 1,
+            Id = 2,
             FloorId = floor.Id,
             Height = 100,
             Width = 100,
             XCoordinate = 100,
             YCoordinate = 100,
-            RgbColour = "#FFFFFF"
+            RgbColour = "#FFFFFF",
+            MapBuildingId = mapBuilding.Id
         };
         
         Room room = new Room()
         {
             Id = 2,
             Area = 10,
-            FloorId = 1,
+            FloorId = 2,
             RoomNumber= "1"
         };
 
@@ -242,6 +254,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         };
         
         dbContext.Buildings.Add(building);
+        dbContext.MapBuildings.Add(mapBuilding);
         dbContext.Floors.Add(floor);
         dbContext.MapFloors.Add(mapFloor);
         dbContext.Rooms.Add(room);

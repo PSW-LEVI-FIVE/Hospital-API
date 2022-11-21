@@ -38,9 +38,21 @@ namespace HospitalLibrary.Map
            return room;
         }
 
+        public MapFloor CreateFloor(MapFloor floor)
+        {
+            _unitOfWork.MapFloorRepository.Add(floor);
+            _unitOfWork.MapFloorRepository.Save();
+            return floor;
+        }
+
         public MapFloor GetFloorById(int floorId)
         {
             return _unitOfWork.MapFloorRepository.GetOne(floorId);
+        }
+
+        public MapBuilding GetBuildingById(int buildingId)
+        {
+            return _unitOfWork.MapBuildingRepository.GetOne(buildingId);
         }
     }
 }
