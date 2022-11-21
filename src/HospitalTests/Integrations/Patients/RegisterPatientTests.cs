@@ -1,4 +1,5 @@
-﻿using HospitalAPI;
+﻿using System.Transactions;
+using HospitalAPI;
 using HospitalAPI.Controllers.Public;
 using HospitalLibrary.Allergens;
 using HospitalLibrary.Allergens.Dtos;
@@ -62,4 +63,5 @@ public class PatientTests: BaseIntegrationTest
         createPatientDTO.Id = 3;
         Should.Throw<AggregateException>(() => ((OkObjectResult)controller.RegisterPatient(createPatientDTO).Result).Value);
     }
+
 }

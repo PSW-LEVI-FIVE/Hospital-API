@@ -9,5 +9,6 @@ namespace HospitalLibrary.MedicalRecords.Interfaces
 
         MedicalRecord GetByPatientPopulated(int patientId);
 
+        MedicalRecord GetByPatientUidPopulated(string patientUid);
     }
 }

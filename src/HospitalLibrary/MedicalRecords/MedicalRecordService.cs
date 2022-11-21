@@ -32,5 +32,10 @@ namespace HospitalLibrary.MedicalRecords
         {
             return _unitOfWork.MedicalRecordRepository.GetByPatientPopulated(id);
         }
+
+        public MedicalRecord GetByPatientUid(string patientUid)
+        {
+            return _unitOfWork.MedicalRecordRepository.GetByPatientUidPopulated(patientUid);
+        }
     }
 }

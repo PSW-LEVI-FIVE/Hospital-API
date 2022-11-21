@@ -30,5 +30,12 @@ namespace HospitalLibrary.Rooms.Repositories
                 .FirstOrDefault(h => h.State == HospitalizationState.ACTIVE);
             return hsHospitalization == null;
         }
+
+        public IEnumerable<Bed> GetAllByRoom(int roomId)
+        {
+            return _dataContext.Beds
+                .Where(b => b.RoomId == roomId)
+                .ToList();
+        }
     }
 }

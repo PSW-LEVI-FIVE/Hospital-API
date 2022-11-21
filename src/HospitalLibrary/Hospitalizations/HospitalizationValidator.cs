@@ -29,13 +29,18 @@ namespace HospitalLibrary.Hospitalizations
                 throw new NotFoundException("Hospitalization with given id doesn't exist!");
             if (hospitalization.StartTime.CompareTo(dto.EndTime) >= 0)
                 throw new BadRequestException("End Time should be after start time!");
+            if (hospitalization.State == HospitalizationState.FINISHED)
+                throw new BadRequestException("Hospitalization has already been finished!");
         }
         
         public void ValidateHospitalizationForPdfGeneration(Hospitalization hospitalization)
         {
-            if (hospitalization == null) throw new NotFoundException("Hospitalization with given id doesnt exist!");
-            if (hospitalization.State != HospitalizationState.FINISHED) throw new BadRequestException("Hospitalization should be finished!");
-            if (!hospitalization.PdfUrl.Trim().Equals("")) throw new BadRequestException("Report already generated for given hospitalization!");
+            if (hospitalization == null) 
+                throw new NotFoundException("Hospitalization with given id doesnt exist!");
+            if (hospitalization.State != HospitalizationState.FINISHED) 
+                throw new BadRequestException("Hospitalization should be finished!");
+            if (!hospitalization.PdfUrl.Trim().Equals("")) 
+                throw new BadRequestException("Report already generated for given hospitalization!");
         }
     }
 }

@@ -64,7 +64,19 @@ public class HospitalizationTests: BaseIntegrationTest
             scope.ServiceProvider.GetRequiredService<IHospitalizationService>(),
             scope.ServiceProvider.GetRequiredService<IMedicalRecordService>()
         );
-        var result = ((OkObjectResult)await controller.GeneratePdf(10)).Value as string;
+        var result = ((OkObjectResult)await controller.GeneratePdf(10)).Value as PdfGeneratedDTO;
+        result.ShouldNotBeNull();
+    }
+
+    [Fact]
+    public async Task Get_hospitalizations_for_patient()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = new HospitalizationController(
+            scope.ServiceProvider.GetRequiredService<IHospitalizationService>(),
+            scope.ServiceProvider.GetRequiredService<IMedicalRecordService>()
+        );
+        var result = ((OkObjectResult)await controller.GetAllForPatient(1)).Value as List<Hospitalization>;
         result.ShouldNotBeNull();
     }
 }

@@ -19,6 +19,7 @@ namespace HospitalLibrary.Hospitalizations
         public Hospitalization GetOnePopulated(int id)
         {
             return _dataContext.Hospitalizations
+                .Where(h => h.Id == id)
                 .Include(h => h.Bed)
                 .Include(h => h.Therapies)                
                 .Include(h => h.MedicalRecord)

@@ -1,4 +1,3 @@
-﻿using System.Runtime.Serialization;
 using HospitalAPI;
 using HospitalAPI.Controllers.Intranet;
 using HospitalLibrary.BloodStorages;
@@ -9,7 +8,6 @@ using HospitalTests.Setup;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
-
 namespace HospitalTests.Integrations.Therapies;
 
 

@@ -9,5 +9,7 @@ namespace HospitalLibrary.Rooms.Interfaces
     {
         Task<IEnumerable<Bed>> GetAllFreeBedsForRoom(int roomId);
         bool IsBedFree(int bedId);
+
+        IEnumerable<Bed> GetAllByRoom(int roomId);
     }
 }

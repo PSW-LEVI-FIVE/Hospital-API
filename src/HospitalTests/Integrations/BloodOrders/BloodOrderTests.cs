@@ -1,4 +1,5 @@
-﻿using HospitalAPI;
+﻿using System.Transactions;
+using HospitalAPI;
 using HospitalAPI.Controllers.Intranet;
 using HospitalLibrary.BloodOrders;
 using HospitalLibrary.BloodOrders.Dtos;
@@ -12,11 +13,13 @@ using Shouldly;
 namespace HospitalTests.Integrations.BloodOrders;
 
 [Collection("Test")]
-public class BloodOrderTests:BaseIntegrationTest
+public class BloodOrderTests:BaseIntegrationTest, IDisposable
 {
+    private TransactionScope _scope;
     
     public BloodOrderTests(TestDatabaseFactory<Startup> factory) : base(factory)
     {
+        _scope = new TransactionScope();
     }
 
     private static BloodOrderController SetupController(IServiceScope scope)
@@ -39,4 +42,8 @@ public class BloodOrderTests:BaseIntegrationTest
     }
 
 
+    public void Dispose()
+    {
+        _scope.Dispose();
+    }
 }

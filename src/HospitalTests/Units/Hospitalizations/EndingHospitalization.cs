@@ -113,5 +113,25 @@ public class EndingHospitalization
         Should.Throw<NotFoundException>(() => hospitalizationService.EndHospitalization(1, dto));
     }
 
+    [Fact]
+    public void Hospitalization_already_ended()
+    {
+        var unitOfWork = SetupUOW();
+        var today = DateTime.Now;
+        var dbHospitalization = new Hospitalization(1, 1, 1, today, HospitalizationState.FINISHED);
+        var validator = new HospitalizationValidator(unitOfWork.Object);        
+        Hospitalization updateResult = null;
+        
+        unitOfWork
+            .Setup(u => u.HospitalizationRepository.Update(It.IsAny<Hospitalization>()))
+            .Callback((Hospitalization h ) => { updateResult = h; });
+        unitOfWork.Setup(u => u.HospitalizationRepository.GetOne(It.IsAny<int>())).Returns(dbHospitalization);
+
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, null, null);
+
+        var dto = new EndHospitalizationDTO() { EndTime = today};
+        Should.Throw<BadRequestException>(() => hospitalizationService.EndHospitalization(1, dto));
+    }
+
 
 }

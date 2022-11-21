@@ -39,10 +39,18 @@ namespace HospitalAPI.Controllers.Intranet
 
         [HttpGet]
         [Route("{id}")]
-        public IActionResult GetbyId(int id)
+        public IActionResult GetById(int id)
         {
             Room room = _roomService.GetOne(id);
             return Ok(room);
+        }
+
+        [HttpGet]
+        [Route("{id}/beds")]
+        public IActionResult GetRoomBeds(int id)
+        {
+            IEnumerable<Bed> beds = _roomService.GetBedsForRoom(id);
+            return Ok(beds);
         }
 
     }
