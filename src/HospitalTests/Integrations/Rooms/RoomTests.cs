@@ -1,5 +1,8 @@
 ﻿using HospitalAPI;
 using HospitalAPI.Controllers.Intranet;
+using HospitalLibrary.Floors.Interfaces;
+using HospitalLibrary.Map;
+using HospitalLibrary.Map.Interfaces;
 using HospitalLibrary.Rooms.Dtos;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
@@ -21,9 +24,10 @@ public class RoomTests: BaseIntegrationTest
     public void Creates_room()
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = new RoomsController(
+        var controller = new MapController(
+            scope.ServiceProvider.GetRequiredService<IMapService>(),
             scope.ServiceProvider.GetRequiredService<IRoomService>()
-        );
+            );
 
         var dto = new CreateRoomDto()
         {
@@ -36,7 +40,7 @@ public class RoomTests: BaseIntegrationTest
             YCoordinate = 10
         };
 
-        var result = ((OkObjectResult)controller.Create(dto)).Value as Room;
+        var result = ((OkObjectResult)controller.Create(dto)).Value as MapRoom;
         result.ShouldNotBeNull();
     }
 }

@@ -11,5 +11,7 @@ namespace HospitalLibrary.Rooms.Interfaces
         Room GetOne(int key);
         IEnumerable<Bed> GetBedsForRoom(int id);
 
+        Room Create(Room room);
+
     }
 }

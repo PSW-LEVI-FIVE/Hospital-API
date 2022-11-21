@@ -3,6 +3,7 @@ using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Buildings;
 using HospitalLibrary.Floors;
 using HospitalLibrary.Hospitalizations;
+using HospitalLibrary.Map;
 using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.Allergens;
 using HospitalLibrary.Doctors;
@@ -107,18 +108,40 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Area = 100,
             BuildingId = 1,
         };
+
+
+        MapFloor mapFloor = new MapFloor()
+        {
+            Id = 1,
+            FloorId = floor.Id,
+            Height = 100,
+            Width = 100,
+            XCoordinate = 100,
+            YCoordinate = 100,
+            RgbColour = "#FFFFFF"
+        };
         
         Room room = new Room()
         {
-            Id = 1,
+            Id = 2,
             Area = 10,
             FloorId = 1,
             RoomNumber= "1"
         };
 
-        RoomEquipment equipment = new Bed(1, 10, "Bed", 1, 1);
-        RoomEquipment equipment2 = new Bed(2, 10, "Bed", 1, 1);
-        
+        RoomEquipment equipment = new Bed(1, 10, "Bed", 2, 1);
+        RoomEquipment equipment2 = new Bed(2, 10, "Bed", 2, 1);
+
+        MapRoom mapRoom = new MapRoom()
+        {
+            RoomId = room.Id,
+            Height = 10,
+            Width = 10,
+            XCoordinate = 10,
+            YCoordinate = 10,
+            MapFloorId = mapFloor.Id
+        };
+
         Patient patient = new Patient()
         {
             Id=1,
@@ -220,10 +243,12 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         
         dbContext.Buildings.Add(building);
         dbContext.Floors.Add(floor);
+        dbContext.MapFloors.Add(mapFloor);
         dbContext.Rooms.Add(room);
         dbContext.Doctors.Add(doctor);
         dbContext.Doctors.Add(doctor2);
         dbContext.Hospitalizations.Add(hospitalization);
+        dbContext.MapRooms.Add(mapRoom);
         dbContext.RoomEquipment.Add(equipment);
         dbContext.RoomEquipment.Add(equipment2);
         dbContext.Patients.Add(patient);

@@ -8,5 +8,6 @@ namespace HospitalLibrary.Map.Interfaces
         Task<IEnumerable<MapBuilding>> GetAllBuildings();
         Task<IEnumerable<MapFloor>> GetFloorsByBuilding(int buildingId);
         Task<IEnumerable<MapRoom>> GetRoomsByFloor(int floorId);
+        MapRoom CreateRoom(MapRoom room);
     }
 }

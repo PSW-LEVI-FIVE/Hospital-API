@@ -38,5 +38,11 @@ namespace HospitalLibrary.Rooms
         {
             return _unitOfWork.BedRepository.GetAllByRoom(id);
         }
+        public Room Create(Room room ) 
+        {
+            _unitOfWork.RoomRepository.Add(room);
+            _unitOfWork.RoomRepository.Save();
+            return room;
+        }
     }
 }
