@@ -79,7 +79,10 @@ namespace HospitalLibrary.Auth
             await _userService.Create(user);
             await _patientService.AddAllergensAndDoctorToPatient(user.Id,patientsAllergens, choosenDoctor);
             
-            return new PatientDTO(createPatientDTO);
+            PatientDTO registeredPatient = new PatientDTO(createPatientDTO);
+            registeredPatient.ActivationCode = user.ActivationCode;
+            
+            return registeredPatient;
         }
 
         public async Task<PatientDTO> ActivateAccount(string code)

@@ -39,7 +39,7 @@ namespace HospitalAPI.Emails
             SendGridMessage message = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             await _sendgrid.SendEmailAsync(message);
         }
-        public async Task SendWelcomeEmailWithActivationLink(string email)
+        public async Task SendWelcomeEmailWithActivationLink(string email,string code)
         {
             EmailAddress from = new EmailAddress("levifiveorg@gmail.com");
             EmailAddress to = new EmailAddress(email);

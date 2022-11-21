@@ -10,6 +10,7 @@ namespace HospitalLibrary.Patients.Dtos
         public string Surname { get; set; }
         [Required]
         public string Email { get; set; }
+        public string ActivationCode { get; set; }
         
         public PatientDTO(CreatePatientDTO createPatientDto)
         {
