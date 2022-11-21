@@ -54,34 +54,18 @@ namespace HospitalAPI.Controllers.Intranet
         [Route("rooms")]
         public IActionResult Create([FromBody] CreateRoomDto createRoomDto)
         {
-            //make room
-            Room room = new Room
-            {
-                RoomNumber = createRoomDto.RoomNumber,
-                Area = createRoomDto.Area,
-                FloorId = createRoomDto.MapFloorId,
-            };
+            MapFloor mapFloor = _mapService.GetFloorById(createRoomDto.MapFloorId);
+            
+            Room room = createRoomDto.DtoToRoom();
+            room.FloorId = mapFloor.FloorId;
             
             room = _roomService.Create(room);
-            if (room == null)
-            {
-                return Problem("Error: room was not created");
-            }
-
-            //make maproom
-            MapRoom mapRoom = new MapRoom
-            {
-                MapFloorId = createRoomDto.MapFloorId,
-                RoomId = room.Id,
-                XCoordinate = createRoomDto.XCoordinate,
-                YCoordinate = createRoomDto.YCoordinate,
-                Width = createRoomDto.Width,
-                Height = createRoomDto.Height,
-                RbgColour = createRoomDto.RgbColour
-            };
+            if (room == null) return Problem("Error: room was not created");
+            
+            MapRoom mapRoom = createRoomDto.DtoToMapRoom();
+            mapRoom.RoomId = room.Id;
 
             mapRoom = _mapService.CreateRoom(mapRoom);
-            
             return Ok(mapRoom);
         }
     }

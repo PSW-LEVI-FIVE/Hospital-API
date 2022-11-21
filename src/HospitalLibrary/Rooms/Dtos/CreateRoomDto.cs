@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using HospitalLibrary.Map;
+using HospitalLibrary.Rooms.Model;
 
 namespace HospitalLibrary.Rooms.Dtos
 {
@@ -20,7 +22,29 @@ namespace HospitalLibrary.Rooms.Dtos
         public float Height { get; set; }
         [Required]
         public string RgbColour { get; set; }
-        
+
+
+        public Room DtoToRoom()
+        {
+            return new Room()
+            {
+                RoomNumber = RoomNumber,
+                Area = Area
+            };
+        }
+
+        public MapRoom DtoToMapRoom()
+        {
+            return new MapRoom()
+            {
+                MapFloorId = MapFloorId,
+                XCoordinate = XCoordinate,
+                YCoordinate = YCoordinate,
+                Width = Width,
+                Height = Height,
+                RbgColour = RgbColour
+            };
+        }
         
     }
 }
