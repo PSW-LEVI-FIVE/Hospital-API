@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalLibrary.Buildings.Dtos;
 using HospitalLibrary.Floors;
 using HospitalLibrary.Floors.Dtos;
 using HospitalLibrary.Floors.Interfaces;
@@ -90,6 +91,13 @@ namespace HospitalAPI.Controllers.Intranet
             mapFloor = _mapService.CreateFloor(mapFloor);
             
             return Ok(mapFloor);
+        }
+
+        [HttpPost]
+        [Route("buildings")]
+        public IActionResult CreateBuilding([FromBody] CreateBuildingDto createBuildingDto)
+        {
+            return Ok(null);
         }
     }
 }
