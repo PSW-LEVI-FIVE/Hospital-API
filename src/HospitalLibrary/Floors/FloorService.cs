@@ -32,5 +32,11 @@ namespace HospitalLibrary.Floors
             return floor;
         }
 
+        public Floor Create(Floor floor)
+        {
+            _unitOfWork.FloorRepository.Add(floor);
+            _unitOfWork.FloorRepository.Save();
+            return floor;
+        }
     }
 }
