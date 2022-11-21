@@ -30,7 +30,7 @@ public class BloodOrderTests:BaseIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var bloodOrderController = SetupController(scope);
-        CreateBloodOrderDto bloodOrder = new CreateBloodOrderDto(1,
+        CreateBloodOrderDto bloodOrder = new CreateBloodOrderDto(4,
             DateTime.Today.AddDays(10),BloodType.A_NEGATIVE,"Need for OP",11);
 
         var result = ((OkObjectResult)bloodOrderController.Create(bloodOrder).Result)?.Value as BloodOrder;
