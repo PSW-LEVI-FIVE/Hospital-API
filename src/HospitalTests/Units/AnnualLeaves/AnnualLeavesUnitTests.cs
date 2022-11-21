@@ -1,7 +1,5 @@
 ﻿using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.AnnualLeaves.Interfaces;
-using HospitalLibrary.Hospitalizations.Dtos;
-using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using Moq;

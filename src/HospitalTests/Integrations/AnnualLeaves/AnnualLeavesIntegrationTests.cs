@@ -1,21 +1,11 @@
 ﻿using HospitalAPI.Controllers.Intranet;
-using HospitalLibrary.Hospitalizations.Dtos;
-using HospitalLibrary.Hospitalizations.Interfaces;
-using HospitalLibrary.Hospitalizations;
-using HospitalLibrary.MedicalRecords.Interfaces;
 using HospitalTests.Setup;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HospitalAPI;
 using Microsoft.Extensions.DependencyInjection;
 using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.AnnualLeaves;
 using Shouldly;
-using HospitalLibrary.Therapies.Model;
 using HospitalLibrary.AnnualLeaves.Dtos;
 using Microsoft.AspNetCore.Routing;
 
