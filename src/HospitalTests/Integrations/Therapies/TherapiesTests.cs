@@ -35,7 +35,7 @@ public class TherapiesTests : BaseIntegrationTest
         {
             HospitalizationId = 10,
             GivenAt = DateTime.Now,
-            Type = BloodType.A_NEGATIVE,
+            Type = 1,
             Quantity = 2.0,
             DoctorId = 4
         };

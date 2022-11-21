@@ -12,7 +12,7 @@ namespace HospitalLibrary.Therapies.Dtos
         [Required]        
         public DateTime GivenAt { get; set;  }
         [Required]
-        public BloodType Type { get; set; }
+        public int Type { get; set; }
         [Required]
         public double  Quantity { get; set; }
         [Required]
@@ -25,7 +25,7 @@ namespace HospitalLibrary.Therapies.Dtos
             {
                 HospitalizationId = HospitalizationId,
                 GivenAt = GivenAt,
-                BloodType = Type,
+                BloodType = (BloodType)Type,
                 Quantity = Quantity,
                 DoctorId = DoctorId
             };

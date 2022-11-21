@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.BloodStorages.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
@@ -21,6 +22,11 @@ namespace HospitalLibrary.BloodStorages
             blood.Quantity -= quantity;
             _unitOfWork.BloodStorageRepository.Update(blood);
             return true;
+        }
+
+        public Task<IEnumerable<BloodStorage>> GetAllBloodStorage()
+        {
+            return _unitOfWork.BloodStorageRepository.GetAll();
         }
 
         private void CheckAmount(double onStorage, double toTake)
