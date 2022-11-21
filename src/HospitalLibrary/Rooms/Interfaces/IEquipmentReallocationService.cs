@@ -15,7 +15,7 @@ namespace HospitalLibrary.Rooms.Interfaces
         Task<IEnumerable<EquipmentReallocation>> GetByRoom(int roomId);
         Task Delete(int id);
         
-        Task<IEnumerable<TimeInterval>> GetPossibleInterval(int Starting_roomId,int Destination_roomId,DateTime date, TimeSpan duration);
+        List<TimeInterval> GetPossibleInterval(int Starting_roomId,int Destination_roomId,DateTime date, TimeSpan duration);
         
     }
 }
