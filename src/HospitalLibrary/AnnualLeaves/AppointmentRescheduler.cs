@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HospitalLibrary.AnnualLeaves.Dtos;
 using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Shared.Interfaces;
+using Supabase.Core.Extensions;
 
 namespace HospitalLibrary.AnnualLeaves
 {
@@ -52,10 +54,14 @@ namespace HospitalLibrary.AnnualLeaves
 
         private async Task<Dictionary<int, IEnumerable<Appointment>>> GetDoctorsAppointments(IEnumerable<Doctor> doctors, TimeInterval range)
         {
+            List<int> doctorsWithAnnualLeaves = _unitOfWork.AnnualLeaveRepository.GetDoctorsThatHaveAnnualLeaveInRange(range);
             Dictionary<int, IEnumerable<Appointment>> dictionary = new Dictionary<int, IEnumerable<Appointment>>();
             foreach (var doctor in doctors)
             {
-                dictionary.Add(doctor.Id, await _unitOfWork.AppointmentRepository.GetAllDoctorAppointmentsForRange(doctor.Id, range));
+                if (!doctorsWithAnnualLeaves.Any(d => doctor.Id == d))
+                {
+                    dictionary.Add(doctor.Id, await _unitOfWork.AppointmentRepository.GetAllDoctorAppointmentsForRange(doctor.Id, range));
+                }
             }
 
             return dictionary;

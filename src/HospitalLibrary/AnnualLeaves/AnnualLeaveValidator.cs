@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Shared.Exceptions;
@@ -22,8 +24,14 @@ namespace HospitalLibrary.AnnualLeaves
         {
             if(!annualLeave.IsValid())
                 throw new BadRequestException("Date is not valid!");
+
+            var doctorAnnualLeaves = _unitOfWork.AnnualLeaveRepository.GetAllByDoctorId(annualLeave.DoctorId);
+
+            ThrowIfAnnualLeavesOverlaps(annualLeave, doctorAnnualLeaves);
+            
             var isDoctorAvailable = IsDoctorAvailable(annualLeave.DoctorId,
                 new TimeInterval(annualLeave.StartAt, annualLeave.EndAt));
+
             if (!annualLeave.IsUrgent && !isDoctorAvailable)
             {
                 throw new BadRequestException("There are appointments in given period");
@@ -47,6 +55,23 @@ namespace HospitalLibrary.AnnualLeaves
             var numberOfAppointments =
                 _unitOfWork.AppointmentRepository.GetNumberOfDoctorAppointmentsForRange(doctorId, timeInterval);
             return numberOfAppointments == 0;
+        }
+
+        private void ThrowIfAnnualLeavesOverlaps(AnnualLeave annualLeaveToMake, IEnumerable<AnnualLeave> annualLeaves)
+        {
+            foreach (var al in annualLeaves)
+            {
+                if (al.StartAt < DateTime.Now || al.State == AnnualLeaveState.CANCELED || al.State == AnnualLeaveState.DELETED)
+                {
+                    continue;
+                }
+                TimeInterval timeInterval1 = new TimeInterval(al.StartAt, al.EndAt);
+                TimeInterval timeInterval2 = new TimeInterval(annualLeaveToMake.StartAt, annualLeaveToMake.EndAt);
+                if (timeInterval1.IsOverlaping(timeInterval2))
+                {
+                    throw new BadRequestException("There are already annual leaves in that period");
+                }
+            }
         }
     }
 }

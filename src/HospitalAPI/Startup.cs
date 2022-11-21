@@ -56,6 +56,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using HospitalLibrary.Managers.Interfaces;
 using HospitalLibrary.Managers;
+using Newtonsoft.Json;
 
 namespace HospitalAPI
 {
@@ -72,12 +73,10 @@ namespace HospitalAPI
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllersWithViews()
-                .AddJsonOptions(options =>
-                {
-                    //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-                    options.JsonSerializerOptions.MaxDepth = 0;
-                });
+            services.AddControllers().AddNewtonsoftJson(builder =>
+            {
+                builder.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
             services.AddDbContext<HospitalDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("HospitalDb")));
 

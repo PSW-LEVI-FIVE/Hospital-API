@@ -16,7 +16,9 @@ public class AnnualLeaveValidatorTests
         var unitOfWork = new Mock<IUnitOfWork>();
         var appointmentRepository = new Mock<IAppointmentRepository>();
         unitOfWork.Setup(unit => unit.AppointmentRepository).Returns(appointmentRepository.Object);
-        
+        unitOfWork.Setup(unit =>
+                unit.AnnualLeaveRepository.GetDoctorsThatHaveAnnualLeaveInRange(It.IsAny<TimeInterval>()))
+            .Returns(new List<int>());
         return unitOfWork;
     }
     
@@ -28,6 +30,9 @@ public class AnnualLeaveValidatorTests
             .Setup(work =>
             work.AppointmentRepository.GetNumberOfDoctorAppointmentsForRange(It.IsAny<int>(), It.IsAny<TimeInterval>()))
             .Returns(5);
+        mock.Setup(unit =>
+                unit.AnnualLeaveRepository.GetDoctorsThatHaveAnnualLeaveInRange(It.IsAny<TimeInterval>()))
+            .Returns(new List<int>());
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
         AnnualLeave annualLeave =
             new AnnualLeave(1, null, "First Reason", DateTime.Now.AddDays(7),
@@ -44,6 +49,8 @@ public class AnnualLeaveValidatorTests
             .Setup(work =>
                 work.AppointmentRepository.GetNumberOfDoctorAppointmentsForRange(It.IsAny<int>(), It.IsAny<TimeInterval>()))
             .Returns(0);
+        mock.Setup(work => work.AnnualLeaveRepository.GetAllByDoctorId(It.IsAny<int>()))
+            .Returns(new List<AnnualLeave>());
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
         AnnualLeave annualLeave =
             new AnnualLeave(1, null, "First Reason", DateTime.Now.AddDays(7),

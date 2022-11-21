@@ -8,6 +8,8 @@
 
         public Role Role { get; set; }
         
+        public int Id { get; set; }
+        
         public UserDTO()
         {
             
@@ -18,6 +20,14 @@
             Username = username;
             Password = password;
             Role = role;
+        }
+        
+        public UserDTO(string username, string password, Role role, int id)
+        {
+            Username = username;
+            Password = password;
+            Role = role;
+            Id = id;
         }
     }
 }
