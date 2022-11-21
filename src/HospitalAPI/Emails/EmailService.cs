@@ -42,12 +42,12 @@ namespace HospitalAPI.Emails
             SendMail(newMail);
         }
 
-        public async Task SendWelcomeEmailWithActivationLink(string email)
+        public async Task SendWelcomeEmailWithActivationLink(string email,string code)
         {
             MailMessage newMail = GenerateMailMessage(email);
             newMail.Subject = "Welcome to LeviFive hospital!";
             newMail.Body = "<h1>Welcome to LEVI-FIVE Hospital Service!</h1> <br/>" +
-                           "<h2><a href=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\">Here is your Prize!<a/></h2> <br/>" +
+                           "<h2><a href=\"http://localhost:4200/user/activation/"+ code +"\">Activate your account here!<a/></h2> <br/>" +
                            "<h2><strong>Sent from LEVI-FIVE Hospital Service!</strong></h2>";
             SendMail(newMail);
         }
@@ -56,7 +56,7 @@ namespace HospitalAPI.Emails
         {
             MailMessage newMail = GenerateMailMessage(email);
             newMail.Subject = "Canceled appointment!";
-            newMail.Body = "<h1>Your appointment for " + time +"has been canceled</h1> <br/>" +
+            newMail.Body = "<h1>Your appointment for " + time + "has been canceled</h1> <br/>" +
                            "<h2><strong>Sent from LEVI-FIVE Hospital Service!</strong></h2>";
             SendMail(newMail);
         }
@@ -65,7 +65,7 @@ namespace HospitalAPI.Emails
         {
             MailMessage newMail = GenerateMailMessage(email);
             newMail.Subject = "Rescheduled appointment!";
-            newMail.Body = "<h1>Your appointment for " + time +"has been moved to"+ newTime +"</h1> <br/>" +
+            newMail.Body = "<h1>Your appointment for " + time + "has been moved to" + newTime + "</h1> <br/>" +
                            "<h2><strong>Sent from LEVI-FIVE Hospital Service!</strong></h2>";
             SendMail(newMail);
         }

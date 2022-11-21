@@ -12,6 +12,8 @@ namespace HospitalLibrary.Auth.Interfaces
     {
         Task<PatientDTO> RegisterPatient(CreatePatientDTO createPatientDto);
         
+        Task<PatientDTO> ActivateAccount(string code);
+        
         Users.User UserExist(string username, string password);
 
         Task<List<Allergen>> GetPatientsAllergens(List<AllergenDTO> allergenDTOs);

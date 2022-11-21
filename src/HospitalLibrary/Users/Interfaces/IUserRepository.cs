@@ -8,6 +8,8 @@ namespace HospitalLibrary.Users.Interfaces
     { 
         User GetOneByUsername(string username);
         bool UsernameExist(string username);
-        public User UserExist(string username, string password);
+        User UserExist(string username, string password);
+        Task<User> GetOneByCode(string code);
+        public bool IsCodeUnique(string code);
     }
 }

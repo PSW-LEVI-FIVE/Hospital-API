@@ -26,7 +26,7 @@ namespace HospitalLibrary.Auth
         private readonly IUserService _userService;
         private readonly IPatientService _patientService;
         private readonly IUnitOfWork _unitOfWork;
-	    private IConfiguration _config;
+	    private readonly IConfiguration _config;
         
         public AuthService(IUnitOfWork unitOfWork,IRegistrationValidationService registrationValidation,IUserService userService,IPatientService patientService,IConfiguration config)
         {
@@ -46,7 +46,6 @@ namespace HospitalLibrary.Auth
                     throw new BadRequestException("Allergen doesnt exist!");
                 allergens.Add(allergen);
             }
-
             return allergens;
         }
         public async Task<Doctor> GetPatientsDoctor(string doctorUid)
@@ -58,6 +57,14 @@ namespace HospitalLibrary.Auth
             }
             throw new BadRequestException("Doctor doesnt exist or not valid!");
         }
+        private async Task<string> CreateActivationCode()
+        {
+            string activationCode = Guid.NewGuid().ToString();
+            bool codeUnique = _userService.IsCodeUnique(activationCode);
+            if (codeUnique) 
+                return activationCode;
+            return await CreateActivationCode();
+        }
         public async Task<PatientDTO> RegisterPatient(CreatePatientDTO createPatientDTO)
         {
             Users.User user = createPatientDTO.MapUserToModel();
@@ -67,12 +74,26 @@ namespace HospitalLibrary.Auth
             
             List<Allergen> patientsAllergens = await GetPatientsAllergens(createPatientDTO.Allergens);
             Doctor choosenDoctor = await GetPatientsDoctor(createPatientDTO.DoctorUid);
+            user.ActivationCode = await CreateActivationCode();
             
             await _userService.Create(user);
             await _patientService.AddAllergensAndDoctorToPatient(user.Id,patientsAllergens, choosenDoctor);
             
-            return new PatientDTO(createPatientDTO);
+            PatientDTO registeredPatient = new PatientDTO(createPatientDTO);
+            registeredPatient.ActivationCode = user.ActivationCode;
+            
+            return registeredPatient;
         }
+
+        public async Task<PatientDTO> ActivateAccount(string code)
+        {
+            Users.User user = await _userService.GetOneByCode(code);
+            if (user == null)
+                throw new BadRequestException("Activation code not valid!");
+            await _userService.ActivateAccount(user);
+            return new PatientDTO(user);
+        }
+
         public Users.User UserExist(string username, string password)
         {
             return _unitOfWork.UserRepository.UserExist(username, password);

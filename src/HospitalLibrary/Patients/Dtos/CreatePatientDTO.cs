@@ -91,6 +91,7 @@ namespace HospitalLibrary.Patients.Dtos
                 Username = Username,
                 Password = Password,
                 Role = Role.Patient,
+                ActiveStatus = ActiveStatus.Pending
             };
         }
     }

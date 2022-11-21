@@ -7,7 +7,7 @@ namespace HospitalLibrary.Shared.Interfaces
     {
         Task SendAppointmentEmail(string email);
         Task SendWelcomeEmail(string email);
-        Task SendWelcomeEmailWithActivationLink(string email);
+        Task SendWelcomeEmailWithActivationLink(string email,string code);
 
         Task SendAppointmentCanceledEmail(string email, DateTime time);
 

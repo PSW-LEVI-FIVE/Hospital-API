@@ -29,8 +29,15 @@ namespace HospitalAPI.Controllers.Public
         public async Task<IActionResult> RegisterPatient(CreatePatientDTO createPatientDTO)
         {
             PatientDTO createdPatient = await _authService.RegisterPatient(createPatientDTO);
-            await _emailService.SendWelcomeEmailWithActivationLink(createdPatient.Email);
+            await _emailService.SendWelcomeEmailWithActivationLink(createdPatient.Email,createdPatient.ActivationCode);
             return Ok(createdPatient);
+        }
+        [HttpPatch]
+        [Route("activate/{code}")]
+        public async Task<IActionResult> ActivateAccount(string code)
+        {
+            PatientDTO activatedPatient = await _authService.ActivateAccount(code);
+            return Ok(activatedPatient);
         }
         [AllowAnonymous]
         [HttpPost]

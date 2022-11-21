@@ -191,7 +191,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         };
         
         Medicine medicine = new Medicine(1, "MedicineOne", 12.0);
-        User user3 = new User(4, "Menjdjer", "nekakulsifra", Role.Doctor);
+        User user3 = new User("Menjdjer", "nekakulsifra", Role.Doctor,4,ActiveStatus.Active);
         Allergen allergen1 = new Allergen(1,"Milk");
         Allergen allergen2 = new Allergen(2,"Cetirizine");
         Allergen allergen3 = new Allergen(3,"Budesonide");
@@ -201,6 +201,22 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         
         BloodTherapy bloodTherapy1 = new BloodTherapy(10, DateTime.Now, BloodType.A_NEGATIVE, 2.0, 4);
         BloodTherapy bloodTherapy2 = new BloodTherapy(10, DateTime.Now, BloodType.A_NEGATIVE, 3.0, 4);
+        
+        User user4 = new User("PacijentIpo", "nekakulsifra", Role.Patient,6,ActiveStatus.Pending);
+        user4.ActivationCode = "asdasd";
+        
+        Patient patient4 = new Patient()
+        {
+            Id=6,
+            Name = "Marko",
+            Surname = "Markovic",
+            Email = "asdasd65@gmail.com",
+            Uid = "78787899",
+            PhoneNumber = "123123123",
+            BirthDate = new DateTime(2000,2,3), 
+            Address = "Zike", 
+            BloodType = BloodType.A_NEGATIVE
+        };
         
         dbContext.Buildings.Add(building);
         dbContext.Floors.Add(floor);
@@ -212,11 +228,13 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         dbContext.RoomEquipment.Add(equipment2);
         dbContext.Patients.Add(patient);
         dbContext.Patients.Add(patient2);
+        dbContext.Patients.Add(patient4);
         dbContext.MedicalRecords.Add(record);
         dbContext.BloodStorage.Add(bloodStorage);
         dbContext.Users.Add(user);
         dbContext.Users.Add(user2);
         dbContext.Users.Add(user3);
+        dbContext.Users.Add(user4);
         dbContext.Allergens.Add(allergen1);
         dbContext.Allergens.Add(allergen2);
         dbContext.Allergens.Add(allergen3);

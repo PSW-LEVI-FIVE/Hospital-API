@@ -76,6 +76,7 @@ namespace HospitalLibrary.Settings
             modelBuilder.Entity<Person>().HasIndex(p => p.Uid).IsUnique();
             modelBuilder.Entity<Person>().HasIndex(p => p.Email).IsUnique();
             modelBuilder.Entity<Users.User>().HasIndex(u => u.Username).IsUnique();
+            modelBuilder.Entity<Users.User>().HasIndex(u => u.ActivationCode).IsUnique();
 
             // modelBuilder.Entity<Hospitalization>()
             //     .HasOne(h => h.Bed)
