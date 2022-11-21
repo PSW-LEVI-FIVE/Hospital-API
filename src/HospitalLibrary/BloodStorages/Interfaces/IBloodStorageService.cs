@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace HospitalLibrary.BloodStorages.Interfaces
 {
@@ -7,5 +8,7 @@ namespace HospitalLibrary.BloodStorages.Interfaces
         bool SubtractQuantity(BloodStorage blood, double quantity);
 
         Task<BloodStorage> GetByType(BloodType type);
+
+        Task<IEnumerable<BloodStorage>> GetAllBloodStorage();
     }
 }

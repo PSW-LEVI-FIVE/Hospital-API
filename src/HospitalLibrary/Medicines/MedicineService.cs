@@ -1,4 +1,6 @@
-﻿using HospitalLibrary.Medicines.Interfaces;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using HospitalLibrary.Medicines.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 
@@ -20,6 +22,11 @@ namespace HospitalLibrary.Medicines
             medicine.Quantity -= quantity;
             _unitOfWork.MedicineRepository.Update(medicine);
             return true;
+        }
+        
+        public Task<IEnumerable<Medicine>> getAllMedicine()
+        {
+            return _unitOfWork.MedicineRepository.GetAll();
         }
         
         private void CheckAmount(double onStorage, double toTake)
