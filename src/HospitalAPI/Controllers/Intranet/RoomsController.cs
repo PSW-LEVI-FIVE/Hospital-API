@@ -44,7 +44,7 @@ namespace HospitalAPI.Controllers.Intranet
 
         [HttpGet]
         [Route("{id}")]
-        [Authorize(Roles="Doctor")]
+        [Authorize(Roles="Doctor,Manager")]
         [Authorize(Roles="Manager")]
         public IActionResult GetbyId(int id)
         {
