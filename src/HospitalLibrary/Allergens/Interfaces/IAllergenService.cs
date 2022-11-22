@@ -7,5 +7,7 @@ namespace HospitalLibrary.Allergens
     {
         Task<IEnumerable<Allergen>> GetAll();
         Allergen Create(Allergen allergen);
+
+        Task<IEnumerable<Allergen>> GetAllergensWithNumberOfPatients();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Allergens.Interfaces;
 using HospitalLibrary.Settings;
@@ -11,6 +12,14 @@ namespace HospitalLibrary.Allergens
     {
         public AllergenRepository(HospitalDbContext dataContext) : base(dataContext)
         {
+        }
+
+        public async Task<IEnumerable<Allergen>> GetAllergensWithNumberOfPatients()
+        {
+            return await _dataContext.Allergens
+                .OrderByDescending(allergen => allergen.Patients.Count)
+                .Include(allergen => allergen.Patients)
+                .ToListAsync();
         }
 
         public Task<Allergen> GetOneByName(string name)
