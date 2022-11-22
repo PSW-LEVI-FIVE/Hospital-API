@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using HospitalLibrary.Buildings.Interfaces;
@@ -31,6 +32,13 @@ namespace HospitalLibrary.Buildings
         public Building GetOne(int key)
         {
             return _unitOfWork.BuildingRepository.GetOne(key);
+        }
+
+        public Building Create(Building building)
+        {
+            _unitOfWork.BuildingRepository.Add(building);
+            _unitOfWork.BuildingRepository.Save();
+            return building;
         }
     }
 }

@@ -30,5 +30,37 @@ namespace HospitalLibrary.Map
         {
             return _unitOfWork.MapRoomRepository.GetRoomsByFloor(floorId);
         }
+
+        public MapRoom CreateRoom(MapRoom room)
+        {
+           _unitOfWork.MapRoomRepository.Add(room);
+           _unitOfWork.MapRoomRepository.Save();
+           return room;
+        }
+
+        public MapFloor CreateFloor(MapFloor floor)
+        {
+            _unitOfWork.MapFloorRepository.Add(floor);
+            _unitOfWork.MapFloorRepository.Save();
+            return floor;
+        }
+
+        public MapBuilding CreateBuilding(MapBuilding building)
+        {
+            _unitOfWork.MapBuildingRepository.Add(building);
+            _unitOfWork.MapBuildingRepository.Save();
+            return building;
+        }
+
+        public MapFloor GetFloorById(int floorId)
+        {
+            return _unitOfWork.MapFloorRepository.GetOne(floorId);
+        }
+
+        public MapBuilding GetBuildingById(int buildingId)
+        {
+            return _unitOfWork.MapBuildingRepository.GetOne(buildingId);
+        }
+        
     }
 }

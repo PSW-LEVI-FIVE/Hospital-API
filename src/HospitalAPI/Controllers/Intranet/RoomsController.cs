@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Rooms;
+using HospitalLibrary.Rooms.Dtos;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
 using Microsoft.AspNetCore.Authorization;
@@ -58,6 +59,5 @@ namespace HospitalAPI.Controllers.Intranet
             IEnumerable<Bed> beds = _roomService.GetBedsForRoom(id);
             return Ok(beds);
         }
-
     }
 }
