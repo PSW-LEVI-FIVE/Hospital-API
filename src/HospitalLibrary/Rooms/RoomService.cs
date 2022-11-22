@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
@@ -36,6 +37,12 @@ namespace HospitalLibrary.Rooms
         public IEnumerable<Bed> GetBedsForRoom(int id)
         {
             return _unitOfWork.BedRepository.GetAllByRoom(id);
+        }
+        public Room Create(Room room ) 
+        {
+            _unitOfWork.RoomRepository.Add(room);
+            _unitOfWork.RoomRepository.Save();
+            return room;
         }
     }
 }

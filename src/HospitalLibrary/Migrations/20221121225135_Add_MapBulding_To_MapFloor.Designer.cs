@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221121225135_Add_MapBulding_To_MapFloor")]
+    partial class Add_MapBulding_To_MapFloor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -562,12 +564,6 @@ namespace HospitalLibrary.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("integer");
 
-                    b.Property<string>("ActivationCode")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ActiveStatus")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Password")
                         .HasColumnType("text");
 
@@ -578,9 +574,6 @@ namespace HospitalLibrary.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ActivationCode")
-                        .IsUnique();
 
                     b.HasIndex("Username")
                         .IsUnique();
@@ -791,7 +784,7 @@ namespace HospitalLibrary.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HospitalLibrary.Map.MapBuilding", "MapBuilding")
+                    b.HasOne("HospitalLibrary.Map.MapFloor", "MapBuilding")
                         .WithMany()
                         .HasForeignKey("MapBuildingId")
                         .OnDelete(DeleteBehavior.Cascade)
