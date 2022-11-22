@@ -71,7 +71,14 @@ namespace HospitalLibrary.Appointments
         {
             return End.CompareTo(newInterval.Start) == 0;
         }
-
+        public int IntervalDurationInMinutes()
+        {
+            return (int)(this.End.Subtract(this.Start)).TotalMinutes;
+        }
+        public int NumberOfTimespans(TimeSpan duration)
+        {
+            return (int)(this.IntervalDurationInMinutes()/duration.TotalMinutes);
+        }
 
         public string ToDateString()
         {
