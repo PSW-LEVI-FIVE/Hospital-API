@@ -37,27 +37,31 @@ namespace HospitalLibrary.Rooms
 
         }
 
-        public List<TimeInterval> GetPossibleInterval(int Starting_roomId, int Destination_roomId,DateTime date, TimeSpan duration)
+        public async Task<List<TimeInterval>> GetPossibleInterval(int Starting_roomId, int Destination_roomId,DateTime date, TimeSpan duration)
         {
-            List<TimeInterval> intervalsA = GetIntevals(Starting_roomId,date, duration);
-            List<TimeInterval> intervalsB = GetIntevals(Destination_roomId, date, duration);
+            List<TimeInterval> intervalsA =await GetIntevals(Starting_roomId,date, duration);
+            List<TimeInterval> intervalsB =await GetIntevals(Destination_roomId, date, duration);
 
             List<TimeInterval> intervals = getShared(intervalsA, intervalsB, duration);
-
-            return intervals;      
+            return intervals;
+           //
+           //return intervalsA;      
         }
-        List<TimeInterval> GetIntevals(int roomId, DateTime date, TimeSpan duration)
+        private async Task<List<TimeInterval>> GetIntevals(int roomId, DateTime date, TimeSpan duration)
         {
-            IEnumerable<TimeInterval> roomTimeIntervals =
-                 (IEnumerable<TimeInterval>)_unitOfWork.AppointmentRepository.GetAllRoomTakenIntervalsForDate(roomId, date);
-            IEnumerable<TimeInterval> roomReallocationsIntervals =
-                 (IEnumerable<TimeInterval>)_unitOfWork.EquipmentReallocationRepository.GetAllRoomTakenInrevalsForDate(roomId, date);
+             
+                return await _unitOfWork.AppointmentRepository.GetAllRoomTakenIntervalsForDate(roomId, date);
+
+            //IEnumerable<TimeInterval> roomTimeIntervals =
+            //     (IEnumerable<TimeInterval>)_unitOfWork.AppointmentRepository.GetAllRoomTakenIntervalsForDate(roomId, date);
+            // IEnumerable<TimeInterval> roomReallocationsIntervals =
+            //     (IEnumerable<TimeInterval>)_unitOfWork.EquipmentReallocationRepository.GetAllRoomTakenInrevalsForDate(roomId, date);
 
 
-            List<TimeInterval> mixedIntervals = (List<TimeInterval>)roomReallocationsIntervals.Concat(roomTimeIntervals).GetEnumerator();
+            //  List<TimeInterval> mixedIntervals = (List<TimeInterval>)roomReallocationsIntervals.Concat(roomTimeIntervals).GetEnumerator();
 
 
-            return GetAvailableIntervals(mixedIntervals, date, duration);
+            //  return GetAvailableIntervals(mixedIntervals, date, duration);
         }
         List<TimeInterval> GetAvailableIntervals(List<TimeInterval> takenIntervals, DateTime date, TimeSpan duration)
         {
@@ -114,9 +118,5 @@ namespace HospitalLibrary.Rooms
 
         }
 
-       
-        
-
-       
     }
 }

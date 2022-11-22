@@ -15,24 +15,18 @@ namespace HospitalLibrary.Appointments
         {
         }
 
-        public async Task<IEnumerable<TimeInterval>> GetAllRoomTakenIntervalsForDate(int roomId, DateTime date)
+        public async Task<List<TimeInterval>> GetAllRoomTakenIntervalsForDate(int roomId, DateTime date)
         {
             return await _dataContext.Appointments
                 .Where(a => a.RoomId == roomId)
                 .Where(a => a.StartAt.Date.Equals(date.Date))
-                .Where(a => a.State.Equals(AppointmentState.PENDING))
+                .Where(a => a.State.Equals(AppointmentState.FINISHED))
                 .Select(a => new TimeInterval(a.StartAt, a.EndAt))
                 .ToListAsync();
         }
-        public List<TimeInterval> GetAllRoomTakenIntervalsForDateList(int roomId, DateTime date)
-        {
-            return _dataContext.Appointments
-                .Where(a => a.RoomId == roomId)
-                .Where(a => a.StartAt.Date.Equals(date.Date))
-                .Where(a => a.State.Equals(AppointmentState.PENDING))
-                .Select(a => new TimeInterval(a.StartAt, a.EndAt))
-                .ToList();
-        }
+       
+
+
 
         public async Task<IEnumerable<TimeInterval>> GetAllDoctorTakenIntervalsForDate(int doctorId, DateTime date)
         {
@@ -113,5 +107,7 @@ namespace HospitalLibrary.Appointments
                 .Select(a => new TimeInterval(a.StartAt, a.EndAt))
                 .ToListAsync();
         }
+
+        
     }
 }
