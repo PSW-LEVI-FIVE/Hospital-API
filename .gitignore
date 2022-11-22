@@ -17,6 +17,7 @@ src/HospitalAPI/appsettings.json
 *.user
 *.userosscache
 *.sln.docstates
+#appsetings
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
