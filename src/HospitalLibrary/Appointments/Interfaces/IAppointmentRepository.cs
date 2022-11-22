@@ -7,7 +7,7 @@ namespace HospitalLibrary.Appointments.Interfaces
 {
     public interface IAppointmentRepository : IBaseRepository<Appointment>
     {
-        Task<IEnumerable<TimeInterval>> GetAllRoomTakenIntervalsForDate(int roomId, DateTime date);
+        Task<List<TimeInterval>> GetAllRoomTakenIntervalsForDate(int roomId, DateTime date);
         Task<IEnumerable<TimeInterval>> GetAllDoctorTakenIntervalsForDate(int doctorId, DateTime date);
         Task<IEnumerable<TimeInterval>> GetAllDoctorTakenIntervalsForTimeInterval(int doctorId, TimeInterval timeInterval);
         Task<IEnumerable<Appointment>> GetAllDoctorUpcomingAppointments(int doctorId);
@@ -17,6 +17,5 @@ namespace HospitalLibrary.Appointments.Interfaces
 
         Task<IEnumerable<TimeInterval>> GetAllDoctorTakenIntervalsForDateExcept(int roomId, DateTime date, int ignore);
         Task<IEnumerable<TimeInterval>> GetAllRoomTakenIntervalsForDateExcept(int roomId, DateTime date, int ignore);
-        List<TimeInterval> GetAllRoomTakenIntervalsForDateList(int roomId, DateTime date);
     }
 }
