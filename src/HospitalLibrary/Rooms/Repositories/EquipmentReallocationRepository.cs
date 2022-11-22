@@ -5,7 +5,7 @@ using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,13 +18,12 @@ namespace HospitalLibrary.Rooms.Repositories
         {
         }
 
-        public async Task<IEnumerable<TimeInterval>> GetAllRoomTakenInrevalsForDate(int roomId, DateTime date)
+        public async Task<List<TimeInterval>> GetAllRoomTakenInrevalsForDate(int roomId, DateTime date)
         {
             return await _dataContext.EquipmentReallocations
-                .Where(a => a.StartingRoomId == roomId|| a.DestinationRoomId == roomId)
+                .Where(a => a.StartingRoomId == roomId || a.DestinationRoomId == roomId)
                 .Where(a => a.StartAt.Date.Equals(date.Date))
                 .Select(a => new TimeInterval(a.StartAt, a.EndAt))
-                .OrderBy(a =>a.Start)
                 .ToListAsync();
         }
 
