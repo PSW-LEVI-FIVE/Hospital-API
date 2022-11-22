@@ -12,7 +12,6 @@ namespace HospitalAPI.Controllers.Public
 {
     [Route("api/public/allergen")]
     [ApiController]
-    [Authorize(Roles="Patient")]
     public class AllergenController : ControllerBase
     {
         private IAllergenService _allergenService;

@@ -80,7 +80,7 @@ namespace HospitalTests.Units.Patients
             personRepository.Setup(unit => unit.GetOneByUid("11111111")).Returns(p1);
             
             userRepository.Setup(unit => unit.GetOneByUsername("kiki")).Returns(u1);
-            doctorRepository.Setup(unit => unit.GetTwoUnburdenedDoctors()).ReturnsAsync(doctors.AsEnumerable());
+            doctorRepository.Setup(unit => unit.GetUnburdenedDoctors(d1)).ReturnsAsync(doctors.AsEnumerable());
        
             AuthService authService = new AuthService(
                 unitOfWork.Object,
