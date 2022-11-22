@@ -16,7 +16,7 @@ namespace HospitalLibrary.Map
         
         [ForeignKey("MapBuilding")]
         public int MapBuildingId { get; set; }
-        public MapFloor MapBuilding { get; set; }
+        public MapBuilding MapBuilding { get; set; }
         
         public float XCoordinate { get; set; }
         public float YCoordinate { get; set; }
