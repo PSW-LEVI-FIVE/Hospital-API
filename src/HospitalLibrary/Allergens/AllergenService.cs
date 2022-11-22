@@ -22,5 +22,10 @@ namespace HospitalLibrary.Allergens
             _unitOfWork.AllergenRepository.Save();
             return allergen;
         }
+
+        public Task<IEnumerable<Allergen>> GetAllergensWithNumberOfPatients()
+        {
+            return _unitOfWork.AllergenRepository.GetAllergensWithNumberOfPatients();
+        }
     }
 }
