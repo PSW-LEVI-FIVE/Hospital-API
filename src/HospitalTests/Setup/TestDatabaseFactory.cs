@@ -52,7 +52,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=isa1234";
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn";
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
@@ -156,15 +156,16 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
 
         Patient patient = new Patient()
         {
-            Id=1,
+            Id = 1,
             Name = "Marko",
             Surname = "Markovic",
             Email = "asdasd1@gmail.coma",
             Uid = "67676767",
             PhoneNumber = "123123123",
-            BirthDate = new DateTime(2000,2,2), 
-            Address = "Mike", 
-            BloodType = BloodType.A_NEGATIVE
+            BirthDate = new DateTime(2000, 2, 2),
+            Address = "Mike",
+            BloodType = BloodType.A_NEGATIVE,
+            ChoosenDoctor = doctor
         };
 
         User user = new User()
@@ -185,7 +186,8 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             PhoneNumber = "123123123",
             BirthDate = new DateTime(2000,2,3), 
             Address = "Zike", 
-            BloodType = BloodType.A_NEGATIVE
+            BloodType = BloodType.A_NEGATIVE,
+            ChoosenDoctor = doctor
         };
         
         Hospitalization hospitalization = new Hospitalization()
@@ -250,7 +252,8 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             PhoneNumber = "123123123",
             BirthDate = new DateTime(2000,2,3), 
             Address = "Zike", 
-            BloodType = BloodType.A_NEGATIVE
+            BloodType = BloodType.A_NEGATIVE,
+            ChoosenDoctor = doctor
         };
         
         dbContext.Buildings.Add(building);
@@ -282,6 +285,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         dbContext.BloodStorage.Add(bloodStorage);
         dbContext.Therapies.Add(bloodTherapy1);
         dbContext.Therapies.Add(bloodTherapy2);
+
         
         dbContext.SaveChanges();
 
