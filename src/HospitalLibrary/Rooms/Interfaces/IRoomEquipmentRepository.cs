@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HospitalLibrary.Rooms.Interfaces
 {
-    public interface IRoomEquipmentRepository: IBaseRepository<RoomEquipment>
+    public interface IRoomEquipmentRepository : IBaseRepository<RoomEquipment>
     {
         Task<IEnumerable<RoomEquipment>> GetAllByNameSearchInRoom(RoomEquipmentDTO roomEquipmentDTO);
         Task<IEnumerable<RoomEquipment>> GetAllByQuantitySearchInRoom(RoomEquipmentDTO roomEquipmentDTO);
@@ -14,5 +14,9 @@ namespace HospitalLibrary.Rooms.Interfaces
         bool checkFloorByEquipmentName(Task<IEnumerable<RoomEquipment>> roomEquipment, RoomEquipmentDTO roomEquipmentDTO);
         bool checkFloorByEquipmentQuantity(Task<IEnumerable<RoomEquipment>> roomEquipment, RoomEquipmentDTO roomEquipmentDTO);
         bool checkFloorByCombineEquipmentSearch(Task<IEnumerable<RoomEquipment>> roomEquipment, RoomEquipmentDTO roomEquipmentDTO);
+
+        Task<List<RoomEquipment>> GetEquipmentByRoom(int roomId);
+        int GetNumberOfUsedEquipment(int equipmentId);
+
     }
 }

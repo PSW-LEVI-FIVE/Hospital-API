@@ -1,6 +1,8 @@
 ﻿using HospitalLibrary.Appointments;
 using HospitalLibrary.Migrations;
+using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Interfaces;
+using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Shared.Interfaces;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
@@ -36,6 +38,15 @@ namespace HospitalLibrary.Rooms
         {
             return null;
 
+        }
+
+        public async Task<List<Model.RoomEquipment>> getEquipmentByRoom(int roomId) 
+        {
+            return await _unitOfWork.RoomEquipmentRepository.GetEquipmentByRoom(roomId);
+        }
+        public async Task<int> getReservedEquipment(int equipmentId) 
+        {
+            return _unitOfWork.RoomEquipmentRepository.GetNumberOfUsedEquipment(equipmentId);
         }
 
         public async Task<List<TimeInterval>> GetPossibleInterval(int Starting_roomId, int Destination_roomId,DateTime date, TimeSpan duration)

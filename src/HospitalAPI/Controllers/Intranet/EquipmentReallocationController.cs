@@ -40,9 +40,20 @@ namespace HospitalAPI.Controllers.Intranet
             return "value";
         }
 
-       
+        [HttpGet("reserved_eq/{equipmentId}")]
+        public async Task<IActionResult> GetReservedEquipment(int equipmentId)
+        {
+            var reservedEquipment = await _equipmentReallocationService.getReservedEquipment(equipmentId);
+            return Ok(reservedEquipment);
+        }
+        [HttpGet("room/{roomId}")]
+        public async Task<IActionResult> GetEquipmentForRoom(int roomId)
+        {
+            var RoomEquipment  = await _equipmentReallocationService.getEquipmentByRoom(roomId);
+            return Ok(RoomEquipment);
+        }
 
-        
+
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
