@@ -18,6 +18,22 @@ namespace HospitalLibrary.Rooms.Repositories
         {
         }
 
+        public async Task<List<EquipmentReallocation>> GetAllPending()
+        {
+            return await _dataContext.EquipmentReallocations
+                .Where(a=> a.state==ReallocationState.PENDING)
+                .ToListAsync();
+        }
+
+        public async Task<List<EquipmentReallocation>> GetAllPendingForToday()
+        {
+            var Date = DateTime.Now;
+            return await _dataContext.EquipmentReallocations
+                .Where(a => a.StartAt.Date<=Date.Date)
+                .Where(a => a.state == ReallocationState.PENDING)
+                .ToListAsync();
+        }
+
         public async Task<List<TimeInterval>> GetAllRoomTakenInrevalsForDate(int roomId, DateTime date)
         {
             return await _dataContext.EquipmentReallocations

@@ -34,10 +34,18 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
         
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("Pending")]
+        public async Task<IActionResult> GetAllPending()
         {
-            return "value";
+            var pending = await _equipmentReallocationService.getAllPending();
+            return Ok(pending) ;
+        }
+        [HttpGet("PendingToday")]
+
+        public async Task<IActionResult> GetAllPendingToday()
+        {
+            var pending = await _equipmentReallocationService.getAllPendingForToday();
+            return Ok(pending);
         }
 
         [HttpGet("reserved_eq/{equipmentId}")]

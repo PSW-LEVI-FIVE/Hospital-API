@@ -39,6 +39,14 @@ namespace HospitalLibrary.Rooms
             return null;
 
         }
+        public async Task<List<EquipmentReallocation>> getAllPending()
+        {
+            return await _unitOfWork.EquipmentReallocationRepository.GetAllPending();
+        }
+        public async Task<List<EquipmentReallocation>> getAllPendingForToday()
+        {
+            return await _unitOfWork.EquipmentReallocationRepository.GetAllPendingForToday();
+        }
 
         public async Task<List<Model.RoomEquipment>> getEquipmentByRoom(int roomId) 
         {
@@ -73,6 +81,7 @@ namespace HospitalLibrary.Rooms
             return smalIntervals;
         }
 
+        
         private List<TimeInterval> snipInterval(TimeInterval interval, TimeSpan duration)
         {
             List<TimeInterval> snippedInterval = new List<TimeInterval>();
