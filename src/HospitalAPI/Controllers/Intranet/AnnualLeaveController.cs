@@ -69,7 +69,7 @@ namespace HospitalAPI.Controllers.Intranet
             return null;
         }
 
-        [Route("getPending")]
+        [Route("pending")]
         [HttpGet]
         public IActionResult GetAllPending()
         {
