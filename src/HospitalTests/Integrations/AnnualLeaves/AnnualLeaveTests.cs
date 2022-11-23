@@ -1,5 +1,6 @@
 ﻿using HospitalAPI;
 using HospitalAPI.Controllers.Intranet;
+using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.AnnualLeaves.Dtos;
 using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.BloodStorages;
@@ -37,5 +38,29 @@ public class AnnualLeaveTests:BaseIntegrationTest
 
         var result = (OkObjectResult)annualLeaveController.Create(annualLeaveDto).Result;
         result.StatusCode.ShouldBe(200);
+    }
+
+    [Fact]
+    public void Get_all_pending_requests()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var annualLeaveController = SetupController(scope);
+        var result = ((OkObjectResult)annualLeaveController.GetAllPending()).Value as IEnumerable<AnnualLeave>;
+
+        result.ShouldNotBeEmpty();
+
+    }
+    [Fact]
+    public void Request_reviewed()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var annualLeaveController = SetupController(scope);
+        var dto = new ReviewLeaveRequestDTO(AnnualLeaveState.CANCELED, "neki razlog");
+        var result = ((OkObjectResult)annualLeaveController.ReviewRequest(dto, 15)).Value as AnnualLeave;
+
+        result.ShouldNotBeNull();
+        result.State.ShouldBe(AnnualLeaveState.CANCELED);
+        result.Reason.ShouldNotBeNull();
+
     }
 }

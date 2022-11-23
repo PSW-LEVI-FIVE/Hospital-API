@@ -254,31 +254,18 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             BloodType = BloodType.A_NEGATIVE
         };
 
-        Doctor doctor3 = new Doctor()
-        {
-            Id = 6,
-            Name = "Prvi plus",
-            Surname = "Drugi plus",
-            Address = "Al bas daleko odavde",
-            BirthDate = DateTime.Now,
-            Email = "nekimail3@gmail.com",
-            PhoneNumber = "063555333",
-            SpecialtyType = SpecialtyType.ITERNAL_MEDICINE,
-            Uid = "67867868",
-            WorkingHours = new List<WorkingHours>()
-        };
 
         AnnualLeave annualLeave1 = new AnnualLeave()
         {
             Id = 15,
-            DoctorId = 5,
+            DoctorId = 4,
             State = AnnualLeaveState.PENDING,
 
         };
         AnnualLeave annualLeave2 = new AnnualLeave()
         {
             Id = 16,
-            DoctorId = 5,
+            DoctorId = 4,
             State = AnnualLeaveState.PENDING,
             Reason = "",
 
@@ -291,7 +278,6 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Rooms.Add(room);
         dbContext.Doctors.Add(doctor);
         dbContext.Doctors.Add(doctor2);
-        dbContext.Doctors.Add(doctor3);
         dbContext.AnnualLeaves.Add(annualLeave1);
         dbContext.AnnualLeaves.Add(annualLeave2);
         dbContext.Hospitalizations.Add(hospitalization);
@@ -317,7 +303,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Therapies.Add(bloodTherapy1);
         dbContext.Therapies.Add(bloodTherapy2);
         dbContext.AnnualLeaves.Add(annualLeave1);
-        dbContext.AnnualLeaves.Add(annualLeave2);
+        dbContext.AnnualLeaves.Add(annualLeave2); 
         dbContext.SaveChanges();
 
 
