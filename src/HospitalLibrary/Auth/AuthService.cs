@@ -51,7 +51,8 @@ namespace HospitalLibrary.Auth
         }
         public async Task<Doctor> GetPatientsDoctor(string doctorUid)
         {
-            foreach (Doctor doctor in await _unitOfWork.DoctorRepository.GetTwoUnburdenedDoctors())
+            Doctor mostUnburdened = await _unitOfWork.DoctorRepository.GetMostUnburdenedDoctor();
+            foreach (Doctor doctor in await _unitOfWork.DoctorRepository.GetUnburdenedDoctors(mostUnburdened.Patients.Count))
             {
                 if (doctor.Uid.Equals(doctorUid))
                     return doctor;

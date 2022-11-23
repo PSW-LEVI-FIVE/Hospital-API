@@ -12,7 +12,6 @@ namespace HospitalAPI.Controllers.Public
 {
     [Route("api/public/allergen")]
     [ApiController]
-    [Authorize(Roles="Patient")]
     public class AllergenController : ControllerBase
     {
         private IAllergenService _allergenService;
@@ -23,6 +22,7 @@ namespace HospitalAPI.Controllers.Public
         }
 
         [HttpPost]
+        [Authorize(Roles="Doctor")]
         public IActionResult Create([FromBody] AllergenDTO allergenDto)
         {
             Allergen created = _allergenService.Create(allergenDto.MapToModel());

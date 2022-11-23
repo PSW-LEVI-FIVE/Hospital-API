@@ -17,16 +17,27 @@ namespace HospitalLibrary.Doctors
         {
             return _dataContext.Doctors.Where(doctor => doctor.SpecialtyType.Equals(specialtyType) && doctor.Id != doctorId).ToList();
         }
-        public async Task<IEnumerable<Doctor>> GetTwoUnburdenedDoctors()
+        public async Task<IEnumerable<Doctor>> GetUnburdenedDoctors(int mostUnburdenedPatientsCount)
         {
             return await _dataContext.Doctors
                 .Where(doctor => doctor.SpecialtyType
                 .Equals(SpecialtyType.ITERNAL_MEDICINE))
+                .Where(doctor => doctor.Patients.Count <= mostUnburdenedPatientsCount + 2)
                 .OrderBy(doctor => doctor.Patients.Count)
                 .Include(a => a.Patients)
-                .Take(2).ToListAsync();
+                .ToListAsync();
         }
-        
+
+        public async Task<Doctor> GetMostUnburdenedDoctor()
+        {
+            return await _dataContext.Doctors
+                .Where(doctor => doctor.SpecialtyType
+                    .Equals(SpecialtyType.ITERNAL_MEDICINE))
+                .OrderBy(doctor => doctor.Patients.Count)
+                .Include(a => a.Patients)
+                .FirstAsync();
+        }
+
         public async Task<IEnumerable<Doctor>> GetDoctorsByAgeRange(DateTime dateFromAge,DateTime dateToAge)
         {
             return await _dataContext.Doctors
