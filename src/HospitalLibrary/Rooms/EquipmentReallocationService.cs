@@ -1,6 +1,7 @@
 ﻿using HospitalLibrary.Appointments;
 using HospitalLibrary.Migrations;
 using HospitalLibrary.Rooms;
+using HospitalLibrary.Rooms.DTOs;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Shared.Interfaces;
@@ -16,14 +17,23 @@ namespace HospitalLibrary.Rooms
 {
     public class EquipmentReallocationService : IEquipmentReallocationService
     {
-
+        private readonly ITimeIntervalValidationService _intervalValidation;
         private readonly IUnitOfWork _unitOfWork;
 
-        public EquipmentReallocationService(IUnitOfWork unitOfWork)
+        public EquipmentReallocationService(IUnitOfWork unitOfWork,ITimeIntervalValidationService intervalValidation)
         {
             _unitOfWork = unitOfWork;
+            _intervalValidation = intervalValidation;
         }
 
+        public async Task<EquipmentReallocation> Create(EquipmentReallocation equipmentReallocation)
+        {
+            await _intervalValidation.ValidateReallocation(equipmentReallocation);
+            _unitOfWork.EquipmentReallocationRepository.Add(equipmentReallocation);
+            _unitOfWork.EquipmentReallocationRepository.Save();
+
+            return equipmentReallocation;
+        }
         public Task Delete(int id)
         {
             return null;
@@ -59,8 +69,11 @@ namespace HospitalLibrary.Rooms
 
         public async Task<List<TimeInterval>> GetPossibleInterval(int Starting_roomId, int Destination_roomId,DateTime date, TimeSpan duration)
         {
-            List<TimeInterval> intervalsA =await GetIntevals(Starting_roomId,date, duration);
-            List<TimeInterval> intervalsB =await GetIntevals(Destination_roomId, date, duration);
+            List<TimeInterval> intervalsA =await GetTakenIntevals(Starting_roomId,date);
+            intervalsA= await GetAvailableIntervals(intervalsA, date, duration);
+
+            List<TimeInterval> intervalsB =await GetTakenIntevals(Destination_roomId, date);
+            intervalsB = await GetAvailableIntervals(intervalsB, date, duration);
 
             List<TimeInterval> intervals = await getShared(intervalsA, intervalsB, duration);
             //return intervals;
@@ -94,11 +107,8 @@ namespace HospitalLibrary.Rooms
             return snippedInterval;
         }
 
-        private async Task<List<TimeInterval>> GetIntevals(int roomId, DateTime date, TimeSpan duration)
+        private async Task<List<TimeInterval>> GetTakenIntevals(int roomId, DateTime date)
         {
-             
-           //     return await _unitOfWork.AppointmentRepository.GetAllRoomTakenIntervalsForDate(roomId, date);
-
             List<TimeInterval> roomTimeIntervals =
                          await _unitOfWork.AppointmentRepository.GetAllRoomTakenIntervalsForDate(roomId, date);
             List<TimeInterval> roomReallocationsIntervals =
@@ -106,9 +116,8 @@ namespace HospitalLibrary.Rooms
 
 
             List<TimeInterval> mixedIntervals = roomReallocationsIntervals.Concat(roomTimeIntervals).ToList();
-            mixedIntervals = mixedIntervals.OrderBy(x => x.Start).ToList();
+            return mixedIntervals = mixedIntervals.OrderBy(x => x.Start).ToList();
 
-            return await GetAvailableIntervals(mixedIntervals, date, duration);
         }
 
         private async Task<List<TimeInterval>> GetAvailableIntervals(List<TimeInterval> takenIntervals, DateTime date, TimeSpan duration)
@@ -127,6 +136,7 @@ namespace HospitalLibrary.Rooms
                 available.Add(new TimeInterval(b,date));
             return available;
         }
+
         private async Task<List<TimeInterval>> getShared(List<TimeInterval> intervalsA, List<TimeInterval> intervalsB ,TimeSpan duration)
         {
             List<TimeInterval> shared = new List<TimeInterval>(); 
@@ -170,5 +180,6 @@ namespace HospitalLibrary.Rooms
 
         }
 
+        
     }
 }

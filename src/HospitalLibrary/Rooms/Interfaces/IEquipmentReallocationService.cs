@@ -1,5 +1,6 @@
 ﻿using HospitalLibrary.Appointments;
 using HospitalLibrary.Migrations;
+using HospitalLibrary.Rooms.DTOs;
 using HospitalLibrary.Rooms.Model;
 using System;
 using System.Collections.Generic;
@@ -21,5 +22,6 @@ namespace HospitalLibrary.Rooms.Interfaces
         Task<int> getReservedEquipment(int equipmentId);
         Task<List<EquipmentReallocation>> getAllPending();
         Task<List<EquipmentReallocation>> getAllPendingForToday();
+        Task<EquipmentReallocation> Create(EquipmentReallocation equipmentReallocation);
     }
 }

@@ -25,15 +25,25 @@ namespace HospitalAPI.Controllers.Intranet
         public async Task<IActionResult> GetAvailableIntervals([FromBody] CreateIntervalsEquipmentReallocationDTO reallocationDTO)
         {
 
-            TimeSpan s =new TimeSpan(0, reallocationDTO.duration, 0);
-            Console.Write(reallocationDTO.duration);  
+            TimeSpan s =new TimeSpan(0, reallocationDTO.duration, 0);  
             var availableIntervals =await _equipmentReallocationService.GetPossibleInterval(reallocationDTO.StartingRoomId, reallocationDTO.DestinationRoomId,reallocationDTO.date, s);
             //public async Task<List<TimeInterval>> GetPossibleInterval(int Starting_roomId, int Destination_roomId, DateTime date, TimeSpan duration)
 
             return Ok(availableIntervals);
         }
+        [Route("Create")]
+        [HttpPost]
+        public async Task<IActionResult> AddNewReallocation([FromBody] CreateEquipmentReallocationDTO createDto)
+        {
 
-        
+         
+            var availableIntervals = await _equipmentReallocationService.Create(createDto.MapToModel());
+            
+
+            return Ok(availableIntervals);
+        }
+
+
         [HttpGet("Pending")]
         public async Task<IActionResult> GetAllPending()
         {

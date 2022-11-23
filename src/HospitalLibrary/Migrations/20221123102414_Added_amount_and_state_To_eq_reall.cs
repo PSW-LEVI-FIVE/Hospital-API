@@ -7,14 +7,14 @@ namespace HospitalLibrary.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "amount",
+                name: "Amount",
                 table: "EquipmentReallocations",
                 type: "integer",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
-                name: "state",
+                name: "State",
                 table: "EquipmentReallocations",
                 type: "integer",
                 nullable: false,
@@ -24,11 +24,11 @@ namespace HospitalLibrary.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "amount",
+                name: "Amount",
                 table: "EquipmentReallocations");
 
             migrationBuilder.DropColumn(
-                name: "state",
+                name: "State",
                 table: "EquipmentReallocations");
         }
     }

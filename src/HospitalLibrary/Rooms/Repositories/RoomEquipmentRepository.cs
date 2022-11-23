@@ -21,8 +21,8 @@ namespace HospitalLibrary.Rooms.Repositories
             
             return _dataContext.EquipmentReallocations
                 .Where(a => a.EquipmentId == equipmentId)
-                .Where(a=> a.state==ReallocationState.PENDING)
-                .Select(a => a.amount).Sum();
+                .Where(a=> a.State==ReallocationState.PENDING)
+                .Select(a => a.Amount).Sum();
         }
 
         public async Task<List<RoomEquipment>> GetEquipmentByRoom(int roomId)
