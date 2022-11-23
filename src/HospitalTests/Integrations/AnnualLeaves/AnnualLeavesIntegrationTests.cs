@@ -7,7 +7,7 @@ using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.AnnualLeaves;
 using Shouldly;
 using HospitalLibrary.AnnualLeaves.Dtos;
-using Microsoft.AspNetCore.Routing;
+using HospitalLibrary.User.Interfaces;
 
 namespace HospitalTests.Integrations.AnnualLeaves;
 
@@ -31,12 +31,12 @@ public class AnnualLeaveTests : BaseIntegrationTest
         var annualLeaveController = SetupController(scope);
         var result = ((OkObjectResult)annualLeaveController.GetAllPending()).Value as IEnumerable<AnnualLeave>;
 
-        result.ShouldNotBeEmpty();
+        result.ShouldNotBeEmpty(); 
 
     }
     [Fact]
     public void Request_reviewed()
-    {
+    { 
         using var scope = Factory.Services.CreateScope();
         var annualLeaveController = SetupController(scope);
         var dto = new ReviewLeaveRequestDTO(AnnualLeaveState.CANCELED, "neki razlog");
@@ -44,7 +44,7 @@ public class AnnualLeaveTests : BaseIntegrationTest
 
         result.ShouldNotBeNull();
         result.State.ShouldBe(AnnualLeaveState.CANCELED);
-        result.Reason.ShouldNotBeNull();
+        result.Reason.ShouldNotBeNull(); 
 
     }
 }

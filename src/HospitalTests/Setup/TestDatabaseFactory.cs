@@ -1,16 +1,12 @@
 using HospitalAPI;
-using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Buildings;
-using HospitalLibrary.Doctors;
 using HospitalLibrary.Floors;
 using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.Map;
 using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.Allergens;
-using System.Collections;
-using System.Net;
-using System.Xml.Schema;
+using HospitalLibrary.Doctors;
 using HospitalLibrary.Medicines;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Rooms.Model;
@@ -23,10 +19,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using HospitalLibrary.AnnualLeaves;
 
 namespace HospitalTests.Setup;
 
-public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
+public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -38,8 +35,8 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             InitializeDatabase(db);
         });
     }
-    
-    
+
+
     private static ServiceProvider BuildServiceProvider(IServiceCollection services)
     {
         ServiceDescriptor? descriptor = services.FirstOrDefault(service => typeof(DbContextOptions<HospitalDbContext>) == service.ServiceType);
@@ -50,7 +47,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         {
             option.UseNpgsql(CreateTestingConnectionString());
         });
-        
+
         return services.BuildServiceProvider();
     }
 
@@ -74,7 +71,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             "EXECUTE 'TRUNCATE TABLE ' || quote_ident(stmt.tablename) || ' CASCADE;'; " +
             "END LOOP; " +
             "END; " +
-            "    $$ LANGUAGE plpgsql; " 
+            "    $$ LANGUAGE plpgsql; "
             );
         dbContext.Database.ExecuteSqlRaw("SELECT truncate_tables('postgres');");
 
@@ -257,17 +254,31 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             BloodType = BloodType.A_NEGATIVE
         };
 
+        Doctor doctor3 = new Doctor()
+        {
+            Id = 6,
+            Name = "Prvi plus",
+            Surname = "Drugi plus",
+            Address = "Al bas daleko odavde",
+            BirthDate = DateTime.Now,
+            Email = "nekimail3@gmail.com",
+            PhoneNumber = "063555333",
+            SpecialtyType = SpecialtyType.ITERNAL_MEDICINE,
+            Uid = "67867868",
+            WorkingHours = new List<WorkingHours>()
+        };
+
         AnnualLeave annualLeave1 = new AnnualLeave()
         {
             Id = 15,
-            DoctorId = 4,
+            DoctorId = 5,
             State = AnnualLeaveState.PENDING,
 
         };
         AnnualLeave annualLeave2 = new AnnualLeave()
         {
             Id = 16,
-            DoctorId = 4,
+            DoctorId = 5,
             State = AnnualLeaveState.PENDING,
             Reason = "",
 
@@ -280,6 +291,9 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         dbContext.Rooms.Add(room);
         dbContext.Doctors.Add(doctor);
         dbContext.Doctors.Add(doctor2);
+        dbContext.Doctors.Add(doctor3);
+        dbContext.AnnualLeaves.Add(annualLeave1);
+        dbContext.AnnualLeaves.Add(annualLeave2);
         dbContext.Hospitalizations.Add(hospitalization);
         dbContext.MapRooms.Add(mapRoom);
         dbContext.RoomEquipment.Add(equipment);
