@@ -20,7 +20,7 @@ namespace HospitalLibrary.Appointments
             return await _dataContext.Appointments
                 .Where(a => a.RoomId == roomId)
                 .Where(a => a.StartAt.Date.Equals(date.Date))
-                .Where(a => a.State.Equals(AppointmentState.FINISHED))
+                .Where(a => a.State.Equals(AppointmentState.PENDING))
                 .Select(a => new TimeInterval(a.StartAt, a.EndAt))
                 .ToListAsync();
         }

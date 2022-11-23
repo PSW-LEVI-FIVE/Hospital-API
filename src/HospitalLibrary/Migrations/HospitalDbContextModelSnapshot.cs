@@ -430,15 +430,26 @@ namespace HospitalLibrary.Migrations
                     b.Property<DateTime>("EndAt")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<int>("EquipmentId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("StartAt")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("StartingRoomId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("amount")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("state")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DestinationRoomId");
+
+                    b.HasIndex("EquipmentId");
 
                     b.HasIndex("StartingRoomId");
 
@@ -846,6 +857,12 @@ namespace HospitalLibrary.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("HospitalLibrary.Rooms.Model.RoomEquipment", "Equipment")
+                        .WithMany()
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("HospitalLibrary.Rooms.Model.Room", "StartingRoom")
                         .WithMany()
                         .HasForeignKey("StartingRoomId")
@@ -853,6 +870,8 @@ namespace HospitalLibrary.Migrations
                         .IsRequired();
 
                     b.Navigation("DestinationRoom");
+
+                    b.Navigation("Equipment");
 
                     b.Navigation("StartingRoom");
                 });

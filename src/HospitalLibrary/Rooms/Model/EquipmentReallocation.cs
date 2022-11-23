@@ -22,6 +22,13 @@ namespace HospitalLibrary.Rooms.Model
 
         public Room DestinationRoom { get; set; }
 
+        [ForeignKey("Equipment")]
+        public int EquipmentId { get; set; }
+        public RoomEquipment Equipment { get; set; }
+
+        public int amount { get; set; }
+        public ReallocationState state { get; set; }
+        
         public DateTime StartAt { get; set; }
         public DateTime EndAt { get; set; }
 
@@ -29,4 +36,10 @@ namespace HospitalLibrary.Rooms.Model
         {
         }
     }
+}
+
+public enum ReallocationState 
+{
+    FINISHED,
+    PENDING
 }
