@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using HospitalLibrary.Doctors;
+using HospitalLibrary.Therapies.Model;
 
 namespace HospitalLibrary.Therapies.Dtos
 {
@@ -22,5 +24,15 @@ namespace HospitalLibrary.Therapies.Dtos
         
         [Required]
         public DateTime PrescribedDate { get; set; }
+
+        public BloodConsumptionDTO(Therapy therapy, BloodTherapy bloodTherapy, Doctor doc)
+        {
+            Id = bloodTherapy.Id;
+            Quantity = bloodTherapy.Quantity;
+            TypeBlood = (int)bloodTherapy.BloodType;
+            DoctorName = doc.Name;
+            DoctorSurname = doc.Surname;
+            PrescribedDate = therapy.GivenAt;
+        }
     }
 }

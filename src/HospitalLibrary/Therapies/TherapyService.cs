@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.BloodStorages.Interfaces;
+using HospitalLibrary.Doctors;
+using HospitalLibrary.Medicines;
 using HospitalLibrary.Medicines.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Therapies.Dtos;
@@ -50,7 +52,8 @@ namespace HospitalLibrary.Therapies
             foreach (var therapy in therapies)
             {
                 BloodTherapy bloodTherapy = (BloodTherapy)therapy;
-                BloodConsumptionDTO dto = SetBloodConsumptionDtoValues(therapy, bloodTherapy);
+                Doctor doc = _unitOfWork.DoctorRepository.GetOne(therapy.DoctorId);
+                BloodConsumptionDTO dto = new BloodConsumptionDTO(therapy, bloodTherapy, doc);
                 bloodTherapies.Add(dto);
             }
 
@@ -66,51 +69,18 @@ namespace HospitalLibrary.Therapies
                 if (therapy.InstanceType.Equals("blood"))
                 {
                     BloodTherapy bloodTherapy = (BloodTherapy)therapy;
-                    HospitalizationTherapiesDTO dto = SetValuesForBloodTherapies(therapy, bloodTherapy);
+                    HospitalizationTherapiesDTO dto = new HospitalizationTherapiesDTO(therapy, bloodTherapy);
                     therapiesList.Add(dto);
                 }
                 else
                 {
                     MedicineTherapy medicineTherapy = (MedicineTherapy)therapy;
-                    HospitalizationTherapiesDTO dto = SetValuesForMedicineTherapies(therapy, medicineTherapy);
+                    Medicine med = _unitOfWork.MedicineRepository.GetOne(medicineTherapy.MedicineId);
+                    HospitalizationTherapiesDTO dto = new HospitalizationTherapiesDTO(therapy, medicineTherapy, med);
                     therapiesList.Add(dto);
                 }
             }
             return therapiesList;
-        }
-
-        private HospitalizationTherapiesDTO SetValuesForBloodTherapies(Therapy therapy, BloodTherapy bTherapy)
-        {
-            HospitalizationTherapiesDTO dto = new HospitalizationTherapiesDTO();
-            dto.Id = therapy.Id;
-            dto.TherapyType = therapy.InstanceType;
-            dto.Quantity = bTherapy.Quantity;
-            dto.PrescribedDate = therapy.GivenAt;
-            dto.TypeBlood =(int)bTherapy.BloodType;
-            return dto;
-        }
-        
-        private HospitalizationTherapiesDTO SetValuesForMedicineTherapies(Therapy therapy, MedicineTherapy mTherapy)
-        {
-            HospitalizationTherapiesDTO dto = new HospitalizationTherapiesDTO();
-            dto.Id = therapy.Id;
-            dto.TherapyType = therapy.InstanceType;
-            dto.Quantity = mTherapy.Quantity;
-            dto.PrescribedDate = therapy.GivenAt;
-            dto.MedicineName = _unitOfWork.MedicineRepository.GetOne(mTherapy.MedicineId).Name;
-            return dto;
-        }
-        
-        private BloodConsumptionDTO SetBloodConsumptionDtoValues(Therapy therapy, BloodTherapy bloodTherapy)
-        {
-            BloodConsumptionDTO dto = new BloodConsumptionDTO();
-            dto.Id = bloodTherapy.Id;
-            dto.Quantity = bloodTherapy.Quantity;
-            dto.TypeBlood = (int)bloodTherapy.BloodType;
-            dto.DoctorName = _unitOfWork.DoctorRepository.GetOne(therapy.DoctorId).Name;
-            dto.DoctorSurname = _unitOfWork.DoctorRepository.GetOne(therapy.DoctorId).Surname;
-            dto.PrescribedDate = therapy.GivenAt;
-            return dto;
         }
 
         private async Task<bool> ValidateBloodAmount(BloodType type, double quantity)
