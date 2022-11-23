@@ -38,7 +38,7 @@ namespace HospitalLibrary.Doctors
         public async Task<IEnumerable<Doctor>> GetIternalMedicineDoctorsForPatientRegistration()
         {
             Doctor mostUnburdened = await GetMostUnburdenedDoctor();
-            return await _unitOfWork.DoctorRepository.GetUnburdenedDoctors(mostUnburdened);
+            return await _unitOfWork.DoctorRepository.GetUnburdenedDoctors(mostUnburdened.Patients.Count);
         }
         public Task<IEnumerable<Doctor>> GetDoctorsByAgeRange(int fromAge, int toAge)
         {

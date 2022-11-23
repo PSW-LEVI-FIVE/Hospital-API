@@ -22,6 +22,7 @@ namespace HospitalAPI.Controllers.Public
         }
 
         [HttpPost]
+        [Authorize(Roles="Doctor")]
         public IActionResult Create([FromBody] AllergenDTO allergenDto)
         {
             Allergen created = _allergenService.Create(allergenDto.MapToModel());
