@@ -80,9 +80,9 @@ namespace HospitalLibrary.Appointments
                 list.Add(
                     new CalendarInterval
                     {
-                        StartsAt = app.StartAt.TimeOfDay,
-                        EndsAt = app.EndAt.TimeOfDay,
-                        Patient = app.Patient.Name = app.Patient.Surname,
+                        StartsAt = new TimeOfDayDTO(app.StartAt.TimeOfDay) ,
+                        EndsAt = new TimeOfDayDTO(app.EndAt.TimeOfDay),
+                        Patient = app.Patient.Name  + " " + app.Patient.Surname,
                         Id = app.Id
                     });
                 map[date] = list;
