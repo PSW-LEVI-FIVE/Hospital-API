@@ -444,10 +444,10 @@ namespace HospitalLibrary.Migrations
                     b.Property<int>("StartingRoomId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("amount")
+                    b.Property<int>("Amount")
                         .HasColumnType("integer");
 
-                    b.Property<int>("state")
+                    b.Property<int>("State")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");

@@ -40,7 +40,6 @@
     <Folder Include="MedicalRecords\Repository\" />
     <Folder Include="Migrations" />
     <Folder Include="Shared\Dtos" />
-    <Folder Include="Rooms\DTOs\" />
     <Folder Include="Shared\Service" />
   </ItemGroup>
 
