@@ -1,9 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.AnnualLeaves.Dtos;
 using HospitalLibrary.AnnualLeaves.Interfaces;
+using HospitalLibrary.Feedbacks.Dtos;
+using HospitalLibrary.Feedbacks;
+using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Doctors;
 
 namespace HospitalLibrary.AnnualLeaves
 {
@@ -23,9 +28,16 @@ namespace HospitalLibrary.AnnualLeaves
             return _unitOfWork.AnnualLeaveRepository.GetAllByDoctorId(doctorId);
         }
 
-        public IEnumerable<AnnualLeave> GetAllPending()
+        public IEnumerable<PendingRequestsDTO> GetAllPending()
         {
-            return _unitOfWork.AnnualLeaveRepository.GetAllPending();
+            List<PendingRequestsDTO> pendingRequests = new List<PendingRequestsDTO>();
+            foreach (AnnualLeave leave in _unitOfWork.AnnualLeaveRepository.GetAllPending())
+            {
+                Doctor doctor = _unitOfWork.DoctorRepository.GetOne(leave.DoctorId);
+                pendingRequests.Add(new PendingRequestsDTO(leave.Id, leave.DoctorId, doctor.Name + " " + doctor.Surname,
+                    leave.Reason, leave.StartAt, leave.EndAt, leave.State, leave.IsUrgent));
+            }
+            return pendingRequests;
         }
 
         public async Task<AnnualLeave> Create(AnnualLeave annualLeave)

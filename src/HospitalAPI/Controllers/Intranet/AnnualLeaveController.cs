@@ -18,7 +18,7 @@ namespace HospitalAPI.Controllers.Intranet
     // [Authorize]
     [Route("api/intranet/annual-leaves")]
     [ApiController]
-    [Authorize(Roles="Doctor")]
+    [Authorize(Roles="Doctor, Manager")]
     public class AnnualLeaveController : ControllerBase
     {
         private IAnnualLeaveService _annualLeaveService;
@@ -75,7 +75,7 @@ namespace HospitalAPI.Controllers.Intranet
         [HttpGet]
         public IActionResult GetAllPending()
         {
-            IEnumerable<AnnualLeave> annualLeaves = _annualLeaveService.GetAllPending();
+            IEnumerable<PendingRequestsDTO> annualLeaves = _annualLeaveService.GetAllPending();
             return Ok(annualLeaves);
         }
 

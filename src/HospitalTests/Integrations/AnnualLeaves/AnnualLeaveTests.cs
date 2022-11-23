@@ -45,7 +45,7 @@ public class AnnualLeaveTests:BaseIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var annualLeaveController = SetupController(scope);
-        var result = ((OkObjectResult)annualLeaveController.GetAllPending()).Value as IEnumerable<AnnualLeave>;
+        var result = ((OkObjectResult)annualLeaveController.GetAllPending()).Value as IEnumerable<PendingRequestsDTO>;
 
         result.ShouldNotBeEmpty();
 

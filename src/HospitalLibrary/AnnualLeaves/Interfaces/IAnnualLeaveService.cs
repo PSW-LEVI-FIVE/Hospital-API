@@ -8,7 +8,7 @@ namespace HospitalLibrary.AnnualLeaves.Interfaces
     {
         IEnumerable<AnnualLeave> GetAllByDoctorId(int doctorId);
 
-        IEnumerable<AnnualLeave> GetAllPending();
+        IEnumerable<PendingRequestsDTO> GetAllPending();
 
         Task<AnnualLeave> Create(AnnualLeave annualLeave);
 
