@@ -19,5 +19,7 @@ namespace HospitalLibrary.Rooms.Interfaces
         Task<List<TimeInterval>> GetPossibleInterval(int Starting_roomId, int Destination_roomId, DateTime date, TimeSpan duration);
         Task<List<Model.RoomEquipment>> getEquipmentByRoom(int roomId);
         Task<int> getReservedEquipment(int equipmentId);
+        Task<List<EquipmentReallocation>> getAllPending();
+        Task<List<EquipmentReallocation>> getAllPendingForToday();
     }
 }
