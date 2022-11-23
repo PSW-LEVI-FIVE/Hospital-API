@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HospitalLibrary.Doctors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,16 +18,16 @@ namespace HospitalLibrary.AnnualLeaves.Dtos
         public AnnualLeaveState State { get; set; }
         public bool IsUrgent { get; set; }
 
-        public PendingRequestsDTO(int id, int doctorId, string doctor, string reason, DateTime startAt, DateTime endAt, AnnualLeaveState state, bool isUrgent)
+        public PendingRequestsDTO(AnnualLeave annualLeave, Doctor doctor)
         {
-            Id = id;
-            DoctorId = doctorId;
-            Doctor = doctor;
-            Reason = reason;
-            StartAt = startAt;
-            EndAt = endAt;
-            State = state;
-            IsUrgent = isUrgent;
+            Id = annualLeave.Id;
+            DoctorId = annualLeave.DoctorId;
+            Doctor = doctor.Name+' '+doctor.Surname;
+            Reason = annualLeave.Reason;
+            StartAt = annualLeave.StartAt;
+            EndAt = annualLeave.EndAt;
+            State = annualLeave.State;
+            IsUrgent = annualLeave.IsUrgent;
         }
     }
 }

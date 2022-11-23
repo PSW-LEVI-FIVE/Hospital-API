@@ -34,8 +34,7 @@ namespace HospitalLibrary.AnnualLeaves
             foreach (AnnualLeave leave in _unitOfWork.AnnualLeaveRepository.GetAllPending())
             {
                 Doctor doctor = _unitOfWork.DoctorRepository.GetOne(leave.DoctorId);
-                pendingRequests.Add(new PendingRequestsDTO(leave.Id, leave.DoctorId, doctor.Name + " " + doctor.Surname,
-                    leave.Reason, leave.StartAt, leave.EndAt, leave.State, leave.IsUrgent));
+                pendingRequests.Add(new PendingRequestsDTO(leave, doctor));
             }
             return pendingRequests;
         }
