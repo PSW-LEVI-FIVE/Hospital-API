@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalLibrary.AnnualLeaves.Dtos;
 using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
@@ -40,6 +41,18 @@ namespace HospitalLibrary.AnnualLeaves
             AnnualLeave leave=_unitOfWork.AnnualLeaveRepository.GetOne(annualLeaveId);
             _annualLeaveValidator.CancelValidation(leave, doctorId);
             leave.State = AnnualLeaveState.DELETED;
+            _unitOfWork.AnnualLeaveRepository.Update(leave);
+            _unitOfWork.AnnualLeaveRepository.Save();
+            return leave;
+        }
+
+        public AnnualLeave ReviewRequest(ReviewLeaveRequestDTO reviewLeaveRequestDTO,int id)
+        {
+            AnnualLeave leave = _unitOfWork.AnnualLeaveRepository.GetOne(id);
+            _annualLeaveValidator.ReviewAnnualLeaveValidation(leave,reviewLeaveRequestDTO);
+            leave.State = reviewLeaveRequestDTO.State;
+            if(leave.State == AnnualLeaveState.CANCELED)
+                leave.Reason = reviewLeaveRequestDTO.Reason;
             _unitOfWork.AnnualLeaveRepository.Update(leave);
             _unitOfWork.AnnualLeaveRepository.Save();
             return leave;

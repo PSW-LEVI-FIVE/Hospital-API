@@ -1,9 +1,13 @@
 ﻿using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.AnnualLeaves.Interfaces;
+using HospitalLibrary.Hospitalizations.Dtos;
+using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using Moq;
 using Shouldly;
+using HospitalLibrary.AnnualLeaves.Dtos;
+using HospitalLibrary.Shared.Repository;
 
 namespace HospitalTests.Units.AnnualLeaves;
 
@@ -96,4 +100,69 @@ public class AnnualLeavesUnitTests
 
         Should.Throw<BadRequestException>(() => service.Delete(annualLeave.Id, 2));
     }
+
+    [Fact]
+    public void Cant_review_annual_leave_doesnt_exist()
+    {
+        var mock = AnnualLeaveRepositoryMock();
+        AnnualLeave annualLeave = new AnnualLeave(1, null, null,
+            DateTime.Now, DateTime.Now, AnnualLeaveState.PENDING, false);
+        annualLeave.Id = 1;
+        mock.Setup(work =>
+            work.AnnualLeaveRepository.GetOne(It.IsAny<int>())).Returns(null as AnnualLeave);
+        IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
+        AnnualLeaveService service = new AnnualLeaveService(mock.Object, validator);
+        var dto = new ReviewLeaveRequestDTO() { State = AnnualLeaveState.CANCELED, Reason = "some reason" };
+        Assert.Throws<NotFoundException>(() => service.ReviewRequest(dto, annualLeave.Id));
+
+    }
+
+    [Fact]
+    public void Cant_review_annual_leave_isnt_pending()
+    {
+        var mock = AnnualLeaveRepositoryMock();
+        AnnualLeave annualLeave = new AnnualLeave(1, null, null,
+            DateTime.Now, DateTime.Now, AnnualLeaveState.APPROVED, false);
+        annualLeave.Id = 1;
+        mock.Setup(work =>
+            work.AnnualLeaveRepository.GetOne(It.IsAny<int>())).Returns(annualLeave);
+        IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
+        AnnualLeaveService service = new AnnualLeaveService(mock.Object, validator);
+        var dto = new ReviewLeaveRequestDTO() { State = AnnualLeaveState.CANCELED, Reason = "some reason"};
+        Assert.Throws<BadRequestException>(() => service.ReviewRequest(dto, annualLeave.Id));
+    }
+
+    [Fact]
+    public void Cant_reject_request_without_reason()
+    {
+        var mock = AnnualLeaveRepositoryMock();
+        AnnualLeave annualLeave = new AnnualLeave(1, null, null,
+            DateTime.Now, DateTime.Now, AnnualLeaveState.PENDING, false);
+        annualLeave.Id = 1;
+        mock.Setup(work =>
+            work.AnnualLeaveRepository.GetOne(It.IsAny<int>())).Returns(annualLeave);
+        IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
+        AnnualLeaveService service = new AnnualLeaveService(mock.Object, validator);
+        var dto = new ReviewLeaveRequestDTO() { State = AnnualLeaveState.CANCELED};
+        Assert.Throws<BadRequestException>(() => service.ReviewRequest(dto, annualLeave.Id));
+    }
+
+    [Fact]
+    public void Request_reviewed_successfully()
+    {
+        var mock = AnnualLeaveRepositoryMock();
+        AnnualLeave annualLeave = new AnnualLeave(1, null, null,
+            DateTime.Now, DateTime.Now, AnnualLeaveState.PENDING, false);
+        annualLeave.Id = 1;
+        mock.Setup(work =>
+            work.AnnualLeaveRepository.GetOne(It.IsAny<int>())).Returns(annualLeave);
+        IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
+        AnnualLeaveService service = new AnnualLeaveService(mock.Object, validator);
+        var dto = new ReviewLeaveRequestDTO() { State = AnnualLeaveState.CANCELED, Reason = "another doctor is on leave" };
+        AnnualLeave result = service.ReviewRequest(dto, annualLeave.Id);
+        result.State.ShouldBe(AnnualLeaveState.CANCELED);
+        result.Reason.ShouldNotBeNull();
+        result.ShouldNotBeNull();
+    }
+
 }

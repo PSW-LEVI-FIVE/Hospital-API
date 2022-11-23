@@ -262,7 +262,6 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Id = 15,
             DoctorId = 4,
             State = AnnualLeaveState.PENDING,
-            Reason = "neki razlog",
 
         };
         AnnualLeave annualLeave2 = new AnnualLeave()
