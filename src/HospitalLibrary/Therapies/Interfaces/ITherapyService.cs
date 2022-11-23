@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalLibrary.Therapies.Dtos;
 using HospitalLibrary.Therapies.Model;
 
 namespace HospitalLibrary.Therapies.Interfaces
@@ -10,6 +11,8 @@ namespace HospitalLibrary.Therapies.Interfaces
         
         MedicineTherapy CreateMedicineTherapy(MedicineTherapy medicineTherapy);
 
-        List<BloodTherapy> GetBloodConsumption();
+        List<BloodConsumptionDTO> GetBloodConsumption();
+
+        List<HospitalizationTherapiesDTO> GetAllHospitalizationTherapies(int hospitalizationId);
     }
 }

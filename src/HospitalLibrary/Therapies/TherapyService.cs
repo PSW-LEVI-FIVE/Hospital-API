@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.BloodStorages.Interfaces;
+using HospitalLibrary.Doctors;
+using HospitalLibrary.Medicines;
 using HospitalLibrary.Medicines.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Therapies.Dtos;
 using HospitalLibrary.Therapies.Interfaces;
 using HospitalLibrary.Therapies.Model;
 
@@ -41,17 +45,42 @@ namespace HospitalLibrary.Therapies
             return medicineTherapy;
         }
 
-        public List<BloodTherapy> GetBloodConsumption()
+        public List<BloodConsumptionDTO> GetBloodConsumption()
         {
-            List<BloodTherapy> bloodTherapies = new List<BloodTherapy>();
+            List<BloodConsumptionDTO> bloodTherapies = new List<BloodConsumptionDTO>();
             List<Therapy> therapies = _unitOfWork.TherapyRepository.GetAllBloodTherapies();
             foreach (var therapy in therapies)
             {
                 BloodTherapy bloodTherapy = (BloodTherapy)therapy;
-                bloodTherapies.Add(bloodTherapy);
+                Doctor doc = _unitOfWork.DoctorRepository.GetOne(therapy.DoctorId);
+                BloodConsumptionDTO dto = new BloodConsumptionDTO(therapy, bloodTherapy, doc);
+                bloodTherapies.Add(dto);
             }
 
             return bloodTherapies;
+        }
+
+        public List<HospitalizationTherapiesDTO> GetAllHospitalizationTherapies(int hospitalizationId)
+        {
+            List<HospitalizationTherapiesDTO> therapiesList = new List<HospitalizationTherapiesDTO>();
+            List<Therapy> therapies = _unitOfWork.TherapyRepository.GetAllByHospitalization(hospitalizationId).ToList();
+            foreach (var therapy in therapies)
+            {
+                if (therapy.InstanceType.Equals("blood"))
+                {
+                    BloodTherapy bloodTherapy = (BloodTherapy)therapy;
+                    HospitalizationTherapiesDTO dto = new HospitalizationTherapiesDTO(therapy, bloodTherapy);
+                    therapiesList.Add(dto);
+                }
+                else
+                {
+                    MedicineTherapy medicineTherapy = (MedicineTherapy)therapy;
+                    Medicine med = _unitOfWork.MedicineRepository.GetOne(medicineTherapy.MedicineId);
+                    HospitalizationTherapiesDTO dto = new HospitalizationTherapiesDTO(therapy, medicineTherapy, med);
+                    therapiesList.Add(dto);
+                }
+            }
+            return therapiesList;
         }
 
         private async Task<bool> ValidateBloodAmount(BloodType type, double quantity)

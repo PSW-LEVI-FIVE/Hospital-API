@@ -1,6 +1,5 @@
 using HospitalAPI;
 using HospitalAPI.Controllers.Intranet;
-using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Therapies.Dtos;
 using HospitalLibrary.Therapies.Interfaces;
 using HospitalLibrary.Therapies.Model;
@@ -68,10 +67,25 @@ public class TherapiesTests : BaseIntegrationTest
         var controller = SetupController(scope);
 
         List<BloodTherapy> result = new List<BloodTherapy>();
-        result =((OkObjectResult) controller.GetBloodConsumption()).Value as List<BloodTherapy>;
+        result =((OkObjectResult)controller.GetBloodConsumption()).Value as List<BloodTherapy>;
         
         result.ShouldNotBeNull();
         result.ShouldBeOfType<List<BloodTherapy>>();
         result.Count.ShouldBe(4); // 3 postoje u bazi a 4 ako se svi testovi pokrenu jer se kreira jos 1
+    }
+    
+    
+    [Fact]
+    public void Get_all_hospitalization_therapies()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = SetupController(scope);
+
+        List<HospitalizationTherapiesDTO> result = new List<HospitalizationTherapiesDTO>();
+        result = ((OkObjectResult)controller.GetAllHospitalizationTherapies(10)).Value as List<HospitalizationTherapiesDTO>;
+        
+        result.ShouldNotBeNull();
+        result.ShouldBeOfType<List<HospitalizationTherapiesDTO>>();
+        result.Count.ShouldBe(6);//4 ako se sam pokrece 
     }
 }
