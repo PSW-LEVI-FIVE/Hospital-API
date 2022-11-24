@@ -19,10 +19,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using HospitalLibrary.AnnualLeaves;
 
 namespace HospitalTests.Setup;
 
-public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
+public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -34,8 +35,8 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             InitializeDatabase(db);
         });
     }
-    
-    
+
+
     private static ServiceProvider BuildServiceProvider(IServiceCollection services)
     {
         ServiceDescriptor? descriptor = services.FirstOrDefault(service => typeof(DbContextOptions<HospitalDbContext>) == service.ServiceType);
@@ -46,7 +47,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         {
             option.UseNpgsql(CreateTestingConnectionString());
         });
-        
+
         return services.BuildServiceProvider();
     }
 
@@ -70,7 +71,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             "EXECUTE 'TRUNCATE TABLE ' || quote_ident(stmt.tablename) || ' CASCADE;'; " +
             "END LOOP; " +
             "END; " +
-            "    $$ LANGUAGE plpgsql; " 
+            "    $$ LANGUAGE plpgsql; "
             );
         dbContext.Database.ExecuteSqlRaw("SELECT truncate_tables('postgres');");
 
@@ -88,13 +89,13 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Uid = "55557888",
             WorkingHours = new List<WorkingHours>()
         };
-        
+
         BloodStorage bloodStorage = new BloodStorage()
         {
             BloodType = BloodType.A_NEGATIVE,
             Quantity = 5.0
         };
-        
+
         Building building = new Building()
         {
             Id = 2,
@@ -132,13 +133,13 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             RgbColour = "#FFFFFF",
             MapBuildingId = mapBuilding.Id
         };
-        
+
         Room room = new Room()
         {
             Id = 2,
             Area = 10,
             FloorId = 2,
-            RoomNumber= "1"
+            RoomNumber = "1"
         };
 
         RoomEquipment equipment = new Bed(1, 10, "Bed", 2, 1);
@@ -156,14 +157,14 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
 
         Patient patient = new Patient()
         {
-            Id=1,
+            Id = 1,
             Name = "Marko",
             Surname = "Markovic",
             Email = "asdasd1@gmail.coma",
             Uid = "67676767",
             PhoneNumber = "123123123",
-            BirthDate = new DateTime(2000,2,2), 
-            Address = "Mike", 
+            BirthDate = new DateTime(2000, 2, 2),
+            Address = "Mike",
             BloodType = BloodType.A_NEGATIVE
         };
 
@@ -177,19 +178,19 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
 
         Patient patient2 = new Patient()
         {
-            Id=2,
+            Id = 2,
             Name = "Marko",
             Surname = "Markovic",
             Email = "asdasd2@gmail.com",
             Uid = "78787878",
             PhoneNumber = "123123123",
-            BirthDate = new DateTime(2000,2,3), 
-            Address = "Zike", 
+            BirthDate = new DateTime(2000, 2, 3),
+            Address = "Zike",
             BloodType = BloodType.A_NEGATIVE
         };
-        
+
         Hospitalization hospitalization = new Hospitalization()
-        {   
+        {
             Id = 10,
             BedId = 2,
             State = HospitalizationState.ACTIVE,
@@ -197,7 +198,7 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             PdfUrl = "",
             MedicalRecordId = 2,
         };
-        
+
         User user2 = new User()
         {
             Username = "Mika1",
@@ -218,41 +219,58 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
             Uid = "67867867",
             WorkingHours = new List<WorkingHours>()
         };
-        
+
         MedicalRecord record = new MedicalRecord()
         {
             Id = 2,
             PatientId = 2
         };
-        
-        Medicine medicine = new Medicine(1, "MedicineOne", 12.0);
-        User user3 = new User("Menjdjer", "nekakulsifra", Role.Doctor,4,ActiveStatus.Active);
-        Allergen allergen1 = new Allergen(1,"Milk");
-        Allergen allergen2 = new Allergen(2,"Cetirizine");
-        Allergen allergen3 = new Allergen(3,"Budesonide");
 
-        Therapy therapyBlo = new BloodTherapy(10,  DateTime.Now, BloodType.A_NEGATIVE, 10, 4);
+        Medicine medicine = new Medicine(1, "MedicineOne", 12.0);
+        User user3 = new User("Menjdjer", "nekakulsifra", Role.Doctor, 4, ActiveStatus.Active);
+        Allergen allergen1 = new Allergen(1, "Milk");
+        Allergen allergen2 = new Allergen(2, "Cetirizine");
+        Allergen allergen3 = new Allergen(3, "Budesonide");
+
+        Therapy therapyBlo = new BloodTherapy(10, DateTime.Now, BloodType.A_NEGATIVE, 10, 4);
         Therapy therapyMed = new MedicineTherapy(10, DateTime.Now, 1, 10, 4);
-        
+
         BloodTherapy bloodTherapy1 = new BloodTherapy(10, DateTime.Now, BloodType.A_NEGATIVE, 2.0, 4);
         BloodTherapy bloodTherapy2 = new BloodTherapy(10, DateTime.Now, BloodType.A_NEGATIVE, 3.0, 4);
-        
-        User user4 = new User("PacijentIpo", "nekakulsifra", Role.Patient,6,ActiveStatus.Pending);
+
+        User user4 = new User("PacijentIpo", "nekakulsifra", Role.Patient, 6, ActiveStatus.Pending);
         user4.ActivationCode = "asdasd";
-        
+
         Patient patient4 = new Patient()
         {
-            Id=6,
+            Id = 6,
             Name = "Marko",
             Surname = "Markovic",
             Email = "asdasd65@gmail.com",
             Uid = "78787899",
             PhoneNumber = "123123123",
-            BirthDate = new DateTime(2000,2,3), 
-            Address = "Zike", 
+            BirthDate = new DateTime(2000, 2, 3),
+            Address = "Zike",
             BloodType = BloodType.A_NEGATIVE
         };
-        
+
+
+        AnnualLeave annualLeave1 = new AnnualLeave()
+        {
+            Id = 15,
+            DoctorId = 4,
+            State = AnnualLeaveState.PENDING,
+
+        };
+        AnnualLeave annualLeave2 = new AnnualLeave()
+        {
+            Id = 16,
+            DoctorId = 4,
+            State = AnnualLeaveState.PENDING,
+            Reason = "",
+
+        };
+
         dbContext.Buildings.Add(building);
         dbContext.MapBuildings.Add(mapBuilding);
         dbContext.Floors.Add(floor);
@@ -260,6 +278,8 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         dbContext.Rooms.Add(room);
         dbContext.Doctors.Add(doctor);
         dbContext.Doctors.Add(doctor2);
+        dbContext.AnnualLeaves.Add(annualLeave1);
+        dbContext.AnnualLeaves.Add(annualLeave2);
         dbContext.Hospitalizations.Add(hospitalization);
         dbContext.MapRooms.Add(mapRoom);
         dbContext.RoomEquipment.Add(equipment);
@@ -282,8 +302,10 @@ public class TestDatabaseFactory<TStartup>: WebApplicationFactory<Startup>
         dbContext.BloodStorage.Add(bloodStorage);
         dbContext.Therapies.Add(bloodTherapy1);
         dbContext.Therapies.Add(bloodTherapy2);
-        
+        dbContext.AnnualLeaves.Add(annualLeave1);
+        dbContext.AnnualLeaves.Add(annualLeave2); 
         dbContext.SaveChanges();
+
 
     }
 }
