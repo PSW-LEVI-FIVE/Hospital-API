@@ -42,13 +42,13 @@ namespace HospitalLibrary.Rooms
         {
             return _unitOfWork.BedRepository.GetAllByRoom(id);
         }
-        public Room Create(Room room ) 
+
+        public Room Create(Room room)
         {
             _unitOfWork.RoomRepository.Add(room);
             _unitOfWork.RoomRepository.Save();
             return room;
         }
-
 
         public Task<IEnumerable<Room>> SearchRoom(RoomSearchDTO searchRoomDTO,int id)
 
@@ -78,10 +78,9 @@ namespace HospitalLibrary.Rooms
 
         }
 
-
-
-
-
-
+        public Task<IEnumerable<RoomEquipment>> GetAllEquipmentbyRoomId(int id)
+        {
+            return _unitOfWork.RoomRepository.GetAllEquipmentbyRoom(id);
+        }
     }
 }

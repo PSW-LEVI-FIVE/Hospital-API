@@ -26,7 +26,7 @@ namespace HospitalLibrary.Hospitalizations
         public void ValidateEndHospitalization(Hospitalization hospitalization, EndHospitalizationDTO dto)
         {
             if (hospitalization == null)
-                throw new NotFoundException("Hospitalization with given id doesn't exist!");
+                throw new FoundException("Hospitalization with given id doesn't exist!");
             if (hospitalization.StartTime.CompareTo(dto.EndTime) >= 0)
                 throw new BadRequestException("End Time should be after start time!");
             if (hospitalization.State == HospitalizationState.FINISHED)

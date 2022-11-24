@@ -35,11 +35,17 @@ namespace HospitalLibrary.Rooms.Repositories
             return await _dataContext.Rooms.Where(r => r.FloorId == id).Where(r => r.RoomType==(roomType)).ToListAsync();
         }
 
-        public async Task<IEnumerable<Room>> SearchByTypeAndName(RoomSearchDTO roomsSearchDTO,int id)
+        public async Task<IEnumerable<Room>> SearchByTypeAndName(RoomSearchDTO roomsSearchDTO, int id)
         {
             Enum.TryParse(roomsSearchDTO.RoomType, true, out RoomType roomType);
             return await _dataContext.Rooms.Where(r => r.FloorId == id).Where(r => (r.RoomNumber.Contains(roomsSearchDTO.RoomName)))
-            .Where(r=>r.RoomType==roomType).ToListAsync();
+            .Where(r => r.RoomType == roomType).ToListAsync();
+        }
+
+        public async Task<IEnumerable<RoomEquipment>> GetAllEquipmentbyRoom(int id)
+        {
+            return await _dataContext.RoomEquipment.Where(r => r.RoomId == id).ToListAsync();
+
         }
     }
 }
