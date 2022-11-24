@@ -44,6 +44,7 @@ namespace HospitalTests.Units.EquipmentSearch
             IRoomEquipmentValidator validator = new RoomEquipmentValidator(mock.Object);
             var roomEquipmentService = new RoomEquipmentService(mock.Object, validator);
             var result = (IEnumerable<RoomEquipment>) roomEquipmentService.searchEquipmentInRoom(dto).Result;
+
             result.ShouldNotBeNull();
         }
 
@@ -55,6 +56,7 @@ namespace HospitalTests.Units.EquipmentSearch
             IRoomEquipmentValidator validator = new RoomEquipmentValidator(mock.Object);
             var roomEquipmentService = new RoomEquipmentService(mock.Object, validator);
             var result = (IEnumerable<RoomEquipment>)roomEquipmentService.searchEquipmentInRoom(dto).Result;
+
             result.ShouldNotBeNull();
         }
 
@@ -66,6 +68,7 @@ namespace HospitalTests.Units.EquipmentSearch
             IRoomEquipmentValidator validator = new RoomEquipmentValidator(mock.Object);
             var roomEquipmentService = new RoomEquipmentService(mock.Object, validator);
             var result = (IEnumerable<RoomEquipment>)roomEquipmentService.searchEquipmentInRoom(dto).Result;
+
             result.ShouldNotBeNull();
         }
 
@@ -77,6 +80,7 @@ namespace HospitalTests.Units.EquipmentSearch
             IRoomEquipmentValidator validator = new RoomEquipmentValidator(mock.Object);
             var roomEquipmentService = new RoomEquipmentService(mock.Object, validator);
             var result = (IEnumerable<RoomEquipment>)roomEquipmentService.searchEquipmentInRoom(dto).Result;
+
             result.ShouldBeEmpty();
         }
 
@@ -88,6 +92,7 @@ namespace HospitalTests.Units.EquipmentSearch
             IRoomEquipmentValidator validator = new RoomEquipmentValidator(mock.Object);
             var roomEquipmentService = new RoomEquipmentService(mock.Object, validator);
             var result = (IEnumerable<RoomEquipment>)roomEquipmentService.searchEquipmentInRoom(dto).Result;
+
             result.ShouldBeEmpty();
         }
 
@@ -99,6 +104,7 @@ namespace HospitalTests.Units.EquipmentSearch
             IRoomEquipmentValidator validator = new RoomEquipmentValidator(mock.Object);
             var roomEquipmentService = new RoomEquipmentService(mock.Object, validator);
             var result = (IEnumerable<RoomEquipment>)roomEquipmentService.searchEquipmentInRoom(dto).Result;
+
             result.ShouldBeEmpty();
         }
     }
