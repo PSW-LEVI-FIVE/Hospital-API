@@ -59,29 +59,26 @@ namespace HospitalLibrary.BloodStorages
         private List<BloodType> FindCompatibile(BloodType bType)
         {
             List<BloodType> compatibile = new List<BloodType>();
+            compatibile.Add(BloodType.ZERO_NEGATIVE);
             if (bType == BloodType.A_NEGATIVE)
             {
                 compatibile.Add(BloodType.A_NEGATIVE);
-                compatibile.Add(BloodType.ZERO_NEGATIVE);
             }
             else if(bType == BloodType.A_POSITIVE)
             {
                 compatibile.Add(BloodType.A_NEGATIVE);
                 compatibile.Add(BloodType.A_POSITIVE);
-                compatibile.Add(BloodType.ZERO_NEGATIVE);
                 compatibile.Add(BloodType.ZERO_POSITIVE);
             }
             else if(bType == BloodType.B_POSITIVE)
             {
                 compatibile.Add(BloodType.B_NEGATIVE);
                 compatibile.Add(BloodType.B_POSITIVE);
-                compatibile.Add(BloodType.ZERO_NEGATIVE);
                 compatibile.Add(BloodType.ZERO_POSITIVE);
             }
             else if(bType == BloodType.B_NEGATIVE)
             {
                 compatibile.Add(BloodType.B_NEGATIVE);
-                compatibile.Add(BloodType.ZERO_NEGATIVE);
             }
             else if(bType == BloodType.AB_POSITIVE)
             {
@@ -92,23 +89,20 @@ namespace HospitalLibrary.BloodStorages
                 compatibile.Add(BloodType.A_NEGATIVE);
                 compatibile.Add(BloodType.B_NEGATIVE);
                 compatibile.Add(BloodType.AB_NEGATIVE);
-                compatibile.Add(BloodType.ZERO_NEGATIVE);
             }
             else if(bType == BloodType.AB_NEGATIVE)
             {
                 compatibile.Add(BloodType.A_NEGATIVE);
                 compatibile.Add(BloodType.B_NEGATIVE);
                 compatibile.Add(BloodType.AB_NEGATIVE);
-                compatibile.Add(BloodType.ZERO_NEGATIVE);
             }
             else if(bType == BloodType.ZERO_POSITIVE)
             {
-                compatibile.Add(BloodType.ZERO_NEGATIVE);
                 compatibile.Add(BloodType.ZERO_POSITIVE);
             }
             else
             {
-                compatibile.Add(BloodType.ZERO_NEGATIVE);
+                return compatibile;
             }
             return compatibile;
         }
