@@ -191,7 +191,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             BirthDate = new DateTime(2000,2,3), 
             Address = "Zike", 
             BloodType = BloodType.A_NEGATIVE,
-            ChoosenDoctor = doctor
+            ChoosenDoctor = doctor,
             Allergens = allergens,
         };
 
