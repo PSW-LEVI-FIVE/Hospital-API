@@ -9,6 +9,8 @@ using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.Users;
 using HospitalLibrary.Users.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using HospitalLibrary.Hospitalizations.Dtos;
+using HospitalLibrary.Hospitalizations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
@@ -16,7 +18,7 @@ namespace HospitalAPI.Controllers.Intranet
     // [Authorize]
     [Route("api/intranet/annual-leaves")]
     [ApiController]
-    [Authorize(Roles="Doctor")]
+    [Authorize(Roles="Doctor, Manager")]
     public class AnnualLeaveController : ControllerBase
     {
         private IAnnualLeaveService _annualLeaveService;
@@ -67,6 +69,22 @@ namespace HospitalAPI.Controllers.Intranet
             }
 
             return null;
+        }
+
+        [Route("pending")]
+        [HttpGet]
+        public IActionResult GetAllPending()
+        {
+            IEnumerable<PendingRequestsDTO> annualLeaves = _annualLeaveService.GetAllPending();
+            return Ok(annualLeaves);
+        }
+
+        [Route("review/{id:int}")]
+        [HttpPatch]
+        public IActionResult ReviewRequest([FromBody] ReviewLeaveRequestDTO reviewLeaveRequestDto, int id)
+        {
+            AnnualLeave leave = _annualLeaveService.ReviewRequest(reviewLeaveRequestDto, id);
+            return Ok(leave);
         }
 
     }

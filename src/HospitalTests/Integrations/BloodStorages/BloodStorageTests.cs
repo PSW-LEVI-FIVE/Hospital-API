@@ -23,16 +23,16 @@ public class BloodStorageTests: BaseIntegrationTest
     }
     
     [Fact]
-    public async Task Get_all_blood_storage()
+    public void Get_all_blood_storage()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
 
-        List<BloodStorage> result = new List<BloodStorage>();
-        result =((OkObjectResult) await controller.GetBloodStorage()).Value as List<BloodStorage>;
+        List<BloodType> result = new List<BloodType>();
+        result =((OkObjectResult) controller.GetBloodStorage(10)).Value as List<BloodType>;
         
         result.ShouldNotBeNull();
-        result.ShouldBeOfType<List<BloodStorage>>();
-        result.Count.ShouldBe(1); 
+        result.ShouldBeOfType<List<BloodType>>();
+        result.Count.ShouldBe(2); 
     }
 }

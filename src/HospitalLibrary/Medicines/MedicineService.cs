@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalLibrary.Allergens;
+using HospitalLibrary.Hospitalizations;
+using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.Medicines.Interfaces;
+using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 
@@ -28,11 +32,21 @@ namespace HospitalLibrary.Medicines
         {
             return _unitOfWork.MedicineRepository.GetAll();
         }
+
+        public IEnumerable<Medicine> getAllCompatibileMedicine(int hospitalizationId)
+        {
+            Hospitalization hospitalization = _unitOfWork.HospitalizationRepository.GetOne(hospitalizationId);
+            MedicalRecord medicalRecord = _unitOfWork.MedicalRecordRepository.GetOne(hospitalization.MedicalRecordId);
+            List<int> allergenIds = _unitOfWork.AllergenRepository.GetAllergenIdsByPatient(medicalRecord.PatientId);
+            IEnumerable<Medicine> compatibile = _unitOfWork.MedicineRepository.GetCompatibleForPatient(allergenIds);
+            return compatibile;
+        }
         
+
         private void CheckAmount(double onStorage, double toTake)
         {
             if (onStorage < toTake)
-                throw new BadRequestException("Not enough blood in storage");
+                throw new BadRequestException("Not enough medicine in storage");
         }
     }
 }

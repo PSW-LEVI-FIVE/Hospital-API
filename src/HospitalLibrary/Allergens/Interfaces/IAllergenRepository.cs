@@ -8,5 +8,7 @@ namespace HospitalLibrary.Allergens.Interfaces
     {
         Task<Allergen> GetOneByName(string name);
         Task<IEnumerable<Allergen>> GetAllergensWithNumberOfPatients();
+
+        List<int> GetAllergenIdsByPatient(int patientId);
     }
 }

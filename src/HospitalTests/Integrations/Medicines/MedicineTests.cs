@@ -22,13 +22,13 @@ public class MedicineTests: BaseIntegrationTest
     }
     
     [Fact]
-    public async Task Get_all_blood_storage()
+    public void Get_all_blood_storage()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
 
         List<Medicine> result = new List<Medicine>();
-        result =((OkObjectResult) await controller.GetMedicine()).Value as List<Medicine>;
+        result =((OkObjectResult) controller.GetMedicine(10)).Value as List<Medicine>;
         
         result.ShouldNotBeNull();
         result.ShouldBeOfType<List<Medicine>>();
