@@ -30,8 +30,11 @@ namespace HospitalLibrary.AnnualLeaves
             return _dataContext.AnnualLeaves
                 .Where(al => al.State != AnnualLeaveState.DELETED)
                 .Where(a =>
-                    range.Start.Date.CompareTo(a.StartAt.Date) <= 0
-                    && range.End.Date.CompareTo(a.StartAt.Date) > 0)
+                    (range.Start <= a.StartAt && range.End >= a.EndAt) 
+                    || (a.StartAt <= range.Start && a.EndAt >= range.End)
+                    || (range.Start <= a.StartAt && range.End >= a.StartAt) 
+                    || (range.Start <= a.EndAt && range.End >= a.EndAt)
+                    )
                 .Select(al => al.DoctorId)
                 .ToList();
         }
@@ -41,8 +44,11 @@ namespace HospitalLibrary.AnnualLeaves
             return _dataContext.AnnualLeaves
                 .Where(al => al.State != AnnualLeaveState.DELETED)
                 .Where(a =>
-                    a.StartAt.CompareTo(range.Start) <= 0
-                    && a.EndAt.Date.CompareTo(range.End) >= 0)
+                    (range.Start <= a.StartAt && range.End >= a.EndAt) 
+                    || (a.StartAt <= range.Start && a.EndAt >= range.End)
+                    || (range.Start <= a.StartAt && range.End >= a.StartAt) 
+                    || (range.Start <= a.EndAt && range.End >= a.EndAt)
+                )
                 .Where(al => al.DoctorId == doctorId)
                 .Select(al => al)
                 .ToList();
