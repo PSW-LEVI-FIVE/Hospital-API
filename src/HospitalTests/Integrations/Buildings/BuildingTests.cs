@@ -13,6 +13,7 @@ using Shouldly;
 
 namespace HospitalTests.Integrations.Buildings;
 
+[Collection("Test")]
 public class BuildingTests: BaseIntegrationTest
 {
     public BuildingTests(TestDatabaseFactory<Startup> factory) : base(factory)
