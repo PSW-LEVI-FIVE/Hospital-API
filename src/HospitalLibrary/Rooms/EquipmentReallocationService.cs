@@ -195,7 +195,7 @@ namespace HospitalLibrary.Rooms
         private async Task moveIntoDestinationRoom(int destinationRoomId, int equipmentId, int amount)
         {
             var equipment=_unitOfWork.RoomEquipmentRepository.GetOne(equipmentId);
-            var realEq =await _unitOfWork.RoomEquipmentRepository.GetEquipmentByRoomAndName(destinationRoomId, equipment.Name);
+            RoomEquipment realEq =await _unitOfWork.RoomEquipmentRepository.GetEquipmentByRoomAndName(destinationRoomId, equipment.Name);
             if(realEq == null)
             {
                 
