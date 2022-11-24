@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Dtos;
@@ -50,6 +51,8 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(room);
         }
 
+
+
         [HttpGet]
         [Route("{id}/beds")]
         public IActionResult GetRoomBeds(int id)
@@ -57,5 +60,21 @@ namespace HospitalAPI.Controllers.Intranet
             IEnumerable<Bed> beds = _roomService.GetBedsForRoom(id);
             return Ok(beds);
         }
+
+
+        [Route("search/{id}")]
+        [HttpPost]
+        public async  Task<IActionResult> SearchRooms(int id, [FromBody] RoomSearchDTO roomSearchDTO)
+        {
+            Console.WriteLine("hahahahha");
+            Console.WriteLine(roomSearchDTO.RoomType);
+            Console.WriteLine(roomSearchDTO.RoomName);
+            ;
+            var rooms =  await _roomService.SearchRoom(roomSearchDTO,id);
+            return Ok(rooms);
+           //return ;
+        }
+
+
     }
 }

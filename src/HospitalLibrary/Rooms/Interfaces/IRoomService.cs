@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalLibrary.Rooms.Dtos;
 using HospitalLibrary.Rooms.Model;
 
 namespace HospitalLibrary.Rooms.Interfaces
@@ -9,9 +10,18 @@ namespace HospitalLibrary.Rooms.Interfaces
         Task<IEnumerable<Room>> GetAll();
         Room Update(Room room);
         Room GetOne(int key);
+
+
         IEnumerable<Bed> GetBedsForRoom(int id);
 
         Room Create(Room room);
+
+
+
+        
+
+
+        Task<IEnumerable<Room>> SearchRoom(RoomSearchDTO query,int id);
 
     }
 }
