@@ -32,7 +32,7 @@ namespace HospitalTests.Integrations.Equipment
 
             var result = ((OkObjectResult)controller.GetRoomEquipment(1).Result)?.Value as IEnumerable<RoomEquipment>;
 
-            Assert.NotEmpty(result);
+            result.ShouldNotBeNull();
 
         }
 
@@ -44,7 +44,7 @@ namespace HospitalTests.Integrations.Equipment
 
             var result = ((OkObjectResult)controller.GetRoomEquipment(5).Result)?.Value as IEnumerable<RoomEquipment>;
 
-            Assert.Empty(result);
+            result.ShouldBeEmpty();
 
         }
     }

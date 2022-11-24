@@ -14,6 +14,7 @@ using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Therapies.Model;
 using Moq;
+using SendGrid.Helpers.Errors.Model;
 using Shouldly;
 
 namespace HospitalTests.Units.Hospitalizations;
@@ -174,7 +175,7 @@ public class PdfGeneration
         
         var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, storage.Object, generator);
 
-        Should.Throw<BadRequestException>(async () => await hospitalizationService.GenerateTherapyReport(1));
+        Should.Throw<HospitalLibrary.Shared.Exceptions.BadRequestException>(async () => await hospitalizationService.GenerateTherapyReport(1));
     }
     
     [Fact]
@@ -232,6 +233,6 @@ public class PdfGeneration
         
         var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, storage.Object, generator);
 
-        Should.Throw<BadRequestException>(async () => await hospitalizationService.GenerateTherapyReport(1));
+        Should.Throw<HospitalLibrary.Shared.Exceptions.BadRequestException>(async () => await hospitalizationService.GenerateTherapyReport(1));
     }
 }

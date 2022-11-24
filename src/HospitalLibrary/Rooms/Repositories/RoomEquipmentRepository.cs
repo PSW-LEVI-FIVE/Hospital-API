@@ -40,9 +40,8 @@ namespace HospitalLibrary.Rooms.Repositories
             foreach (var equipment in roomEquipment.Result)
             {
                 if (equipment.Name.ToLower().Contains(roomEquipmentDTO.Name.ToLower()))
-                {
+
                     return true;
-                }
             }
             return false;
         }
@@ -52,9 +51,8 @@ namespace HospitalLibrary.Rooms.Repositories
             foreach (var equipment in roomEquipment.Result)
             {
                 if (equipment.Quantity >= roomEquipmentDTO.Quantity)
-                {
+                
                     return true;
-                }
             }
             return false;
         }
@@ -64,9 +62,8 @@ namespace HospitalLibrary.Rooms.Repositories
             foreach (var equipment in roomEquipment.Result)
             {
                 if (equipment.Quantity >= roomEquipmentDTO.Quantity && equipment.Name.ToLower().Contains(roomEquipmentDTO.Name.ToLower()))
-                {
+    
                     return true;
-                }
             }
             return false;
         }
