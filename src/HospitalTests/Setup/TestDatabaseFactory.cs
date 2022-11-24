@@ -140,10 +140,10 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
         Room room = new Room()
         {
-            Id = 1,
+            Id = 2,
             Area = 10,
-            FloorId = 1,
-            RoomNumber = "1",
+            FloorId = 2,
+            RoomNumber = "2",
             RoomType = RoomType.CAFETERIA
         };
 
