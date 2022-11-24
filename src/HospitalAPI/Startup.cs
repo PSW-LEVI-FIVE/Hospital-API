@@ -55,7 +55,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using HospitalLibrary.Managers.Interfaces;
 using HospitalLibrary.Managers;
+<<<<<<< HEAD
 using Newtonsoft.Json;
+=======
+using HospitalLibrary.Shared.Service;
+>>>>>>> 53d9b1d (Added Timer and logic for reallocation equipment)
 
 namespace HospitalAPI
 {
@@ -111,6 +115,7 @@ namespace HospitalAPI
             services.AddScoped<IRoomEquipmentService, RoomEquipmentService>();
             services.AddScoped<IRoomEquipmentValidator, RoomEquipmentValidator>();
             services.AddScoped<IEquipmentReallocationService, EquipmentReallocationService>();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });
@@ -150,6 +155,7 @@ namespace HospitalAPI
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 }; 
             });
+            services.AddHostedService<TimerService>();
             services.AddMvc();
 
         }

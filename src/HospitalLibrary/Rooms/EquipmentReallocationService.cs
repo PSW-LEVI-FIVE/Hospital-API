@@ -5,6 +5,7 @@ using HospitalLibrary.Rooms.DTOs;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Shared.Repository;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
@@ -180,6 +181,43 @@ namespace HospitalLibrary.Rooms
 
         }
 
-        
+        public async Task initiate(EquipmentReallocation reallocation)
+        {
+            await moveOutOfStartingRoom(reallocation.StartingRoomId,reallocation.EquipmentId, reallocation.amount);
+            await moveIntoDestinationRoom(reallocation.DestinationRoomId, reallocation.EquipmentId, reallocation.amount);
+
+           
+             reallocation.state = ReallocationState.FINISHED;
+             _unitOfWork.EquipmentReallocationRepository.Update(reallocation);
+            _unitOfWork.EquipmentReallocationRepository.Save();
+        }
+
+        private async Task moveIntoDestinationRoom(int destinationRoomId, int equipmentId, int amount)
+        {
+            var equipment=_unitOfWork.RoomEquipmentRepository.GetOne(equipmentId);
+            var realEq =await _unitOfWork.RoomEquipmentRepository.GetEquipmentByRoomAndName(destinationRoomId, equipment.Name);
+            if(realEq == null)
+            {
+                
+                _unitOfWork.RoomEquipmentRepository.Add(new RoomEquipment(15,amount, equipment.Name, destinationRoomId));
+                _unitOfWork.RoomEquipmentRepository.Save();
+
+            }
+            else
+            {
+                realEq.Quantity += amount;
+                _unitOfWork.RoomEquipmentRepository.Update(realEq);
+                _unitOfWork.RoomEquipmentRepository.Save();
+            }
+
+        }
+
+        private async Task moveOutOfStartingRoom(int startingRoomId, int equipmentId, int amount)
+        {
+            var equipment = _unitOfWork.RoomEquipmentRepository.GetOne(equipmentId);
+            equipment.Quantity -= amount;
+            _unitOfWork.RoomEquipmentRepository.Update(equipment);
+            _unitOfWork.RoomEquipmentRepository.Save();
+        }
     }
 }

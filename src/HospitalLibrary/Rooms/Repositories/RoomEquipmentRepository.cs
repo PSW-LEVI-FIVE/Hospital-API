@@ -74,10 +74,19 @@ namespace HospitalLibrary.Rooms.Repositories
             
             return _dataContext.EquipmentReallocations
                 .Where(a => a.EquipmentId == equipmentId)
-                .Where(a=> a.State==ReallocationState.PENDING)
-                .Select(a => a.Amount).Sum();
+                .Where(a=> a.state==ReallocationState.PENDING)
+                .Select(a => a.amount).Sum();
         }
-
+        public async Task<RoomEquipment> GetEquipmentByRoomAndName(int roomId,string name)
+        {
+            if(!_dataContext.RoomEquipment.Any(a => a.RoomId == roomId && a.Name == name))
+                return null;
+            return await _dataContext.RoomEquipment
+                .Where(a => a.RoomId == roomId)
+                .Where(a=>a.Name==name)
+                .SingleAsync();
+            ;
+        }
         public async Task<List<RoomEquipment>> GetEquipmentByRoom(int roomId)
         {
             return await _dataContext.RoomEquipment

@@ -16,6 +16,8 @@ namespace HospitalLibrary.Rooms.Interfaces
         bool checkFloorByCombineEquipmentSearch(Task<IEnumerable<RoomEquipment>> roomEquipment, RoomEquipmentDTO roomEquipmentDTO);
 
         Task<List<RoomEquipment>> GetEquipmentByRoom(int roomId);
+        Task<RoomEquipment> GetEquipmentByRoomAndName(int roomId,string name);
+
         int GetNumberOfUsedEquipment(int equipmentId);
 
     }
