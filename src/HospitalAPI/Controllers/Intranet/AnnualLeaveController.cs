@@ -32,7 +32,7 @@ namespace HospitalAPI.Controllers.Intranet
         public async Task<IActionResult> Create([FromBody] AnnualLeaveDto annualLeaveDto)
         {
             AnnualLeave annualLeave = annualLeaveDto.MapToModel();
-            // annualLeave.DoctorId = GetCurrentUser().Id;
+            annualLeave.DoctorId = GetCurrentUser().Id;
             AnnualLeave leave = await _annualLeaveService.Create(annualLeave);
             return Ok(leave);
         }

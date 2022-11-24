@@ -14,6 +14,7 @@ using Shouldly;
 
 namespace HospitalTests.Integrations.Rooms;
 
+[Collection("Test")]
 public class RoomTests: BaseIntegrationTest
 {
 

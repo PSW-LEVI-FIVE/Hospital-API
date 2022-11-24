@@ -1,10 +1,13 @@
-﻿using HospitalAPI;
+﻿using System.Security.Claims;
+using HospitalAPI;
 using HospitalAPI.Controllers.Intranet;
 using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.AnnualLeaves.Dtos;
 using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.BloodStorages;
+using HospitalLibrary.Therapies.Interfaces;
 using HospitalTests.Setup;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -18,9 +21,9 @@ public class AnnualLeaveTests:BaseIntegrationTest
     {
     }
     
-    private static AnnualLeaveController SetupController(IServiceScope scope)
+    private AnnualLeaveController SetupController(IServiceScope scope)
     {
-        return new AnnualLeaveController(scope.ServiceProvider.GetRequiredService<IAnnualLeaveService>());
+        return CreateFakeControllerWithIdentity(scope.ServiceProvider.GetRequiredService<IAnnualLeaveService>());
     }
     
     [Fact]
@@ -62,5 +65,21 @@ public class AnnualLeaveTests:BaseIntegrationTest
         result.State.ShouldBe(AnnualLeaveState.CANCELED);
         result.Reason.ShouldNotBeNull();
 
+    }
+    
+    private AnnualLeaveController CreateFakeControllerWithIdentity(IAnnualLeaveService annualLeaveService) {
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        {
+            new Claim(ClaimTypes.Name, "Somebody"),
+            new Claim(ClaimTypes.NameIdentifier, "4"),
+            new Claim(ClaimTypes.Role, "Doctor"),
+        }, "mock"));
+        
+        var controller = new AnnualLeaveController(annualLeaveService);
+        controller.ControllerContext = new ControllerContext()
+        {
+            HttpContext = new DefaultHttpContext() { User = user }
+        };
+        return controller;
     }
 }

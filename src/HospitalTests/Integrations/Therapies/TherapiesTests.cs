@@ -1,9 +1,11 @@
+using System.Security.Claims;
 using HospitalAPI;
 using HospitalAPI.Controllers.Intranet;
 using HospitalLibrary.Therapies.Dtos;
 using HospitalLibrary.Therapies.Interfaces;
 using HospitalLibrary.Therapies.Model;
 using HospitalTests.Setup;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
@@ -19,7 +21,7 @@ public class TherapiesTests : BaseIntegrationTest
 
     public TherapyController SetupController(IServiceScope scope)
     {
-        return new TherapyController(scope.ServiceProvider.GetRequiredService<ITherapyService>());
+        return CreateFakeControllerWithIdentity(scope.ServiceProvider.GetRequiredService<ITherapyService>());
     }
 
     [Fact]
@@ -66,11 +68,10 @@ public class TherapiesTests : BaseIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
 
-        List<BloodTherapy> result = new List<BloodTherapy>();
-        result =((OkObjectResult)controller.GetBloodConsumption()).Value as List<BloodTherapy>;
+        var result =((OkObjectResult)controller.GetBloodConsumption()).Value as List<BloodConsumptionDTO>;
         
         result.ShouldNotBeNull();
-        result.ShouldBeOfType<List<BloodTherapy>>();
+        result.ShouldBeOfType<List<BloodConsumptionDTO>>();
         result.Count.ShouldBe(4); // 3 postoje u bazi a 4 ako se svi testovi pokrenu jer se kreira jos 1
     }
     
@@ -87,5 +88,22 @@ public class TherapiesTests : BaseIntegrationTest
         result.ShouldNotBeNull();
         result.ShouldBeOfType<List<HospitalizationTherapiesDTO>>();
         result.Count.ShouldBe(6);//4 ako se sam pokrece 
+    }
+    
+    
+    private TherapyController CreateFakeControllerWithIdentity(ITherapyService therapyService) {
+        var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+        {
+            new Claim(ClaimTypes.Name, "Somebody"),
+            new Claim(ClaimTypes.NameIdentifier, "4"),
+            new Claim(ClaimTypes.Role, "Doctor"),
+        }, "mock"));
+        
+        var controller = new TherapyController(therapyService);
+        controller.ControllerContext = new ControllerContext()
+        {
+            HttpContext = new DefaultHttpContext() { User = user }
+        };
+        return controller;
     }
 }
