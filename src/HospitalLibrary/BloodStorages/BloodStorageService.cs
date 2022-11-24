@@ -100,10 +100,6 @@ namespace HospitalLibrary.BloodStorages
             {
                 compatibile.Add(BloodType.ZERO_POSITIVE);
             }
-            else
-            {
-                return compatibile;
-            }
             return compatibile;
         }
     }
