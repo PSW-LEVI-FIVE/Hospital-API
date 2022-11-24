@@ -23,5 +23,6 @@ namespace HospitalLibrary.Rooms.Interfaces
         Task<List<EquipmentReallocation>> getAllPending();
         Task<List<EquipmentReallocation>> getAllPendingForToday();
         Task<EquipmentReallocation> Create(EquipmentReallocation equipmentReallocation);
+        Task initiate(EquipmentReallocation reallocation);
     }
 }

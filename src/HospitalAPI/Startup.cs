@@ -56,6 +56,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using HospitalLibrary.Managers.Interfaces;
 using HospitalLibrary.Managers;
+using HospitalLibrary.Shared.Service;
 
 namespace HospitalAPI
 {
@@ -111,6 +112,7 @@ namespace HospitalAPI
             services.AddScoped<IStorage, SupabaseStorage>();
             services.AddScoped<IPDFGenerator, PdfGenerator>();
             services.AddScoped<IEquipmentReallocationService, EquipmentReallocationService>();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });
@@ -150,6 +152,7 @@ namespace HospitalAPI
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 }; 
             });
+            services.AddHostedService<TimerService>();
             services.AddMvc();
 
         }

@@ -40,8 +40,8 @@ namespace HospitalLibrary.Rooms.DTOs
                 StartAt = StartDate,
                 EndAt = EndDate,
                 EquipmentId = equipmentId,
-                Amount= amount,
-                State = ReallocationState.PENDING
+                amount= amount,
+                state = ReallocationState.PENDING
             };
         }
     }

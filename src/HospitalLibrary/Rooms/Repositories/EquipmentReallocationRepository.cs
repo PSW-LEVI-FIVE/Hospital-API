@@ -21,7 +21,7 @@ namespace HospitalLibrary.Rooms.Repositories
         public async Task<List<EquipmentReallocation>> GetAllPending()
         {
             return await _dataContext.EquipmentReallocations
-                .Where(a=> a.State==ReallocationState.PENDING)
+                .Where(a=> a.state==ReallocationState.PENDING)
                 .ToListAsync();
         }
 
@@ -30,7 +30,7 @@ namespace HospitalLibrary.Rooms.Repositories
             var Date = DateTime.Now;
             return await _dataContext.EquipmentReallocations
                 .Where(a => a.StartAt.Date<=Date.Date)
-                .Where(a => a.State == ReallocationState.PENDING)
+                .Where(a => a.state == ReallocationState.PENDING)
                 .ToListAsync();
         }
 

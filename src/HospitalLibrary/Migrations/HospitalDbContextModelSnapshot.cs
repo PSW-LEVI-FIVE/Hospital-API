@@ -86,7 +86,7 @@ namespace HospitalLibrary.Migrations
                     b.Property<DateTime>("StartAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("State")
+                    b.Property<int>("state")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -118,7 +118,7 @@ namespace HospitalLibrary.Migrations
                     b.Property<DateTime>("StartAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("State")
+                    b.Property<int>("state")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -269,7 +269,7 @@ namespace HospitalLibrary.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("State")
+                    b.Property<int>("state")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -424,6 +424,9 @@ namespace HospitalLibrary.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<int>("amount")
+                        .HasColumnType("integer");
+
                     b.Property<int>("DestinationRoomId")
                         .HasColumnType("integer");
 
@@ -439,10 +442,7 @@ namespace HospitalLibrary.Migrations
                     b.Property<int>("StartingRoomId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("State")
+                    b.Property<int>("state")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");

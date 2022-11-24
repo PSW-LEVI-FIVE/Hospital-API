@@ -39,7 +39,6 @@
     <Folder Include="MedicalRecords\Repository\" />
     <Folder Include="Migrations" />
     <Folder Include="Shared\Dtos" />
-    <Folder Include="Shared\Service" />
   </ItemGroup>
 
 </Project>
