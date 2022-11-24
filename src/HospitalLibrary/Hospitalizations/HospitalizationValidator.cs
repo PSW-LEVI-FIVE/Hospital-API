@@ -3,6 +3,7 @@ using HospitalLibrary.Hospitalizations.Dtos;
 using HospitalLibrary.Hospitalizations.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
+using SendGrid.Helpers.Errors.Model;
 
 namespace HospitalLibrary.Hospitalizations
 {

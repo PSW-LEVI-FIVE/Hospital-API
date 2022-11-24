@@ -11,8 +11,8 @@ namespace HospitalLibrary.Rooms.Interfaces
         Task<IEnumerable<RoomEquipment>> GetAllByNameSearchInRoom(RoomEquipmentDTO roomEquipmentDTO);
         Task<IEnumerable<RoomEquipment>> GetAllByQuantitySearchInRoom(RoomEquipmentDTO roomEquipmentDTO);
         Task<IEnumerable<RoomEquipment>> GetAllByCombineSearchInRoom(RoomEquipmentDTO roomEquipmentDTO);
-        bool checkFloorByEquipmentName(IEnumerable<RoomEquipment> roomEquipment, RoomEquipmentDTO roomEquipmentDTO);
-        bool checkFloorByEquipmentQuantity(IEnumerable<RoomEquipment> roomEquipment, RoomEquipmentDTO roomEquipmentDTO);
-        bool checkFloorByCombineEquipmentSearch(IEnumerable<RoomEquipment> roomEquipment, RoomEquipmentDTO roomEquipmentDTO);
+        bool checkFloorByEquipmentName(Task<IEnumerable<RoomEquipment>> roomEquipment, RoomEquipmentDTO roomEquipmentDTO);
+        bool checkFloorByEquipmentQuantity(Task<IEnumerable<RoomEquipment>> roomEquipment, RoomEquipmentDTO roomEquipmentDTO);
+        bool checkFloorByCombineEquipmentSearch(Task<IEnumerable<RoomEquipment>> roomEquipment, RoomEquipmentDTO roomEquipmentDTO);
     }
 }

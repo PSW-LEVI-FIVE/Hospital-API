@@ -30,14 +30,14 @@ namespace HospitalLibrary.Rooms.Repositories
 
         public async Task<IEnumerable<RoomEquipment>> GetAllByCombineSearchInRoom(RoomEquipmentDTO roomEquipmentDTO)
         {
-            return await _dataContext.RoomEquipment.Where(r => (r.RoomId == roomEquipmentDTO.RoomId) /*&&
+            return await _dataContext.RoomEquipment.Where(r => (r.RoomId == roomEquipmentDTO.RoomId) &&
                                                                  (r.Name.ToLower().Contains(roomEquipmentDTO.Name.ToLower())) &&
-                                                                 (r.Quantity >= roomEquipmentDTO.Quantity)*/).ToListAsync();
+                                                                 (r.Quantity >= roomEquipmentDTO.Quantity)).ToListAsync();
         }
 
-        public bool checkFloorByEquipmentName(IEnumerable<RoomEquipment> roomEquipment, RoomEquipmentDTO roomEquipmentDTO)
+        public bool checkFloorByEquipmentName(Task<IEnumerable<RoomEquipment>> roomEquipment, RoomEquipmentDTO roomEquipmentDTO)
         {
-            foreach (var equipment in roomEquipment)
+            foreach (var equipment in roomEquipment.Result)
             {
                 if (equipment.Name.ToLower().Contains(roomEquipmentDTO.Name.ToLower()))
                 {
@@ -47,9 +47,9 @@ namespace HospitalLibrary.Rooms.Repositories
             return false;
         }
 
-        public bool checkFloorByEquipmentQuantity(IEnumerable<RoomEquipment> roomEquipment, RoomEquipmentDTO roomEquipmentDTO)
+        public bool checkFloorByEquipmentQuantity(Task<IEnumerable<RoomEquipment>> roomEquipment, RoomEquipmentDTO roomEquipmentDTO)
         {
-            foreach (var equipment in roomEquipment)
+            foreach (var equipment in roomEquipment.Result)
             {
                 if (equipment.Quantity >= roomEquipmentDTO.Quantity)
                 {
@@ -59,9 +59,9 @@ namespace HospitalLibrary.Rooms.Repositories
             return false;
         }
 
-        public bool checkFloorByCombineEquipmentSearch(IEnumerable<RoomEquipment> roomEquipment, RoomEquipmentDTO roomEquipmentDTO)
+        public bool checkFloorByCombineEquipmentSearch(Task<IEnumerable<RoomEquipment>> roomEquipment, RoomEquipmentDTO roomEquipmentDTO)
         {
-            foreach (var equipment in roomEquipment)
+            foreach (var equipment in roomEquipment.Result)
             {
                 if (equipment.Quantity >= roomEquipmentDTO.Quantity && equipment.Name.ToLower().Contains(roomEquipmentDTO.Name.ToLower()))
                 {

@@ -46,9 +46,6 @@ namespace HospitalAPI.Controllers.Intranet
         [HttpGet]
        public async Task<IActionResult> GetRoomEquipment(int roomId)
         {
-            //throw new NotImplementedException();
-            /*var roomEquipment = new List<RoomEquipment>();
-            return Ok(roomEquipment);*/
             IEnumerable<RoomEquipment> roomEquipment = await _roomService.GetAllEquipmentbyRoomId(roomId);
             return Ok(roomEquipment);
         }
