@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
@@ -22,6 +23,7 @@ namespace HospitalLibrary.Shared.Validators
         {
             ThrowIfEndBeforeStart(appointment.StartAt, appointment.EndAt);
             ThrowIfInPast(appointment.StartAt);
+            ThrowIfInAnnualLeavePeriod(appointment.DoctorId, new TimeInterval(appointment.StartAt, appointment.EndAt));
             ThrowIfNotInWorkingHours(appointment);
 
             IEnumerable<TimeInterval> doctorTimeIntervals =
@@ -59,6 +61,7 @@ namespace HospitalLibrary.Shared.Validators
         {
             ThrowIfEndBeforeStart(start, end);
             ThrowIfInPast(start);
+            ThrowIfInAnnualLeavePeriod(appointment.DoctorId, new TimeInterval(start, end));
             ThrowIfNotInWorkingHours(start, end, appointment.DoctorId);
             
             IEnumerable<TimeInterval> doctorTimeIntervals =
@@ -134,6 +137,16 @@ namespace HospitalLibrary.Shared.Validators
             if (interval.IsThereGapInIntervals(dateInterval))
             {
                 intervals.Add(new TimeInterval(dateInterval));
+            }
+        }
+
+        private void ThrowIfInAnnualLeavePeriod(int doctorId, TimeInterval timeInterval)
+        {
+            IEnumerable<AnnualLeave> annualLeaves =
+                _unitOfWork.AnnualLeaveRepository.GetDoctorsAnnualLeavesInRange(doctorId, timeInterval);
+            if (annualLeaves.Any())
+            {
+                throw new BadRequestException("There is an annual leave in that period");
             }
         }
     }

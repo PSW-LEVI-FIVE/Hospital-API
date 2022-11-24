@@ -35,5 +35,17 @@ namespace HospitalLibrary.AnnualLeaves
                 .Select(al => al.DoctorId)
                 .ToList();
         }
+
+        public IEnumerable<AnnualLeave> GetDoctorsAnnualLeavesInRange(int doctorId, TimeInterval range)
+        {
+            return _dataContext.AnnualLeaves
+                .Where(al => al.State != AnnualLeaveState.DELETED)
+                .Where(a =>
+                    a.StartAt.CompareTo(range.Start) <= 0
+                    && a.EndAt.Date.CompareTo(range.End) >= 0)
+                .Where(al => al.DoctorId == doctorId)
+                .Select(al => al)
+                .ToList();
+        }
     }
 }
