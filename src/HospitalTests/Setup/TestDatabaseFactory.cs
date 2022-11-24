@@ -165,7 +165,8 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             PhoneNumber = "123123123",
             BirthDate = new DateTime(2000, 2, 2),
             Address = "Mike",
-            BloodType = BloodType.A_NEGATIVE
+            BloodType = BloodType.A_NEGATIVE,
+            ChoosenDoctor = doctor
         };
 
         User user = new User()
@@ -190,8 +191,8 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             BirthDate = new DateTime(2000,2,3), 
             Address = "Zike", 
             BloodType = BloodType.A_NEGATIVE,
+            ChoosenDoctor = doctor
             Allergens = allergens,
-
         };
 
         Hospitalization hospitalization = new Hospitalization()
@@ -261,9 +262,10 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Email = "asdasd65@gmail.com",
             Uid = "78787899",
             PhoneNumber = "123123123",
-            BirthDate = new DateTime(2000, 2, 3),
-            Address = "Zike",
-            BloodType = BloodType.A_NEGATIVE
+            BirthDate = new DateTime(2000,2,3), 
+            Address = "Zike", 
+            BloodType = BloodType.A_NEGATIVE,
+            ChoosenDoctor = doctor
         };
 
 

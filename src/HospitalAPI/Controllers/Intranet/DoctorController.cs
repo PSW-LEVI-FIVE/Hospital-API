@@ -43,13 +43,13 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
         [HttpGet]
-        [Authorize(Roles="Manager")]
+        [Authorize(Roles = "Manager")]
         [Route("statistics/DocsWithPopularity")]
         public async Task<IActionResult> GetDoctorsWithPopularity([FromQuery(Name = "minAge")] int minAge = 0, [FromQuery(Name = "maxAge")] int maxAge = 666)
         {
-            Task<IEnumerable<Doctor>> docs = _doctorService.GetDoctorsByAgeRange(minAge, maxAge);
+            List<Doctor> docs = (List<Doctor>)await _doctorService.GetDoctorsByAgeRange(minAge, maxAge);
             var docsWithPopularity = new List<DoctorWithPopularityDTO>();
-            foreach (Doctor doctor in docs.Result)
+            foreach (Doctor doctor in docs)
                 docsWithPopularity.Add(new DoctorWithPopularityDTO(doctor.Id, doctor.Patients.Count, doctor.Name, doctor.Surname));
             return Ok(docsWithPopularity.AsEnumerable());
         }

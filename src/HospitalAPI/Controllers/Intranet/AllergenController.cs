@@ -27,9 +27,9 @@ namespace HospitalAPI.Controllers.Intranet
         [Route("statistics/AllergensWithPatients")]
         public async Task<IActionResult> GetAllergensWithNumberOfPatients()
         {
-            Task<IEnumerable<Allergen>> allergens = _allergenService.GetAllergensWithNumberOfPatients();
+            List<Allergen> allergens = (List<Allergen>)await _allergenService.GetAllergensWithNumberOfPatients();
             var allergensWithNumberOfPatients = new List<AllergenWithNumberPatientsDTO>();
-            foreach (Allergen allergen in allergens.Result)
+            foreach (Allergen allergen in allergens)
                 allergensWithNumberOfPatients.Add(new AllergenWithNumberPatientsDTO(allergen.Name, allergen.Patients.Count));
               
             return Ok(allergensWithNumberOfPatients.AsEnumerable());
