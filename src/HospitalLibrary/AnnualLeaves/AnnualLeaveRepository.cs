@@ -35,5 +35,10 @@ namespace HospitalLibrary.AnnualLeaves
                 .Select(al => al.DoctorId)
                 .ToList();
         }
+
+        public IEnumerable<AnnualLeave> GetAllPending()
+        {
+            return _dataContext.AnnualLeaves.Where(al => al.State == AnnualLeaveState.PENDING).ToList();
+        }
     }
 }

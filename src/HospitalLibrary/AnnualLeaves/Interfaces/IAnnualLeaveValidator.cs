@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using HospitalLibrary.AnnualLeaves.Dtos;
+using System.Threading.Tasks;
 
 namespace HospitalLibrary.AnnualLeaves.Interfaces
 {
@@ -6,5 +7,6 @@ namespace HospitalLibrary.AnnualLeaves.Interfaces
     {
         Task Validate(AnnualLeave annualLeave);
         void CancelValidation(AnnualLeave leave, int doctorId);
+        void ReviewAnnualLeaveValidation(AnnualLeave annualLeave, ReviewLeaveRequestDTO reviewLeaveRequestDTO);
     }
 }
