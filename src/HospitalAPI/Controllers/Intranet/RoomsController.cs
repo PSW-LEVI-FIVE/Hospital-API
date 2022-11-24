@@ -44,7 +44,8 @@ namespace HospitalAPI.Controllers.Intranet
 
         [Route("equipmentView/{roomId:int}")]
         [HttpGet]
-       public async Task<IActionResult> GetRoomEquipment(int roomId)
+        [Authorize(Roles = "Manager")]
+        public async Task<IActionResult> GetRoomEquipment(int roomId)
         {
             IEnumerable<RoomEquipment> roomEquipment = await _roomService.GetAllEquipmentbyRoomId(roomId);
             return Ok(roomEquipment);

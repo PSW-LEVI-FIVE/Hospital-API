@@ -53,9 +53,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-
         return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=isa1234";
-
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
