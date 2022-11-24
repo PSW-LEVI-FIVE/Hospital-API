@@ -1,5 +1,6 @@
 ﻿using HospitalLibrary.Rooms.Dtos;
 using HospitalLibrary.Rooms.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -18,6 +19,7 @@ namespace HospitalAPI.Controllers.Intranet
 
         [HttpGet]
         [Route("search")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> searchEquipmentInRoom([FromQuery] RoomEquipmentDTO roomEquipmentDTO)
         {
             var result = await _roomEquipmentService.searchEquipmentInRoom(roomEquipmentDTO);
@@ -26,6 +28,7 @@ namespace HospitalAPI.Controllers.Intranet
 
         [Route("floorSearch")]
         [HttpGet]
+        [Authorize(Roles = "Manager")]
         public IActionResult searchEquipmentOnFloor([FromQuery] RoomEquipmentDTO roomEquipmentDTO)
         {
             var result = _roomEquipmentService.searchEquipmentOnFloor(roomEquipmentDTO);
