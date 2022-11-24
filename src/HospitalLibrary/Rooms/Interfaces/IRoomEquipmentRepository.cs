@@ -10,5 +10,6 @@ namespace HospitalLibrary.Rooms.Interfaces
     {
         Task<IEnumerable<RoomEquipment>> GetAllByCombineSearchInRoom(RoomEquipmentDTO roomEquipmentDTO);
         IEnumerable<Room> CheckFloorByCombineEquipmentSearch(RoomEquipmentDTO roomEquipmentDTO);
+
     }
 }

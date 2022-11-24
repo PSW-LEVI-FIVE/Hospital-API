@@ -17,7 +17,6 @@ namespace HospitalAPI.Controllers.Intranet
             _roomEquipmentService = roomEquipmentService;
         }
 
-        [Route("search")]
         [HttpGet]
         [Route("search")]
         [Authorize(Roles = "Manager")]

@@ -30,14 +30,19 @@ namespace HospitalLibrary.Rooms
         {
             var rooms = _unitOfWork.RoomEquipmentRepository.CheckFloorByCombineEquipmentSearch(roomEquipmentDTO);
             List<Room> result = new List<Room>();
+
             foreach(Room room in rooms)
             {
                 if (!room.RoomEquipment.Count().Equals(0))
                     result.Add(room);
-                
+
             }
             IEnumerable<Room> resultList = result.AsEnumerable<Room>();
             return resultList;
         }
+
+
+
+
     }
 }

@@ -5,9 +5,9 @@ using HospitalLibrary.Hospitalizations.Dtos;
 using HospitalLibrary.Hospitalizations.Interfaces;
 using HospitalLibrary.MedicalRecords.Interfaces;
 using HospitalLibrary.Rooms.Interfaces;
+using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using Moq;
-using SendGrid.Helpers.Errors.Model;
 using Shouldly;
 
 namespace HospitalTests.Units.Hospitalizations;
@@ -130,7 +130,7 @@ public class EndingHospitalization
         var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, null, null);
 
         var dto = new EndHospitalizationDTO() { EndTime = today };
-        Should.Throw<BadRequestException>(() => hospitalizationService.EndHospitalization(1, dto));
+        Should.Throw<HospitalLibrary.Shared.Exceptions.BadRequestException>(() => hospitalizationService.EndHospitalization(1, dto));
     }
 
 
