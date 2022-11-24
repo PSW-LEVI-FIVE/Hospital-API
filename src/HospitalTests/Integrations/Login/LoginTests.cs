@@ -1,9 +1,7 @@
-﻿using System.Transactions;
-using HospitalAPI;
+﻿using HospitalAPI;
 using HospitalAPI.Controllers.Public;
 using HospitalLibrary.Auth.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
-using HospitalLibrary.User.Interfaces;
 using HospitalLibrary.Users;
 using HospitalLibrary.Users.Dtos;
 using HospitalTests.Setup;
@@ -39,5 +37,24 @@ public class LoginTests : BaseIntegrationTest {
         var result = ((NotFoundObjectResult)controller.UserExist(new UserDTO(user.Username,user.Password,user.Role))).Value as string;
         result.ShouldNotBeNull();
     }
+    [Fact]
+    public void Login_user_successfully_intra()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = new HospitalAPI.Controllers.Intranet.AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>());
+        User user = new User("Mika1", "plsradi", Role.Doctor,10,ActiveStatus.Active);
+        var result = ((OkObjectResult)controller.UserExist(new UserDTO(user.Username,user.Password,user.Role))).Value as string;
+        result.ShouldNotBeNull();
+    }
+    [Fact]
+    public void Login_user_unsuccessfully_intra()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = new HospitalAPI.Controllers.Intranet.AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>());
+        User user = new User("nema","usera",Role.Doctor,1,ActiveStatus.Active);
+        var result = ((NotFoundObjectResult)controller.UserExist(new UserDTO(user.Username,user.Password,user.Role))).Value as string;
+        result.ShouldNotBeNull();
+    }
+
 
 }
