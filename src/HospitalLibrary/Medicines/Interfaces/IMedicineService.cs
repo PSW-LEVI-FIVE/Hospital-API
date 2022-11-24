@@ -7,5 +7,7 @@ namespace HospitalLibrary.Medicines.Interfaces
     {
         bool SubtractQuantity(int medicine, double quantity);
         Task<IEnumerable<Medicine>> getAllMedicine();
+
+        IEnumerable<Medicine> getAllCompatibileMedicine(int hospitalizationId);
     }
 }

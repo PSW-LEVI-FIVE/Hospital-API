@@ -19,11 +19,11 @@ namespace HospitalAPI.Controllers.Intranet
         }
         
         [HttpGet]
-        public async Task<IActionResult> GetBloodStorage()
+        [Route("compatibile/{id}")]
+        public ActionResult GetBloodStorage(int id)
         {
-            IEnumerable<BloodStorage> bloodConsumption = await _bloodStorageService.GetAllBloodStorage();
+            List<BloodType> bloodConsumption = _bloodStorageService.GetAllCompatibileBloodStorage(id);
             return Ok(bloodConsumption);
         }
-        
     }
 }
