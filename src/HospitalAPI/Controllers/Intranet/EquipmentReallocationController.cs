@@ -31,6 +31,7 @@ namespace HospitalAPI.Controllers.Intranet
 
             return Ok(availableIntervals);
         }
+
         [Route("Create")]
         [HttpPost]
         public async Task<IActionResult> AddNewReallocation([FromBody] CreateEquipmentReallocationDTO createDto)
@@ -38,8 +39,6 @@ namespace HospitalAPI.Controllers.Intranet
 
          
             var availableIntervals = await _equipmentReallocationService.Create(createDto.MapToModel());
-            
-
             return Ok(availableIntervals);
         }
 
@@ -50,6 +49,7 @@ namespace HospitalAPI.Controllers.Intranet
             var pending = await _equipmentReallocationService.getAllPending();
             return Ok(pending) ;
         }
+
         [HttpGet("PendingToday")]
 
         public async Task<IActionResult> GetAllPendingToday()
