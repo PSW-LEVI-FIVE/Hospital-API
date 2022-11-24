@@ -5,6 +5,7 @@ using HospitalLibrary.Floors;
 
 public enum RoomType
 {
+    NO_TYPE,
     OPERATION_ROOM,
     EXAMINATION_ROOM,
     HOSPITAL_ROOM,
@@ -30,5 +31,17 @@ namespace HospitalLibrary.Rooms.Model
 
 
         public Room() {}
+
+        public Room(int id, string roomNumber, float area, int floorId, RoomType roomType)
+        {
+            Id = id;
+            RoomNumber = roomNumber;
+            Area = area;
+            FloorId = floorId;
+            
+            RoomType = roomType;
+        }
+
+
     }
 }

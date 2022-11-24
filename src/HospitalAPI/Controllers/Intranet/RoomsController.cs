@@ -50,6 +50,7 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(room);
         }
 
+
         [HttpGet]
         [Route("{id}/beds")]
         public IActionResult GetRoomBeds(int id)
@@ -57,5 +58,15 @@ namespace HospitalAPI.Controllers.Intranet
             IEnumerable<Bed> beds = _roomService.GetBedsForRoom(id);
             return Ok(beds);
         }
+
+        [HttpPost]
+        public async  Task<IActionResult> SearchRooms( RoomSearchDTO roomSearchDTO)
+        {
+            
+            var rooms =  await _roomService.SearchRoom(roomSearchDTO);
+            return Ok(rooms);
+        }
+
+
     }
 }
