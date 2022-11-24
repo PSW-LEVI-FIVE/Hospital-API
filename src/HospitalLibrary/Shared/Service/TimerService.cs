@@ -49,7 +49,7 @@ namespace HospitalLibrary.Shared.Service
                 {
                      if (real.EndAt < DateTime.Now) 
                      {
-                         equipmentReallocationService.initiate(real);           
+                        await equipmentReallocationService.initiate(real);           
                      }
                 }
             }
