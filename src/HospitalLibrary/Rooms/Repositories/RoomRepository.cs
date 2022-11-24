@@ -25,11 +25,15 @@ namespace HospitalLibrary.Rooms.Repositories
         public async Task<IEnumerable<Room>> SearchByTypeAndName(RoomSearchDTO roomsSearchDTO, int floorId)
         {
             return await _dataContext.Rooms.Where(r =>
-                ((r.FloorId == floorId))).Where(r=>
-                 (r.RoomNumber.Contains(roomsSearchDTO.RoomName)&&
-                 ((r.RoomType == roomsSearchDTO.RoomType)||(roomsSearchDTO.RoomType==RoomType.NO_TYPE)))
+                ((r.FloorId == floorId))).Where(r =>
+                 (r.RoomNumber.Contains(roomsSearchDTO.RoomName) &&
+                 ((r.RoomType == roomsSearchDTO.RoomType) || (roomsSearchDTO.RoomType == RoomType.NO_TYPE)))
                      ).ToListAsync();
- 
+        }
+
+        public async Task<IEnumerable<RoomEquipment>> GetAllEquipmentbyRoom(int id)
+        {
+            return await _dataContext.RoomEquipment.Where(r => r.RoomId == id).ToListAsync();
         }
     }
 }

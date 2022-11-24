@@ -13,10 +13,8 @@ namespace HospitalLibrary.Rooms.Interfaces
 
 
         IEnumerable<Bed> GetBedsForRoom(int id);
-
         Room Create(Room room);
-
         Task<IEnumerable<Room>> SearchRoom(RoomSearchDTO searchRoomDto,int floorId);
-
+        Task<IEnumerable<RoomEquipment>> GetAllEquipmentbyRoomId(int id);
     }
 }

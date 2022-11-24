@@ -42,6 +42,17 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(room);
         }
 
+        [Route("equipmentView/{roomId:int}")]
+        [HttpGet]
+       public async Task<IActionResult> GetRoomEquipment(int roomId)
+        {
+            //throw new NotImplementedException();
+            /*var roomEquipment = new List<RoomEquipment>();
+            return Ok(roomEquipment);*/
+            IEnumerable<RoomEquipment> roomEquipment = await _roomService.GetAllEquipmentbyRoomId(roomId);
+            return Ok(roomEquipment);
+        }
+
         [HttpGet]
         [Route("{id}")]
         [Authorize(Roles="Doctor,Manager")]
