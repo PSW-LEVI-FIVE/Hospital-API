@@ -19,5 +19,7 @@ namespace HospitalLibrary.Rooms.Dtos
             Quantity = quantity;
             RoomId = roomId;
         }
+
+        public RoomEquipmentDTO(){}
     }
 }

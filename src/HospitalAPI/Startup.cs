@@ -117,6 +117,8 @@ namespace HospitalAPI
             services.AddScoped<ISymptomService, SymptomService>();
             services.AddScoped<IExaminationReportService, ExaminationReportService>();
             services.AddScoped<IConsiliumService, ConsiliumService>();
+            services.AddScoped<IRoomEquipmentService, RoomEquipmentService>();
+            services.AddScoped<IRoomEquipmentValidator, RoomEquipmentValidator>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });

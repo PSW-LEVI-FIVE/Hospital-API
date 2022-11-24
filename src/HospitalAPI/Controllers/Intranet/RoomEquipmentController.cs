@@ -16,9 +16,9 @@ namespace HospitalAPI.Controllers.Intranet
             _roomEquipmentService = roomEquipmentService;
         }
 
-        [Route("search")]
         [HttpGet]
-        public async Task<IActionResult> searchEquipmentInRoom([FromBody] RoomEquipmentDTO roomEquipmentDTO)
+        [Route("search")]
+        public async Task<IActionResult> searchEquipmentInRoom([FromQuery] RoomEquipmentDTO roomEquipmentDTO)
         {
             var result = await _roomEquipmentService.searchEquipmentInRoom(roomEquipmentDTO);
             return Ok(result);
@@ -26,7 +26,7 @@ namespace HospitalAPI.Controllers.Intranet
 
         [Route("floorSearch")]
         [HttpGet]
-        public IActionResult searchEquipmentOnFloor([FromBody] RoomEquipmentDTO roomEquipmentDTO)
+        public IActionResult searchEquipmentOnFloor([FromQuery] RoomEquipmentDTO roomEquipmentDTO)
         {
             var result = _roomEquipmentService.searchEquipmentOnFloor(roomEquipmentDTO);
             return Ok(result);
