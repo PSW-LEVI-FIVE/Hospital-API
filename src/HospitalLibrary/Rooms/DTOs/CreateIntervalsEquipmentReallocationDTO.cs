@@ -21,6 +21,13 @@ namespace HospitalLibrary.Rooms.DTOs
 
         [Required]
         public int duration { get; set; }
-        
+
+        public CreateIntervalsEquipmentReallocationDTO(int startingRoomId, int destinationRoomId, DateTime date, int duration)
+        {
+            StartingRoomId = startingRoomId;
+            DestinationRoomId = destinationRoomId;
+            this.date = date;
+            this.duration = duration;
+        }
     }
 }

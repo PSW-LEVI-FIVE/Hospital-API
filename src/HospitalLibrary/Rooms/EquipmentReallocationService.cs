@@ -77,11 +77,10 @@ namespace HospitalLibrary.Rooms
             intervalsB = await GetAvailableIntervals(intervalsB, date, duration);
 
             List<TimeInterval> intervals = await getShared(intervalsA, intervalsB, duration);
-            //return intervals;
+            
 
             return await smallerIntervals(intervals, duration);
-           //
-           //return intervalsA;      
+     
         }
 
         private async Task<List<TimeInterval>> smallerIntervals(List<TimeInterval> intervals, TimeSpan duration)
@@ -108,7 +107,7 @@ namespace HospitalLibrary.Rooms
             return snippedInterval;
         }
 
-        private async Task<List<TimeInterval>> GetTakenIntevals(int roomId, DateTime date)
+        public async Task<List<TimeInterval>> GetTakenIntevals(int roomId, DateTime date)
         {
             List<TimeInterval> roomTimeIntervals =
                          await _unitOfWork.AppointmentRepository.GetAllRoomTakenIntervalsForDate(roomId, date);

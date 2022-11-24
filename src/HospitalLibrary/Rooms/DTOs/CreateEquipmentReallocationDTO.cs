@@ -31,6 +31,16 @@ namespace HospitalLibrary.Rooms.DTOs
         [Required]
         public int amount { get; set; }
 
+        public CreateEquipmentReallocationDTO(int startingRoomId, int destinationRoomId, DateTime startDate, DateTime endDate, int equipmentId, int amount)
+        {
+            StartingRoomId = startingRoomId;
+            DestinationRoomId = destinationRoomId;
+            StartDate = startDate;
+            EndDate = endDate;
+            this.equipmentId = equipmentId;
+            this.amount = amount;
+        }
+
         public EquipmentReallocation MapToModel()
         {
             return new EquipmentReallocation
