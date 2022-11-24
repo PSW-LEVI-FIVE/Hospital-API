@@ -17,7 +17,7 @@ namespace HospitalLibrary.Map
         
         public async Task<IEnumerable<MapFloor>> GetFloorsByBuilding(int buildingId)
         {
-            return await _dataContext.MapFloors.Where(r => r.Floor.BuildingId == buildingId).ToListAsync();
+            return await _dataContext.MapFloors.Where(r => r.MapBuildingId == buildingId).ToListAsync();
         }
     }
 }
