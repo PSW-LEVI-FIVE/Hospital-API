@@ -13,6 +13,7 @@ using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.User.Interfaces;
+using HospitalLibrary.Users;
 using HospitalLibrary.Users.Dtos;
 using HospitalLibrary.Users.Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -50,7 +51,8 @@ namespace HospitalLibrary.Auth
         }
         public async Task<Doctor> GetPatientsDoctor(string doctorUid)
         {
-            foreach (Doctor doctor in await _unitOfWork.DoctorRepository.GetTwoUnburdenedDoctors())
+            Doctor mostUnburdened = await _unitOfWork.DoctorRepository.GetMostUnburdenedDoctor();
+            foreach (Doctor doctor in await _unitOfWork.DoctorRepository.GetUnburdenedDoctors(mostUnburdened.Patients.Count))
             {
                 if (doctor.Uid.Equals(doctorUid))
                     return doctor;
@@ -119,7 +121,10 @@ namespace HospitalLibrary.Auth
             var currentUser = UserExist(userDto.Username, userDto.Password);
             if (currentUser != null)
             {
-                return new UserDTO(currentUser.Username,currentUser.Password,currentUser.Role, currentUser.Id);
+                if (currentUser.ActiveStatus == ActiveStatus.Active)
+                {
+                    return new UserDTO(currentUser.Username, currentUser.Password, currentUser.Role, currentUser.Id);
+                }
             }
 
             return null;

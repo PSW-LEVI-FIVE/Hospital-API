@@ -10,5 +10,6 @@ namespace HospitalLibrary.AnnualLeaves.Interfaces
     {
         IEnumerable<AnnualLeave> GetAllByDoctorId(int doctorId);
         List<int> GetDoctorsThatHaveAnnualLeaveInRange(TimeInterval range);
+        IEnumerable<AnnualLeave> GetAllPending();
     }
 }

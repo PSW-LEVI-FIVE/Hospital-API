@@ -10,5 +10,6 @@ namespace HospitalLibrary.BloodStorages.Interfaces
         Task<BloodStorage> GetByType(BloodType type);
 
         Task<IEnumerable<BloodStorage>> GetAllBloodStorage();
+        List<BloodType> GetAllCompatibileBloodStorage(int hospitalizationId);
     }
 }

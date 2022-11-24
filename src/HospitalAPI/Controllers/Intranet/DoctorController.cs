@@ -24,21 +24,7 @@ namespace HospitalAPI.Controllers.Intranet
             _doctorService = doctorService;
             _emailService = emailService;
         }
-
-        [HttpGet]
-        [Route("internal-medicine/registration")]
-        [Authorize(Roles="Patient")]
-        public async Task<IActionResult> GetIternalMedicineDoctorsForPatientRegistration()
-        {
-            IEnumerable<Doctor> doctors = await _doctorService.GetIternalMedicineDoctorsForPatientRegistration();
-            List <PatientsDoctorDTO> doctorDTOs = new List<PatientsDoctorDTO>();
-            foreach (Doctor doctor in doctors)
-            {
-                PatientsDoctorDTO doctorDTO = new PatientsDoctorDTO(doctor.Name, doctor.Surname,doctor.Uid);
-                doctorDTOs.Add(doctorDTO);
-            }
-            return Ok(doctorDTOs);
-        }
+        
         [HttpPost]
         [Authorize(Roles="Doctor")]
         public IActionResult Create([FromBody] CreateDoctorDTO doctorDto)

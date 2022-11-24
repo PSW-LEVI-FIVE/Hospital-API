@@ -23,8 +23,7 @@ namespace HospitalAPI.Controllers.Intranet
         
 
         [HttpGet]
-        [Authorize(Roles="Doctor")]
-        [Authorize(Roles="Manager")]
+        [Authorize(Roles="Doctor,Manager")]
         public async Task<IActionResult> GetAll()
         {
             IEnumerable<Room> rooms = await _roomService.GetAll();
@@ -33,8 +32,7 @@ namespace HospitalAPI.Controllers.Intranet
 
         [HttpPut]
         [Route("{id}")]
-        [Authorize(Roles="Doctor")]
-        [Authorize(Roles="Manager")]
+        [Authorize(Roles="Doctor,Manager")]
         public IActionResult UpdateName(int id, [FromBody] string name)
         {
             Room room = _roomService.GetOne(id);

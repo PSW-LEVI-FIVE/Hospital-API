@@ -26,5 +26,11 @@ namespace HospitalLibrary.Allergens
         {
             return _dataContext.Allergens.Where(a => a.Name.Equals(name)).FirstOrDefaultAsync();
         }
+
+        public List<int> GetAllergenIdsByPatient(int patientId)
+        {
+            return _dataContext.Allergens.Where(a => a.Patients.Any(p => p.Id == patientId))
+                .Select(a => a.Id).ToList();
+        }
     }
 }

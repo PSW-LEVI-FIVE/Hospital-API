@@ -30,9 +30,15 @@ namespace HospitalLibrary.Doctors
             return _unitOfWork.DoctorRepository.GetAll();
         }
 
-        public Task<IEnumerable<Doctor>> GetIternalMedicineDoctorsForPatientRegistration()
+        public Task<Doctor> GetMostUnburdenedDoctor()
         {
-            return _unitOfWork.DoctorRepository.GetTwoUnburdenedDoctors();
+            return _unitOfWork.DoctorRepository.GetMostUnburdenedDoctor();
+        }
+
+        public async Task<IEnumerable<Doctor>> GetIternalMedicineDoctorsForPatientRegistration()
+        {
+            Doctor mostUnburdened = await GetMostUnburdenedDoctor();
+            return await _unitOfWork.DoctorRepository.GetUnburdenedDoctors(mostUnburdened.Patients.Count);
         }
         public Task<IEnumerable<Doctor>> GetDoctorsByAgeRange(int fromAge, int toAge)
         {

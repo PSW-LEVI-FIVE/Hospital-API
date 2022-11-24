@@ -19,9 +19,10 @@ namespace HospitalAPI.Controllers.Intranet
         }
         
         [HttpGet]
-        public async Task<IActionResult> GetMedicine()
+        [Route("compatibile/{id}")]
+        public  ActionResult GetMedicine(int id)
         {
-            IEnumerable<Medicine> bloodConsumption = await _medicineService.getAllMedicine();
+            IEnumerable<Medicine> bloodConsumption = _medicineService.getAllCompatibileMedicine(id);
             return Ok(bloodConsumption);
         }
     }

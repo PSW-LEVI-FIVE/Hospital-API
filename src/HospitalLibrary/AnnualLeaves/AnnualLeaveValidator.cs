@@ -5,6 +5,7 @@ using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.AnnualLeaves.Dtos;
 
 namespace HospitalLibrary.AnnualLeaves
 {
@@ -72,6 +73,16 @@ namespace HospitalLibrary.AnnualLeaves
                     throw new BadRequestException("There are already annual leaves in that period");
                 }
             }
+        }
+
+        public void ReviewAnnualLeaveValidation(AnnualLeave leave, ReviewLeaveRequestDTO reviewLeaveRequestDTO)
+        {
+            if (leave == null)
+                throw new NotFoundException("Annual leave with given id doesn't exist!");
+            if (leave.State != AnnualLeaveState.PENDING)
+                throw new BadRequestException("Annual leave isn't pending, can't review it!");
+            if (reviewLeaveRequestDTO.State == AnnualLeaveState.CANCELED && reviewLeaveRequestDTO.Reason == null)
+                throw new BadRequestException("Can't reject annual leave request without reason!");
         }
     }
 }
