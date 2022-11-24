@@ -29,9 +29,9 @@ namespace HospitalTests.Integrations.Rooms
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new RoomsController(scope.ServiceProvider.GetRequiredService<IRoomService>());
-            var dto = new RoomSearchDTO(RoomType.NO_TYPE, "");
+            var dto = new RoomSearchDTO("NO_TYPE", "");
 
-            var result =  controller.SearchRooms(dto).Result;
+            var result =  controller.SearchRooms(1,dto).Result;
             var res = ((OkObjectResult) result).Value as Task<IEnumerable<Room>>;
             Assert.Null(res);
 
@@ -44,8 +44,8 @@ namespace HospitalTests.Integrations.Rooms
         {
             var scope = Factory.Services.CreateScope();
             var controller = new RoomsController(scope.ServiceProvider.GetRequiredService<IRoomService>());
-            var dto = new RoomSearchDTO(RoomType.CAFETERIA,"1");
-            var res = controller.SearchRooms(dto).Result;
+            var dto = new RoomSearchDTO("CAFETERIA","1");
+            var res = controller.SearchRooms(1,dto).Result;
             var result = ((OkObjectResult)res).Value as Room;
             result.ShouldBeNull();
 

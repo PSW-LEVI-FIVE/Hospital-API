@@ -10,14 +10,14 @@ namespace HospitalLibrary.Rooms.Dtos
     public  class RoomSearchDTO
     {
         
-        [Required] public RoomType RoomType { get; set; }
-        [Required] public string RoomName { get; set; }
+         public string RoomType { get; set; }
+         public string RoomName { get; set; }
 
         public RoomSearchDTO()
         {
         }
 
-        public RoomSearchDTO(RoomType roomType, string roomName)
+        public RoomSearchDTO(string roomType, string roomName)
         {
             RoomType = roomType;
             RoomName = roomName;

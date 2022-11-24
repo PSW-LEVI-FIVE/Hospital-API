@@ -36,9 +36,10 @@ namespace HospitalTests.Units.RoomSearch
         public void wrong_room_typed()
         {
             var mock = SetupUnitOfWork();
-            var dto = new RoomSearchDTO(RoomType.NO_TYPE, "3");
+            var dto = new RoomSearchDTO("NO_TYPE", "3");
             var roomService = new RoomService(mock.Object);
-            var result = roomService.SearchRoom(dto);
+            var result = roomService.SearchRoom(dto,1).Result;
+            result.ShouldBeEmpty();
 
             
         }
@@ -47,10 +48,24 @@ namespace HospitalTests.Units.RoomSearch
         public void wrong_room_type_typed()
         {
             var mock = SetupUnitOfWork();
-            var dto = new RoomSearchDTO(RoomType.OPERATION_ROOM, "1");
+            var dto = new RoomSearchDTO("OPERATION_ROOM", "1");
             var roomService = new RoomService(mock.Object);
-            var result = roomService.SearchRoom(dto);
+            var result = roomService.SearchRoom(dto,1).Result;
+            result.ShouldBeEmpty();
             
+
+        }
+        
+        [Fact]
+        public void wrong_room_type_and_name_typed()
+        {
+            var mock = SetupUnitOfWork();
+            var dto = new RoomSearchDTO("NO_TYPE", "w");
+            var roomService = new RoomService(mock.Object);
+            var result = roomService.SearchRoom(dto,1).Result;
+            result.ShouldBeEmpty();
+            
+
         }
 
 
