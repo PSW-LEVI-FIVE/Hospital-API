@@ -175,7 +175,10 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Role = Role.Patient,
             Id = 1
         };
-
+        Allergen allergen1 = new Allergen(1,"Milk");
+        List<Allergen> allergens = new List<Allergen>();
+        allergens.Add(allergen1);
+        
         Patient patient2 = new Patient()
         {
             Id = 2,
@@ -184,9 +187,11 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Email = "asdasd2@gmail.com",
             Uid = "78787878",
             PhoneNumber = "123123123",
-            BirthDate = new DateTime(2000, 2, 3),
-            Address = "Zike",
-            BloodType = BloodType.A_NEGATIVE
+            BirthDate = new DateTime(2000,2,3), 
+            Address = "Zike", 
+            BloodType = BloodType.A_NEGATIVE,
+            Allergens = allergens,
+
         };
 
         Hospitalization hospitalization = new Hospitalization()
@@ -206,6 +211,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Role = Role.Patient,
             Id = 2
         };
+        
         Doctor doctor2 = new Doctor()
         {
             Id = 5,
@@ -227,10 +233,16 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         };
 
         Medicine medicine = new Medicine(1, "MedicineOne", 12.0);
-        User user3 = new User("Menjdjer", "nekakulsifra", Role.Doctor, 4, ActiveStatus.Active);
-        Allergen allergen1 = new Allergen(1, "Milk");
-        Allergen allergen2 = new Allergen(2, "Cetirizine");
-        Allergen allergen3 = new Allergen(3, "Budesonide");
+        Medicine medicine2 = new Medicine()
+        {
+            Id=2, 
+            Name ="MedicineOne" ,
+            Quantity = 12.0,
+            Allergens = allergens,
+        };
+        User user3 = new User("Menjdjer", "nekakulsifra", Role.Doctor,4,ActiveStatus.Active);
+        Allergen allergen2 = new Allergen(2,"Cetirizine");
+        Allergen allergen3 = new Allergen(3,"Budesonide");
 
         Therapy therapyBlo = new BloodTherapy(10, DateTime.Now, BloodType.A_NEGATIVE, 10, 4);
         Therapy therapyMed = new MedicineTherapy(10, DateTime.Now, 1, 10, 4);
@@ -253,6 +265,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Address = "Zike",
             BloodType = BloodType.A_NEGATIVE
         };
+
 
 
         AnnualLeave annualLeave1 = new AnnualLeave()
@@ -297,6 +310,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Allergens.Add(allergen2);
         dbContext.Allergens.Add(allergen3);
         dbContext.Medicines.Add(medicine);
+        dbContext.Medicines.Add(medicine2);
         dbContext.Therapies.Add(therapyBlo);
         dbContext.Therapies.Add(therapyMed);
         dbContext.BloodStorage.Add(bloodStorage);
