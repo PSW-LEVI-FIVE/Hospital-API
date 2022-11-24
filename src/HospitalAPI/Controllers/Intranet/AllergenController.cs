@@ -23,7 +23,7 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
         [HttpGet]
-        //[Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager")]
         [Route("statistics/AllergensWithPatients")]
         public async Task<IActionResult> GetAllergensWithNumberOfPatients()
         {
