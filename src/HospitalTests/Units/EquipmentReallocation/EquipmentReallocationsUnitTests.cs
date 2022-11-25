@@ -37,17 +37,34 @@ namespace HospitalTests.Units.EquipmentReallocation
 
             TimeInterval er3 = new TimeInterval(DateTime.Parse("2023-11-23 12:30:00"), DateTime.Parse("2023-11-23 13:00:00"));
             TimeInterval er4 = new TimeInterval(DateTime.Parse("2023-11-23 16:30:00"), DateTime.Parse("2023-11-23 17:30:00"));
-            List<TimeInterval> reList = new List<TimeInterval>();
-            List<TimeInterval> apList = new List<TimeInterval>();
 
-            reList.Add(er1);
-            reList.Add(er2);
 
-            apList.Add(er1);
-            apList.Add(er2);
+            TimeInterval er5 = new TimeInterval(DateTime.Parse("2023-11-23 9:30:00"), DateTime.Parse("2023-11-23 10:00:00"));
+            TimeInterval er6 = new TimeInterval(DateTime.Parse("2023-11-23 10:00:00"), DateTime.Parse("2023-11-23 11:00:00"));
 
-            equipmentReallocationRepository.Setup(r => r.GetAllRoomTakenInrevalsForDate(1, DateTime.Parse("2023-11-23 10:30:00"))).ReturnsAsync(reList);
-            appointmentRepository.Setup(r => r.GetAllRoomTakenIntervalsForDate(1, DateTime.Parse("2023-11-23 10:30:00"))).ReturnsAsync(apList);
+            List<TimeInterval> reList1 = new List<TimeInterval>();
+            List<TimeInterval> reList2 = new List<TimeInterval>();
+
+            List<TimeInterval> apList1 = new List<TimeInterval>();
+            List<TimeInterval> apList2 = new List<TimeInterval>();
+
+            reList1.Add(er1);
+            reList1.Add(er2);
+
+            apList1.Add(er1);
+            apList1.Add(er2);
+
+            reList2.Add(er4);
+            apList2.Add(er5);
+            
+            reList2.Add(er6);
+            apList2.Add(er3);
+
+            equipmentReallocationRepository.Setup(r => r.GetAllRoomTakenInrevalsForDate(1, DateTime.Parse("2023-11-23 10:30:00"))).ReturnsAsync(reList1);
+            appointmentRepository.Setup(r => r.GetAllRoomTakenIntervalsForDate(1, DateTime.Parse("2023-11-23 10:30:00"))).ReturnsAsync(apList1);
+
+            equipmentReallocationRepository.Setup(r => r.GetAllRoomTakenInrevalsForDate(2, DateTime.Parse("2023-11-23 10:30:00"))).ReturnsAsync(reList2);
+            appointmentRepository.Setup(r => r.GetAllRoomTakenIntervalsForDate(2, DateTime.Parse("2023-11-23 10:30:00"))).ReturnsAsync(apList2);
 
 
             return unitOfWork;
@@ -55,7 +72,7 @@ namespace HospitalTests.Units.EquipmentReallocation
 
 
         [Fact]
-        public void SuccesfullyFoundFreeIntervals()
+        public void SuccesfullyFoundTakenIntervals()
         {
 
             var unitOfWork =SetupUOW();
@@ -66,7 +83,29 @@ namespace HospitalTests.Units.EquipmentReallocation
             result.ShouldNotBeNull();
         }
 
+        [Fact]
+        public void SuccesfullyFoundFreeIntervals()
+        {
 
+            var unitOfWork = SetupUOW();
+            var dto = new CreateIntervalsEquipmentReallocationDTO(1, 2, DateTime.Parse("2023-11-23 10:30:00"), 30);
+            ITimeIntervalValidationService validator = new TimeIntervalValidationService(unitOfWork.Object);
+            EquipmentReallocationService service = new EquipmentReallocationService(unitOfWork.Object, validator);
+            var result = service.GetPossibleInterval(dto.StartingRoomId,dto.DestinationRoomId, dto.date,new TimeSpan(0,dto.duration,0));
+            result.ShouldNotBeNull();
+        }
+
+        [Fact]
+        public void UnSuccesfullyFoundFreeIntervals()
+        {
+
+            var unitOfWork = SetupUOW();
+            var dto = new CreateIntervalsEquipmentReallocationDTO(1, 2, DateTime.Parse("2023-11-23 10:30:00"), 300000000);
+            ITimeIntervalValidationService validator = new TimeIntervalValidationService(unitOfWork.Object);
+            EquipmentReallocationService service = new EquipmentReallocationService(unitOfWork.Object, validator);
+            var result = service.GetPossibleInterval(dto.StartingRoomId, dto.DestinationRoomId, dto.date, new TimeSpan(0, dto.duration, 0));
+            result.Result.Count.ShouldBe(0);
+        }
     }
 
     
