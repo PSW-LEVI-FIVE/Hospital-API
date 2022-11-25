@@ -6,6 +6,7 @@ using Moq;
 using Shouldly;
 using HospitalLibrary.AnnualLeaves.Dtos;
 using HospitalLibrary.Shared.Repository;
+using SendGrid.Helpers.Errors.Model;
 
 namespace HospitalTests.Units.AnnualLeaves;
 
@@ -81,7 +82,7 @@ public class AnnualLeavesUnitTests
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
         AnnualLeaveService service = new AnnualLeaveService(mock.Object,validator);
         
-        Should.Throw<BadRequestException>(() => service.Delete(annualLeave.Id,1));
+        Should.Throw<HospitalLibrary.Shared.Exceptions.BadRequestException>(() => service.Delete(annualLeave.Id,1));
     }
 
     [Fact]
@@ -96,7 +97,7 @@ public class AnnualLeavesUnitTests
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
         AnnualLeaveService service = new AnnualLeaveService(mock.Object, validator);
 
-        Should.Throw<BadRequestException>(() => service.Delete(annualLeave.Id, 2));
+        Should.Throw<HospitalLibrary.Shared.Exceptions.BadRequestException>(() => service.Delete(annualLeave.Id, 2));
     }
 
     [Fact]
@@ -126,7 +127,7 @@ public class AnnualLeavesUnitTests
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
         AnnualLeaveService service = new AnnualLeaveService(mock.Object, validator);
         var dto = new ReviewLeaveRequestDTO() { State = AnnualLeaveState.CANCELED, Reason = "some reason"};
-        Assert.Throws<BadRequestException>(() => service.ReviewRequest(dto, annualLeave.Id));
+        Assert.Throws<HospitalLibrary.Shared.Exceptions.BadRequestException>(() => service.ReviewRequest(dto, annualLeave.Id));
     }
 
     [Fact]
@@ -141,7 +142,7 @@ public class AnnualLeavesUnitTests
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
         AnnualLeaveService service = new AnnualLeaveService(mock.Object, validator);
         var dto = new ReviewLeaveRequestDTO() { State = AnnualLeaveState.CANCELED};
-        Assert.Throws<BadRequestException>(() => service.ReviewRequest(dto, annualLeave.Id));
+        Assert.Throws<HospitalLibrary.Shared.Exceptions.BadRequestException>(() => service.ReviewRequest(dto, annualLeave.Id));
     }
 
     [Fact]
