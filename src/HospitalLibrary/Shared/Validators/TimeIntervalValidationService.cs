@@ -41,10 +41,7 @@ namespace HospitalLibrary.Shared.Validators
         {
             ThrowIfEndBeforeStart(appointment.StartAt, appointment.EndAt);
             ThrowIfInPast(appointment.StartAt);
-<<<<<<< HEAD
             ThrowIfInAnnualLeavePeriod(appointment.DoctorId, new TimeInterval(appointment.StartAt, appointment.EndAt));
-=======
->>>>>>> f5c8ac2 (added tests and edited  files needed for them to work)
             ThrowIfNotInWorkingHours(appointment);
 
             IEnumerable<TimeInterval> doctorTimeIntervals =
