@@ -66,13 +66,10 @@ namespace HospitalAPI.Controllers.Intranet
         [HttpPost]
         public async  Task<IActionResult> SearchRooms(int id, [FromBody] RoomSearchDTO roomSearchDTO)
         {
-            Console.WriteLine("hahahahha");
-            Console.WriteLine(roomSearchDTO.RoomType);
-            Console.WriteLine(roomSearchDTO.RoomName);
-            ;
+            
             var rooms =  await _roomService.SearchRoom(roomSearchDTO,id);
             return Ok(rooms);
-           //return ;
+          
         }
 
 
