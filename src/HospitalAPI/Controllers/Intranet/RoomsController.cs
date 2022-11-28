@@ -62,12 +62,12 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
 
-        [Route("search/{id}")]
+        [Route("search/{floorId}")]
         [HttpPost]
-        public async  Task<IActionResult> SearchRooms(int id, [FromBody] RoomSearchDTO roomSearchDTO)
+        public async  Task<IActionResult> SearchRooms(int floorId, [FromBody] RoomSearchDTO roomSearchDTO)
         {
             
-            var rooms =  await _roomService.SearchRoom(roomSearchDTO,id);
+            var rooms =  await _roomService.SearchRoom(roomSearchDTO,floorId);
             return Ok(rooms);
           
         }
