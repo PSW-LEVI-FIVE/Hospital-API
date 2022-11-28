@@ -126,12 +126,7 @@ namespace HospitalLibrary.Auth
                     return new UserDTO(currentUser.Username, currentUser.Password, currentUser.Role, currentUser.Id);
                 }
             }
-
             return null;
-
         }
-        
-        
-        
     }
 }
