@@ -24,7 +24,7 @@ namespace HospitalLibrary.AnnualLeaves
         public async Task Validate(AnnualLeave annualLeave)
         {
             if(!annualLeave.IsValid())
-                throw new Shared.Exceptions.BadRequestException("Date is not valid!");
+                throw new BadRequestException("Date is not valid!");
 
             var doctorAnnualLeaves = _unitOfWork.AnnualLeaveRepository.GetAllByDoctorId(annualLeave.DoctorId);
 
@@ -35,7 +35,7 @@ namespace HospitalLibrary.AnnualLeaves
 
             if (!annualLeave.IsUrgent && !isDoctorAvailable)
             {
-                throw new Shared.Exceptions.BadRequestException("There are appointments in given period");
+                throw new BadRequestException("There are appointments in given period");
             }
             if (annualLeave.IsUrgent)
             {
@@ -46,9 +46,9 @@ namespace HospitalLibrary.AnnualLeaves
         public void CancelValidation(AnnualLeave leave, int doctorId)
         {
             if(leave.State!=AnnualLeaveState.PENDING)
-                throw new Shared.Exceptions.BadRequestException("Annual Leave isn't PENDING,can not cancel it!");
+                throw new BadRequestException("Annual Leave isn't PENDING,can not cancel it!");
             if(leave.DoctorId!=doctorId)
-                throw new Shared.Exceptions.BadRequestException("Doctor and Annual-Leave don't match!");
+                throw new BadRequestException("Doctor and Annual-Leave don't match!");
         }
 
         private bool IsDoctorAvailable(int doctorId, TimeInterval timeInterval)
@@ -70,7 +70,7 @@ namespace HospitalLibrary.AnnualLeaves
                 TimeInterval timeInterval2 = new TimeInterval(annualLeaveToMake.StartAt, annualLeaveToMake.EndAt);
                 if (timeInterval1.IsOverlaping(timeInterval2))
                 {
-                    throw new Shared.Exceptions.BadRequestException("There are already annual leaves in that period");
+                    throw new BadRequestException("There are already annual leaves in that period");
                 }
             }
         }
@@ -80,9 +80,9 @@ namespace HospitalLibrary.AnnualLeaves
             if (leave == null)
                 throw new NotFoundException("Annual leave with given id doesn't exist!");
             if (leave.State != AnnualLeaveState.PENDING)
-                throw new Shared.Exceptions.BadRequestException("Annual leave isn't pending, can't review it!");
+                throw new BadRequestException("Annual leave isn't pending, can't review it!");
             if (reviewLeaveRequestDTO.State == AnnualLeaveState.CANCELED && reviewLeaveRequestDTO.Reason == null)
-                throw new Shared.Exceptions.BadRequestException("Can't reject annual leave request without reason!");
+                throw new BadRequestException("Can't reject annual leave request without reason!");
         }
     }
 }
