@@ -23,74 +23,21 @@ namespace HospitalLibrary.Rooms
 
         public Task<IEnumerable<RoomEquipment>> searchEquipmentInRoom(RoomEquipmentDTO roomEquipmentDTO)
         {
-            switch (checkSearchInputRoom(roomEquipmentDTO))
-            {
-                case 0: 
-                    return  _unitOfWork.RoomEquipmentRepository.GetAllByCombineSearchInRoom(roomEquipmentDTO);
-                case 1:
-                    return _unitOfWork.RoomEquipmentRepository.GetAllByNameSearchInRoom(roomEquipmentDTO);
-                case 2:
-                    return _unitOfWork.RoomEquipmentRepository.GetAllByQuantitySearchInRoom(roomEquipmentDTO);
-                default: 
-                    return _unitOfWork.RoomRepository.GetAllEquipmentbyRoom(roomEquipmentDTO.RoomId);
-            }  
+            return  _unitOfWork.RoomEquipmentRepository.GetAllByCombineSearchInRoom(roomEquipmentDTO);  
         }
 
-        public IEnumerable<Room> searchEquipmentOnFloor(RoomEquipmentDTO roomEquipmentDTO)
+        public IEnumerable<Room> searchRoomsByFloorContainingEquipment(RoomEquipmentDTO roomEquipmentDTO)
         {
-            var rooms =  _unitOfWork.RoomRepository.FindAllByFloor(roomEquipmentDTO.RoomId);
+            var rooms = _unitOfWork.RoomEquipmentRepository.CheckFloorByCombineEquipmentSearch(roomEquipmentDTO);
             List<Room> result = new List<Room>();
-            foreach (var room in rooms.Result)
+            foreach(Room room in rooms)
             {
-                var equipment = _unitOfWork.RoomRepository.GetAllEquipmentbyRoom(room.Id);
-                if (equipment.Result != null)
-                {
-                   if(checkSearchInputFloor(roomEquipmentDTO, equipment))
-                    {
-                        
-                        result.Add(room);
-                    }
-                }
+                if (!room.RoomEquipment.Count().Equals(0))
+                    result.Add(room);
+                
             }
-           
             IEnumerable<Room> resultList = result.AsEnumerable<Room>();
             return resultList;
-        }
-
-        public int checkSearchInputRoom(RoomEquipmentDTO roomEquipmentDTO)
-        {
-            var status = 0;
-            if (roomEquipmentDTO.Name != "0" && roomEquipmentDTO.Quantity > 0)
-            {
-                return status;
-            }
-
-            else if (roomEquipmentDTO.Name != "0")
-            {
-                return status + 1;
-            }
-            else if(roomEquipmentDTO.Quantity > 0)
-            {
-                return status + 2;
-            }
-           else
-            {
-                return status + 3;
-            }
-        }
-
-        public bool checkSearchInputFloor(RoomEquipmentDTO roomEquipmentDTO, Task<IEnumerable<RoomEquipment>> roomEquipment)
-        {
-            switch (checkSearchInputRoom(roomEquipmentDTO))
-            {
-                case 0:
-                     return _unitOfWork.RoomEquipmentRepository.checkFloorByCombineEquipmentSearch(roomEquipment, roomEquipmentDTO);
-                case 1:
-                    return _unitOfWork.RoomEquipmentRepository.checkFloorByEquipmentName(roomEquipment, roomEquipmentDTO);
-                case 2:
-                    return _unitOfWork.RoomEquipmentRepository.checkFloorByEquipmentQuantity(roomEquipment, roomEquipmentDTO);
-                default: return false;
-            }
         }
     }
 }

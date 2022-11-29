@@ -14,6 +14,7 @@ using Shouldly;
 
 namespace HospitalTests.Integrations.Equipment
 {
+    [Collection("Test")]
     public class EquipmentTest: BaseIntegrationTest
     {
         public EquipmentTest(TestDatabaseFactory<Startup> factory) : base(factory)

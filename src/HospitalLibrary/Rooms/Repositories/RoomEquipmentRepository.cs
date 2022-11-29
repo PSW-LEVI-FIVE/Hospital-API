@@ -16,56 +16,20 @@ namespace HospitalLibrary.Rooms.Repositories
         {
         }
 
-        public async Task<IEnumerable<RoomEquipment>> GetAllByQuantitySearchInRoom(RoomEquipmentDTO roomEquipmentDTO)
-        {
-            return await _dataContext.RoomEquipment.Where(r => r.Quantity >= roomEquipmentDTO.Quantity
-                                                            && r.RoomId.Equals(roomEquipmentDTO.RoomId)).ToListAsync();
-        }
-
-        public async Task<IEnumerable<RoomEquipment>> GetAllByNameSearchInRoom(RoomEquipmentDTO roomEquipmentDTO)
-        {
-            return await _dataContext.RoomEquipment.Where(r => r.Name.ToLower().Contains(roomEquipmentDTO.Name.ToLower())
-                                                          && r.RoomId.Equals(roomEquipmentDTO.RoomId)).ToListAsync();
-        }
-
         public async Task<IEnumerable<RoomEquipment>> GetAllByCombineSearchInRoom(RoomEquipmentDTO roomEquipmentDTO)
         {
-            return await _dataContext.RoomEquipment.Where(r => (r.RoomId == roomEquipmentDTO.RoomId) &&
-                                                                 (r.Name.ToLower().Contains(roomEquipmentDTO.Name.ToLower())) &&
-                                                                 (r.Quantity >= roomEquipmentDTO.Quantity)).ToListAsync();
+            return await _dataContext.RoomEquipment.Where(r => (r.RoomId == roomEquipmentDTO.RoomId)
+                                                               && (roomEquipmentDTO.Name.Equals("0") || r.Name.ToLower().Contains(roomEquipmentDTO.Name.ToLower()))
+                                                               && (roomEquipmentDTO.Quantity.Equals(0) || r.Quantity >= roomEquipmentDTO.Quantity)).ToListAsync();
         }
 
-        public bool checkFloorByEquipmentName(Task<IEnumerable<RoomEquipment>> roomEquipment, RoomEquipmentDTO roomEquipmentDTO)
-        {
-            foreach (var equipment in roomEquipment.Result)
-            {
-                if (equipment.Name.ToLower().Contains(roomEquipmentDTO.Name.ToLower()))
 
-                    return true;
-            }
-            return false;
-        }
-
-        public bool checkFloorByEquipmentQuantity(Task<IEnumerable<RoomEquipment>> roomEquipment, RoomEquipmentDTO roomEquipmentDTO)
+        public IEnumerable<Room> CheckFloorByCombineEquipmentSearch(RoomEquipmentDTO roomEquipmentDTO)
         {
-            foreach (var equipment in roomEquipment.Result)
-            {
-                if (equipment.Quantity >= roomEquipmentDTO.Quantity)
-                
-                    return true;
-            }
-            return false;
-        }
-
-        public bool checkFloorByCombineEquipmentSearch(Task<IEnumerable<RoomEquipment>> roomEquipment, RoomEquipmentDTO roomEquipmentDTO)
-        {
-            foreach (var equipment in roomEquipment.Result)
-            {
-                if (equipment.Quantity >= roomEquipmentDTO.Quantity && equipment.Name.ToLower().Contains(roomEquipmentDTO.Name.ToLower()))
-    
-                    return true;
-            }
-            return false;
+           return _dataContext.Rooms.Where(r => r.FloorId.Equals(roomEquipmentDTO.RoomId))
+                        .Include(e => e.RoomEquipment
+                        .Where(equipment => ((roomEquipmentDTO.Name.Equals("0") || equipment.Name.ToLower().Contains(roomEquipmentDTO.Name.ToLower()))
+                        && (roomEquipmentDTO.Quantity.Equals(0) || equipment.Quantity >= roomEquipmentDTO.Quantity)))).ToList();
         }
     }
 }

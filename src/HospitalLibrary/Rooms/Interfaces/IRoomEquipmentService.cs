@@ -11,6 +11,6 @@ namespace HospitalLibrary.Rooms.Interfaces
     public interface IRoomEquipmentService
     {
         Task<IEnumerable<RoomEquipment>> searchEquipmentInRoom(RoomEquipmentDTO roomEquipmentDTO);
-        IEnumerable<Room> searchEquipmentOnFloor(RoomEquipmentDTO roomEquipmentDTO);
+        IEnumerable<Room> searchRoomsByFloorContainingEquipment(RoomEquipmentDTO roomEquipmentDTO);
     }
 }

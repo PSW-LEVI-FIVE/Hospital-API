@@ -22,19 +22,5 @@ namespace HospitalLibrary.Rooms
         {
             
         }
-
-        public void GetAllByNameSearchInRoom(RoomEquipmentDTO roomEqipmentDTO)
-        {
-            var result = _unitOfWork.RoomEquipmentRepository.GetAllByNameSearchInRoom(roomEqipmentDTO);
-            if (result == null)
-                throw new Exception("There is no equipment with given name in desired room"); 
-        }
-
-        public void GetAllByQuantitySearchInRoom(RoomEquipmentDTO roomEqipmentDTO)
-        {
-            var result = _unitOfWork.RoomEquipmentRepository.GetAllByQuantitySearchInRoom(roomEqipmentDTO);
-            if (result == null)
-                throw new Exception("There is no equipment with given quantity in desired room");
-        }
     }
 }

@@ -6,7 +6,6 @@ using HospitalLibrary.Appointments;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.AnnualLeaves.Dtos;
-using SendGrid.Helpers.Errors.Model;
 
 namespace HospitalLibrary.AnnualLeaves
 {
