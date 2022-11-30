@@ -29,7 +29,6 @@ namespace HospitalTests.Units.RoomSearch
             IEnumerable<Room> roomsEnumerable = rooms.AsEnumerable();
             roomRepository.Setup(r => r.GetAll()).ReturnsAsync(roomsEnumerable);
             return unitOfWork;
-
         }
 
         [Fact]
@@ -40,8 +39,6 @@ namespace HospitalTests.Units.RoomSearch
             var roomService = new RoomService(mock.Object);
             var result = roomService.SearchRoom(dto,1);
             result.ShouldNotBeNull();
-
-
         }
         [Fact]
         public void room_type_typed()
@@ -61,18 +58,6 @@ namespace HospitalTests.Units.RoomSearch
             var roomService = new RoomService(mock.Object);
             var result = roomService.SearchRoom(dto,1);
             result.ShouldNotBeNull();
-
         }
-
-
-
-
-
-
-
-
-
-
-
     }
 }

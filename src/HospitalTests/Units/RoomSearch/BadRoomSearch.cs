@@ -61,13 +61,6 @@ namespace HospitalTests.Units.RoomSearch
             var result = roomService.SearchRoom(dto,1).Result;
             result.ShouldBeEmpty();
         }
-
-
-
-
-
-
-
-
+        
     }
 }

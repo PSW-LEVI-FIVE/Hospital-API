@@ -42,7 +42,6 @@ namespace HospitalTests.Integrations.Rooms
             var res = controller.SearchRooms(1,dto).Result;
             var result = ((OkObjectResult)res).Value as Room;
             result.ShouldBeNull();
-
         }
     }
 }
