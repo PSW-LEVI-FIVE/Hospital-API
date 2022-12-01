@@ -49,33 +49,11 @@ namespace HospitalLibrary.Rooms
             _unitOfWork.RoomRepository.Save();
             return room;
         }
-
-        public Task<IEnumerable<Room>> SearchRoom(RoomSearchDTO searchRoomDTO,int id)
-
+        
+        public Task<IEnumerable<Room>> SearchRoom(RoomSearchDTO searchRoomDTO,int floorId)
         {
-            Enum.TryParse(searchRoomDTO.RoomType, true, out RoomType roomType);
 
-            if (!(searchRoomDTO.RoomName.Equals("")) && (roomType != RoomType.NO_TYPE))
-            {
-                return _unitOfWork.RoomRepository.SearchByTypeAndName(searchRoomDTO,id);
-            }
-            else if (!(searchRoomDTO.RoomName.Equals("")) && (roomType == RoomType.NO_TYPE))
-            {
-                return _unitOfWork.RoomRepository.SearchByName(searchRoomDTO,id);
-
-            }
-            else if (searchRoomDTO.RoomName.Equals("") && (roomType != RoomType.NO_TYPE))
-            {
-                return _unitOfWork.RoomRepository.SearchByType(searchRoomDTO,id);
-            }
-            else
-
-            {
-                return Task.FromResult<IEnumerable<Room>>(null);
-
-
-            }
-
+            return _unitOfWork.RoomRepository.SearchByTypeAndName(searchRoomDTO, floorId);
         }
 
         public Task<IEnumerable<RoomEquipment>> GetAllEquipmentbyRoomId(int id)

@@ -29,25 +29,22 @@ namespace HospitalTests.Units.RoomSearch
             IEnumerable<Room> roomsEnumerable = rooms.AsEnumerable();
             roomRepository.Setup(r => r.GetAll()).ReturnsAsync(roomsEnumerable);
             return unitOfWork;
-
         }
 
         [Fact]
          public void room_name_typed()
         {
             var mock = SetupUnitOfWork();
-            var dto = new RoomSearchDTO("NO_TYPE", "1");
+            var dto = new RoomSearchDTO(RoomType.NO_TYPE, "1");
             var roomService = new RoomService(mock.Object);
             var result = roomService.SearchRoom(dto,1);
             result.ShouldNotBeNull();
-
-
         }
         [Fact]
         public void room_type_typed()
         {
             var mock = SetupUnitOfWork();
-            var dto = new RoomSearchDTO("CAFETERIA", "");
+            var dto = new RoomSearchDTO(RoomType.CAFETERIA, "");
             var roomService = new RoomService(mock.Object);
             var result = roomService.SearchRoom(dto,1);
             result.ShouldNotBeNull();
@@ -57,22 +54,10 @@ namespace HospitalTests.Units.RoomSearch
         public void room_type_and_room_name_typed()
         {
             var mock = SetupUnitOfWork();
-            var dto = new RoomSearchDTO("CAFETERIA", "1");
+            var dto = new RoomSearchDTO(RoomType.CAFETERIA, "1");
             var roomService = new RoomService(mock.Object);
             var result = roomService.SearchRoom(dto,1);
             result.ShouldNotBeNull();
-
         }
-
-
-
-
-
-
-
-
-
-
-
     }
 }

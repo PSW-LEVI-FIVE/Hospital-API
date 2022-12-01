@@ -22,33 +22,26 @@ namespace HospitalTests.Integrations.Rooms
         {
         }
 
-
-
         [Fact]
         public   void empty_search_field()
         {
             using var scope = Factory.Services.CreateScope();
             var controller = new RoomsController(scope.ServiceProvider.GetRequiredService<IRoomService>());
-            var dto = new RoomSearchDTO("NO_TYPE", "");
-
+            var dto = new RoomSearchDTO(RoomType.NO_TYPE, "");
             var result =  controller.SearchRooms(1,dto).Result;
-            var res = ((OkObjectResult) result).Value as Task<IEnumerable<Room>>;
-            Assert.Null(res);
-
-
+            var res = ((OkObjectResult) result).Value as IEnumerable<Room>;
+            res.ShouldBeEmpty();
         }
-
-
+        
         [Fact]
         public   void filled_search_field()
         {
             var scope = Factory.Services.CreateScope();
             var controller = new RoomsController(scope.ServiceProvider.GetRequiredService<IRoomService>());
-            var dto = new RoomSearchDTO("CAFETERIA","1");
+            var dto = new RoomSearchDTO(RoomType.CAFETERIA,"1");
             var res = controller.SearchRooms(1,dto).Result;
             var result = ((OkObjectResult)res).Value as Room;
             result.ShouldBeNull();
-
         }
     }
 }

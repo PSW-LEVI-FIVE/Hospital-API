@@ -71,17 +71,14 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
 
-        [Route("search/{id}")]
+        [Route("search/{floorId}")]
         [HttpPost]
-        public async  Task<IActionResult> SearchRooms(int id, [FromBody] RoomSearchDTO roomSearchDTO)
+        public async  Task<IActionResult> SearchRooms(int floorId, [FromBody] RoomSearchDTO roomSearchDTO)
         {
-            Console.WriteLine("hahahahha");
-            Console.WriteLine(roomSearchDTO.RoomType);
-            Console.WriteLine(roomSearchDTO.RoomName);
-            ;
-            var rooms =  await _roomService.SearchRoom(roomSearchDTO,id);
+            
+            var rooms =  await _roomService.SearchRoom(roomSearchDTO,floorId);
             return Ok(rooms);
-           //return ;
+          
         }
 
 
