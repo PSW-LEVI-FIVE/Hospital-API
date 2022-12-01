@@ -27,12 +27,11 @@ namespace HospitalAPI.Controllers.Intranet
 
             TimeSpan s =new TimeSpan(0, reallocationDTO.duration, 0);  
             var availableIntervals =await _equipmentReallocationService.GetPossibleInterval(reallocationDTO.StartingRoomId, reallocationDTO.DestinationRoomId,reallocationDTO.date, s);
-            //public async Task<List<TimeInterval>> GetPossibleInterval(int Starting_roomId, int Destination_roomId, DateTime date, TimeSpan duration)
 
             return Ok(availableIntervals);
         }
 
-        [Route("Create")]
+        [Route("create")]
         [HttpPost]
         public async Task<IActionResult> AddNewReallocation([FromBody] CreateEquipmentReallocationDTO createDto)
         {
@@ -43,14 +42,14 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
 
-        [HttpGet("Pending")]
+        [HttpGet("pending")]
         public async Task<IActionResult> GetAllPending()
         {
             var pending = await _equipmentReallocationService.getAllPending();
             return Ok(pending) ;
         }
 
-        [HttpGet("PendingToday")]
+        [HttpGet("pendingToday")]
 
         public async Task<IActionResult> GetAllPendingToday()
         {

@@ -24,6 +24,10 @@ namespace HospitalLibrary.Rooms.Repositories
                 .Where(a=> a.state==ReallocationState.PENDING)
                 .ToListAsync();
         }
+        private int maxID()
+        {
+         return _dataContext.RoomEquipment.OrderByDescending(a => a.Id).FirstOrDefault().Id;
+        }
 
         public async Task<List<EquipmentReallocation>> GetAllPendingForToday()
         {
@@ -43,19 +47,6 @@ namespace HospitalLibrary.Rooms.Repositories
                 .ToListAsync();
         }
 
-        public List<TimeInterval> GetAllRoomTakenInrevalsForDateList(int roomId, DateTime date)
-        {
-            return _dataContext.EquipmentReallocations
-                            .Where(a => a.StartingRoomId == roomId || a.DestinationRoomId == roomId)
-                            .Where(a => a.StartAt.Date.Equals(date.Date))
-                            .Select(a => new TimeInterval(a.StartAt, a.EndAt))
-                            .OrderBy(a => a.Start)
-                            .ToList();
-        }
 
-        public Task<EquipmentReallocation> GetById(int appointmentId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

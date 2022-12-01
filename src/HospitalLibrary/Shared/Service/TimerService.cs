@@ -17,14 +17,10 @@ namespace HospitalLibrary.Shared.Service
 {
     public class TimerService : BackgroundService
     {
-        //private readonly EquipmentReallocationService _equipmentReallocationService;
         private readonly IServiceProvider _serviceProvider;
 
         System.Timers.Timer reallocationTimer = new System.Timers.Timer();
-       /* public TimerService()
-        {
-            
-        }*/
+      
 
         public TimerService(IServiceProvider serviceProvider)
         {

@@ -94,6 +94,11 @@ namespace HospitalLibrary.Rooms.Repositories
                 .ToListAsync();
 
         }
+
+        public int GetHighestId()
+        {
+            return _dataContext.RoomEquipment.OrderByDescending(a => a.Id).FirstOrDefault().Id;
+        }
     }
     
 }

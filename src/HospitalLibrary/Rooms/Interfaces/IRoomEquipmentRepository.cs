@@ -19,6 +19,6 @@ namespace HospitalLibrary.Rooms.Interfaces
         Task<RoomEquipment> GetEquipmentByRoomAndName(int roomId,string name);
 
         int GetNumberOfUsedEquipment(int equipmentId);
-
+        int GetHighestId();
     }
 }

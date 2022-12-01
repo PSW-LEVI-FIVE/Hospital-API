@@ -92,5 +92,16 @@ namespace HospitalLibrary.Rooms
                 default: return false;
             }
         }
+        public void CreateEquipment(int destinationRoomId, int amount, RoomEquipment equipment)
+        {
+            _unitOfWork.RoomEquipmentRepository.Add(new RoomEquipment(_unitOfWork.RoomEquipmentRepository.GetHighestId() + 1,
+                amount, equipment.Name, destinationRoomId));
+            _unitOfWork.RoomEquipmentRepository.Save();
+        }
+        public void UpdateEquipment(RoomEquipment realEq)
+        {
+            _unitOfWork.RoomEquipmentRepository.Update(realEq);
+            _unitOfWork.RoomEquipmentRepository.Save();
+        }
     }
 }
