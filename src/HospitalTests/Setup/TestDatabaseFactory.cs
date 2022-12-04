@@ -53,10 +53,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-
-        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=isa1234";
-
-
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=123";
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
@@ -108,7 +105,6 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
         MapBuilding mapBuilding = new MapBuilding()
         {
-
             Id = 2,
             BuildingId = building.Id,
             Height = 200,
@@ -143,8 +139,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Id = 2,
             Area = 10,
             FloorId = 2,
-            RoomNumber = "2",
-            RoomType = RoomType.CAFETERIA
+            RoomNumber = "1"
         };
 
         RoomEquipment equipment = new Bed(1, 10, "Bed", 2, 1);
@@ -157,11 +152,8 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Width = 10,
             XCoordinate = 10,
             YCoordinate = 10,
-            MapFloorId = mapFloor.Id,
-            
+            MapFloorId = mapFloor.Id
         };
-        
-        
 
         Patient patient = new Patient()
         {
