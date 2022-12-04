@@ -9,12 +9,14 @@ using HospitalLibrary.Appointments;
 using HospitalLibrary.BloodOrders;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Buildings;
+using HospitalLibrary.Examination;
 using HospitalLibrary.Floors;
 using HospitalLibrary.Map;
 using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.Medicines;
 using HospitalLibrary.Rooms.Model;
+using HospitalLibrary.Symptoms;
 using HospitalLibrary.Therapies.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -47,6 +49,12 @@ namespace HospitalLibrary.Settings
         public DbSet<AnnualLeave> AnnualLeaves { get; set; }
         
         public DbSet<BloodOrder> BloodOrders { get; set; }
+        
+        public DbSet<ExaminationReport> ExaminationReports { get; set; }
+        
+        public DbSet<Symptom> Symptoms { get; set; }
+        
+        public DbSet<Prescription> Prescriptions { get; set; }
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -77,6 +85,10 @@ namespace HospitalLibrary.Settings
             modelBuilder.Entity<Person>().HasIndex(p => p.Email).IsUnique();
             modelBuilder.Entity<Users.User>().HasIndex(u => u.Username).IsUnique();
             modelBuilder.Entity<Users.User>().HasIndex(u => u.ActivationCode).IsUnique();
+
+            modelBuilder.Entity<ExaminationReport>().HasMany(e => e.Prescriptions).WithMany(p => p.ExaminationReports);
+            modelBuilder.Entity<ExaminationReport>().HasMany(e => e.Symptoms).WithMany(p => p.ExaminationReports);
+
 
             // modelBuilder.Entity<Hospitalization>()
             //     .HasOne(h => h.Bed)

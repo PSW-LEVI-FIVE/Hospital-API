@@ -19,6 +19,8 @@ using HospitalLibrary.Buildings;
 using HospitalLibrary.Buildings.Interfaces;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
+using HospitalLibrary.Examination;
+using HospitalLibrary.Examination.Interfaces;
 using HospitalLibrary.Feedbacks;
 using HospitalLibrary.Feedbacks.Interfaces;
 using HospitalLibrary.Floors;
@@ -55,6 +57,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using HospitalLibrary.Managers.Interfaces;
 using HospitalLibrary.Managers;
+using HospitalLibrary.Symptoms;
+using HospitalLibrary.Symptoms.Interfaces;
 using Newtonsoft.Json;
 
 namespace HospitalAPI
@@ -108,6 +112,8 @@ namespace HospitalAPI
             services.AddScoped<IStorage, SupabaseStorage>();
             services.AddScoped<IPDFGenerator, PdfGenerator>();
             services.AddScoped<IBedService, BedService>();
+            services.AddScoped<ISymptomService, SymptomService>();
+            services.AddScoped<IExaminationReportService, ExaminationReportService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });

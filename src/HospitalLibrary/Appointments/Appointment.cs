@@ -13,6 +13,13 @@ public enum AppointmentState
     PENDING
 }
 
+public enum AppointmentType
+{
+    REGULAR,
+    EXAMINATION,
+    CONSILIUM
+}
+
 
 namespace HospitalLibrary.Appointments
 {
@@ -26,8 +33,8 @@ namespace HospitalLibrary.Appointments
         public Doctor Doctor { get; set; }
         
         [ForeignKey("Patient")]
-        public int PatientId { get; set; }
-        public Patient Patient { get; set; }
+        public int? PatientId { get; set; }
+        public Patient? Patient { get; set; }
 
         [ForeignKey("Room")]
         public int RoomId { get; set; }
@@ -37,6 +44,12 @@ namespace HospitalLibrary.Appointments
         public DateTime EndAt { get; set; }
 
         public AppointmentState State { get; set; }
+        
+        public AppointmentType Type { get; set; }
+        
+        [ForeignKey("Consilium")]
+        public int? ConsiliumId { get; set; }
+        public Consilium? Consilium { get; set; }
 
         public Appointment()
         {

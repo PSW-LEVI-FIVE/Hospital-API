@@ -12,6 +12,8 @@ using HospitalLibrary.Buildings;
 using HospitalLibrary.Buildings.Interfaces;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
+using HospitalLibrary.Examination;
+using HospitalLibrary.Examination.Interfaces;
 using HospitalLibrary.Feedbacks;
 using HospitalLibrary.Feedbacks.Interfaces;
 using HospitalLibrary.Floors;
@@ -34,6 +36,8 @@ using HospitalLibrary.Rooms.Repositories;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Shared.Model;
+using HospitalLibrary.Symptoms;
+using HospitalLibrary.Symptoms.Interfaces;
 using HospitalLibrary.Therapies;
 using HospitalLibrary.Therapies.Interfaces;
 using HospitalLibrary.Users;
@@ -69,6 +73,8 @@ namespace HospitalLibrary.Shared.Repository
         private IBloodOrderRepository _bloodOrderRepository;
         private IUserRepository _userRepository;
         private IPersonRepository _personRepository;
+        private IExaminationReportRepository _examinationReportRepository;
+        private ISymptomRepository _symptomRepository;
 
         public UnitOfWork(HospitalDbContext dataContext)
         {
@@ -111,5 +117,7 @@ namespace HospitalLibrary.Shared.Repository
             _bloodOrderRepository ??= new BloodOrderRepository(_dataContext);
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_dataContext);
         public IPersonRepository PersonRepository => _personRepository ??= new PersonRepository(_dataContext);
+        public IExaminationReportRepository ExaminationReportRepository => _examinationReportRepository ??= new ExaminationReportRepository(_dataContext);
+        public ISymptomRepository SymptomRepository => _symptomRepository ??= new SymptomRepository(_dataContext);
     }
 }
