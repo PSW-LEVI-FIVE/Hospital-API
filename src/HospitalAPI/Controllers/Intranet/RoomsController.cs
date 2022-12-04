@@ -42,7 +42,7 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(room);
         }
 
-        [Route("equipmentView/{roomId:int}")]
+        [Route("equipment/room/{roomId:int}")]
         [HttpGet]
         [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetRoomEquipment(int roomId)

@@ -37,8 +37,7 @@ namespace HospitalLibrary.Rooms
                     result.Add(room);
 
             }
-            IEnumerable<Room> resultList = result.AsEnumerable<Room>();
-            return resultList;
+            return result.AsEnumerable<Room>();
         }
 
 

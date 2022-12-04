@@ -26,7 +26,7 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(result);
         }
 
-        [Route("floorSearch")]
+        [Route("floor-search")]
         [HttpGet]
         [Authorize(Roles = "Manager")]
         public IActionResult searchRoomsByFloorContainingEquipment([FromQuery] RoomEquipmentDTO roomEquipmentDTO)
