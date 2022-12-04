@@ -41,7 +41,8 @@ public class RoomTests: BaseIntegrationTest
             Width = 20,
             MapFloorId = 2,
             XCoordinate = 10,
-            YCoordinate = 10
+            YCoordinate = 10,
+            RoomType = RoomType.EXAMINATION_ROOM
         };
 
         var result = ((OkObjectResult)controller.CreateRoom(dto)).Value as MapRoom;

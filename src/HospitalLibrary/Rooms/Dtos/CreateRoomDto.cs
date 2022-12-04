@@ -11,6 +11,8 @@ namespace HospitalLibrary.Rooms.Dtos
         [Required]
         public float Area { get; set; }
         [Required]
+        public RoomType RoomType { get; set; }
+        [Required]
         public int MapFloorId { get; set; }
         [Required]
         public float XCoordinate { get; set; }
@@ -29,7 +31,8 @@ namespace HospitalLibrary.Rooms.Dtos
             return new Room()
             {
                 RoomNumber = RoomNumber,
-                Area = Area
+                Area = Area,
+                RoomType = RoomType
             };
         }
 
