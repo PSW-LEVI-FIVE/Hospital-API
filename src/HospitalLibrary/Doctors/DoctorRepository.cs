@@ -24,7 +24,16 @@ namespace HospitalLibrary.Doctors
                 .Equals(SpecialtyType.ITERNAL_MEDICINE))
                 .Where(doctor => doctor.Patients.Count <= mostUnburdenedPatientsCount + 2)
                 .OrderBy(doctor => doctor.Patients.Count)
-                .Include(a => a.Patients)
+                .Include(doctor => doctor.Patients)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Doctor>> GetDoctorsForStepByStep(int patientId)
+        {
+            
+            return await _dataContext.Doctors
+                .Where(doctor => doctor.SpecialtyType.Equals(SpecialtyType.ITERNAL_MEDICINE) 
+                                 || doctor.Appointments.Count(a => a.PatientId == patientId) >= 1)
                 .ToListAsync();
         }
 

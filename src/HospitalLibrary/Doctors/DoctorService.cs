@@ -30,6 +30,11 @@ namespace HospitalLibrary.Doctors
             return _unitOfWork.DoctorRepository.GetAll();
         }
 
+        public Task<IEnumerable<Doctor>> GetDoctorsForStepByStep(int patientId)
+        {
+            return _unitOfWork.DoctorRepository.GetDoctorsForStepByStep(patientId);
+        }
+
         public Task<Doctor> GetMostUnburdenedDoctor()
         {
             return _unitOfWork.DoctorRepository.GetMostUnburdenedDoctor();

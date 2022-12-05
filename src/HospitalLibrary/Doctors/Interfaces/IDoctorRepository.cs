@@ -10,6 +10,7 @@ namespace HospitalLibrary.Doctors.Interfaces
     {
         IEnumerable<Doctor> GetAllDoctorsWithSpecialityExceptId(SpecialtyType specialtyType, int doctorId);
         Task<IEnumerable<Doctor>> GetUnburdenedDoctors(int mostUnburdenedPatientsCount);
+        Task<IEnumerable<Doctor>> GetDoctorsForStepByStep(int patientId);
         Task<Doctor> GetMostUnburdenedDoctor();
         public Task<IEnumerable<Doctor>> GetDoctorsByAgeRange(DateTime dateFromAge, DateTime dateToAge);
     }
