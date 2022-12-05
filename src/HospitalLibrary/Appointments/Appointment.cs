@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using HospitalLibrary.Consiliums;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Rooms;
@@ -53,6 +54,22 @@ namespace HospitalLibrary.Appointments
 
         public Appointment()
         {
+        }
+
+        public Appointment(Appointment appointment)
+        {
+            Id = appointment.Id;
+            DoctorId = appointment.DoctorId;
+            Doctor = appointment.Doctor;
+            Room = appointment.Room;
+            RoomId = appointment.RoomId;
+            Patient = appointment.Patient;
+            PatientId = appointment.PatientId;
+            StartAt = appointment.StartAt;
+            State = appointment.State;
+            EndAt = appointment.EndAt;
+            Type = appointment.Type;
+            Consilium = appointment.Consilium;
         }
     }
     

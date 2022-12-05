@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HospitalLibrary.Appointments
+namespace HospitalLibrary.Consiliums
 {
     public class Consilium
     {
