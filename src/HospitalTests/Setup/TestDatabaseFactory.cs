@@ -20,6 +20,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using HospitalLibrary.AnnualLeaves;
+using HospitalLibrary.Appointments;
+using HospitalLibrary.Examination;
+using HospitalLibrary.Symptoms;
 
 namespace HospitalTests.Setup;
 
@@ -53,10 +56,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-
-        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=isa1234";
-
-
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=123";
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
@@ -108,7 +108,6 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
         MapBuilding mapBuilding = new MapBuilding()
         {
-
             Id = 2,
             BuildingId = building.Id,
             Height = 200,
@@ -143,8 +142,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Id = 2,
             Area = 10,
             FloorId = 2,
-            RoomNumber = "2",
-            RoomType = RoomType.CAFETERIA
+            RoomNumber = "1"
         };
 
         RoomEquipment equipment = new Bed(1, 10, "Bed", 2, 1);
@@ -157,11 +155,8 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Width = 10,
             XCoordinate = 10,
             YCoordinate = 10,
-            MapFloorId = mapFloor.Id,
-            
+            MapFloorId = mapFloor.Id
         };
-        
-        
 
         Patient patient = new Patient()
         {
@@ -294,6 +289,42 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
         };
 
+
+        Symptom cough = new Symptom()
+        {
+            Id = 10,
+            Name = "Cough"
+        };
+        Symptom blood = new Symptom()
+        {
+            Id = 11,
+            Name = "Blood"
+        };
+
+        var today = new DateTime();
+        Appointment examination = new Appointment()
+        {
+            Id = 30,
+            DoctorId = 4,
+            PatientId = 1,
+            RoomId = 2,
+            State = AppointmentState.PENDING,
+            Type = AppointmentType.EXAMINATION,
+            StartAt = today,
+            EndAt = today.AddDays(1)
+        };
+
+        ExaminationReport rp = new ExaminationReport()
+        {
+            Id = 10,
+            Content = "Something test",
+            Prescriptions = null,
+            Symptoms = null,
+            DoctorId = 4,
+            ExaminationId = 30
+        };
+        
+
         dbContext.Buildings.Add(building);
         dbContext.MapBuildings.Add(mapBuilding);
         dbContext.Floors.Add(floor);
@@ -327,7 +358,11 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Therapies.Add(bloodTherapy1);
         dbContext.Therapies.Add(bloodTherapy2);
         dbContext.AnnualLeaves.Add(annualLeave1);
-        dbContext.AnnualLeaves.Add(annualLeave2); 
+        dbContext.AnnualLeaves.Add(annualLeave2);
+        dbContext.Symptoms.Add(cough);
+        dbContext.Symptoms.Add(blood);
+        dbContext.Appointments.Add(examination);
+        dbContext.ExaminationReports.Add(rp);
         dbContext.SaveChanges();
 
 

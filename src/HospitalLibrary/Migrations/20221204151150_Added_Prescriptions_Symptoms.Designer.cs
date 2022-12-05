@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221204151150_Added_Prescriptions_Symptoms")]
+    partial class Added_Prescriptions_Symptoms
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,6 +49,21 @@ namespace HospitalLibrary.Migrations
                     b.HasIndex("PatientsId");
 
                     b.ToTable("AllergenPatient");
+                });
+
+            modelBuilder.Entity("ExaminationReportPrescription", b =>
+                {
+                    b.Property<int>("ExaminationReportsId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PrescriptionsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ExaminationReportsId", "PrescriptionsId");
+
+                    b.HasIndex("PrescriptionsId");
+
+                    b.ToTable("ExaminationReportPrescription");
                 });
 
             modelBuilder.Entity("ExaminationReportSymptom", b =>
@@ -268,15 +285,10 @@ namespace HospitalLibrary.Migrations
                     b.Property<string>("Dose")
                         .HasColumnType("text");
 
-                    b.Property<int>("ExaminationReportId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("MedicineId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ExaminationReportId");
 
                     b.HasIndex("MedicineId");
 
@@ -788,6 +800,21 @@ namespace HospitalLibrary.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ExaminationReportPrescription", b =>
+                {
+                    b.HasOne("HospitalLibrary.Examination.ExaminationReport", null)
+                        .WithMany()
+                        .HasForeignKey("ExaminationReportsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HospitalLibrary.Examination.Prescription", null)
+                        .WithMany()
+                        .HasForeignKey("PrescriptionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ExaminationReportSymptom", b =>
                 {
                     b.HasOne("HospitalLibrary.Examination.ExaminationReport", null)
@@ -877,19 +904,11 @@ namespace HospitalLibrary.Migrations
 
             modelBuilder.Entity("HospitalLibrary.Examination.Prescription", b =>
                 {
-                    b.HasOne("HospitalLibrary.Examination.ExaminationReport", "ExaminationReport")
-                        .WithMany("Prescriptions")
-                        .HasForeignKey("ExaminationReportId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("HospitalLibrary.Medicines.Medicine", "Medicine")
                         .WithMany()
                         .HasForeignKey("MedicineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ExaminationReport");
 
                     b.Navigation("Medicine");
                 });
@@ -1105,11 +1124,6 @@ namespace HospitalLibrary.Migrations
             modelBuilder.Entity("HospitalLibrary.Buildings.Building", b =>
                 {
                     b.Navigation("Floors");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Examination.ExaminationReport", b =>
-                {
-                    b.Navigation("Prescriptions");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Floors.Floor", b =>

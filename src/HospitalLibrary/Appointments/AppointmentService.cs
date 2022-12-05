@@ -39,7 +39,7 @@ namespace HospitalLibrary.Appointments
         {
             Appointment canceled = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
             canceled.State = AppointmentState.DELETED;
-            Patient toNotify = _unitOfWork.PatientRepository.GetOne(canceled.PatientId);
+            Patient toNotify = _unitOfWork.PatientRepository.GetOne(canceled.PatientId ?? 0);
             AppointmentCancelledDTO retDto = new AppointmentCancelledDTO { PatientEmail = toNotify.Email, AppointmentTime = canceled.StartAt };
             _unitOfWork.AppointmentRepository.Update(canceled);
             _unitOfWork.AppointmentRepository.Save();
@@ -60,7 +60,7 @@ namespace HospitalLibrary.Appointments
             appointment.EndAt = end;
             _unitOfWork.AppointmentRepository.Update(appointment);
             _unitOfWork.AppointmentRepository.Save();
-            Patient toNotify = _unitOfWork.PatientRepository.GetOne(appointment.PatientId);
+            Patient toNotify = _unitOfWork.PatientRepository.GetOne(appointment.PatientId ?? 0);
             return new AppointmentRescheduledDTO { PatientEmail = toNotify.Email, AppointmentTimeBefore = preChange };
         }
 

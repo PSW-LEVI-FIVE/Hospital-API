@@ -31,7 +31,6 @@ namespace HospitalAPI.Controllers.Intranet
         [Route("uid/{uid}")]
         public IActionResult GetOneByUid(string uid)
         {
-            Console.WriteLine(uid);
             MedicalRecord record = _medicalRecordService.GetByPatientUid(uid);
             return Ok(record);
         }
