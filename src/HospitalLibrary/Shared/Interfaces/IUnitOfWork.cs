@@ -5,6 +5,7 @@ using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.BloodOrders.Interfaces;
 using HospitalLibrary.BloodStorages.Interfaces;
 using HospitalLibrary.Buildings.Interfaces;
+using HospitalLibrary.Consiliums.Interfaces;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Examination.Interfaces;
@@ -51,5 +52,6 @@ namespace HospitalLibrary.Shared.Interfaces
         
         IExaminationReportRepository ExaminationReportRepository { get;  }
         ISymptomRepository SymptomRepository { get; }
+        IConsiliumRepository ConsiliumRepository { get; }
     }
 }

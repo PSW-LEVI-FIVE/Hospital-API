@@ -10,6 +10,8 @@ using HospitalLibrary.BloodStorages;
 using HospitalLibrary.BloodStorages.Interfaces;
 using HospitalLibrary.Buildings;
 using HospitalLibrary.Buildings.Interfaces;
+using HospitalLibrary.Consiliums;
+using HospitalLibrary.Consiliums.Interfaces;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Examination;
@@ -75,6 +77,7 @@ namespace HospitalLibrary.Shared.Repository
         private IPersonRepository _personRepository;
         private IExaminationReportRepository _examinationReportRepository;
         private ISymptomRepository _symptomRepository;
+        private IConsiliumRepository _consiliumRepository;
 
         public UnitOfWork(HospitalDbContext dataContext)
         {
@@ -119,5 +122,7 @@ namespace HospitalLibrary.Shared.Repository
         public IPersonRepository PersonRepository => _personRepository ??= new PersonRepository(_dataContext);
         public IExaminationReportRepository ExaminationReportRepository => _examinationReportRepository ??= new ExaminationReportRepository(_dataContext);
         public ISymptomRepository SymptomRepository => _symptomRepository ??= new SymptomRepository(_dataContext);
+        public IConsiliumRepository ConsiliumRepository =>
+            _consiliumRepository ??= new ConsiliumRepository(_dataContext);
     }
 }

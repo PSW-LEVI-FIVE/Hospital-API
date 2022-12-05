@@ -17,6 +17,8 @@ using HospitalLibrary.Auth;
 using HospitalLibrary.Auth.Interfaces;
 using HospitalLibrary.Buildings;
 using HospitalLibrary.Buildings.Interfaces;
+using HospitalLibrary.Consiliums;
+using HospitalLibrary.Consiliums.Interfaces;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Examination;
@@ -114,6 +116,7 @@ namespace HospitalAPI
             services.AddScoped<IBedService, BedService>();
             services.AddScoped<ISymptomService, SymptomService>();
             services.AddScoped<IExaminationReportService, ExaminationReportService>();
+            services.AddScoped<IConsiliumService, ConsiliumService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });
