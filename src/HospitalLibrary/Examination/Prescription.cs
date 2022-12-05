@@ -14,8 +14,9 @@ namespace HospitalLibrary.Examination
         public int MedicineId { get; set; }
         public Medicine Medicine { get; set; }
         public string Dose { get; set; }
-        
-        public virtual List<ExaminationReport> ExaminationReports { get; set; }
+        [ForeignKey("ExaminationReport")]
+        public int ExaminationReportId { get; set; }
+        public virtual ExaminationReport ExaminationReport { get; set; }
 
         public Prescription(int medicineId, string dose)
         {

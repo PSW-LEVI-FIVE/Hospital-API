@@ -10,7 +10,7 @@ namespace HospitalLibrary.Examination.Dtos
         public int DoctorId { get; set; }
         public List<Prescription> Prescriptions { get; set; }
         public List<Symptom> Symptoms { get; set; }
-        public Appointment Examination { get; set; }
+        public int ExaminationId { get; set; }
 
 
 
@@ -22,7 +22,7 @@ namespace HospitalLibrary.Examination.Dtos
                 DoctorId = DoctorId,
                 Prescriptions = Prescriptions,
                 Symptoms = Symptoms,
-                Examination = Examination,
+                ExaminationId = ExaminationId,
             };
         }
     }

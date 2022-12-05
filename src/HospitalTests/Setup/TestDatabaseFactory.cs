@@ -20,6 +20,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using HospitalLibrary.AnnualLeaves;
+using HospitalLibrary.Appointments;
+using HospitalLibrary.Examination;
+using HospitalLibrary.Symptoms;
 
 namespace HospitalTests.Setup;
 
@@ -286,6 +289,42 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
         };
 
+
+        Symptom cough = new Symptom()
+        {
+            Id = 10,
+            Name = "Cough"
+        };
+        Symptom blood = new Symptom()
+        {
+            Id = 11,
+            Name = "Blood"
+        };
+
+        var today = new DateTime();
+        Appointment examination = new Appointment()
+        {
+            Id = 30,
+            DoctorId = 4,
+            PatientId = 1,
+            RoomId = 2,
+            State = AppointmentState.PENDING,
+            Type = AppointmentType.EXAMINATION,
+            StartAt = today,
+            EndAt = today.AddDays(1)
+        };
+
+        ExaminationReport rp = new ExaminationReport()
+        {
+            Id = 10,
+            Content = "Something test",
+            Prescriptions = null,
+            Symptoms = null,
+            DoctorId = 4,
+            ExaminationId = 30
+        };
+        
+
         dbContext.Buildings.Add(building);
         dbContext.MapBuildings.Add(mapBuilding);
         dbContext.Floors.Add(floor);
@@ -319,7 +358,11 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Therapies.Add(bloodTherapy1);
         dbContext.Therapies.Add(bloodTherapy2);
         dbContext.AnnualLeaves.Add(annualLeave1);
-        dbContext.AnnualLeaves.Add(annualLeave2); 
+        dbContext.AnnualLeaves.Add(annualLeave2);
+        dbContext.Symptoms.Add(cough);
+        dbContext.Symptoms.Add(blood);
+        dbContext.Appointments.Add(examination);
+        dbContext.ExaminationReports.Add(rp);
         dbContext.SaveChanges();
 
 

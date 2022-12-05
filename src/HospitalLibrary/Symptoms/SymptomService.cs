@@ -1,4 +1,6 @@
-﻿using HospitalLibrary.Examination;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using HospitalLibrary.Examination;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Symptoms.Interfaces;
 
@@ -18,6 +20,11 @@ namespace HospitalLibrary.Symptoms
             _unitOfWork.SymptomRepository.Add(symptom);
             _unitOfWork.SymptomRepository.Save();
             return symptom;
+        }
+
+        public Task<IEnumerable<Symptom>> GetAll()
+        {
+            return _unitOfWork.SymptomRepository.GetAll();
         }
     }
 }

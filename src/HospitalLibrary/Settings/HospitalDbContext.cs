@@ -86,7 +86,7 @@ namespace HospitalLibrary.Settings
             modelBuilder.Entity<Users.User>().HasIndex(u => u.Username).IsUnique();
             modelBuilder.Entity<Users.User>().HasIndex(u => u.ActivationCode).IsUnique();
 
-            modelBuilder.Entity<ExaminationReport>().HasMany(e => e.Prescriptions).WithMany(p => p.ExaminationReports);
+            modelBuilder.Entity<ExaminationReport>().HasMany(e => e.Prescriptions).WithOne(p => p.ExaminationReport);
             modelBuilder.Entity<ExaminationReport>().HasMany(e => e.Symptoms).WithMany(p => p.ExaminationReports);
 
 

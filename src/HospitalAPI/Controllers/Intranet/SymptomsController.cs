@@ -1,4 +1,6 @@
-﻿using HospitalLibrary.Examination;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using HospitalLibrary.Examination;
 using HospitalLibrary.Symptoms;
 using HospitalLibrary.Symptoms.Dtos;
 using HospitalLibrary.Symptoms.Interfaces;
@@ -24,6 +26,13 @@ namespace HospitalAPI.Controllers.Intranet
         {
             Symptom symptom = _symptomService.Create(symptomDto.MapToModel());
             return Ok(symptom);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            IEnumerable<Symptom> symptoms = await _symptomService.GetAll();
+            return Ok(symptoms);
         }
     }
 }

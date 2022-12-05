@@ -17,5 +17,6 @@ namespace HospitalLibrary.Examination
             return _dataContext.ExaminationReports.FirstOrDefault(e => e.ExaminationId == examinationId);
         }
 
+
     }
 }
