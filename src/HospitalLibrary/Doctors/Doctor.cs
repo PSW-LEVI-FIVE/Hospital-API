@@ -26,6 +26,7 @@ namespace HospitalLibrary.Doctors
         public SpecialtyType SpecialtyType { get; set; }
         public List<WorkingHours> WorkingHours { get; set; }
         public List<Patient> Patients { get; set; }
+        public List<Appointment> Appointments { get; set; }
 
         public Doctor(string name, string surname, string email, string uid, string phoneNumber, DateTime birthDate, string address, SpecialtyType specialtyType) : base(name, surname, email, uid, phoneNumber, birthDate, address)
         {
