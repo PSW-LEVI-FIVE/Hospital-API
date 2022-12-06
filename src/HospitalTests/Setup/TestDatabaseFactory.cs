@@ -78,7 +78,9 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             );
         dbContext.Database.ExecuteSqlRaw("SELECT truncate_tables('postgres');");
 
-
+        Speciality speciality1 = new Speciality(1, "INTERNAL_MEDICINE");
+        Speciality speciality2 = new Speciality(2, "SURGERY");
+        
         Doctor doctor = new Doctor()
         {
             Id = 4,
@@ -88,11 +90,11 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             BirthDate = DateTime.Now,
             Email = "nekimail@gmail.com",
             PhoneNumber = "063555333",
-            SpecialtyType = SpecialtyType.SURGERY,
+            SpecialityId = 2,
             Uid = "55557888",
             WorkingHours = new List<WorkingHours>()
         };
-
+        
         BloodStorage bloodStorage = new BloodStorage()
         {
             BloodType = BloodType.A_NEGATIVE,
@@ -225,7 +227,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             BirthDate = DateTime.Now,
             Email = "nekimail1@gmail.com",
             PhoneNumber = "063555333",
-            SpecialtyType = SpecialtyType.ITERNAL_MEDICINE,
+            SpecialityId = 1,
             Uid = "67867867",
             WorkingHours = new List<WorkingHours>()
         };
@@ -324,7 +326,8 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             ExaminationId = 30
         };
         
-
+        dbContext.Specialities.Add(speciality1);
+        dbContext.Specialities.Add(speciality2);
         dbContext.Buildings.Add(building);
         dbContext.MapBuildings.Add(mapBuilding);
         dbContext.Floors.Add(floor);

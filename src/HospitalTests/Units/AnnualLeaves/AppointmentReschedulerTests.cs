@@ -30,7 +30,7 @@ public class AppointmentReschedulerTests
         doctors.Add(otherDoctor);
         unitOfWork.Setup(work => work.DoctorRepository.GetOne(It.IsAny<int>())).Returns(sessionDoctor);
         unitOfWork.Setup(work => work.DoctorRepository
-                .GetAllDoctorsWithSpecialityExceptId(It.IsAny<SpecialtyType>(), It.IsAny<int>()))
+                .GetAllDoctorsWithSpecialityExceptId(It.IsAny<int>(), It.IsAny<int>()))
             .Returns(doctors);
 
         Appointment appointment1 = GetAppointment(1, 2, "11-16-2022 10:30", "11-16-2022 11:30");
