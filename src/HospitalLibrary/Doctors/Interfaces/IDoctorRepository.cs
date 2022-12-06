@@ -8,7 +8,7 @@ namespace HospitalLibrary.Doctors.Interfaces
 {
     public interface IDoctorRepository: IBaseRepository<Doctor>
     {
-        IEnumerable<Doctor> GetAllDoctorsWithSpecialityExceptId(SpecialtyType specialtyType, int doctorId);
+        IEnumerable<Doctor> GetAllDoctorsWithSpecialityExceptId(int specialityId, int doctorId);
         Task<IEnumerable<Doctor>> GetUnburdenedDoctors(int mostUnburdenedPatientsCount);
         Task<IEnumerable<Doctor>> GetDoctorsForStepByStep(int patientId);
         Task<Doctor> GetMostUnburdenedDoctor();

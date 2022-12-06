@@ -50,7 +50,8 @@ namespace HospitalTests.Units.Patients
                 BirthDate = DateTime.Now,
                 Email = "nekimail1@gmail.com",
                 PhoneNumber = "063555333",
-                SpecialtyType = SpecialtyType.ITERNAL_MEDICINE,
+                Speciality = new Speciality(1, "INTERNAL_MEDICINE"),
+                SpecialityId = 1,
                 Uid = "67676767",
             };
             Doctor d2 = new Doctor()
@@ -62,7 +63,8 @@ namespace HospitalTests.Units.Patients
                 BirthDate = DateTime.Now,
                 Email = "nekimail2@gmail.com",
                 PhoneNumber = "063555333",
-                SpecialtyType = SpecialtyType.ITERNAL_MEDICINE,
+                Speciality = new Speciality(1, "INTERNAL_MEDICINE"),
+                SpecialityId = 1,
                 Uid = "89898989",
             };
             var doctors = new List<Doctor>();
