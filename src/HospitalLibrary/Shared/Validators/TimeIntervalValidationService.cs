@@ -23,12 +23,7 @@ namespace HospitalLibrary.Shared.Validators
         {
             IEnumerable<TimeInterval> doctorsAppointmentsTimeIntervals = (await _unitOfWork.AppointmentRepository
                 .GetAllDoctorTakenIntervalsForDate(doctorId,possibleTimeInterval.Start));
-            foreach (TimeInterval timeInterval in doctorsAppointmentsTimeIntervals)
-            {
-                if (possibleTimeInterval.IsOverlaping(timeInterval))
-                    return true;
-            }
-            return false;
+            return doctorsAppointmentsTimeIntervals.Any(possibleTimeInterval.IsOverlaping);
         }
 
         public async Task ValidateAppointment(Appointment appointment)

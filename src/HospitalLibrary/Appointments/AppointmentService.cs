@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Appointments.Interfaces;
@@ -39,8 +40,8 @@ namespace HospitalLibrary.Appointments
                 TimeInterval possibleTimeInterval = new TimeInterval(chosen, timeIntervalFiller,
                     timeIntervalFiller.Add(timeSpanIncrementer));
                 timeIntervalFiller = timeIntervalFiller.Add(timeSpanIncrementer);
-                if (await _intervalValidation.IsIntervalOverlapingWithDoctorAppointments(doctorId,
-                        possibleTimeInterval))
+                bool isOverlapped = await _intervalValidation.IsIntervalOverlapingWithDoctorAppointments(doctorId, possibleTimeInterval);
+                if (isOverlapped)
                     continue;
                 possibleTimeIntervals.Add(possibleTimeInterval);
             }
