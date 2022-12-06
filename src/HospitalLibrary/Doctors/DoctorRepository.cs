@@ -31,12 +31,18 @@ namespace HospitalLibrary.Doctors
 
         public async Task<IEnumerable<Doctor>> GetDoctorsForStepByStep(int patientId)
         {
-            
             return await _dataContext.Doctors
                 .Where(doctor => doctor.Speciality.Name.Equals("INTERNAL_MEDICINE") 
                                  || doctor.Appointments.Count(a => a.PatientId == patientId) >= 1)
                 .Include( d => d.Speciality)
                 .ToListAsync();
+        }
+
+        public Task<Doctor> GetDoctorByUid(string doctorUid)
+        {
+            return _dataContext.Doctors
+                .Where(doctor => doctor.Uid.Equals(doctorUid))
+                .FirstAsync();
         }
 
         public async Task<Doctor> GetMostUnburdenedDoctor()

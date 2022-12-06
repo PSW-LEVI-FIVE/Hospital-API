@@ -14,6 +14,5 @@ namespace HospitalAPI.Controllers.Intranet
         {
             _managerService = managerService;
         }
-
     }
 }
