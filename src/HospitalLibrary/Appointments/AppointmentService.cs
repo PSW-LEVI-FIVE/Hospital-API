@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Shared.Model;
 using SendGrid.Helpers.Errors.Model;
 
 namespace HospitalLibrary.Appointments
@@ -25,6 +27,26 @@ namespace HospitalLibrary.Appointments
         public Task<IEnumerable<Appointment>> GetAll()
         {
             return _unitOfWork.AppointmentRepository.GetAll();
+        }
+
+        public async Task<IEnumerable<TimeInterval>> GetTimeIntervalsForStepByStep(int doctorId, DateTime chosen)
+        {
+            WorkingHours doctorsWorkingHours = _unitOfWork.WorkingHoursRepository.GetOne((int)chosen.DayOfWeek,doctorId);
+            List<TimeInterval> possibleTimeIntervals = new List<TimeInterval>();
+            TimeSpan timeIntervalFiller = doctorsWorkingHours.Start;
+            TimeSpan timeSpanIncrementer = TimeSpan.FromMinutes(30);
+            while (TimeSpan.Compare(timeIntervalFiller, doctorsWorkingHours.End) < 0)
+            {
+                TimeInterval possibleTimeInterval = new TimeInterval(chosen, timeIntervalFiller,
+                    timeIntervalFiller.Add(timeSpanIncrementer));
+                timeIntervalFiller = timeIntervalFiller.Add(timeSpanIncrementer);
+                bool isOverlapped = await _intervalValidation.IsIntervalOverlapingWithDoctorAppointments(doctorId, possibleTimeInterval);
+                if (isOverlapped)
+                    continue;
+                possibleTimeIntervals.Add(possibleTimeInterval);
+            }
+
+            return possibleTimeIntervals;
         }
 
         public async Task<Appointment> Create(Appointment appointment)

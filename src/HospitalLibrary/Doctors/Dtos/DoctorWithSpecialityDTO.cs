@@ -11,14 +11,14 @@ namespace HospitalLibrary.Doctors.Dtos
         [Required]
         public string Uid { get; set; }
         [Required]
-        public int SpecialtyType { get; set; }
+        public Speciality Speciality { get; set; }
         
         public DoctorWithSpecialityDTO(Doctor doctor)
         {
             Name = doctor.Name;
             Surname = doctor.Surname;
             Uid = doctor.Uid;
-            SpecialtyType = doctor.SpecialityId;
+            Speciality = doctor.Speciality;
         }
     }
 }

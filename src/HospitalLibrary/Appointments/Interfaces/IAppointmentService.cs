@@ -9,6 +9,7 @@ namespace HospitalLibrary.Appointments.Interfaces
     public interface IAppointmentService
     {
         Task<IEnumerable<Appointment>> GetAll();
+        Task<IEnumerable<TimeInterval>> GetTimeIntervalsForStepByStep(int doctorId, DateTime chosen);
 
         AppointmentCancelledDTO CancelAppointment(int appointmentId);
 

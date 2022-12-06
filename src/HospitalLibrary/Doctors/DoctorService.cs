@@ -40,6 +40,11 @@ namespace HospitalLibrary.Doctors
             return _unitOfWork.DoctorRepository.GetMostUnburdenedDoctor();
         }
 
+        public Task<Doctor> GetDoctorByUid(string doctorUid)
+        {
+            return _unitOfWork.DoctorRepository.GetDoctorByUid(doctorUid);
+        }
+
         public async Task<IEnumerable<Doctor>> GetIternalMedicineDoctorsForPatientRegistration()
         {
             Doctor mostUnburdened = await GetMostUnburdenedDoctor();
