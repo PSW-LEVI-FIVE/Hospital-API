@@ -14,5 +14,6 @@ namespace HospitalLibrary.Doctors.Interfaces
         Task<Doctor> GetDoctorByUid(string doctorUid);
         Task<Doctor> GetMostUnburdenedDoctor();
         public Task<IEnumerable<Doctor>> GetDoctorsByAgeRange(DateTime dateFromAge, DateTime dateToAge);
+        Task<IEnumerable<Speciality>> GetAllSpecialitiesInUse();
     }
 }

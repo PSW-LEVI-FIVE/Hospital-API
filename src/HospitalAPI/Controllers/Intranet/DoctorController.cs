@@ -53,5 +53,13 @@ namespace HospitalAPI.Controllers.Intranet
                 docsWithPopularity.Add(new DoctorWithPopularityDTO(doctor.Id, doctor.Patients.Count, doctor.Name, doctor.Surname));
             return Ok(docsWithPopularity.AsEnumerable());
         }
+        
+        [HttpGet]
+        [Route("specialities")]
+        public async Task<IActionResult> GetAllSpecialities()
+        {
+            IEnumerable<Speciality> specialities = await _doctorService.GetAllSpecialities();
+            return Ok(specialities);
+        }
     }
 }
