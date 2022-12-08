@@ -56,5 +56,10 @@ namespace HospitalLibrary.Doctors
             DateTime dateToAge = new DateTime(DateTime.Now.Year - toAge, DateTime.Now.Month, DateTime.Now.Day);
             return _unitOfWork.DoctorRepository.GetDoctorsByAgeRange(dateFromAge, dateToAge);
         }
+
+        public async Task<IEnumerable<Speciality>> GetAllSpecialities()
+        {
+            return await _unitOfWork.DoctorRepository.GetAllSpecialitiesInUse();
+        }
     }
 }

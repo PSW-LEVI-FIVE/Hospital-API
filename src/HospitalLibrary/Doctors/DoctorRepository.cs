@@ -67,5 +67,14 @@ namespace HospitalLibrary.Doctors
                 .Include( d => d.Speciality)
                 .ToListAsync();
         }
+        
+        public async Task<IEnumerable<Speciality>> GetAllSpecialitiesInUse()
+        {
+            return await _dataContext.Doctors
+                .Select(d => d.Speciality)
+                .Distinct()
+                .ToListAsync();
+        }
+        
     }
 }
