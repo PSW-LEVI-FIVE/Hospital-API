@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace HospitalLibrary.Appointments
@@ -46,6 +47,7 @@ namespace HospitalLibrary.Appointments
             return (this.End - this.Start).TotalHours >= duration;
         }
 
+        //OVO SE TREBA REFAKTORISATI!
         public static bool IsIntervalInside(TimeInterval outside, TimeInterval inside)
         {
             return outside.Start <= inside.Start && outside.End >= inside.End;
@@ -75,6 +77,7 @@ namespace HospitalLibrary.Appointments
         {
             return End.CompareTo(newInterval.Start) == 0;
         }
+
         public int IntervalDurationInMinutes()
         {
             return (int)(this.End.Subtract(this.Start)).TotalMinutes;
@@ -84,6 +87,25 @@ namespace HospitalLibrary.Appointments
             return (int)(this.IntervalDurationInMinutes()/duration.TotalMinutes);
         }
 
+
+        public bool IsOtherStartWithingMe(TimeInterval interval)
+        {
+            return Start <= interval.Start && End > interval.Start;
+        }
+        
+        public List<DateTime> GetDatesForDateRange()
+        {
+            List<DateTime> dates = new List<DateTime>();
+            DateTime startDate = Start.Date;
+            while (startDate < End.Date)
+            {
+                dates.Add(startDate);
+                startDate=startDate.AddDays(1);
+            }
+            return dates;
+        }
+        
+        
         public string ToDateString()
         {
             return Start.ToString("MMMM dd, yyyy") + " - " + End.ToString("MMMM dd, yyyy");

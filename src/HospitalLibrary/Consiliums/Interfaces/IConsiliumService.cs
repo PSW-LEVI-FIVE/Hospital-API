@@ -8,5 +8,7 @@ namespace HospitalLibrary.Consiliums.Interfaces
     public interface IConsiliumService
     {
         Task<Consilium> Create(Appointment appointment, List<int> doctors);
+
+        GetBestConsiliumsDTO SuggestConsilium(TimeInterval timeInterval, List<int> doctors, int schedulerDoctor, int consiliumDuration);
     }
 }

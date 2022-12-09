@@ -51,7 +51,7 @@ namespace HospitalLibrary.Appointments
         [ForeignKey("Consilium")]
         public int? ConsiliumId { get; set; }
         public Consilium? Consilium { get; set; }
-
+        
         public Appointment()
         {
         }
