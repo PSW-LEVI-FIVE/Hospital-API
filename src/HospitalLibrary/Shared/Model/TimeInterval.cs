@@ -77,7 +77,7 @@ namespace HospitalLibrary.Appointments
         {
             return End.CompareTo(newInterval.Start) == 0;
         }
-
+        
         public int IntervalDurationInMinutes()
         {
             return (int)(this.End.Subtract(this.Start)).TotalMinutes;
