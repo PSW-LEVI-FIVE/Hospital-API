@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Model;
@@ -27,6 +28,8 @@ namespace HospitalLibrary.Doctors
         public Doctor()
         {
         }
-
+        
+        
+        
     }
 }

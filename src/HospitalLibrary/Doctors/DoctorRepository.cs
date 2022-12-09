@@ -6,6 +6,7 @@ using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
 using System;
+using System.Collections;
 using HospitalLibrary.Patients;
 
 namespace HospitalLibrary.Doctors
@@ -17,6 +18,17 @@ namespace HospitalLibrary.Doctors
         {
             return _dataContext.Doctors.Where(doctor => doctor.Speciality.Id.Equals(specialityId) && doctor.Id != doctorId).Include( d => d.Speciality).ToList();
         }
+
+        public IEnumerable<Doctor> GetDoctorsForDate(List<int> doctors,DateTime date)
+        {
+            return _dataContext.Doctors
+                .Where(d => doctors.Any(id => id.Equals(d.Id)))
+                .Include(d=> d.WorkingHours)
+                .Include(d => d.Appointments.Where(a => a.StartAt.Date.CompareTo(date.Date)==0))
+                .AsNoTracking()
+                .ToList();
+        }
+        
         public async Task<IEnumerable<Doctor>> GetUnburdenedDoctors(int mostUnburdenedPatientsCount)
         {
             return await _dataContext.Doctors
