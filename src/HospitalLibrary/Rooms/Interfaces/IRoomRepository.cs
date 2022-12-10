@@ -10,8 +10,6 @@ namespace HospitalLibrary.Rooms.Interfaces
     {
         Task<IEnumerable<Room>> FindAllByFloor(int floor);
         Task<IEnumerable<Room>> SearchByTypeAndName(RoomSearchDTO roomSearchDto,int floorId);
-
-
-
+        Task<IEnumerable<RoomEquipment>> GetAllEquipmentbyRoom(int id);
     }
 }
