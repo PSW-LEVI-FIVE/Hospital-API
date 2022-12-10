@@ -10,10 +10,9 @@ namespace HospitalLibrary.Rooms.Interfaces
 {
     public interface IRoomEquipmentService
     {
-        Task<IEnumerable<RoomEquipment>> searchEquipmentInRoom(RoomEquipmentDTO roomEquipmentDTO);
-        IEnumerable<Room> searchEquipmentOnFloor(RoomEquipmentDTO roomEquipmentDTO);
         void UpdateEquipment(RoomEquipment realEq);
         void CreateEquipment(int destinationRoomId, int amount, RoomEquipment equipment);
-
+        Task<IEnumerable<RoomEquipment>> SearchEquipmentInRoom(RoomEquipmentDTO roomEquipmentDTO);
+        IEnumerable<Room> SearchRoomsByFloorContainingEquipment(RoomEquipmentDTO roomEquipmentDTO);
     }
 }

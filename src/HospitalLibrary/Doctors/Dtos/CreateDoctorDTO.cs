@@ -20,7 +20,7 @@ namespace HospitalLibrary.Doctors.Dtos
         [Required]
         public string Address { get; set; }
         [Required] 
-        public SpecialtyType SpecialtyType { get; set; }
+        public int SpecialtyType { get; set; }
         
         public Doctor MapToModel()
         {
@@ -33,7 +33,7 @@ namespace HospitalLibrary.Doctors.Dtos
                 PhoneNumber = PhoneNumber,
                 BirthDate = BirthDate,
                 Address = Address,
-                SpecialtyType = SpecialtyType
+                SpecialityId = SpecialtyType
             };
         }
         

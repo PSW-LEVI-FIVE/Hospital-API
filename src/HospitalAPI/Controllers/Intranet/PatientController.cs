@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Doctors;
@@ -25,6 +26,14 @@ namespace HospitalAPI.Controllers.Intranet
         {
             IEnumerable<Patient> patients = await _patientService.GetAll();
             return Ok(patients);
+        }
+
+        [HttpGet]
+        [Route("search")]
+        public IActionResult Search([FromQuery] string uid)
+        {
+            Patient patient = _patientService.SearchByUid(uid);
+            return Ok(patient);
         }
 
     }

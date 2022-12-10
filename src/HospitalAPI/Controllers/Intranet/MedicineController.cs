@@ -22,8 +22,16 @@ namespace HospitalAPI.Controllers.Intranet
         [Route("compatibile/{id}")]
         public  ActionResult GetMedicine(int id)
         {
-            IEnumerable<Medicine> bloodConsumption = _medicineService.getAllCompatibileMedicine(id);
+            IEnumerable<Medicine> bloodConsumption = _medicineService.GetAllCompatibileMedicine(id);
             return Ok(bloodConsumption);
+        }
+
+        [HttpGet]
+        [Route("search")]
+        public ActionResult Search([FromQuery] string name)
+        {
+            IEnumerable<Medicine> medicines = _medicineService.Search(name);
+            return Ok(medicines);
         }
     }
 }

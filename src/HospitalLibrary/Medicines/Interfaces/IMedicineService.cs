@@ -6,8 +6,10 @@ namespace HospitalLibrary.Medicines.Interfaces
     public interface IMedicineService
     {
         bool SubtractQuantity(int medicine, double quantity);
-        Task<IEnumerable<Medicine>> getAllMedicine();
+        Task<IEnumerable<Medicine>> GetAllMedicine();
 
-        IEnumerable<Medicine> getAllCompatibileMedicine(int hospitalizationId);
+        IEnumerable<Medicine> GetAllCompatibileMedicine(int hospitalizationId);
+
+        IEnumerable<Medicine> Search(string name);
     }
 }

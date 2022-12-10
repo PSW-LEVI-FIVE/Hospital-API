@@ -30,7 +30,7 @@ namespace HospitalLibrary.AnnualLeaves
                 await _unitOfWork.AppointmentRepository.GetAllDoctorAppointmentsForRange(doctorId, timeInterval);
             
             IEnumerable<Doctor> doctors =
-                _unitOfWork.DoctorRepository.GetAllDoctorsWithSpecialityExceptId(doctor.SpecialtyType, doctorId);
+                _unitOfWork.DoctorRepository.GetAllDoctorsWithSpecialityExceptId(doctor.SpecialityId, doctorId);
 
             Dictionary<int, IEnumerable<Appointment>> otherDoctorsAppointments =
                await GetDoctorsAppointments(doctors, timeInterval);

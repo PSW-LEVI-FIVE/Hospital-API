@@ -28,12 +28,12 @@ namespace HospitalLibrary.Medicines
             return true;
         }
         
-        public Task<IEnumerable<Medicine>> getAllMedicine()
+        public Task<IEnumerable<Medicine>> GetAllMedicine()
         {
             return _unitOfWork.MedicineRepository.GetAll();
         }
 
-        public IEnumerable<Medicine> getAllCompatibileMedicine(int hospitalizationId)
+        public IEnumerable<Medicine> GetAllCompatibileMedicine(int hospitalizationId)
         {
             Hospitalization hospitalization = _unitOfWork.HospitalizationRepository.GetOne(hospitalizationId);
             MedicalRecord medicalRecord = _unitOfWork.MedicalRecordRepository.GetOne(hospitalization.MedicalRecordId);
@@ -41,7 +41,12 @@ namespace HospitalLibrary.Medicines
             IEnumerable<Medicine> compatibile = _unitOfWork.MedicineRepository.GetCompatibleForPatient(allergenIds);
             return compatibile;
         }
-        
+
+        public IEnumerable<Medicine> Search(string name)
+        {
+            return _unitOfWork.MedicineRepository.Search(name);
+        }
+
 
         private void CheckAmount(double onStorage, double toTake)
         {

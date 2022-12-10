@@ -30,9 +30,19 @@ namespace HospitalLibrary.Doctors
             return _unitOfWork.DoctorRepository.GetAll();
         }
 
+        public Task<IEnumerable<Doctor>> GetDoctorsForStepByStep(int patientId)
+        {
+            return _unitOfWork.DoctorRepository.GetDoctorsForStepByStep(patientId);
+        }
+
         public Task<Doctor> GetMostUnburdenedDoctor()
         {
             return _unitOfWork.DoctorRepository.GetMostUnburdenedDoctor();
+        }
+
+        public Task<Doctor> GetDoctorByUid(string doctorUid)
+        {
+            return _unitOfWork.DoctorRepository.GetDoctorByUid(doctorUid);
         }
 
         public async Task<IEnumerable<Doctor>> GetIternalMedicineDoctorsForPatientRegistration()
@@ -45,6 +55,11 @@ namespace HospitalLibrary.Doctors
             DateTime dateFromAge = new DateTime(DateTime.Now.Year - fromAge, DateTime.Now.Month, DateTime.Now.Day);
             DateTime dateToAge = new DateTime(DateTime.Now.Year - toAge, DateTime.Now.Month, DateTime.Now.Day);
             return _unitOfWork.DoctorRepository.GetDoctorsByAgeRange(dateFromAge, dateToAge);
+        }
+
+        public async Task<IEnumerable<Speciality>> GetAllSpecialities()
+        {
+            return await _unitOfWork.DoctorRepository.GetAllSpecialitiesInUse();
         }
     }
 }
