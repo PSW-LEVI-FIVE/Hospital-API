@@ -21,12 +21,12 @@ namespace HospitalLibrary.Rooms
             _roomEquipmentValidator = roomEquipmentValidator;
         }
 
-        public Task<IEnumerable<RoomEquipment>> searchEquipmentInRoom(RoomEquipmentDTO roomEquipmentDTO)
+        public Task<IEnumerable<RoomEquipment>> SearchEquipmentInRoom(RoomEquipmentDTO roomEquipmentDTO)
         {
             return  _unitOfWork.RoomEquipmentRepository.GetAllByCombineSearchInRoom(roomEquipmentDTO);  
         }
 
-        public IEnumerable<Room> searchRoomsByFloorContainingEquipment(RoomEquipmentDTO roomEquipmentDTO)
+        public IEnumerable<Room> SearchRoomsByFloorContainingEquipment(RoomEquipmentDTO roomEquipmentDTO)
         {
             var rooms = _unitOfWork.RoomEquipmentRepository.CheckFloorByCombineEquipmentSearch(roomEquipmentDTO);
             List<Room> result = new List<Room>();
