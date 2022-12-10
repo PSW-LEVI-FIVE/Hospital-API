@@ -1,20 +1,14 @@
-﻿using ceTe.DynamicPDF.PageElements;
-using ceTe.DynamicPDF.PageElements.BarCoding;
-using HospitalAPI.Storage;
+﻿using HospitalAPI.Storage;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.Hospitalizations.Interfaces;
 using HospitalLibrary.MedicalRecords;
-using HospitalLibrary.MedicalRecords.Interfaces;
 using HospitalLibrary.Patients;
-using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.PDFGeneration;
-using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Therapies.Model;
 using Moq;
-using SendGrid.Helpers.Errors.Model;
 using Shouldly;
 
 namespace HospitalTests.Units.Hospitalizations;
