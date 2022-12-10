@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Examination;
 using HospitalLibrary.Symptoms;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HospitalAPI.Controllers.Intranet
 {
     [ApiController, Route("api/intranet/symptoms")]
-    [Authorize("Doctor")]
+    [Authorize(Roles="Doctor")]
     public class SymptomsController: ControllerBase
     {
 
@@ -32,6 +33,16 @@ namespace HospitalAPI.Controllers.Intranet
         public async Task<IActionResult> GetAll()
         {
             IEnumerable<Symptom> symptoms = await _symptomService.GetAll();
+            return Ok(symptoms);
+        }
+
+        [HttpGet]
+        [Route("search")]
+        public IActionResult Search([FromQuery] string name)
+        {
+            if (name == null || name.Trim().Equals("")) 
+                return Ok(new List<Symptom>());
+            IEnumerable<Symptom> symptoms = _symptomService.Search(name);
             return Ok(symptoms);
         }
     }

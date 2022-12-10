@@ -6,5 +6,7 @@ namespace HospitalLibrary.Medicines.Interfaces
     public interface IMedicineRepository: IBaseRepository<Medicine>
     {
         IEnumerable<Medicine> GetCompatibleForPatient(List<int> allergenIds);
+
+        IEnumerable<Medicine> Search(string name);
     }
 }

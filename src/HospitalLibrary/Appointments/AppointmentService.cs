@@ -104,7 +104,8 @@ namespace HospitalLibrary.Appointments
                     {
                         StartsAt = new TimeOfDayDTO(app.StartAt.TimeOfDay) ,
                         EndsAt = new TimeOfDayDTO(app.EndAt.TimeOfDay),
-                        Patient = app.Patient.Name  + " " + app.Patient.Surname,
+                        Patient = app.Patient == null ? app.Patient.Name  + " " + app.Patient.Surname: null,
+                        Type = app.Type,
                         Id = app.Id
                     });
                 map[date] = list;

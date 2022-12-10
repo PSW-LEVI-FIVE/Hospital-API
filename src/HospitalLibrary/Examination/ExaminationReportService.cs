@@ -11,14 +11,17 @@ namespace HospitalLibrary.Examination
     {
 
         private IUnitOfWork _unitOfWork;
+        private IExaminationReportValidator _validator;
 
-        public ExaminationReportService(IUnitOfWork unitOfWork)
+        public ExaminationReportService(IUnitOfWork unitOfWork, IExaminationReportValidator validator)
         {
             _unitOfWork = unitOfWork;
+            _validator = validator;
         }
         
         public ExaminationReport Create(ExaminationReport report)
         {
+            _validator.ValidateCreate(report);
             var symptoms = _unitOfWork.SymptomRepository.PopulateRange(report.Symptoms);
             var notExisting = FindNotExisting(report.Symptoms, symptoms.ToList());
             symptoms = symptoms.Concat(notExisting);
