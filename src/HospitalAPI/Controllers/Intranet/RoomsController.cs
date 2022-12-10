@@ -82,6 +82,14 @@ namespace HospitalAPI.Controllers.Intranet
           
         }
 
+        [Route("schedule/{roomId}")]
+        [HttpGet]
+        public async Task<IActionResult> GetRoomSchedule(int roomId)
+        {
+            return null;
+        }
+        
+
 
     }
 }
