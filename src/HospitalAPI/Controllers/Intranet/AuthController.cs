@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Security.Claims;
+using HospitalLibrary.Auth.Dtos;
 using HospitalLibrary.Auth.Interfaces;
 using HospitalLibrary.User.Interfaces;
 using HospitalLibrary.Users;
@@ -25,13 +26,14 @@ namespace HospitalAPI.Controllers.Intranet
         public IActionResult UserExist([FromBody] UserDTO userDto)
         {
             var user = _authService.Authenticate(userDto);
-            if (user != null)
+            if (user == null) return NotFound("User not found");
+            var token = _authService.Generate(user);
+            var loggedIn = new LoggedIn()
             {
-                var token = _authService.Generate(user);
-                return Ok(token + " " + user.Role);
-            }
-
-            return NotFound("User not found");
+                AccessToken = token,
+                Role = user.Role
+            };
+            return Ok(loggedIn);
         }
         
         [HttpGet("user")]
@@ -39,7 +41,12 @@ namespace HospitalAPI.Controllers.Intranet
         public IActionResult PatientsEndpoint()
         {
             var currentUser = GetCurrentUser();
-            return Ok($"Hi {currentUser.Username}");
+            var user = new Authenticated()
+            {
+                Username = currentUser.Username,
+                Role = currentUser.Role
+            };
+            return Ok(user);
         }
 
         private UserDTO GetCurrentUser()
