@@ -5,8 +5,10 @@ using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.BloodOrders.Interfaces;
 using HospitalLibrary.BloodStorages.Interfaces;
 using HospitalLibrary.Buildings.Interfaces;
+using HospitalLibrary.Consiliums.Interfaces;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
+using HospitalLibrary.Examination.Interfaces;
 using HospitalLibrary.Feedbacks.Interfaces;
 using HospitalLibrary.Floors.Interfaces;
 using HospitalLibrary.Hospitalizations.Interfaces;
@@ -16,6 +18,7 @@ using HospitalLibrary.Medicines.Interfaces;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Persons.Interfaces;
 using HospitalLibrary.Rooms.Interfaces;
+using HospitalLibrary.Symptoms.Interfaces;
 using HospitalLibrary.Therapies.Interfaces;
 using HospitalLibrary.Users.Interfaces;
 
@@ -47,5 +50,9 @@ namespace HospitalLibrary.Shared.Interfaces
         IAnnualLeaveRepository AnnualLeaveRepository { get; }
         IBloodOrderRepository BloodOrderRepository { get; }
         IPersonRepository PersonRepository { get; }
+        
+        IExaminationReportRepository ExaminationReportRepository { get;  }
+        ISymptomRepository SymptomRepository { get; }
+        IConsiliumRepository ConsiliumRepository { get; }
     }
 }

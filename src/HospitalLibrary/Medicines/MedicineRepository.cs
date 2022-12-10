@@ -20,5 +20,12 @@ namespace HospitalLibrary.Medicines
                         allergenIds.Contains(a.Id)))
                 .ToList();
         }
+
+        public IEnumerable<Medicine> Search(string name)
+        {
+            return _dataContext.Medicines
+                .Where(m => m.Name.ToLower().Contains(name.ToLower()))
+                .ToList();
+        }
     }
 }

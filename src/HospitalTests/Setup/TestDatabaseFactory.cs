@@ -20,6 +20,9 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using HospitalLibrary.AnnualLeaves;
+using HospitalLibrary.Appointments;
+using HospitalLibrary.Examination;
+using HospitalLibrary.Symptoms;
 
 namespace HospitalTests.Setup;
 
@@ -75,7 +78,9 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             );
         dbContext.Database.ExecuteSqlRaw("SELECT truncate_tables('postgres');");
 
-
+        Speciality speciality1 = new Speciality(1, "INTERNAL_MEDICINE");
+        Speciality speciality2 = new Speciality(2, "SURGERY");
+        
         Doctor doctor = new Doctor()
         {
             Id = 4,
@@ -85,11 +90,11 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             BirthDate = DateTime.Now,
             Email = "nekimail@gmail.com",
             PhoneNumber = "063555333",
-            SpecialtyType = SpecialtyType.SURGERY,
+            SpecialityId = 2,
             Uid = "55557888",
             WorkingHours = new List<WorkingHours>()
         };
-
+        
         BloodStorage bloodStorage = new BloodStorage()
         {
             BloodType = BloodType.A_NEGATIVE,
@@ -105,7 +110,6 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
         MapBuilding mapBuilding = new MapBuilding()
         {
-
             Id = 2,
             BuildingId = building.Id,
             Height = 200,
@@ -140,8 +144,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Id = 2,
             Area = 10,
             FloorId = 2,
-            RoomNumber = "2",
-            RoomType = RoomType.CAFETERIA
+            RoomNumber = "1"
         };
 
         RoomEquipment equipment = new Bed(1, 10, "Bed", 2, 1);
@@ -154,11 +157,8 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Width = 10,
             XCoordinate = 10,
             YCoordinate = 10,
-            MapFloorId = mapFloor.Id,
-            
+            MapFloorId = mapFloor.Id
         };
-        
-        
 
         Patient patient = new Patient()
         {
@@ -227,7 +227,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             BirthDate = DateTime.Now,
             Email = "nekimail1@gmail.com",
             PhoneNumber = "063555333",
-            SpecialtyType = SpecialtyType.ITERNAL_MEDICINE,
+            SpecialityId = 1,
             Uid = "67867867",
             WorkingHours = new List<WorkingHours>()
         };
@@ -291,6 +291,43 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
         };
 
+
+        Symptom cough = new Symptom()
+        {
+            Id = 10,
+            Name = "Cough"
+        };
+        Symptom blood = new Symptom()
+        {
+            Id = 11,
+            Name = "Blood"
+        };
+
+        var today = new DateTime();
+        Appointment examination = new Appointment()
+        {
+            Id = 30,
+            DoctorId = 4,
+            PatientId = 1,
+            RoomId = 2,
+            State = AppointmentState.PENDING,
+            Type = AppointmentType.EXAMINATION,
+            StartAt = today,
+            EndAt = today.AddDays(1)
+        };
+
+        ExaminationReport rp = new ExaminationReport()
+        {
+            Id = 10,
+            Content = "Something test",
+            Prescriptions = null,
+            Symptoms = null,
+            DoctorId = 4,
+            ExaminationId = 30
+        };
+        
+        dbContext.Specialities.Add(speciality1);
+        dbContext.Specialities.Add(speciality2);
         dbContext.Buildings.Add(building);
         dbContext.MapBuildings.Add(mapBuilding);
         dbContext.Floors.Add(floor);
@@ -324,7 +361,11 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Therapies.Add(bloodTherapy1);
         dbContext.Therapies.Add(bloodTherapy2);
         dbContext.AnnualLeaves.Add(annualLeave1);
-        dbContext.AnnualLeaves.Add(annualLeave2); 
+        dbContext.AnnualLeaves.Add(annualLeave2);
+        dbContext.Symptoms.Add(cough);
+        dbContext.Symptoms.Add(blood);
+        dbContext.Appointments.Add(examination);
+        dbContext.ExaminationReports.Add(rp);
         dbContext.SaveChanges();
 
 

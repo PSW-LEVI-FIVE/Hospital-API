@@ -27,8 +27,7 @@ namespace HospitalLibrary.Rooms.Model
         public Floor Floor { get; set; }
 
         public RoomType RoomType { get; set; }
-        private List<RoomEquipment> RoomEquipment { get; set; }
-
+        public List<RoomEquipment> RoomEquipment { get; set; }
 
         public Room() {}
 

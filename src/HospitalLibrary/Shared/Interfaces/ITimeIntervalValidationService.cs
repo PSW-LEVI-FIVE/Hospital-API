@@ -12,6 +12,7 @@ namespace HospitalLibrary.Shared.Interfaces
         Task ValidateReallocation(EquipmentReallocation reallocation);
 
         Task ValidateRescheduling(Appointment appointment, DateTime start, DateTime end);
+        Task<bool> IsIntervalOverlapingWithDoctorAppointments(int doctorId, TimeInterval possibleTimeInterval);
     }
 
 }
