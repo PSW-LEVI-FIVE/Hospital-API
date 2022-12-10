@@ -5,8 +5,6 @@ using HospitalLibrary.Shared.Interfaces;
 using Moq;
 using Shouldly;
 using HospitalLibrary.AnnualLeaves.Dtos;
-using HospitalLibrary.Shared.Repository;
-using SendGrid.Helpers.Errors.Model;
 
 namespace HospitalTests.Units.AnnualLeaves;
 
