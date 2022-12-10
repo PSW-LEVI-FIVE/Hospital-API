@@ -45,7 +45,7 @@ namespace HospitalLibrary.Shared.Service
                 {
                      if (real.EndAt < DateTime.Now) 
                      {
-                        await equipmentReallocationService.initiate(real);           
+                        await equipmentReallocationService.InitiateReallocation(real);           
                      }
                 }
             }
