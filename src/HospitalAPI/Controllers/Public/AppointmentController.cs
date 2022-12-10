@@ -25,18 +25,14 @@ namespace HospitalAPI.Controllers.Public
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentService _appointmentService;
-        private readonly IEmailService _emailService;
         private readonly IDoctorService _doctorService;
         private readonly IRoomService _roomService;
-        private readonly IPatientService _patientService;
         
-        public AppointmentController(IDoctorService doctorService,IPatientService patientService,IRoomService roomService,IAppointmentService appointmentService, IEmailService emailService)
+        public AppointmentController(IDoctorService doctorService,IRoomService roomService,IAppointmentService appointmentService)
         {
             _appointmentService = appointmentService;
             _doctorService = doctorService;
-            _emailService = emailService;
             _roomService = roomService;
-            _patientService = patientService;
         }
         [HttpGet]
         [Route("time-intervals/step-by-step/{doctorUid}/{chosen}")]
