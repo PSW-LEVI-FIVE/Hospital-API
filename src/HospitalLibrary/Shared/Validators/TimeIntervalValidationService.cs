@@ -21,9 +21,16 @@ namespace HospitalLibrary.Shared.Validators
 
         public async Task<bool> IsIntervalOverlapingWithDoctorAppointments(int doctorId,TimeInterval possibleTimeInterval)
         {
-            IEnumerable<TimeInterval> doctorsAppointmentsTimeIntervals = (await _unitOfWork.AppointmentRepository
-                .GetAllDoctorTakenIntervalsForDate(doctorId,possibleTimeInterval.Start));
+            IEnumerable<TimeInterval> doctorsAppointmentsTimeIntervals = await _unitOfWork.AppointmentRepository
+                .GetAllDoctorTakenIntervalsForDate(doctorId,possibleTimeInterval.Start);
             return doctorsAppointmentsTimeIntervals.Any(possibleTimeInterval.IsOverlaping);
+        }
+
+        public async Task<bool> IsTimeIntervalOverlapingWithRoomsAppointments(int roomId,TimeInterval possibleTimeInterval)
+        {
+            IEnumerable<TimeInterval> roomAppointmentsTimeIntervals =await _unitOfWork.AppointmentRepository
+                .GetAllRoomTakenIntervalsForDate(roomId, possibleTimeInterval.Start);
+            return roomAppointmentsTimeIntervals.Any(possibleTimeInterval.IsOverlaping);
         }
 
         public async Task ValidateAppointment(Appointment appointment)
