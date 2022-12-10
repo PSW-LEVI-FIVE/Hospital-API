@@ -53,20 +53,20 @@ namespace HospitalLibrary.Rooms
         }
 
       
-        public async Task<List<EquipmentReallocation>> getAllPending()
+        public async Task<List<EquipmentReallocation>> GetAllPending()
         {
             return await _unitOfWork.EquipmentReallocationRepository.GetAllPending();
         }
-        public async Task<List<EquipmentReallocation>> getAllPendingForToday()
+        public async Task<List<EquipmentReallocation>> GetAllPendingForToday()
         {
             return await _unitOfWork.EquipmentReallocationRepository.GetAllPendingForToday();
         }
 
-        public async Task<List<Model.RoomEquipment>> getEquipmentByRoom(int roomId) 
+        public async Task<List<Model.RoomEquipment>> GetEquipmentByRoom(int roomId) 
         {
             return await _unitOfWork.RoomEquipmentRepository.GetEquipmentByRoom(roomId);
         }
-        public async Task<int> getReservedEquipment(int equipmentId) 
+        public async Task<int> GetReservedEquipment(int equipmentId) 
         {
             return _unitOfWork.RoomEquipmentRepository.GetNumberOfUsedEquipment(equipmentId);
         }
@@ -79,26 +79,26 @@ namespace HospitalLibrary.Rooms
             List<TimeInterval> intervalsB =await GetTakenIntervals(Destination_roomId, date);
             intervalsB = await GetAvailableIntervals(intervalsB, date, duration);
 
-            List<TimeInterval> intervals = await getShared(intervalsA, intervalsB, duration);
+            List<TimeInterval> intervals = await GetShared(intervalsA, intervalsB, duration);
             
 
-            return await smallerIntervals(intervals, duration);
+            return await SmallerIntervals(intervals, duration);
      
         }
 
-        private async Task<List<TimeInterval>> smallerIntervals(List<TimeInterval> intervals, TimeSpan duration)
+        private async Task<List<TimeInterval>> SmallerIntervals(List<TimeInterval> intervals, TimeSpan duration)
         {
             List<TimeInterval> smalIntervals = new List<TimeInterval>();
 
             foreach (var interval in intervals)
             {
-                smalIntervals.AddRange(snipInterval(interval, duration));
+                smalIntervals.AddRange(SnipInterval(interval, duration));
             }
             return smalIntervals;
         }
 
         
-        private List<TimeInterval> snipInterval(TimeInterval interval, TimeSpan duration)
+        private List<TimeInterval> SnipInterval(TimeInterval interval, TimeSpan duration)
         {
             List<TimeInterval> snippedInterval = new List<TimeInterval>();
             var start=interval.Start;
@@ -139,29 +139,23 @@ namespace HospitalLibrary.Rooms
             return available;
         }
 
-        private async Task<List<TimeInterval>> getShared(List<TimeInterval> intervalsA, List<TimeInterval> intervalsB ,TimeSpan duration)
+        private async Task<List<TimeInterval>> GetShared(List<TimeInterval> intervalsA, List<TimeInterval> intervalsB ,TimeSpan duration)
         {
             List<TimeInterval> shared = new List<TimeInterval>(); 
             foreach(var interval in intervalsA)
             {
                 foreach(var interval2 in intervalsB)
                 {
-                    var a = AreCompatible(duration, interval, interval2);
-                    if (a==null) continue;
-                    interval.Start = a.End;
-                    shared.Add(a);
+                    if (interval.IsOverlaping(interval2)) continue;
+                    var sharedInterval =MakeShared(interval, interval2, duration);
+                    interval.Start = sharedInterval.End;
+                    shared.Add(sharedInterval);
                 }
             }
             return shared;
         }
 
-        private TimeInterval AreCompatible(TimeSpan duration, TimeInterval interval, TimeInterval interval2)
-        {
-            if (!interval.IsOverlaping(interval2)) return null;
-            return makeShared(interval, interval2, duration);
-        }
-
-        private static TimeInterval makeShared(TimeInterval interval, TimeInterval interval2, TimeSpan duration)
+        private static TimeInterval MakeShared(TimeInterval interval, TimeInterval interval2, TimeSpan duration)
         {
             if (interval.Start <= interval2.Start && interval.End.Subtract(interval2.Start) >= duration)
             {
@@ -175,17 +169,17 @@ namespace HospitalLibrary.Rooms
             return null;
         }
 
-        public async Task initiate(EquipmentReallocation reallocation)
+        public async Task InitiateReallocation(EquipmentReallocation reallocation)
         {
-            await moveOutOfStartingRoom(reallocation.StartingRoomId,reallocation.EquipmentId, reallocation.amount);
-            await moveIntoDestinationRoom(reallocation.DestinationRoomId, reallocation.EquipmentId, reallocation.amount);
+            await MoveOutOfStartingRoom(reallocation.StartingRoomId,reallocation.EquipmentId, reallocation.amount);
+            await MoveIntoDestinationRoom(reallocation.DestinationRoomId, reallocation.EquipmentId, reallocation.amount);
 
            
              reallocation.state = ReallocationState.FINISHED;
              Update(reallocation);
         }
 
-        private async Task moveIntoDestinationRoom(int destinationRoomId, int equipmentId, int amount)
+        private async Task MoveIntoDestinationRoom(int destinationRoomId, int equipmentId, int amount)
         {
             var equipment=_unitOfWork.RoomEquipmentRepository.GetOne(equipmentId);
             RoomEquipment realEq =await _unitOfWork.RoomEquipmentRepository.GetEquipmentByRoomAndName(destinationRoomId, equipment.Name);
@@ -201,7 +195,7 @@ namespace HospitalLibrary.Rooms
             
         }
 
-        private async Task moveOutOfStartingRoom(int startingRoomId, int equipmentId, int amount)
+        private async Task MoveOutOfStartingRoom(int startingRoomId, int equipmentId, int amount)
         {
             var equipment = _unitOfWork.RoomEquipmentRepository.GetOne(equipmentId);
             equipment.Quantity -= amount;

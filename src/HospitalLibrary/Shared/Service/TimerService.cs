@@ -40,7 +40,7 @@ namespace HospitalLibrary.Shared.Service
             using (IServiceScope scope=_serviceProvider.CreateScope())
             {
                 IEquipmentReallocationService equipmentReallocationService = scope.ServiceProvider.GetService<IEquipmentReallocationService>();
-                List<EquipmentReallocation> realocations = await equipmentReallocationService.getAllPendingForToday();
+                List<EquipmentReallocation> realocations = await equipmentReallocationService.GetAllPendingForToday();
                 foreach (EquipmentReallocation real in realocations) 
                 {
                      if (real.EndAt < DateTime.Now) 

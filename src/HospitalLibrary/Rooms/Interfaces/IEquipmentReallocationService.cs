@@ -17,10 +17,10 @@ namespace HospitalLibrary.Rooms.Interfaces
         Task Delete(int id);
 
         Task<List<TimeInterval>> GetPossibleInterval(int Starting_roomId, int Destination_roomId, DateTime date, TimeSpan duration);
-        Task<List<Model.RoomEquipment>> getEquipmentByRoom(int roomId);
-        Task<int> getReservedEquipment(int equipmentId);
-        Task<List<EquipmentReallocation>> getAllPending();
-        Task<List<EquipmentReallocation>> getAllPendingForToday();
+        Task<List<Model.RoomEquipment>> GetEquipmentByRoom(int roomId);
+        Task<int> GetReservedEquipment(int equipmentId);
+        Task<List<EquipmentReallocation>> GetAllPending();
+        Task<List<EquipmentReallocation>> GetAllPendingForToday();
         Task<EquipmentReallocation> Create(EquipmentReallocation equipmentReallocation);
         Task initiate(EquipmentReallocation reallocation);
     }

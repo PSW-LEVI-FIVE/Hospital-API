@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HospitalAPI.Controllers.Intranet
 {
-    [Route("api/intranet/[controller]")]
+    [Route("api/intranet/realocation")]
     [ApiController]
     public class EquipmentReallocationController : ControllerBase
     {
@@ -35,8 +35,6 @@ namespace HospitalAPI.Controllers.Intranet
         [HttpPost]
         public async Task<IActionResult> AddNewReallocation([FromBody] CreateEquipmentReallocationDTO createDto)
         {
-
-         
             var availableIntervals = await _equipmentReallocationService.Create(createDto.MapToModel());
             return Ok(availableIntervals);
         }
@@ -45,41 +43,30 @@ namespace HospitalAPI.Controllers.Intranet
         [HttpGet("pending")]
         public async Task<IActionResult> GetAllPending()
         {
-            var pending = await _equipmentReallocationService.getAllPending();
+            var pending = await _equipmentReallocationService.GetAllPending();
             return Ok(pending) ;
         }
 
-        [HttpGet("pendingToday")]
+        [HttpGet("pending-Today")]
 
         public async Task<IActionResult> GetAllPendingToday()
         {
-            var pending = await _equipmentReallocationService.getAllPendingForToday();
+            var pending = await _equipmentReallocationService.GetAllPendingForToday();
             return Ok(pending);
         }
 
         [HttpGet("reserved_eq/{equipmentId}")]
         public async Task<IActionResult> GetReservedEquipment(int equipmentId)
         {
-            var reservedEquipment = await _equipmentReallocationService.getReservedEquipment(equipmentId);
+            var reservedEquipment = await _equipmentReallocationService.GetReservedEquipment(equipmentId);
             return Ok(reservedEquipment);
         }
         [HttpGet("room/{roomId}")]
         public async Task<IActionResult> GetEquipmentForRoom(int roomId)
         {
-            var RoomEquipment  = await _equipmentReallocationService.getEquipmentByRoom(roomId);
+            var RoomEquipment  = await _equipmentReallocationService.GetEquipmentByRoom(roomId);
             return Ok(RoomEquipment);
         }
 
-
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
