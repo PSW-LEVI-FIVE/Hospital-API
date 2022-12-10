@@ -10,5 +10,7 @@ namespace HospitalLibrary.Symptoms.Interfaces
     {
         public Symptom Create(Symptom symptom);
         public Task<IEnumerable<Symptom>> GetAll();
+
+        public IEnumerable<Symptom> Search(string name);
     }
 }

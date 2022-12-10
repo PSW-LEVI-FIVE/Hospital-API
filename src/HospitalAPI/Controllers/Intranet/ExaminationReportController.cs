@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HospitalAPI.Controllers.Intranet
 {
     [ApiController, Route("api/intranet/examination")]
-    [Authorize("Doctor")]
+    [Authorize(Roles="Doctor")]
     public class ExaminationReportController: ControllerBase
     {
         private IExaminationReportService _examinationReportService;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Data.SqlClient;
@@ -35,6 +36,11 @@ namespace HospitalLibrary.Patients
             _unitOfWork.PatientRepository.Update(patient);
             _unitOfWork.PatientRepository.Save();
             return patient;
+        }
+
+        public Patient SearchByUid(string uid)
+        {
+            return _unitOfWork.PatientRepository.SearchByUid(uid);
         }
     }
 }

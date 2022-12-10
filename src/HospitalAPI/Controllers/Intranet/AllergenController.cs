@@ -28,10 +28,8 @@ namespace HospitalAPI.Controllers.Intranet
         public async Task<IActionResult> GetAllergensWithNumberOfPatients()
         {
             List<Allergen> allergens = (List<Allergen>)await _allergenService.GetAllergensWithNumberOfPatients();
-            var allergensWithNumberOfPatients = new List<AllergenWithNumberPatientsDTO>();
-            foreach (Allergen allergen in allergens)
-                allergensWithNumberOfPatients.Add(new AllergenWithNumberPatientsDTO(allergen.Name, allergen.Patients.Count));
-              
+            var allergensWithNumberOfPatients = allergens.Select(allergen => new AllergenWithNumberPatientsDTO(allergen.Name, allergen.Patients.Count)).ToList();
+
             return Ok(allergensWithNumberOfPatients.AsEnumerable());
         }
     }

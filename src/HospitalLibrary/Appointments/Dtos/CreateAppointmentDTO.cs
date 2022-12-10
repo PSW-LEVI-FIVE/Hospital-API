@@ -15,6 +15,8 @@ namespace HospitalLibrary.Appointments.Dtos
         public DateTime StartAt { get; set; }
         [Required]        
         public DateTime EndAt { get; set; }
+        
+        public AppointmentType Type { get; set; }
 
         public CreateAppointmentDTO(int doctorId,int patientId,int roomId,DateTime startAt,DateTime endAt)
         {
@@ -34,7 +36,8 @@ namespace HospitalLibrary.Appointments.Dtos
                 RoomId = RoomId,
                 StartAt = StartAt,
                 EndAt = EndAt,
-                State = AppointmentState.PENDING
+                State = AppointmentState.PENDING,
+                Type = Type
             };
         } 
     }

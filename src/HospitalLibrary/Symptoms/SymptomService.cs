@@ -26,5 +26,10 @@ namespace HospitalLibrary.Symptoms
         {
             return _unitOfWork.SymptomRepository.GetAll();
         }
+
+        public IEnumerable<Symptom> Search(string name)
+        {
+            return _unitOfWork.SymptomRepository.Search(name);
+        }
     }
 }

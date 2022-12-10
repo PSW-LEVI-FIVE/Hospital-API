@@ -7,8 +7,8 @@ namespace HospitalLibrary.Appointments
     {
         public TimeOfDayDTO StartsAt { get; set; }
         public TimeOfDayDTO EndsAt { get; set; }
-        public string Patient { get; set; }
-        
+        public string? Patient { get; set; }
+        public AppointmentType Type { get; set; }
         public int Id { get; set; }
 
 
@@ -18,6 +18,15 @@ namespace HospitalLibrary.Appointments
             EndsAt = endsAt;
             Patient = patient;
             Id = id;
+        }
+        
+        public CalendarInterval(TimeOfDayDTO startsAt, TimeOfDayDTO endsAt, string patient, AppointmentType type, int id)
+        {
+            StartsAt = startsAt;
+            EndsAt = endsAt;
+            Patient = patient;
+            Id = id;
+            Type = type;
         }
         
         public CalendarInterval() {}

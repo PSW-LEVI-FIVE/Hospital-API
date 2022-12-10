@@ -46,7 +46,6 @@ namespace HospitalAPI.Controllers.Intranet
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateAppointmentDTO createAppointmentDto)
         {
-
             int doctorId = GetCurrentUser().Id;            
             Appointment newApp = createAppointmentDto.MapToModel();
             newApp.DoctorId = doctorId;
