@@ -27,6 +27,11 @@ namespace HospitalLibrary.Patients
         {
             return _unitOfWork.PatientRepository.GetAll();
         }
+        
+        public async Task<Patient> GetOne(int patientId)
+        {
+            return _unitOfWork.PatientRepository.GetOne(patientId);
+        }
 
         public async Task<Patient> AddAllergensAndDoctorToPatient(int patientId, List<Allergen> allergens, Doctor choosenDoctor)
         {

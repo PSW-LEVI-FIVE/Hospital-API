@@ -11,6 +11,7 @@ namespace HospitalLibrary.Patients.Interfaces
         Task<IEnumerable<Patient>> GetAll();
         Task<Patient> AddAllergensAndDoctorToPatient(int patientId,List<Allergen> allergens,Doctor choosenDoctor);
         Patient SearchByUid(string uid);
+        Task<Patient> GetOne(int patientId);
     }
     
 }

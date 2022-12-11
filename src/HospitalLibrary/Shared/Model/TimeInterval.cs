@@ -15,6 +15,10 @@ namespace HospitalLibrary.Appointments
             this.End = End;
         }
 
+        public TimeInterval()
+        {
+        }
+
         public TimeInterval(DateTime dateTime, TimeSpan timeSpanStart, TimeSpan timeSpanEnd)
         {
             Start = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, timeSpanStart.Hours,

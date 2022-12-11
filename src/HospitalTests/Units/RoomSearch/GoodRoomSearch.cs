@@ -36,7 +36,8 @@ namespace HospitalTests.Units.RoomSearch
         {
             var mock = SetupUnitOfWork();
             var dto = new RoomSearchDTO(RoomType.NO_TYPE, "1");
-            var roomService = new RoomService(mock.Object);
+            var timeIntervalValidationService = new Mock<ITimeIntervalValidationService>();
+            var roomService = new RoomService(mock.Object,timeIntervalValidationService.Object);
             var result = roomService.SearchRoom(dto,1);
             result.ShouldNotBeNull();
         }
@@ -45,7 +46,8 @@ namespace HospitalTests.Units.RoomSearch
         {
             var mock = SetupUnitOfWork();
             var dto = new RoomSearchDTO(RoomType.CAFETERIA, "");
-            var roomService = new RoomService(mock.Object);
+            var timeIntervalValidationService = new Mock<ITimeIntervalValidationService>();
+            var roomService = new RoomService(mock.Object,timeIntervalValidationService.Object);
             var result = roomService.SearchRoom(dto,1);
             result.ShouldNotBeNull();
 
@@ -55,7 +57,8 @@ namespace HospitalTests.Units.RoomSearch
         {
             var mock = SetupUnitOfWork();
             var dto = new RoomSearchDTO(RoomType.CAFETERIA, "1");
-            var roomService = new RoomService(mock.Object);
+            var timeIntervalValidationService = new Mock<ITimeIntervalValidationService>();
+            var roomService = new RoomService(mock.Object,timeIntervalValidationService.Object);
             var result = roomService.SearchRoom(dto,1);
             result.ShouldNotBeNull();
         }
