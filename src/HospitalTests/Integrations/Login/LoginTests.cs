@@ -1,5 +1,6 @@
 ﻿using HospitalAPI;
 using HospitalAPI.Controllers.Public;
+using HospitalLibrary.Auth.Dtos;
 using HospitalLibrary.Auth.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Users;
@@ -24,7 +25,7 @@ public class LoginTests : BaseIntegrationTest {
         var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>(),
                                     scope.ServiceProvider.GetRequiredService<IEmailService>());
         User user = new User("Mika", "plsradi", Role.Patient,1,ActiveStatus.Active);
-        var result = ((OkObjectResult)controller.UserExist(new UserDTO(user.Username,user.Password,user.Role))).Value as string;
+        var result = ((OkObjectResult)controller.UserExist(new UserDTO(user.Username,user.Password,user.Role))).Value as LoggedIn;
         result.ShouldNotBeNull();
     }
     [Fact]
@@ -43,7 +44,7 @@ public class LoginTests : BaseIntegrationTest {
         using var scope = Factory.Services.CreateScope();
         var controller = new HospitalAPI.Controllers.Intranet.AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>());
         User user = new User("Mika1", "plsradi", Role.Doctor,10,ActiveStatus.Active);
-        var result = ((OkObjectResult)controller.UserExist(new UserDTO(user.Username,user.Password,user.Role))).Value as string;
+        var result = ((OkObjectResult)controller.UserExist(new UserDTO(user.Username,user.Password,user.Role))).Value as LoggedIn;
         result.ShouldNotBeNull();
     }
     [Fact]
