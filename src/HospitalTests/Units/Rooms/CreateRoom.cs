@@ -16,12 +16,13 @@ public class CreateRoom
     {
         var roomRepository = new Mock<IRoomRepository>();
         var unitOfWork = new Mock<IUnitOfWork>();
+        var timeIntervalValidationService = new Mock<ITimeIntervalValidationService>();
 
         unitOfWork.Setup(u => u.RoomRepository).Returns(roomRepository.Object);
         unitOfWork.Setup(u => u.RoomRepository.Add(It.IsAny<Room>())).Verifiable();
         unitOfWork.Setup(u => u.RoomRepository.Save()).Verifiable();
 
-        var roomService = new RoomService(unitOfWork.Object);
+        var roomService = new RoomService(unitOfWork.Object,timeIntervalValidationService.Object);
 
         Room room = new Room()
         {
