@@ -38,6 +38,16 @@ namespace HospitalLibrary.Doctors
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Doctor>> GetDoctorForPatientBySpeciality(int patientId, string speciality)
+        {
+            return await _dataContext.Doctors
+                .Where(doctor => doctor.Speciality.Name.Equals(speciality))
+                .Where(doctor => doctor.Speciality.Name.Equals("INTERNAL_MEDICINE") 
+                                 || doctor.Appointments.Count(a => a.PatientId == patientId) >= 1)
+                .Include( d => d.Speciality)
+                .ToListAsync();
+        }
+
         public Task<Doctor> GetDoctorByUid(string doctorUid)
         {
             return _dataContext.Doctors

@@ -11,6 +11,7 @@ using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
+using HospitalLibrary.Shared.Dtos;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Users;
 using HospitalLibrary.Users.Dtos;
@@ -40,6 +41,23 @@ namespace HospitalAPI.Controllers.Public
         {
             Doctor doctor = await _doctorService.GetDoctorByUid(doctorUid);
             IEnumerable<TimeInterval> timeIntervals = await _appointmentService.GetTimeIntervalsForStepByStep(doctor.Id,chosen);
+            return Ok(timeIntervals);
+        }
+        [HttpGet]
+        [Route("time-intervals/recommended/{doctorUid}/{start}/{end}")]
+        public async Task<IActionResult> GetTimeIntervalsForRecomendation(string doctorUid,DateTime start,DateTime end)
+        {
+            Doctor doctor = await _doctorService.GetDoctorByUid(doctorUid);
+            IEnumerable<TimeIntervalWithDoctorDTO> timeIntervals = await _appointmentService.GetTimeIntervalsForRecommendation(doctor,start,end);
+            return Ok(timeIntervals);
+        }
+        
+        [HttpGet]
+        [Route("time-intervals/recommended/date-priority/{speciality}/{start}/{end}")]
+        public async Task<IActionResult> GetTimeIntervalsForRecommendationDatePriority(string speciality,DateTime start,DateTime end)
+        {
+            int patientId = GetCurrentUser().Id;
+            IEnumerable<TimeIntervalWithDoctorDTO> timeIntervals = await _appointmentService.GetTimeIntervalsForRecommendationDatePriority(patientId,speciality,start,end);
             return Ok(timeIntervals);
         }
         
