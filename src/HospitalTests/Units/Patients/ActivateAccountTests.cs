@@ -4,6 +4,7 @@ using HospitalLibrary.Patients;
 using HospitalLibrary.Persons.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Shared.Model.ValueObjects;
 using HospitalLibrary.Users;
 using HospitalLibrary.Users.Interfaces;
 using Moq;
@@ -24,7 +25,7 @@ public class ActivateAccountTests
         
         Patient p1 = new Patient("Pera","Peric","gmail1@gmail.com",
                                         "11111111","420420",new DateTime(2000,2,2),
-                                        "Mike Mikica",BloodType.ZERO_NEGATIVE);
+                                        new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),BloodType.ZERO_NEGATIVE);
         
         User u1 = new User("kiki", "sifra", Role.Patient,1,ActiveStatus.Pending);
         u1.ActivationCode = "asdasd";

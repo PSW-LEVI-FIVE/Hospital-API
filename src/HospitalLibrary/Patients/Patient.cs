@@ -4,6 +4,7 @@ using HospitalLibrary.Allergens;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Shared.Model;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.Patients
 {
@@ -13,7 +14,7 @@ namespace HospitalLibrary.Patients
         public List<Allergen> Allergens { get; set; }
         public Doctor ChoosenDoctor { get; set; }
         public Patient() {}
-        public Patient(string name, string surname, string email, string uid, string phoneNumber, DateTime birthDate, string address, BloodType bloodType) : base( name, surname, email, uid, phoneNumber, birthDate, address)
+        public Patient(string name, string surname, string email, string uid, string phoneNumber, DateTime birthDate, Address address, BloodType bloodType) : base( name, surname, email, uid, phoneNumber, birthDate, address)
         {
             BloodType = bloodType;
         }

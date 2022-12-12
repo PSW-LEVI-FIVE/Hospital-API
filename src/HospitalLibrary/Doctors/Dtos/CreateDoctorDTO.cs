@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.Doctors.Dtos
 {
@@ -32,7 +33,7 @@ namespace HospitalLibrary.Doctors.Dtos
                 Uid = Uid,
                 PhoneNumber = PhoneNumber,
                 BirthDate = BirthDate,
-                Address = Address,
+                Address = new Address(Address,Address,Address,Address),
                 SpecialityId = SpecialtyType
             };
         }

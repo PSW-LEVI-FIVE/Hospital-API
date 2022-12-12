@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.Shared.Model
 {
@@ -14,9 +15,9 @@ namespace HospitalLibrary.Shared.Model
         public string Uid { get; set; }
         public string PhoneNumber { get; set; }
         public DateTime BirthDate { get; set;  }
-        public string Address { get; set; }
+        public Address Address { get; set; }
 
-        public Person(string name, string surname, string email, string uid, string phoneNumber, DateTime birthDate, string address)
+        public Person(string name, string surname, string email, string uid, string phoneNumber, DateTime birthDate, Address address)
         {
             Name = name;
             Surname = surname;
