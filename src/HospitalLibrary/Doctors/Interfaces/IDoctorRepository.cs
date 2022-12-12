@@ -17,5 +17,6 @@ namespace HospitalLibrary.Doctors.Interfaces
         IEnumerable<Doctor> GetDoctorsForDate(List<int> doctors, DateTime date);
         public Task<IEnumerable<Doctor>> GetDoctorsByAgeRange(DateTime dateFromAge, DateTime dateToAge);
         Task<IEnumerable<Speciality>> GetAllSpecialitiesInUse();
+        Task<IEnumerable<Doctor>> GetDoctorsBySpecialization(Speciality specialty);
     }
 }
