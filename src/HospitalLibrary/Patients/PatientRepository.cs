@@ -28,23 +28,6 @@ namespace HospitalLibrary.Patients
                 .Where(appointment => appointment.State == AppointmentState.CANCELED)
                 .Count() >= 3)
                 .ToListAsync();
-
-            /*return await _dataContext.Doctors
-                .Where(doctor => doctor.SpecialtyType
-                .Equals(SpecialtyType.ITERNAL_MEDICINE))
-                .OrderByDescending(doctor => doctor.Patients.Count)
-                .Include(a => a.Patients
-                .Where(patient => patient.BirthDate < dateFromAge && patient.BirthDate > dateToAge))
-                .ToListAsync();
-             */
-
-                /*
-                 * 
-                    .Where(appointment => appointment.State
-                    .Equals(AppointmentState.DELETED))
-                    .Count)
-                    .ToListAsync();
-                 */
         }
     }
 }
