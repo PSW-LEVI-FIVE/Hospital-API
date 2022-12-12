@@ -100,7 +100,6 @@ namespace HospitalAPI.Controllers.Public
         [HttpPost]
         public IActionResult Cancel([FromBody]int id)
         {
-            Console.WriteLine("Stize id: " + id);
             AppointmentCancelledDTO appointment = _appointmentService.CancelAppointment(id);
             return Ok(appointment);
         }
