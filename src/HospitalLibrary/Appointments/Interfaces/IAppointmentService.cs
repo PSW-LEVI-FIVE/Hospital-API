@@ -19,6 +19,8 @@ namespace HospitalLibrary.Appointments.Interfaces
 
         Task<Appointment> Create(Appointment appointment);
 
+        public Task<IEnumerable<Appointment>> GetAllPatientAppointments(int patientId);
+        
         Task<AppointmentRescheduledDTO> Reschedule(int appointmentId, DateTime start, DateTime end);
 
         Task<IEnumerable<Appointment>> GetAllForDoctorAndRange(int doctorId, TimeInterval interval);
