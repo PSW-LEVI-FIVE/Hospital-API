@@ -42,13 +42,10 @@ namespace HospitalLibrary.Rooms.Repositories
         }
         public async Task<RoomEquipment> GetEquipmentByRoomAndName(int roomId, string name)
         {
-            if (!_dataContext.RoomEquipment.Any(a => a.RoomId == roomId && a.Name == name))
-                return null;
             return await _dataContext.RoomEquipment
                 .Where(a => a.RoomId == roomId)
                 .Where(a => a.Name == name)
-                .SingleAsync();
-            ;
+                .SingleOrDefaultAsync();
         }
         public async Task<List<RoomEquipment>> GetEquipmentByRoom(int roomId)
         {
