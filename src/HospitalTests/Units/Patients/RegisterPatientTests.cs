@@ -12,6 +12,7 @@ using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Persons.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Shared.Model.ValueObjects;
 using HospitalLibrary.Shared.Validators;
 using HospitalLibrary.Users;
 using HospitalLibrary.Users.Interfaces;
@@ -38,7 +39,7 @@ namespace HospitalTests.Units.Patients
             
             Patient p1 = new Patient("Pera","Peric","gmail1@gmail.com",
                                             "11111111","420420",new DateTime(2000,2,2),
-                                            "Mike Mikica",BloodType.ZERO_NEGATIVE);
+                                            new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),BloodType.ZERO_NEGATIVE);
             
             User u1 = new User("kiki", "sifra", Role.Patient,1,ActiveStatus.Active);
             Doctor d1 = new Doctor()
@@ -46,7 +47,7 @@ namespace HospitalTests.Units.Patients
                 Id = 5,
                 Name = "Prvi plus",
                 Surname = "Drugi plus",
-                Address = "Al bas daleko odavde",
+                Address = new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
                 BirthDate = DateTime.Now,
                 Email = "nekimail1@gmail.com",
                 PhoneNumber = "063555333",
@@ -59,7 +60,7 @@ namespace HospitalTests.Units.Patients
                 Id = 5,
                 Name = "Prvi minus",
                 Surname = "Drugi minus",
-                Address = "Al bas daleko odavde",
+                Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
                 BirthDate = DateTime.Now,
                 Email = "nekimail2@gmail.com",
                 PhoneNumber = "063555333",

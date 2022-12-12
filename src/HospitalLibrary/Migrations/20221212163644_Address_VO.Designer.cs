@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221212163644_Address_VO")]
+    partial class Address_VO
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,7 +103,7 @@ namespace HospitalLibrary.Migrations
                     b.Property<DateTime>("StartAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("state")
+                    b.Property<int>("State")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -136,7 +138,7 @@ namespace HospitalLibrary.Migrations
                     b.Property<DateTime>("StartAt")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("state")
+                    b.Property<int>("State")
                         .HasColumnType("integer");
 
                     b.Property<int>("Type")
@@ -372,7 +374,7 @@ namespace HospitalLibrary.Migrations
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("state")
+                    b.Property<int>("State")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -523,45 +525,6 @@ namespace HospitalLibrary.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Medicines");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Rooms.Model.EquipmentReallocation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("amount")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("DestinationRoomId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("EndAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("EquipmentId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("StartAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("StartingRoomId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("state")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DestinationRoomId");
-
-                    b.HasIndex("EquipmentId");
-
-                    b.HasIndex("StartingRoomId");
-
-                    b.ToTable("EquipmentReallocations");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Rooms.Model.Room", b =>
@@ -1046,33 +1009,6 @@ namespace HospitalLibrary.Migrations
                         .IsRequired();
 
                     b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Rooms.Model.EquipmentReallocation", b =>
-                {
-                    b.HasOne("HospitalLibrary.Rooms.Model.Room", "DestinationRoom")
-                        .WithMany()
-                        .HasForeignKey("DestinationRoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HospitalLibrary.Rooms.Model.RoomEquipment", "Equipment")
-                        .WithMany()
-                        .HasForeignKey("EquipmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HospitalLibrary.Rooms.Model.Room", "StartingRoom")
-                        .WithMany()
-                        .HasForeignKey("StartingRoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DestinationRoom");
-
-                    b.Navigation("Equipment");
-
-                    b.Navigation("StartingRoom");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Rooms.Model.Room", b =>

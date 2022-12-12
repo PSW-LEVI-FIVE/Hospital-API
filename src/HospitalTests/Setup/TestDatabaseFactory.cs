@@ -22,6 +22,7 @@ using Microsoft.Extensions.DependencyInjection;
 using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Examination;
+using HospitalLibrary.Shared.Model.ValueObjects;
 using HospitalLibrary.Symptoms;
 
 namespace HospitalTests.Setup;
@@ -56,7 +57,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn111";
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=123";
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
@@ -86,7 +87,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Id = 4,
             Name = "Prvi",
             Surname = "Drugi",
-            Address = "Al bas daleko odavde",
+            Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BirthDate = DateTime.Now,
             Email = "nekimail@gmail.com",
             PhoneNumber = "063555333",
@@ -179,7 +180,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Uid = "67676767",
             PhoneNumber = "123123123",
             BirthDate = new DateTime(2000, 2, 2),
-            Address = "Mike",
+            Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BloodType = BloodType.A_NEGATIVE,
             ChoosenDoctor = doctor
         };
@@ -204,7 +205,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Uid = "78787878",
             PhoneNumber = "123123123",
             BirthDate = new DateTime(2000,2,3), 
-            Address = "Zike", 
+            Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"), 
             BloodType = BloodType.A_NEGATIVE,
             ChoosenDoctor = doctor,
             Allergens = allergens,
@@ -233,7 +234,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Id = 5,
             Name = "Prvi plus",
             Surname = "Drugi plus",
-            Address = "Al bas daleko odavde",
+            Address = new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BirthDate = DateTime.Now,
             Email = "nekimail1@gmail.com",
             PhoneNumber = "063555333",
@@ -278,7 +279,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Uid = "78787899",
             PhoneNumber = "123123123",
             BirthDate = new DateTime(2000,2,3), 
-            Address = "Zike", 
+            Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BloodType = BloodType.A_NEGATIVE,
             ChoosenDoctor = doctor
         };

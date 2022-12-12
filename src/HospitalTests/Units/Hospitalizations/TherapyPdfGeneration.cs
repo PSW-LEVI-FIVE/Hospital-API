@@ -7,6 +7,7 @@ using HospitalLibrary.Patients;
 using HospitalLibrary.PDFGeneration;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Shared.Model.ValueObjects;
 using HospitalLibrary.Therapies.Model;
 using Moq;
 using SendGrid.Helpers.Errors.Model;
@@ -55,7 +56,7 @@ public class PdfGeneration
             Id = 1,
             Name = "Srdjan",
             Surname = "Stjepanovic",
-            Address = "Neka adresa",
+            Address = new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BirthDate = DateTime.Now,
             BloodType = BloodType.A_NEGATIVE,
             Email = "sasas@gmail.com",
@@ -129,7 +130,7 @@ public class PdfGeneration
             Id = 1,
             Name = "Srdjan",
             Surname = "Stjepanovic",
-            Address = "Neka adresa",
+            Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BirthDate = DateTime.Now,
             BloodType = BloodType.A_NEGATIVE,
             Email = "sasas@gmail.com",
@@ -187,7 +188,7 @@ public class PdfGeneration
             Id = 1,
             Name = "Srdjan",
             Surname = "Stjepanovic",
-            Address = "Neka adresa",
+            Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BirthDate = DateTime.Now,
             BloodType = BloodType.A_NEGATIVE,
             Email = "sasas@gmail.com",
