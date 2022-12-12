@@ -95,7 +95,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Uid = "55557888",
             WorkingHours = new List<WorkingHours>()
         };
-        
+
         BloodStorage bloodStorage = new BloodStorage()
         {
             BloodType = BloodType.A_NEGATIVE,

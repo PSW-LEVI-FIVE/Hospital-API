@@ -6,6 +6,7 @@ using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Shared.Exceptions;
+using SendGrid.Helpers.Errors.Model;
 
 namespace HospitalLibrary.Rooms
 {

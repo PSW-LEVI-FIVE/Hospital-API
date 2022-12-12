@@ -97,6 +97,13 @@ namespace HospitalLibrary.Doctors
                 .Distinct()
                 .ToListAsync();
         }
-        
+
+        public async Task<IEnumerable<Doctor>> GetDoctorsBySpecialization(Speciality specialty)
+        {
+            return await _dataContext.Doctors
+                .Where(doctor => doctor.Speciality
+                    .Equals(specialty))
+                .ToListAsync();
+        }
     }
 }

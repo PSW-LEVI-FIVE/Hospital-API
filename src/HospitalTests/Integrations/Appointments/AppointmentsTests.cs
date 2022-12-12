@@ -36,6 +36,7 @@ public class AppointmentsTests: BaseIntegrationTest
         };
         return controller;
     }
+
     [Fact]
     public void Create_appointment()
     {

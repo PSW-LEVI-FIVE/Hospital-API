@@ -86,6 +86,28 @@ namespace HospitalAPI.Controllers.Intranet
                 return Ok(appointment);
         }
         
+        [Route("for")]
+        [HttpPost]
+        public async Task<IActionResult> CreateForAnotherDoctor([FromBody] CreateAppointmentDTO createAppointmentDto)
+        {
+            Appointment newApp = createAppointmentDto.MapToModel();
+            Appointment appointment = await _appointmentService.Create(newApp);
+            return Ok(appointment);
+        }
+        
+        [Route("range")]
+        [HttpGet]
+        public async Task<IActionResult> GetCalendarIntervalsForDoctorInRange([FromBody] DoctorAppointmentsInRangeDTO createAppointmentDto)
+        {
+            TimeInterval interval = new TimeInterval(createAppointmentDto.StartDate, createAppointmentDto.EndDate);
+            IEnumerable<Appointment> appointments =
+                await _appointmentService.GetAllForDoctorAndRange(createAppointmentDto.DoctorId, interval);
+            IEnumerable<CalendarAppointmentsDTO> calendarIntervals =
+                _appointmentService.FormatAppointmentsForCalendar(appointments, interval);
+            return Ok(calendarIntervals);
+        }
+
+        
         private UserDTO GetCurrentUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -103,5 +125,6 @@ namespace HospitalAPI.Controllers.Intranet
 
             return null;
         }
+        
     }
 }

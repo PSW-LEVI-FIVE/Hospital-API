@@ -27,6 +27,10 @@ namespace HospitalLibrary.Appointments.Dtos
             this.EndAt = endAt;
         }
 
+        public CreateAppointmentDTO()
+        {
+        }
+
         public Appointment MapToModel()
         {
             return new Appointment
