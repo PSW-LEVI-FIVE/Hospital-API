@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HospitalLibrary.Allergens;
+using HospitalLibrary.Users;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
 using Microsoft.EntityFrameworkCore;
+using HospitalLibrary.Appointments;
 
 namespace HospitalLibrary.Patients
 {
@@ -13,21 +15,28 @@ namespace HospitalLibrary.Patients
     {
         public PatientRepository(HospitalDbContext context) : base(context) { }
 
-<<<<<<< HEAD
         public Patient SearchByUid(string uid)
         {
             return _dataContext.Patients.FirstOrDefault(p => p.Uid.Equals(uid));
         }
-        public Task<IEnumerable<Patient>> GetMaliciousPatients()
-=======
-        public async Task<IEnumerable<Patient>> GetMaliciousPatients()
->>>>>>> 8f11d8c (getting poetential malicious users)
+        public async Task<IEnumerable<Patient>> GetMaliciousPatients(DateTime dateForMaliciousPatients)
         {
-            return await _dataContext.Patients
+            IEnumerable<Patient> potentialMaliciousPatients = await _dataContext.Patients
                 .Where(patient => patient.Appointments
-                .Where(appointment => appointment.State == AppointmentState.CANCELED)
+                .Where(appointment => appointment.State == AppointmentState.CANCELED && 
+                    appointment.StartAt > dateForMaliciousPatients)
                 .Count() >= 3)
+                .Include(patient => patient.Appointments
+                .Where (appointment => appointment.State == AppointmentState.CANCELED))
                 .ToListAsync();
+            foreach(Users.User user in _dataContext.Users.Where(user => user.Blocked == true))
+            {
+                potentialMaliciousPatients.Append(_dataContext.Patients
+                    .Where(patient => patient.Id == user.Id)
+                    .Include(patient => patient.Appointments
+                    .Where(appointment => appointment.State == AppointmentState.CANCELED)).First());
+            }
+            return potentialMaliciousPatients;
         }
     }
 }
