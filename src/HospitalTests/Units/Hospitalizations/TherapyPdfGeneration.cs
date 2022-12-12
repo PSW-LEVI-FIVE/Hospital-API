@@ -10,7 +10,6 @@ using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Shared.Model.ValueObjects;
 using HospitalLibrary.Therapies.Model;
 using Moq;
-using SendGrid.Helpers.Errors.Model;
 using Shouldly;
 
 namespace HospitalTests.Units.Hospitalizations;

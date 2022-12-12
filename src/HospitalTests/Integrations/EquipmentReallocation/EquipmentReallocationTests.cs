@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 
 namespace HospitalTests.Integrations.EquipmentReallocation
 {
+    [Collection("Test")]
     public class EquipmentReallocationTests : BaseIntegrationTest
     {
 
@@ -29,20 +30,7 @@ namespace HospitalTests.Integrations.EquipmentReallocation
         {
             return new EquipmentReallocationController(scope.ServiceProvider.GetRequiredService<IEquipmentReallocationService>());
         }
-        /*
-        [Fact]
-        public void Succesfully_added_new_reallcation()
-        {
-            using var scope = Factory.Services.CreateScope();
 
-            CreateEquipmentReallocationDTO equipmentReallocation = new CreateEquipmentReallocationDTO(1, 2, DateTime.Parse("2023-11-24 10:30:00"), DateTime.Parse("2023-11-24 11:30:00"), 1, 10);
-            var controller = SetupController(scope);
-
-            var result = ((OkObjectResult)controller.AddNewReallocation(equipmentReallocation).Result)?.Value as HospitalLibrary.Rooms.Model.EquipmentReallocation;
-            //Should.Throw<BadRequestException>(() => ((OkObjectResult)controller.AddNewReallocation(equipmentReallocation).Result).Value);
-            result.ShouldNotBeNull();
-
-        }*/
         [Fact]
         public void Unsuccesfully_added_new_reallcation_date_in_past()
         {
@@ -63,9 +51,7 @@ namespace HospitalTests.Integrations.EquipmentReallocation
             CreateEquipmentReallocationDTO equipmentReallocation = new CreateEquipmentReallocationDTO(1, 2, DateTime.Parse("2022-11-24 10:30:00"), DateTime.Parse("2022-11-23 11:30:00"), 1, 10);
             var controller = SetupController(scope);
 
-            //var result = ((OkObjectResult)controller.AddNewReallocation(equipmentReallocation).Result)?.Value as HospitalLibrary.Rooms.Model.EquipmentReallocation;
             Should.Throw<AggregateException>(() => ((OkObjectResult)controller.AddNewReallocation(equipmentReallocation).Result).Value);
-
         }
 
 

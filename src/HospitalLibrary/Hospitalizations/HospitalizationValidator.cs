@@ -3,7 +3,6 @@ using HospitalLibrary.Hospitalizations.Dtos;
 using HospitalLibrary.Hospitalizations.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
-using SendGrid.Helpers.Errors.Model;
 
 namespace HospitalLibrary.Hospitalizations
 {
@@ -27,7 +26,7 @@ namespace HospitalLibrary.Hospitalizations
         public void ValidateEndHospitalization(Hospitalization hospitalization, EndHospitalizationDTO dto)
         {
             if (hospitalization == null)
-                throw new FoundException("Hospitalization with given id doesn't exist!");
+                throw new NotFoundException("Hospitalization with given id doesn't exist!");
             if (hospitalization.StartTime.CompareTo(dto.EndTime) >= 0)
                 throw new Shared.Exceptions.BadRequestException("End Time should be after start time!");
             if (hospitalization.State == HospitalizationState.FINISHED)

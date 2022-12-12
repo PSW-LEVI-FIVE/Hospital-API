@@ -74,11 +74,11 @@ namespace HospitalTests.Units.EquipmentReallocation
         [Fact]
         public void SuccesfullyFoundTakenIntervals()
         {
-
             var unitOfWork =SetupUOW();
             var dto = new CreateIntervalsEquipmentReallocationDTO(1,2, DateTime.Parse("2023-11-23 10:30:00"),30);
+            var roomEquipmentService = new Mock<IRoomEquipmentService>();
             ITimeIntervalValidationService validator = new TimeIntervalValidationService(unitOfWork.Object);
-            EquipmentReallocationService service = new EquipmentReallocationService(unitOfWork.Object, validator);
+            EquipmentReallocationService service = new EquipmentReallocationService(unitOfWork.Object, validator, roomEquipmentService.Object);
             var result = service.GetTakenIntervals(dto.StartingRoomId,dto.date);
             result.ShouldNotBeNull();
         }
@@ -86,11 +86,11 @@ namespace HospitalTests.Units.EquipmentReallocation
         [Fact]
         public void SuccesfullyFoundFreeIntervals()
         {
-
             var unitOfWork = SetupUOW();
             var dto = new CreateIntervalsEquipmentReallocationDTO(1, 2, DateTime.Parse("2023-11-23 10:30:00"), 30);
+            var roomEquipmentService = new Mock<IRoomEquipmentService>();
             ITimeIntervalValidationService validator = new TimeIntervalValidationService(unitOfWork.Object);
-            EquipmentReallocationService service = new EquipmentReallocationService(unitOfWork.Object, validator);
+            EquipmentReallocationService service = new EquipmentReallocationService(unitOfWork.Object, validator, roomEquipmentService.Object);
             var result = service.GetPossibleInterval(dto.StartingRoomId,dto.DestinationRoomId, dto.date,new TimeSpan(0,dto.duration,0));
             result.ShouldNotBeNull();
         }
@@ -102,7 +102,8 @@ namespace HospitalTests.Units.EquipmentReallocation
             var unitOfWork = SetupUOW();
             var dto = new CreateIntervalsEquipmentReallocationDTO(1, 2, DateTime.Parse("2023-11-23 10:30:00"), 300000000);
             ITimeIntervalValidationService validator = new TimeIntervalValidationService(unitOfWork.Object);
-            EquipmentReallocationService service = new EquipmentReallocationService(unitOfWork.Object, validator);
+            var roomEquipmentService = new Mock<IRoomEquipmentService>();
+            EquipmentReallocationService service = new EquipmentReallocationService(unitOfWork.Object, validator, roomEquipmentService.Object);
             var result = service.GetPossibleInterval(dto.StartingRoomId, dto.DestinationRoomId, dto.date, new TimeSpan(0, dto.duration, 0));
             result.Result.Count.ShouldBe(0);
         }

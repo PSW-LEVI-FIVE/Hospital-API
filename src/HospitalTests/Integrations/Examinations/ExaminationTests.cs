@@ -61,7 +61,7 @@ public class ExaminationTests: BaseIntegrationTest
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
 
-        var result = ((OkObjectResult)controller.GetByExamination(30)).Value as ExaminationReport;
+        var result = ((OkObjectResult)controller.GetByExamination(41)).Value as ExaminationReport;
 
         result.ShouldNotBeNull();
     }

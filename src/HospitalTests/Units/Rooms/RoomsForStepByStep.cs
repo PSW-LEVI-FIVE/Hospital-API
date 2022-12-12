@@ -61,10 +61,10 @@ public class RoomsForStepByStep
         roomRepository.Setup(roomRepo => roomRepo.GetHospitalExaminationRooms()).ReturnsAsync(rooms.AsEnumerable());
         appointmentRepository.Setup(appoRepo => appoRepo
             .GetAllRoomTakenIntervalsForDate(1,It.IsAny<DateTime>()))
-            .ReturnsAsync(room1Intervals.AsEnumerable());
+            .ReturnsAsync(room1Intervals);
         appointmentRepository.Setup(appoRepo => appoRepo
                 .GetAllRoomTakenIntervalsForDate(2,It.IsAny<DateTime>()))
-            .ReturnsAsync(room2Intervals.AsEnumerable());
+            .ReturnsAsync(room2Intervals);
         
         var timeIntervalValidationService = new TimeIntervalValidationService(unitOfWork.Object);
         var roomService = new RoomService(unitOfWork.Object,timeIntervalValidationService);

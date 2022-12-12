@@ -421,6 +421,18 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             EndAt = today.AddDays(1)
         };
         
+        Appointment examination2 = new Appointment()
+        {
+            Id = 41,
+            DoctorId = 4,
+            PatientId = 1,
+            RoomId = 2,
+            State = AppointmentState.PENDING,
+            Type = AppointmentType.EXAMINATION,
+            StartAt = today,
+            EndAt = today.AddDays(1)
+        };
+        
         DateTime timeBegin = today.AddDays(2);
         DateTime timeEnd = today.AddDays(2);
         TimeSpan timeSpanBegin = new TimeSpan(11, 35, 0);
@@ -464,7 +476,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Prescriptions = null,
             Symptoms = null,
             DoctorId = 4,
-            ExaminationId = 30
+            ExaminationId = 41
         };
         
         dbContext.Specialities.Add(speciality1);
@@ -521,6 +533,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Symptoms.Add(cough);
         dbContext.Symptoms.Add(blood);
         dbContext.Appointments.Add(examination);
+        dbContext.Appointments.Add(examination2);
         dbContext.Appointments.Add(appointment1);
         dbContext.Appointments.Add(appointment2);
         dbContext.ExaminationReports.Add(rp);
