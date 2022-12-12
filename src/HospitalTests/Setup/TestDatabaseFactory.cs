@@ -57,7 +57,10 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn";
+
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn111";
+
+
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
@@ -420,10 +423,10 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             StartAt = today,
             EndAt = today.AddDays(1)
         };
-        
-        Appointment examination2 = new Appointment()
+
+        Appointment examination1 = new Appointment()
         {
-            Id = 41,
+            Id = 1,
             DoctorId = 4,
             PatientId = 1,
             RoomId = 2,
@@ -432,6 +435,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             StartAt = today,
             EndAt = today.AddDays(1)
         };
+
         
         DateTime timeBegin = today.AddDays(2);
         DateTime timeEnd = today.AddDays(2);
@@ -468,6 +472,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             StartAt = timeBegin,
             EndAt = timeEnd
         };
+
 
         ExaminationReport rp = new ExaminationReport()
         {
@@ -533,9 +538,10 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Symptoms.Add(cough);
         dbContext.Symptoms.Add(blood);
         dbContext.Appointments.Add(examination);
-        dbContext.Appointments.Add(examination2);
         dbContext.Appointments.Add(appointment1);
         dbContext.Appointments.Add(appointment2);
+        dbContext.Appointments.Add(examination1);
+
         dbContext.ExaminationReports.Add(rp);
         dbContext.SaveChanges();
 

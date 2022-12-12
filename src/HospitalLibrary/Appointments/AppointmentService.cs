@@ -23,7 +23,8 @@ namespace HospitalLibrary.Appointments
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDoctorService _doctorService;
 
-        public AppointmentService(IUnitOfWork unitOfWork, ITimeIntervalValidationService intervalValidation,IDoctorService doctorService)
+        public AppointmentService(IUnitOfWork unitOfWork, ITimeIntervalValidationService intervalValidation,
+            IDoctorService doctorService)
         {
             _unitOfWork = unitOfWork;
             _intervalValidation = intervalValidation;
@@ -37,7 +38,8 @@ namespace HospitalLibrary.Appointments
 
         public async Task<IEnumerable<TimeInterval>> GetTimeIntervalsForStepByStep(int doctorId, DateTime chosen)
         {
-            WorkingHours doctorsWorkingHours = _unitOfWork.WorkingHoursRepository.GetOne((int)chosen.DayOfWeek,doctorId);
+            WorkingHours doctorsWorkingHours =
+                _unitOfWork.WorkingHoursRepository.GetOne((int)chosen.DayOfWeek, doctorId);
             List<TimeInterval> possibleTimeIntervals = new List<TimeInterval>();
             TimeSpan timeIntervalFiller = doctorsWorkingHours.Start;
             TimeSpan timeSpanIncrementer = TimeSpan.FromMinutes(30);
@@ -46,14 +48,19 @@ namespace HospitalLibrary.Appointments
                 TimeInterval possibleTimeInterval = new TimeInterval(chosen, timeIntervalFiller,
                     timeIntervalFiller.Add(timeSpanIncrementer));
                 timeIntervalFiller = timeIntervalFiller.Add(TimeSpan.FromMinutes(35));
-                bool isOverlapped = await _intervalValidation.IsIntervalOverlapingWithDoctorAppointments(doctorId, possibleTimeInterval);
+                bool isOverlapped =
+                    await _intervalValidation.IsIntervalOverlapingWithDoctorAppointments(doctorId,
+                        possibleTimeInterval);
                 if (isOverlapped)
                     continue;
                 possibleTimeIntervals.Add(possibleTimeInterval);
             }
+
             return possibleTimeIntervals;
         }
-        public async Task<IEnumerable<TimeIntervalWithDoctorDTO>> GetTimeIntervalsForRecommendation(Doctor doctor, DateTime start,DateTime end)
+
+        public async Task<IEnumerable<TimeIntervalWithDoctorDTO>> GetTimeIntervalsForRecommendation(Doctor doctor,
+            DateTime start, DateTime end)
         {
             List<TimeIntervalWithDoctorDTO> possibleTimeIntervals = new List<TimeIntervalWithDoctorDTO>();
             DateTime dateIterator = start;
@@ -62,12 +69,16 @@ namespace HospitalLibrary.Appointments
                 await GetTimeIntervalsWithDoctorForDate(doctor, dateIterator, possibleTimeIntervals);
                 dateIterator = dateIterator.AddDays(1);
             }
+
             return possibleTimeIntervals;
         }
-        public async Task<IEnumerable<TimeIntervalWithDoctorDTO>> GetTimeIntervalsForRecommendationDatePriority(int patientId, string speciality, DateTime start,DateTime end)
+
+        public async Task<IEnumerable<TimeIntervalWithDoctorDTO>> GetTimeIntervalsForRecommendationDatePriority(
+            int patientId, string speciality, DateTime start, DateTime end)
         {
             List<TimeIntervalWithDoctorDTO> possibleTimeIntervals = new List<TimeIntervalWithDoctorDTO>();
-            IEnumerable<Doctor> possibleDoctors = await _doctorService.GetDoctorForPatientBySpeciality(patientId, speciality);
+            IEnumerable<Doctor> possibleDoctors =
+                await _doctorService.GetDoctorForPatientBySpeciality(patientId, speciality);
             foreach (Doctor doctor in possibleDoctors)
             {
                 DateTime dateIterator = start;
@@ -75,16 +86,19 @@ namespace HospitalLibrary.Appointments
                 {
                     await GetTimeIntervalsWithDoctorForDate(doctor, dateIterator, possibleTimeIntervals);
                     dateIterator = dateIterator.AddDays(1);
-                }   
+                }
             }
+
             return possibleTimeIntervals;
         }
 
-        private async Task GetTimeIntervalsWithDoctorForDate(Doctor doctor, DateTime dateIterator, List<TimeIntervalWithDoctorDTO> possibleTimeIntervals)
+        private async Task GetTimeIntervalsWithDoctorForDate(Doctor doctor, DateTime dateIterator,
+            List<TimeIntervalWithDoctorDTO> possibleTimeIntervals)
         {
             IEnumerable<TimeInterval> timeIntervalsToAdd = await GetTimeIntervalsForStepByStep(doctor.Id, dateIterator);
-            possibleTimeIntervals.AddRange(timeIntervalsToAdd.Select(timeInterval => 
-                new TimeIntervalWithDoctorDTO(timeInterval, new PatientsDoctorDTO(doctor.Name, doctor.Surname, doctor.Uid))));
+            possibleTimeIntervals.AddRange(timeIntervalsToAdd.Select(timeInterval =>
+                new TimeIntervalWithDoctorDTO(timeInterval,
+                    new PatientsDoctorDTO(doctor.Name, doctor.Surname, doctor.Uid))));
         }
 
         public async Task<Appointment> Create(Appointment appointment)
@@ -100,7 +114,8 @@ namespace HospitalLibrary.Appointments
             Appointment canceled = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
             canceled.State = AppointmentState.DELETED;
             Patient toNotify = _unitOfWork.PatientRepository.GetOne(canceled.PatientId ?? 0);
-            AppointmentCancelledDTO retDto = new AppointmentCancelledDTO { PatientEmail = toNotify.Email, AppointmentTime = canceled.StartAt };
+            AppointmentCancelledDTO retDto = new AppointmentCancelledDTO
+                { PatientEmail = toNotify.Email, AppointmentTime = canceled.StartAt };
             _unitOfWork.AppointmentRepository.Update(canceled);
             _unitOfWork.AppointmentRepository.Save();
             return retDto;
@@ -111,82 +126,93 @@ namespace HospitalLibrary.Appointments
             return _unitOfWork.AppointmentRepository.GetAllDoctorUpcomingAppointments(doctor.Id);
         }
 
+
         public Task<IEnumerable<Appointment>> GetAllPatientAppointments(int patientId)
         {
-          return _unitOfWork.AppointmentRepository.GetAllPatientAppointments(patientId);
+            return _unitOfWork.AppointmentRepository.GetAllPatientAppointments(patientId);
         }
 
-        public async Task<AppointmentRescheduledDTO> Reschedule(int appointmentId, DateTime start, DateTime end)
-        {
-            Appointment appointment = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
-            DateTime preChange = appointment.StartAt;
-            await _intervalValidation.ValidateRescheduling(appointment, start, end);
-            appointment.StartAt = start;
-            appointment.EndAt = end;
-            _unitOfWork.AppointmentRepository.Update(appointment);
-            _unitOfWork.AppointmentRepository.Save();
-            Patient toNotify = _unitOfWork.PatientRepository.GetOne(appointment.PatientId ?? 0);
-            return new AppointmentRescheduledDTO { PatientEmail = toNotify.Email, AppointmentTimeBefore = preChange };
-        }
-
-        public Task<IEnumerable<Appointment>> GetAllForDoctorAndRange(int doctorId, TimeInterval interval)
-        {
-            return _unitOfWork.AppointmentRepository.GetAllDoctorAppointmentsForRange(doctorId, interval);
-        }
-
-        public IEnumerable<CalendarAppointmentsDTO> FormatAppointmentsForCalendar(IEnumerable<Appointment> appointments,
-            TimeInterval interval)
-        {
-            Dictionary<DateTime, List<CalendarInterval>> map = FillDictionaryWithStartDates(interval);
-            foreach (Appointment app in appointments)
+        public Task<IEnumerable<Appointment>> GetUpcomingAppointmentsForRoom(int roomId)
             {
-                DateTime date = app.StartAt.Date;
-                List<CalendarInterval> list = map[date];
-                list.Add(
-                    new CalendarInterval
-                    {
-                        StartsAt = new TimeOfDayDTO(app.StartAt.TimeOfDay) ,
-                        EndsAt = new TimeOfDayDTO(app.EndAt.TimeOfDay),
-                        Patient = app.Patient == null ? app.Patient.Name  + " " + app.Patient.Surname: null,
-                        Type = app.Type,
-                        Id = app.Id
-                    });
-                map[date] = list;
+                return _unitOfWork.AppointmentRepository.GetAllRoomUpcomingAppointments(roomId);
+
             }
 
-            return MapDictionaryToCalendarDTOs(map);
-        }
-
-        public async Task<Appointment> GetById(int appointmentId)
-        {
-            Appointment appointment= await _unitOfWork.AppointmentRepository.GetById(appointmentId);
-            if (appointment == null)
+            public async Task<AppointmentRescheduledDTO> Reschedule(int appointmentId, DateTime start, DateTime end)
             {
-                throw new BadRequestException("Appointment with ID " + appointmentId + "does not exist");
-            }
-            return appointment;
-        }
-
-        private Dictionary<DateTime, List<CalendarInterval>> FillDictionaryWithStartDates(TimeInterval interval)
-        {
-            Dictionary<DateTime, List<CalendarInterval>> map = new Dictionary<DateTime, List<CalendarInterval>>();
-            DateTime startDate = interval.Start.Date;
-            while (startDate.CompareTo(interval.End.Date) < 0)
-            {
-                map.Add(startDate, new List<CalendarInterval>());
-                startDate = startDate.AddDays(1).Date;
+                Appointment appointment = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
+                DateTime preChange = appointment.StartAt;
+                await _intervalValidation.ValidateRescheduling(appointment, start, end);
+                appointment.StartAt = start;
+                appointment.EndAt = end;
+                _unitOfWork.AppointmentRepository.Update(appointment);
+                _unitOfWork.AppointmentRepository.Save();
+                Patient toNotify = _unitOfWork.PatientRepository.GetOne(appointment.PatientId ?? 0);
+                return new AppointmentRescheduledDTO
+                    { PatientEmail = toNotify.Email, AppointmentTimeBefore = preChange };
             }
 
-            return map;
-        }
+            public Task<IEnumerable<Appointment>> GetAllForDoctorAndRange(int doctorId, TimeInterval interval)
+            {
+                return _unitOfWork.AppointmentRepository.GetAllDoctorAppointmentsForRange(doctorId, interval);
+            }
 
-        private IEnumerable<CalendarAppointmentsDTO> MapDictionaryToCalendarDTOs(
-            Dictionary<DateTime, List<CalendarInterval>> map)
-        {
-            return (from dt in map.Keys
-                    let date = dt.Date.ToString("yyyy-MM-dd")
-                    select new CalendarAppointmentsDTO(date, map[dt]))
-                .ToList();
+            public IEnumerable<CalendarAppointmentsDTO> FormatAppointmentsForCalendar(
+                IEnumerable<Appointment> appointments,
+                TimeInterval interval)
+            {
+                Dictionary<DateTime, List<CalendarInterval>> map = FillDictionaryWithStartDates(interval);
+                foreach (Appointment app in appointments)
+                {
+                    DateTime date = app.StartAt.Date;
+                    List<CalendarInterval> list = map[date];
+                    list.Add(
+                        new CalendarInterval
+                        {
+                            StartsAt = new TimeOfDayDTO(app.StartAt.TimeOfDay),
+                            EndsAt = new TimeOfDayDTO(app.EndAt.TimeOfDay),
+                            Patient = app.Patient == null ? app.Patient.Name + " " + app.Patient.Surname : null,
+                            Type = app.Type,
+                            Id = app.Id
+                        });
+                    map[date] = list;
+                }
+
+                return MapDictionaryToCalendarDTOs(map);
+            }
+
+            public async Task<Appointment> GetById(int appointmentId)
+            {
+                Appointment appointment = await _unitOfWork.AppointmentRepository.GetById(appointmentId);
+                if (appointment == null)
+                {
+                    throw new BadRequestException("Appointment with ID " + appointmentId + "does not exist");
+                }
+
+                return appointment;
+            }
+
+            private Dictionary<DateTime, List<CalendarInterval>> FillDictionaryWithStartDates(TimeInterval interval)
+            {
+                Dictionary<DateTime, List<CalendarInterval>> map = new Dictionary<DateTime, List<CalendarInterval>>();
+                DateTime startDate = interval.Start.Date;
+                while (startDate.CompareTo(interval.End.Date) < 0)
+                {
+                    map.Add(startDate, new List<CalendarInterval>());
+                    startDate = startDate.AddDays(1).Date;
+                }
+
+                return map;
+            }
+
+            private IEnumerable<CalendarAppointmentsDTO> MapDictionaryToCalendarDTOs(
+                Dictionary<DateTime, List<CalendarInterval>> map)
+            {
+                return (from dt in map.Keys
+                        let date = dt.Date.ToString("yyyy-MM-dd")
+                        select new CalendarAppointmentsDTO(date, map[dt]))
+                    .ToList();
+            }
         }
     }
-}
+
