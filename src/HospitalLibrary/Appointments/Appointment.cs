@@ -11,7 +11,8 @@ public enum AppointmentState
 {
     DELETED,
     FINISHED,
-    PENDING
+    PENDING,
+    CANCELED
 }
 
 public enum AppointmentType
