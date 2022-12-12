@@ -1,14 +1,10 @@
 ﻿using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
-using HospitalLibrary.Shared.Interfaces;
-using HospitalLibrary.Shared.Repository;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
@@ -29,27 +25,35 @@ namespace HospitalLibrary.Shared.Service
         
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            reallocationTimer.Elapsed += new ElapsedEventHandler(GenerateMessage);
+            reallocationTimer.Elapsed += new ElapsedEventHandler(async(object source, ElapsedEventArgs e) =>
+            {
+                await GenerateMessage(source, e);
+            });
             reallocationTimer.Interval = 30000; //number in miliseconds  
             reallocationTimer.Enabled = true;
 
             return Task.CompletedTask;
         }
-        private async void GenerateMessage(object source, ElapsedEventArgs e)
+        private async Task GenerateMessage(object source, ElapsedEventArgs e)
         {
-            using (IServiceScope scope=_serviceProvider.CreateScope())
+            try
             {
+                using IServiceScope scope=_serviceProvider.CreateScope();
                 IEquipmentReallocationService equipmentReallocationService = scope.ServiceProvider.GetService<IEquipmentReallocationService>();
                 List<EquipmentReallocation> realocations = await equipmentReallocationService.GetAllPendingForToday();
                 foreach (EquipmentReallocation real in realocations) 
                 {
-                     if (real.EndAt < DateTime.Now) 
-                     {
+                    if (real.EndAt < DateTime.Now) 
+                    {
                         await equipmentReallocationService.InitiateReallocation(real);           
-                     }
+                    }
                 }
             }
-
+            catch (Exception error)
+            {
+                Console.WriteLine("Something wrong with timer service");
+            }
+            
         }
 
     }
