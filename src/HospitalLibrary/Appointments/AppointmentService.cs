@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Doctors;
+using HospitalLibrary.Doctors.Dtos;
+using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Patients;
+using HospitalLibrary.Shared.Dtos;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Shared.Model;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 using SendGrid.Helpers.Errors.Model;
 
 namespace HospitalLibrary.Appointments
@@ -17,11 +21,13 @@ namespace HospitalLibrary.Appointments
     {
         private readonly ITimeIntervalValidationService _intervalValidation;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IDoctorService _doctorService;
 
-        public AppointmentService(IUnitOfWork unitOfWork, ITimeIntervalValidationService intervalValidation)
+        public AppointmentService(IUnitOfWork unitOfWork, ITimeIntervalValidationService intervalValidation,IDoctorService doctorService)
         {
             _unitOfWork = unitOfWork;
             _intervalValidation = intervalValidation;
+            _doctorService = doctorService;
         }
 
         public Task<IEnumerable<Appointment>> GetAll()
@@ -45,8 +51,40 @@ namespace HospitalLibrary.Appointments
                     continue;
                 possibleTimeIntervals.Add(possibleTimeInterval);
             }
-
             return possibleTimeIntervals;
+        }
+        public async Task<IEnumerable<TimeIntervalWithDoctorDTO>> GetTimeIntervalsForRecommendation(Doctor doctor, DateTime start,DateTime end)
+        {
+            List<TimeIntervalWithDoctorDTO> possibleTimeIntervals = new List<TimeIntervalWithDoctorDTO>();
+            DateTime dateIterator = start;
+            while (dateIterator <= end)
+            {
+                await GetTimeIntervalsWithDoctorForDate(doctor, dateIterator, possibleTimeIntervals);
+                dateIterator = dateIterator.AddDays(1);
+            }
+            return possibleTimeIntervals;
+        }
+        public async Task<IEnumerable<TimeIntervalWithDoctorDTO>> GetTimeIntervalsForRecommendationDatePriority(int patientId, string speciality, DateTime start,DateTime end)
+        {
+            List<TimeIntervalWithDoctorDTO> possibleTimeIntervals = new List<TimeIntervalWithDoctorDTO>();
+            IEnumerable<Doctor> possibleDoctors = await _doctorService.GetDoctorForPatientBySpeciality(patientId, speciality);
+            foreach (Doctor doctor in possibleDoctors)
+            {
+                DateTime dateIterator = start;
+                while (dateIterator <= end)
+                {
+                    await GetTimeIntervalsWithDoctorForDate(doctor, dateIterator, possibleTimeIntervals);
+                    dateIterator = dateIterator.AddDays(1);
+                }   
+            }
+            return possibleTimeIntervals;
+        }
+
+        private async Task GetTimeIntervalsWithDoctorForDate(Doctor doctor, DateTime dateIterator, List<TimeIntervalWithDoctorDTO> possibleTimeIntervals)
+        {
+            IEnumerable<TimeInterval> timeIntervalsToAdd = await GetTimeIntervalsForStepByStep(doctor.Id, dateIterator);
+            possibleTimeIntervals.AddRange(timeIntervalsToAdd.Select(timeInterval => 
+                new TimeIntervalWithDoctorDTO(timeInterval, new PatientsDoctorDTO(doctor.Name, doctor.Surname, doctor.Uid))));
         }
 
         public async Task<Appointment> Create(Appointment appointment)
