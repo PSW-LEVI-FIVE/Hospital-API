@@ -95,5 +95,14 @@ namespace HospitalAPI.Controllers.Public
             IEnumerable<Appointment> appointmentList = await _appointmentService.GetAllPatientAppointments(patientId);
             return Ok(appointmentList);
         }
+        
+        [Route("cancel")]
+        [HttpPost]
+        public IActionResult Cancel([FromBody]int id)
+        {
+            Console.WriteLine("Stize id: " + id);
+            AppointmentCancelledDTO appointment = _appointmentService.CancelAppointment(id);
+            return Ok(appointment);
+        }
     }
 }
