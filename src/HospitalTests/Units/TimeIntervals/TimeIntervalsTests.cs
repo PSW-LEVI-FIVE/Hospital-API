@@ -45,7 +45,7 @@ public class TimeIntervalsTests
             .ReturnsAsync(doctorIntervals.AsEnumerable());
         appointmentRepository.Setup(appoRepo => appoRepo
                 .GetAllRoomTakenIntervalsForDate(It.IsAny<int>(),It.IsAny<DateTime>()))
-            .ReturnsAsync(roomIntervals.AsEnumerable());
+            .ReturnsAsync(roomIntervals);
         
         timeSpanBegin2 = new TimeSpan(10, 0, 0);
         timeSpanEnd2 = new TimeSpan(23, 0, 0);

@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 
 namespace HospitalTests.Integrations.EquipmentReallocation
 {
+    [Collection("Test")]
     public class EquipmentReallocationTests : BaseIntegrationTest
     {
 
