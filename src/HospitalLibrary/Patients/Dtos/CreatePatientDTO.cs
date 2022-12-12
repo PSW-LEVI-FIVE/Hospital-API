@@ -5,6 +5,7 @@ using HospitalLibrary.Allergens.Dtos;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Shared.DTOValidators;
 using HospitalLibrary.Shared.Model;
+using HospitalLibrary.Shared.Model.ValueObjects;
 using HospitalLibrary.Users;
 using Newtonsoft.Json.Serialization;
 
@@ -79,7 +80,7 @@ namespace HospitalLibrary.Patients.Dtos
                 Uid = Uid,
                 PhoneNumber = PhoneNumber,
                 BirthDate = BirthDate,
-                Address = Address,
+                Address = new Address(Address, Address, Address, Address),
                 BloodType = BloodType
             };
         } 
