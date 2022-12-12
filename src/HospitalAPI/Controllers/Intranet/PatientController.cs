@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Patients;
+using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Patients.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
@@ -29,18 +32,26 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
         [HttpGet]
-<<<<<<< HEAD
         [Route("search")]
         public IActionResult Search([FromQuery] string uid)
         {
             Patient patient = _patientService.SearchByUid(uid);
             return Ok(patient);
-=======
-        public Task<IActionResult> GetMaliciousPatients()
-        {
-            return _patientService.GetMaliciousPatients();
->>>>>>> 9a4f1cc (rebasing)
         }
+
+        [HttpGet]
+        [Route("maliciouspatints")]
+        //[Authorize(Roles = "Manager")]
+        public async Task<IActionResult> GetMaliciousPatients()
+        {
+            List<PotentialMaliciousPatientDTO> potentialMaliciousPatients = new List<PotentialMaliciousPatientDTO>();
+            foreach(Patient patient in await _patientService.GetMaliciousPatients())
+            {
+                potentialMaliciousPatients.Append(new PotentialMaliciousPatientDTO(patient));
+            }
+            return Ok(potentialMaliciousPatients);
+        }
+
 
     }
 }

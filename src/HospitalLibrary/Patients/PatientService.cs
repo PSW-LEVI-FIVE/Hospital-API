@@ -49,7 +49,9 @@ namespace HospitalLibrary.Patients
         }
         public Task<IEnumerable<Patient>> GetMaliciousPatients()
         {
-            return _unitOfWork.PatientRepository.GetMaliciousPatients();
+            DateTime dateForMaliciousPatients = DateTime.Now.AddDays(-30);
+            return _unitOfWork.PatientRepository.GetMaliciousPatients(dateForMaliciousPatients);
         }
+
     }
 }
