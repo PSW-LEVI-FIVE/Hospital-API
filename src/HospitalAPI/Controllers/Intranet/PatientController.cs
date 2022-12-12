@@ -29,11 +29,17 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
         [HttpGet]
+<<<<<<< HEAD
         [Route("search")]
         public IActionResult Search([FromQuery] string uid)
         {
             Patient patient = _patientService.SearchByUid(uid);
             return Ok(patient);
+=======
+        public Task<IActionResult> GetMaliciousPatients()
+        {
+            return _patientService.GetMaliciousPatients();
+>>>>>>> 9a4f1cc (rebasing)
         }
 
     }

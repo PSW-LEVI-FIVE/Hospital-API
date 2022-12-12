@@ -47,5 +47,9 @@ namespace HospitalLibrary.Patients
         {
             return _unitOfWork.PatientRepository.SearchByUid(uid);
         }
+        public Task<IEnumerable<Patient>> GetMaliciousPatients()
+        {
+            return _unitOfWork.PatientRepository.GetMaliciousPatients();
+        }
     }
 }

@@ -1,6 +1,7 @@
 
 using HospitalLibrary.Managers.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace HospitalAPI.Controllers.Intranet
 {
