@@ -24,6 +24,10 @@
         <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.25.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
         <PackageReference Include="Moq" Version="4.18.2" />
+        <PackageReference Include="NUnit" Version="3.13.3" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
+        <PackageReference Include="Selenium.Support" Version="4.7.0" />
+        <PackageReference Include="Selenium.WebDriver" Version="4.7.0" />
         <PackageReference Include="Shouldly" Version="4.1.0" />
         <PackageReference Include="supabase-csharp" Version="0.6.1" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.25.0" />
