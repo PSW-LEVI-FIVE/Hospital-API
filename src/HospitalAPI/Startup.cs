@@ -63,6 +63,8 @@ using HospitalLibrary.Symptoms;
 using HospitalLibrary.Symptoms.Interfaces;
 using Newtonsoft.Json;
 
+using HospitalLibrary.Shared.Service;
+
 namespace HospitalAPI
 {
     public class Startup
@@ -114,6 +116,7 @@ namespace HospitalAPI
             services.AddScoped<IStorage, SupabaseStorage>();
             services.AddScoped<IPDFGenerator, PdfGenerator>();
             services.AddScoped<IBedService, BedService>();
+            services.AddScoped<IEquipmentReallocationService, EquipmentReallocationService>();
             services.AddScoped<ISymptomService, SymptomService>();
             services.AddScoped<IExaminationReportService, ExaminationReportService>();
             services.AddScoped<IConsiliumService, ConsiliumService>();
@@ -159,6 +162,7 @@ namespace HospitalAPI
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 }; 
             });
+            services.AddHostedService<TimerService>();
             services.AddMvc();
 
         }

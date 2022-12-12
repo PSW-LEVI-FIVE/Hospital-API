@@ -42,6 +42,7 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(room);
         }
 
+
         [Route("equipment/room/{roomId:int}")]
         [HttpGet]
         [Authorize(Roles = "Manager")]

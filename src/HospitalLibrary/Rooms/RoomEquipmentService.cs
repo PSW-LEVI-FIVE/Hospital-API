@@ -21,6 +21,18 @@ namespace HospitalLibrary.Rooms
             _roomEquipmentValidator = roomEquipmentValidator;
         }
 
+        public void CreateEquipment(int destinationRoomId, int amount, RoomEquipment equipment)
+        {
+            _unitOfWork.RoomEquipmentRepository.Add(new RoomEquipment(_unitOfWork.RoomEquipmentRepository.GetHighestId() + 1,
+                amount, equipment.Name, destinationRoomId));
+            _unitOfWork.RoomEquipmentRepository.Save();
+        }
+        public void UpdateEquipment(RoomEquipment realEq)
+        {
+            _unitOfWork.RoomEquipmentRepository.Update(realEq);
+            _unitOfWork.RoomEquipmentRepository.Save();
+        }
+        
         public Task<IEnumerable<RoomEquipment>> SearchEquipmentInRoom(RoomEquipmentDTO roomEquipmentDTO)
         {
             return  _unitOfWork.RoomEquipmentRepository.GetAllByCombineSearchInRoom(roomEquipmentDTO);  
@@ -39,9 +51,5 @@ namespace HospitalLibrary.Rooms
             }
             return result.AsEnumerable<Room>();
         }
-
-
-
-
     }
 }

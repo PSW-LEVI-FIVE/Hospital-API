@@ -22,6 +22,5 @@ namespace HospitalLibrary.Rooms
         {
             
         }
-
     }
 }

@@ -28,6 +28,7 @@ namespace HospitalLibrary.Rooms.Repositories
 
         public async Task<IEnumerable<Room>> SearchByTypeAndName(RoomSearchDTO roomsSearchDTO, int floorId)
         {
+
             return await _dataContext.Rooms.Where(r =>
                 ((r.FloorId == floorId))).Where(r =>
                  (r.RoomNumber.Contains(roomsSearchDTO.RoomName) &&

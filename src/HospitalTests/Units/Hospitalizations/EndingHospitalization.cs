@@ -8,6 +8,7 @@ using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using Moq;
+using SendGrid.Helpers.Errors.Model;
 using Shouldly;
 
 namespace HospitalTests.Units.Hospitalizations;

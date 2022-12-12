@@ -2,9 +2,9 @@
 
 namespace HospitalLibrary.Shared.Exceptions
 {
-    public class NotFoundException: BaseException
+    public class FoundException: BaseException
     {
-        public NotFoundException(string message) : base(message, (int)HttpStatusCode.NotFound)
+        public FoundException(string message) : base(message, (int)HttpStatusCode.NotFound)
         {
         }
     }

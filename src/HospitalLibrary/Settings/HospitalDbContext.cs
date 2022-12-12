@@ -49,6 +49,8 @@ namespace HospitalLibrary.Settings
         public DbSet<AnnualLeave> AnnualLeaves { get; set; }
         
         public DbSet<BloodOrder> BloodOrders { get; set; }
+
+        public DbSet<EquipmentReallocation> EquipmentReallocations { get; set; }
         
         public DbSet<ExaminationReport> ExaminationReports { get; set; }
         
@@ -79,6 +81,7 @@ namespace HospitalLibrary.Settings
             modelBuilder.Entity<Rooms.Model.RoomEquipment>().ToTable("RoomEquipment");
             modelBuilder.Entity<Bed>().ToTable("Beds");
             modelBuilder.Entity<Allergen>().ToTable("Allergens");
+            modelBuilder.Entity<EquipmentReallocation>().ToTable("EquipmentReallocations");            
             modelBuilder.Entity<Therapy>()
                 .HasDiscriminator(t => t.InstanceType)
                 .HasValue<BloodTherapy>("blood")

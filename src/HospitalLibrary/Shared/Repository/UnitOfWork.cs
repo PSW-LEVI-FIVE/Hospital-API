@@ -75,6 +75,7 @@ namespace HospitalLibrary.Shared.Repository
         private IBloodOrderRepository _bloodOrderRepository;
         private IUserRepository _userRepository;
         private IPersonRepository _personRepository;
+        private IEquipmentReallocationRepository _equipmentReallocationRepository;
         private IExaminationReportRepository _examinationReportRepository;
         private ISymptomRepository _symptomRepository;
         private IConsiliumRepository _consiliumRepository;
@@ -120,6 +121,8 @@ namespace HospitalLibrary.Shared.Repository
             _bloodOrderRepository ??= new BloodOrderRepository(_dataContext);
         public IUserRepository UserRepository => _userRepository ??= new UserRepository(_dataContext);
         public IPersonRepository PersonRepository => _personRepository ??= new PersonRepository(_dataContext);
+        public IEquipmentReallocationRepository EquipmentReallocationRepository => _equipmentReallocationRepository ??= new EquipmentReallocationRepository(_dataContext);
+
         public IExaminationReportRepository ExaminationReportRepository => _examinationReportRepository ??= new ExaminationReportRepository(_dataContext);
         public ISymptomRepository SymptomRepository => _symptomRepository ??= new SymptomRepository(_dataContext);
         public IConsiliumRepository ConsiliumRepository =>

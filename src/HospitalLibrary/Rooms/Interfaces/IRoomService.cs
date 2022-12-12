@@ -13,6 +13,7 @@ namespace HospitalLibrary.Rooms.Interfaces
         Room GetOne(int key);
         IEnumerable<Bed> GetBedsForRoom(int id);
         Room Create(Room room);
+
         Task<IEnumerable<Room>> SearchRoom(RoomSearchDTO searchRoomDto,int floorId);
         Task<Room> GetFirstAvailableRoom(TimeInterval choosenInterval);
         Task<IEnumerable<RoomEquipment>> GetAllEquipmentbyRoomId(int id);

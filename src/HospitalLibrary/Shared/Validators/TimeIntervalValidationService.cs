@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.Appointments;
+using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Shared.Model;
@@ -18,6 +19,25 @@ namespace HospitalLibrary.Shared.Validators
         {
             _unitOfWork = unitOfWork;
         }
+        public async Task ValidateReallocation(EquipmentReallocation reallocation)
+        {
+            ThrowIfEndBeforeStart(reallocation.StartAt, reallocation.EndAt);
+            ThrowIfInPast(reallocation.StartAt);
+
+            IEnumerable<TimeInterval> startingRoomTimeIntervals =
+                await _unitOfWork.EquipmentReallocationRepository.GetAllRoomTakenInrevalsForDate(reallocation.StartingRoomId,
+                    reallocation.StartAt.Date);
+            IEnumerable<TimeInterval> destinationRoomTimeIntervals =
+                await _unitOfWork.EquipmentReallocationRepository.GetAllRoomTakenInrevalsForDate(reallocation.DestinationRoomId,
+                    reallocation.StartAt.Date);
+
+            IEnumerable<TimeInterval> mixedIntervals = startingRoomTimeIntervals.Concat(destinationRoomTimeIntervals);
+
+            TimeInterval requestedTimeInterval = new TimeInterval(reallocation.StartAt, reallocation.EndAt);
+
+            ThrowIfIntervalsAreOverlaping(mixedIntervals.ToList(), requestedTimeInterval);
+        }
+
 
         public async Task<bool> IsIntervalOverlapingWithDoctorAppointments(int doctorId,TimeInterval possibleTimeInterval)
         {

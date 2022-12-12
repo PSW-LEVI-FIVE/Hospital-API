@@ -14,6 +14,7 @@ using Shouldly;
 
 namespace HospitalTests.Integrations.Equipment
 {
+
     [Collection("Test")]
     public class EquipmentTest: BaseIntegrationTest
     {
@@ -40,6 +41,7 @@ namespace HospitalTests.Integrations.Equipment
         {
             using var scope = Factory.Services.CreateScope();
             var controller = SetupController(scope);
+
             var result = ((OkObjectResult)controller.GetRoomEquipment(5).Result)?.Value as IEnumerable<RoomEquipment>;
 
             result.ShouldBeEmpty();
