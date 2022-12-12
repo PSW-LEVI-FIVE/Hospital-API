@@ -98,6 +98,15 @@ namespace HospitalLibrary.Appointments
                 .Select(a => new TimeInterval(a.StartAt, a.EndAt))
                 .ToListAsync();
         }
+        
+        public async Task<IEnumerable<Appointment>>  GetAllPatientAppointments(int patientId)
+        {
+            return await _dataContext.Appointments
+                .Where(a => a.PatientId == patientId)
+                .Include(a => a.Doctor)
+                .Include(a => a.Room)
+                .ToListAsync();
+        }
 
         public async Task<IEnumerable<TimeInterval>> GetAllRoomTakenIntervalsForDateExcept(int roomId, DateTime date, int ignore)
         {

@@ -8,6 +8,7 @@ using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
+using HospitalLibrary.Patients;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
@@ -28,7 +29,7 @@ namespace HospitalAPI.Controllers.Public
         private readonly IAppointmentService _appointmentService;
         private readonly IDoctorService _doctorService;
         private readonly IRoomService _roomService;
-        
+
         public AppointmentController(IDoctorService doctorService,IRoomService roomService,IAppointmentService appointmentService)
         {
             _appointmentService = appointmentService;
@@ -72,6 +73,7 @@ namespace HospitalAPI.Controllers.Public
             Appointment appointment = await _appointmentService.Create(newApp);
             return Ok(newApp);
         }
+
         private UserDTO GetCurrentUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -86,7 +88,16 @@ namespace HospitalAPI.Controllers.Public
                     Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value
                 };
             }
+
             return null;
+        }
+        [HttpGet]
+        [Route("myAppointments")]
+        public async Task<IActionResult> GetPatientAppointments()
+        {
+            int patientId =  GetCurrentUser().Id;
+            IEnumerable<Appointment> appointmentList = await _appointmentService.GetAllPatientAppointments(patientId);
+            return Ok(appointmentList);
         }
     }
 }

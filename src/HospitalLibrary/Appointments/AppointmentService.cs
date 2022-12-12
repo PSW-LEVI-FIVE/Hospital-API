@@ -111,6 +111,11 @@ namespace HospitalLibrary.Appointments
             return _unitOfWork.AppointmentRepository.GetAllDoctorUpcomingAppointments(doctor.Id);
         }
 
+        public Task<IEnumerable<Appointment>> GetAllPatientAppointments(int patientId)
+        {
+          return _unitOfWork.AppointmentRepository.GetAllPatientAppointments(patientId);
+        }
+
         public async Task<AppointmentRescheduledDTO> Reschedule(int appointmentId, DateTime start, DateTime end)
         {
             Appointment appointment = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
