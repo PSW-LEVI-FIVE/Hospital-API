@@ -18,7 +18,16 @@ public class CreateConsiliumTest
     [SetUp]
     public void StartBrowser()
     {
-        Driver = new ChromeDriver(@"../Drivers/", new ChromeOptions(), TimeSpan.FromSeconds(600));
+        ChromeOptions options = new ChromeOptions();
+        options.AddArguments("start-maximized");            // open Browser in maximized mode
+        options.AddArguments("disable-infobars");           // disabling infobars
+        options.AddArguments("--disable-extensions");       // disabling extensions
+        options.AddArguments("--disable-gpu");              // applicable to windows os only
+        options.AddArguments("--disable-dev-shm-usage");    // overcome limited resource problems
+        options.AddArguments("--no-sandbox");               // Bypass OS security model
+        options.AddArguments("--disable-notifications");    // disable notifications
+
+        Driver = new ChromeDriver(options);
         Driver.Url = "http://localhost:4200/";
         Driver.Manage().Window.Maximize();
     }
