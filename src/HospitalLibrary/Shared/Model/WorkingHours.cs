@@ -18,7 +18,11 @@ namespace HospitalLibrary.Shared.Model
         public TimeSpan Start { get; set; }
         
         public TimeSpan End { get; set; }
-        
+
+        public WorkingHours()
+        {
+        }
+
         public WorkingHours(int doctorId, int day, TimeSpan start, TimeSpan end)
         {
             DoctorId = doctorId;

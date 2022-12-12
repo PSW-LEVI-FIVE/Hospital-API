@@ -139,12 +139,22 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             MapBuildingId = mapBuilding.Id
         };
 
-        Room room = new Room()
+        Room room1 = new Room()
         {
             Id = 2,
             Area = 10,
             FloorId = 2,
-            RoomNumber = "1"
+            RoomNumber = "1",
+            RoomType = RoomType.EXAMINATION_ROOM
+        };
+        
+        Room room2 = new Room()
+        {
+            Id = 3,
+            Area = 10,
+            FloorId = 2,
+            RoomNumber = "123",
+            RoomType = RoomType.EXAMINATION_ROOM
         };
 
         RoomEquipment equipment = new Bed(1, 10, "Bed", 2, 1);
@@ -152,7 +162,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
         MapRoom mapRoom = new MapRoom()
         {
-            RoomId = room.Id,
+            RoomId = room1.Id,
             Height = 10,
             Width = 10,
             XCoordinate = 10,
@@ -272,9 +282,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             BloodType = BloodType.A_NEGATIVE,
             ChoosenDoctor = doctor
         };
-
-
-
+        
         AnnualLeave annualLeave1 = new AnnualLeave()
         {
             Id = 15,
@@ -290,8 +298,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Reason = "",
 
         };
-
-
+        
         Symptom cough = new Symptom()
         {
             Id = 10,
@@ -302,7 +309,104 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Id = 11,
             Name = "Blood"
         };
-
+        WorkingHours doctor1Wh1 = new WorkingHours()
+        {
+            DoctorId = 5,
+            Day = 0,
+            Start = new TimeSpan(0, 10, 30, 0),
+            End = new TimeSpan(0, 23, 0, 0),
+        };
+        WorkingHours doctor1Wh2 = new WorkingHours()
+        {
+            DoctorId = 5,
+            Day = 1,
+            Start = new TimeSpan(0, 10, 30, 0),
+            End = new TimeSpan(0, 23, 0, 0),
+        };
+        WorkingHours doctor1Wh3 = new WorkingHours()
+        {
+            DoctorId = 5,
+            Day = 2,
+            Start = new TimeSpan(0, 10, 30, 0),
+            End = new TimeSpan(0, 23, 0, 0),
+        };
+        WorkingHours doctor1Wh4 = new WorkingHours()
+        {
+            DoctorId = 5,
+            Day = 3,
+            Start = new TimeSpan(0, 10, 30, 0),
+            End = new TimeSpan(0, 23, 0, 0),
+        };
+        WorkingHours doctor1Wh5 = new WorkingHours()
+        {
+            DoctorId = 5,
+            Day = 4,
+            Start = new TimeSpan(0, 10, 30, 0),
+            End = new TimeSpan(0, 23, 0, 0),
+        };
+        WorkingHours doctor1Wh6 = new WorkingHours()
+        {
+            DoctorId = 5,
+            Day = 5,
+            Start = new TimeSpan(0, 10, 30, 0),
+            End = new TimeSpan(0, 23, 0, 0),
+        };
+        WorkingHours doctor1Wh7 = new WorkingHours()
+        {
+            DoctorId = 5,
+            Day = 6,
+            Start = new TimeSpan(0, 10, 30, 0),
+            End = new TimeSpan(0, 23, 0, 0),
+        };
+        WorkingHours doctor2Wh1 = new WorkingHours()
+        {
+            DoctorId = 4,
+            Day = 0,
+            Start = new TimeSpan(0, 10, 30, 0),
+            End = new TimeSpan(0, 23, 0, 0),
+        };
+        WorkingHours doctor2Wh2 = new WorkingHours()
+        {
+            DoctorId = 4,
+            Day = 1,
+            Start = new TimeSpan(0, 10, 30, 0),
+            End = new TimeSpan(0, 23, 0, 0),
+        };
+        WorkingHours doctor2Wh3 = new WorkingHours()
+        {
+            DoctorId = 4,
+            Day = 2,
+            Start = new TimeSpan(0, 10, 30, 0),
+            End = new TimeSpan(0, 23, 0, 0),
+        };
+        WorkingHours doctor2Wh4 = new WorkingHours()
+        {
+            DoctorId = 4,
+            Day = 3,
+            Start = new TimeSpan(0, 10, 30, 0),
+            End = new TimeSpan(0, 23, 0, 0),
+        };
+        WorkingHours doctor2Wh5 = new WorkingHours()
+        {
+            DoctorId = 4,
+            Day = 4,
+            Start = new TimeSpan(0, 10, 30, 0),
+            End = new TimeSpan(0, 23, 0, 0),
+        };
+        WorkingHours doctor2Wh6 = new WorkingHours()
+        {
+            DoctorId = 4,
+            Day = 5,
+            Start = new TimeSpan(0, 10, 30, 0),
+            End = new TimeSpan(0, 23, 0, 0),
+        };
+        WorkingHours doctor2Wh7 = new WorkingHours()
+        {
+            DoctorId = 4,
+            Day = 6,
+            Start = new TimeSpan(0, 10, 30, 0),
+            End = new TimeSpan(0, 23, 0, 0),
+        };
         var today = new DateTime();
         Appointment examination = new Appointment()
         {
@@ -314,6 +418,42 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Type = AppointmentType.EXAMINATION,
             StartAt = today,
             EndAt = today.AddDays(1)
+        };
+        
+        DateTime timeBegin = today.AddDays(2);
+        DateTime timeEnd = today.AddDays(2);
+        TimeSpan timeSpanBegin = new TimeSpan(11, 35, 0);
+        timeBegin = timeBegin.Date + timeSpanBegin;
+        TimeSpan timeSpanEnd = new TimeSpan(12, 25, 0);
+        timeEnd = timeEnd.Date + timeSpanEnd;
+        
+        Appointment appointment1 = new Appointment()
+        {
+            Id = 31,
+            DoctorId = 4,
+            PatientId = 1,
+            RoomId = 2,
+            State = AppointmentState.PENDING,
+            Type = AppointmentType.EXAMINATION,
+            StartAt = timeBegin,
+            EndAt = timeEnd
+        };
+        timeBegin = today.AddDays(2);
+        timeEnd = today.AddDays(2);
+        timeSpanBegin = new TimeSpan(11, 35, 0);
+        timeBegin = timeBegin.Date + timeSpanBegin;
+        timeSpanEnd = new TimeSpan(12, 25, 0);
+        timeEnd = timeEnd.Date + timeSpanEnd;
+        Appointment appointment2 = new Appointment()
+        {
+            Id = 32,
+            DoctorId = 5,
+            PatientId = 1,
+            RoomId = 2,
+            State = AppointmentState.PENDING,
+            Type = AppointmentType.EXAMINATION,
+            StartAt = timeBegin,
+            EndAt = timeEnd
         };
 
         ExaminationReport rp = new ExaminationReport()
@@ -332,7 +472,22 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.MapBuildings.Add(mapBuilding);
         dbContext.Floors.Add(floor);
         dbContext.MapFloors.Add(mapFloor);
-        dbContext.Rooms.Add(room);
+        dbContext.WorkingHours.Add(doctor1Wh1);
+        dbContext.WorkingHours.Add(doctor1Wh2);
+        dbContext.WorkingHours.Add(doctor1Wh3);
+        dbContext.WorkingHours.Add(doctor1Wh4);
+        dbContext.WorkingHours.Add(doctor1Wh5);
+        dbContext.WorkingHours.Add(doctor1Wh6);
+        dbContext.WorkingHours.Add(doctor1Wh7);
+        dbContext.WorkingHours.Add(doctor2Wh1);
+        dbContext.WorkingHours.Add(doctor2Wh2);
+        dbContext.WorkingHours.Add(doctor2Wh3);
+        dbContext.WorkingHours.Add(doctor2Wh4);
+        dbContext.WorkingHours.Add(doctor2Wh5);
+        dbContext.WorkingHours.Add(doctor2Wh6);
+        dbContext.WorkingHours.Add(doctor2Wh7);
+        dbContext.Rooms.Add(room1);
+        dbContext.Rooms.Add(room2);
         dbContext.Doctors.Add(doctor);
         dbContext.Doctors.Add(doctor2);
         dbContext.AnnualLeaves.Add(annualLeave1);
@@ -365,6 +520,8 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Symptoms.Add(cough);
         dbContext.Symptoms.Add(blood);
         dbContext.Appointments.Add(examination);
+        dbContext.Appointments.Add(appointment1);
+        dbContext.Appointments.Add(appointment2);
         dbContext.ExaminationReports.Add(rp);
         dbContext.SaveChanges();
 

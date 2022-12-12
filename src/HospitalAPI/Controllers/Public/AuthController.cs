@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using HospitalLibrary.Auth.Dtos;
 using HospitalLibrary.Auth.Interfaces;
 using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Shared.Interfaces;
@@ -46,12 +47,14 @@ namespace HospitalAPI.Controllers.Public
         public IActionResult UserExist([FromBody] UserDTO userDto)
         {
             var user = _authService.Authenticate(userDto);
-            if (user != null)
+            if (user == null) return NotFound("User not found");
+            var token = _authService.Generate(user);
+            var loggedIn = new LoggedIn()
             {
-                string token = _authService.Generate(user);
-                return Ok(token + " " + user.Role);
-            }
-            return NotFound("User not found");
+                AccessToken = token,
+                Role = user.Role
+            };
+            return Ok(loggedIn);
         }
 
         [HttpGet("user")]

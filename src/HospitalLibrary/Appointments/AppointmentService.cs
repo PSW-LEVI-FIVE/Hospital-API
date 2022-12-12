@@ -35,11 +35,11 @@ namespace HospitalLibrary.Appointments
             List<TimeInterval> possibleTimeIntervals = new List<TimeInterval>();
             TimeSpan timeIntervalFiller = doctorsWorkingHours.Start;
             TimeSpan timeSpanIncrementer = TimeSpan.FromMinutes(30);
-            while (TimeSpan.Compare(timeIntervalFiller, doctorsWorkingHours.End) < 0)
+            while (TimeSpan.Compare(timeIntervalFiller.Add(timeSpanIncrementer), doctorsWorkingHours.End) < 0)
             {
                 TimeInterval possibleTimeInterval = new TimeInterval(chosen, timeIntervalFiller,
                     timeIntervalFiller.Add(timeSpanIncrementer));
-                timeIntervalFiller = timeIntervalFiller.Add(timeSpanIncrementer);
+                timeIntervalFiller = timeIntervalFiller.Add(TimeSpan.FromMinutes(35));
                 bool isOverlapped = await _intervalValidation.IsIntervalOverlapingWithDoctorAppointments(doctorId, possibleTimeInterval);
                 if (isOverlapped)
                     continue;

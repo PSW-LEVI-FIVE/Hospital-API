@@ -1,22 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Rooms.Dtos;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Shared.Interfaces;
-using System.Linq;
+using HospitalLibrary.Appointments;
+using HospitalLibrary.Shared.Exceptions;
 
 namespace HospitalLibrary.Rooms
 {
     public class RoomService : IRoomService
     {
         private IUnitOfWork _unitOfWork;
+        private readonly ITimeIntervalValidationService _intervalValidation;
 
 
-        public RoomService(IUnitOfWork unitOfWork)
+        public RoomService(IUnitOfWork unitOfWork,ITimeIntervalValidationService intervalValidation)
         {
             _unitOfWork = unitOfWork;
+            _intervalValidation = intervalValidation;
         }
 
         public Task<IEnumerable<Room>> GetAll()
@@ -55,7 +57,17 @@ namespace HospitalLibrary.Rooms
 
             return _unitOfWork.RoomRepository.SearchByTypeAndName(searchRoomDTO, floorId);
         }
-
+        public async Task<Room> GetFirstAvailableRoom(TimeInterval choosenInterval)
+        {
+            IEnumerable<Room> examinationRooms = await _unitOfWork.RoomRepository.GetHospitalExaminationRooms();
+            foreach (Room room in examinationRooms)
+            {
+                bool isOverlapping = await _intervalValidation.IsTimeIntervalOverlapingWithRoomsAppointments(room.Id,choosenInterval);
+                if (!isOverlapping)
+                    return room;
+            }
+            throw new NotFoundException("Couldn't find single free room");
+        }
         public Task<IEnumerable<RoomEquipment>> GetAllEquipmentbyRoomId(int id)
         {
             return _unitOfWork.RoomRepository.GetAllEquipmentbyRoom(id);
