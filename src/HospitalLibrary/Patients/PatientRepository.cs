@@ -8,13 +8,17 @@ using HospitalLibrary.Shared.Repository;
 
 namespace HospitalLibrary.Patients
 {
-    public class PatientRepository: BaseRepository<Patient>,IPatientRepository
+    public class PatientRepository : BaseRepository<Patient>, IPatientRepository
     {
-        public PatientRepository(HospitalDbContext context): base(context) {}
+        public PatientRepository(HospitalDbContext context) : base(context) { }
 
         public Patient SearchByUid(string uid)
         {
             return _dataContext.Patients.FirstOrDefault(p => p.Uid.Equals(uid));
+        }
+        public Task<IEnumerable<Patient>> GetMaliciousPatients()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
