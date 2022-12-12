@@ -74,7 +74,6 @@ namespace HospitalTests.Units.EquipmentReallocation
         [Fact]
         public void SuccesfullyFoundTakenIntervals()
         {
-
             var unitOfWork =SetupUOW();
             var dto = new CreateIntervalsEquipmentReallocationDTO(1,2, DateTime.Parse("2023-11-23 10:30:00"),30);
             ITimeIntervalValidationService validator = new TimeIntervalValidationService(unitOfWork.Object);

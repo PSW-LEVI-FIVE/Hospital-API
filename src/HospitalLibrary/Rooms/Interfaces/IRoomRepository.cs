@@ -9,7 +9,6 @@ namespace HospitalLibrary.Rooms.Interfaces
     public interface IRoomRepository: IBaseRepository<Room>
     {
         Task<IEnumerable<Room>> FindAllByFloor(int floor);
-        Task<IEnumerable<Room>> SearchByTypeAndName(RoomSearchDTO roomSearchDto,int floorId);
         Task<IEnumerable<Room>> GetHospitalExaminationRooms();
         Task<IEnumerable<RoomEquipment>> GetAllEquipmentbyRoom(int id);
         Task<IEnumerable<Room>> SearchByTypeAndName(RoomSearchDTO roomSearchDto,int floorId);
