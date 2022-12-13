@@ -1,8 +1,10 @@
-﻿namespace HospitalLibrary.Examination.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace HospitalLibrary.Examination.Interfaces
 {
     public interface IExaminationReportService
     {
-        public ExaminationReport Create(ExaminationReport report);
+        public Task<ExaminationReport> Create(ExaminationReport report);
         public ExaminationReport GetByExamination(int examinationId);
         public ExaminationReport GetById(int id);
     }

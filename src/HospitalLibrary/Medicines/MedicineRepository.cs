@@ -27,5 +27,12 @@ namespace HospitalLibrary.Medicines
                 .Where(m => m.Name.ToLower().Contains(name.ToLower()))
                 .ToList();
         }
+
+        public List<Medicine> GetAllByIds(List<int> ids)
+        {
+            return _dataContext.Medicines
+                .Where(m => ids.Contains(m.Id))
+                .ToList();
+        }
     }
 }
