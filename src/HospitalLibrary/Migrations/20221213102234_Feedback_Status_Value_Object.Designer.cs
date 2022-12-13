@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221213102234_Feedback_Status_Value_Object")]
+    partial class Feedback_Status_Value_Object
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -264,9 +266,6 @@ namespace HospitalLibrary.Migrations
                     b.Property<int>("ExaminationId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Url")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DoctorId");
@@ -517,40 +516,6 @@ namespace HospitalLibrary.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Medicines");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Renovation.Model.Renovation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime>("EndAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("MainRoomId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("SecondaryRoomId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("StartAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("State")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MainRoomId");
-
-                    b.HasIndex("SecondaryRoomId");
-
-                    b.ToTable("Renovations");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Rooms.Model.EquipmentReallocation", b =>
@@ -1100,23 +1065,6 @@ namespace HospitalLibrary.Migrations
                         .IsRequired();
 
                     b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Renovation.Model.Renovation", b =>
-                {
-                    b.HasOne("HospitalLibrary.Rooms.Model.Room", "MainRoom")
-                        .WithMany()
-                        .HasForeignKey("MainRoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HospitalLibrary.Rooms.Model.Room", "SecondaryRoom")
-                        .WithMany()
-                        .HasForeignKey("SecondaryRoomId");
-
-                    b.Navigation("MainRoom");
-
-                    b.Navigation("SecondaryRoom");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Rooms.Model.EquipmentReallocation", b =>

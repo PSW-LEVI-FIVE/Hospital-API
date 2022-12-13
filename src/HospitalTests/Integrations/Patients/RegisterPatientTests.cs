@@ -11,6 +11,7 @@ using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Shared.Model.ValueObjects;
 using HospitalLibrary.User.Interfaces;
 using HospitalLibrary.Users;
 using HospitalTests.Setup;
@@ -40,8 +41,8 @@ public class PatientTests: BaseIntegrationTest
         var emailService = new Mock<IEmailService>();
         var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>(),emailService.Object);
         CreatePatientDTO createPatientDTO = new CreatePatientDTO("Pera", "Peric", "dusanjanosevic007@gmail.com","29857236",
-            "5455454",new DateTime(2001,2,25),"Mikse Dimitrijevica 42",BloodType.ZERO_NEGATIVE,
-            "pRoXm","radipls",allergens,"67867867");
+            "5455454",new DateTime(2001,2,25),new Address("Jovina 12","Jovina 12","Jovina 12","Jovina 12"),
+            BloodType.ZERO_NEGATIVE,"pRoXm","radipls",allergens,"67867867");
         createPatientDTO.Id = 3;
         var result = ((OkObjectResult)controller.RegisterPatient(createPatientDTO).Result).Value as PatientDTO;
         result.ShouldNotBeNull();
@@ -58,7 +59,8 @@ public class PatientTests: BaseIntegrationTest
         var emailService = new Mock<IEmailService>();
         var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>(),emailService.Object);
         CreatePatientDTO createPatientDTO = new CreatePatientDTO("Pera", "Peric", "dusanjanosevic007@gmail.com","29857236",
-            "5455454",new DateTime(2001,2,25),"Mikse Dimitrijevica 42",BloodType.ZERO_NEGATIVE,
+            "5455454",new DateTime(2001,2,25),new Address("Jovina 12","Jovina 12","Jovina 12","Jovina 12"),
+            BloodType.ZERO_NEGATIVE,
             "pRoXm","radipls",allergens,"26549037");
         createPatientDTO.Id = 3;
         Should.Throw<AggregateException>(() => ((OkObjectResult)controller.RegisterPatient(createPatientDTO).Result).Value);

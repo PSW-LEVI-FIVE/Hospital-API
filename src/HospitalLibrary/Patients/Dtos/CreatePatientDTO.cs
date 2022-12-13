@@ -37,7 +37,7 @@ namespace HospitalLibrary.Patients.Dtos
         public DateTime BirthDate { get; set;  }
         [Required]
         [RegularExpression(@"^[A-Z][A-Za-z0-9( )]+$", ErrorMessage = "Address input not valid.")]
-        public string Address { get; set; }
+        public Address Address { get; set; }
         [Required]
         public string Username { get; set; }
         [Required]
@@ -52,7 +52,7 @@ namespace HospitalLibrary.Patients.Dtos
         public string DoctorUid { get; set; }
         
         public CreatePatientDTO(string name, string surname, string email, string uid, 
-            string phoneNumber, DateTime birthDate, string address, BloodType bloodType,
+            string phoneNumber, DateTime birthDate, Address address, BloodType bloodType,
             string username,string password, List<AllergenDTO> allergens,string doctorUid)
         {
             Name = name;
@@ -80,7 +80,7 @@ namespace HospitalLibrary.Patients.Dtos
                 Uid = Uid,
                 PhoneNumber = PhoneNumber,
                 BirthDate = BirthDate,
-                Address = new Address(Address, Address, Address, Address),
+                Address = new Address(Address),
                 BloodType = BloodType
             };
         } 

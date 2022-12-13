@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Feedbacks.Dtos;
 using HospitalLibrary.Feedbacks.Interfaces;
+using HospitalLibrary.Feedbacks.ValueObjects;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Interfaces;
 
@@ -41,25 +41,18 @@ namespace HospitalLibrary.Feedbacks
         }
         public async Task<IEnumerable<ManagersFeedbackDTO>> GetManagersFeedbacks()
         { 
-            List<ManagersFeedbackDTO> managersFeedbacks = new List<ManagersFeedbackDTO>();
-            foreach (Feedback feedback in _unitOfWork.FeedbackRepository.GetAll().Result.ToList())
-            {
-                Patient patient = _unitOfWork.PatientRepository.GetOne(feedback.PatientId);
-                managersFeedbacks.Add(new ManagersFeedbackDTO(feedback.Id,patient.Name + " " + patient.Surname, 
-                    feedback.FeedbackContent,feedback.AllowPublishment,feedback.Published,feedback.Anonimity));
-            }
+            List<ManagersFeedbackDTO> managersFeedbacks = (from feedback in _unitOfWork.FeedbackRepository.GetAll().Result.ToList()
+                let patient = _unitOfWork.PatientRepository.GetOne(feedback.PatientId) 
+                select new ManagersFeedbackDTO(feedback.Id, patient.Name + " " + patient.Surname, feedback.FeedbackContent,
+                    new FeedbackStatus(feedback.FeedbackStatus), feedback.FeedbackStatus.GetAnonymity())).ToList();
             return await Task.FromResult(managersFeedbacks);
         }
 
         public async Task<IEnumerable<PublishedFeedbackDTO>> GetPublishedFeedbacks()
         {
-            List<PublishedFeedbackDTO> publishedFeedbacks = new List<PublishedFeedbackDTO>();
-            foreach (Feedback feedback in _unitOfWork.FeedbackRepository.GetAll().Result.ToList())
-            {
-                Patient patient = _unitOfWork.PatientRepository.GetOne(feedback.PatientId);
-                if (feedback.Published) 
-                    publishedFeedbacks.Add(new PublishedFeedbackDTO(patient.Name + " " + patient.Surname,feedback.FeedbackContent,feedback.Anonimity));
-            }
+            List<PublishedFeedbackDTO> publishedFeedbacks = (from feedback in _unitOfWork.FeedbackRepository.GetPublished().Result.ToList() 
+                let patient = _unitOfWork.PatientRepository.GetOne(feedback.PatientId) 
+                select new PublishedFeedbackDTO(patient.Name + " " + patient.Surname, feedback.FeedbackContent, feedback.FeedbackStatus.GetAnonymity())).ToList();
             return await Task.FromResult(publishedFeedbacks);
         }
         public Task<IEnumerable<Feedback>> GetPublished()

@@ -35,10 +35,12 @@ namespace HospitalAPI.Controllers.Intranet
         public IActionResult ChangePublishmentStatus(int id, [FromBody] bool feedbackPublishmentStatus)
         {
             Feedback feedback = _feedbackService.Get(id);
-            feedback.Update(feedbackPublishmentStatus);
+            if (feedback.FeedbackStatus.GetPublished())
+                feedback.FeedbackStatus.Withdraw();
+            else
+                feedback.FeedbackStatus.Publish();
             Feedback updated = _feedbackService.ChangePublishmentStatus(feedback);
             return Ok(updated);
         }
-        
     }
 }
