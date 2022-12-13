@@ -1,4 +1,5 @@
 ﻿using System;
+using HospitalLibrary.Feedbacks.Dtos;
 using HospitalLibrary.Shared.Model.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,13 @@ namespace HospitalLibrary.Feedbacks.ValueObjects
         }
 
         public FeedbackStatus(FeedbackStatus feedbackStatus)
+        {
+            AllowPublishment = feedbackStatus.AllowPublishment;
+            Published = feedbackStatus.Published;
+            Anonimity = feedbackStatus.Anonimity;
+            Validate();
+        }
+        public FeedbackStatus(FeedbackStatusDTO feedbackStatus)
         {
             AllowPublishment = feedbackStatus.AllowPublishment;
             Published = feedbackStatus.Published;
