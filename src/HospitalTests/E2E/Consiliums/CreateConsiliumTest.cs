@@ -37,19 +37,19 @@ public class CreateConsiliumTest
     {
         
         IWebElement element = Driver.FindElement(By.Id("input-username"));
-        element.SendKeys("userbrt");
+        element.SendKeys("doktor");
         
         Thread.Sleep(1000);
 
         element = Driver.FindElement(By.Id("input-password"));
-        element.SendKeys("pass");
+        element.SendKeys("asdasd");
         Thread.Sleep(1000);
         
         element = Driver.FindElement(By.Id("submit-login"));
         element.Submit();
         Thread.Sleep(1000);
 
-        element = Driver.FindElement(By.Id("create-consilium-link"));
+        element = Driver.FindElement(By.XPath("//*[contains(text(),'Create consilium')]"));
         element.Click();
         Thread.Sleep(1000);
         
@@ -58,7 +58,7 @@ public class CreateConsiliumTest
         Thread.Sleep(1000);
         
         element = Driver.FindElement(By.Id("from-consilium"));
-        DeleteDate(element);
+        // DeleteDate(element);
         element.SendKeys("12/25/2022");
         Thread.Sleep(1000);
 
@@ -75,7 +75,7 @@ public class CreateConsiliumTest
         element = Driver.FindElement(By.Id("speciality-consilium"));
         element.Click();
         Thread.Sleep(2000);
-        element = Driver.FindElement(By.XPath("//*[contains(text(),'SURGERY')]"));
+        element = Driver.FindElement(By.XPath("//*[contains(text(),'INTERNAL_MEDICINE')]"));
         element.Click();
 
         Thread.Sleep(3000);
