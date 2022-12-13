@@ -10,17 +10,18 @@ namespace HospitalLibrary.Patients.Dtos
     public class PotentialMaliciousPatientDTO
     {
         [Required]
-        public string Name { get; set; }
-        [Required]
-        public string Surname { get; set; }
+        public string Patient { get; set; }
         [Required]
         public int NumberOfCanceledAppointments { get; set; }
-
-        public PotentialMaliciousPatientDTO(Patient patient)
+        [Required]
+        public Boolean Blocked { get; set; }
+        public int Id { get; set; }
+        public PotentialMaliciousPatientDTO(Patient patient, bool blocked = false)
         {
-            Name = patient.Name;
-            Surname = patient.Surname;
+            Id = patient.Id;
+            Patient = patient.Id + " " + patient.Name + " " + patient.Surname;
             NumberOfCanceledAppointments = patient.Appointments.Count;
+            Blocked = blocked;
         }
 
     }

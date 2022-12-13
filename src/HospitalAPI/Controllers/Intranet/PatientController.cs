@@ -9,6 +9,7 @@ using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Patients.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 
 namespace HospitalAPI.Controllers.Intranet
 {
@@ -41,13 +42,24 @@ namespace HospitalAPI.Controllers.Intranet
 
         [HttpGet]
         [Route("maliciouspatints")]
-        //[Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetMaliciousPatients()
         {
+            DateTime dateForMaliciousPatients = DateTime.Now.AddDays(-30);
             List<PotentialMaliciousPatientDTO> potentialMaliciousPatients = new List<PotentialMaliciousPatientDTO>();
-            foreach(Patient patient in await _patientService.GetMaliciousPatients())
+            List<Patient> patients = new List<Patient>();
+            foreach (Patient patient in _patientService.GetBlockedPatients(dateForMaliciousPatients))
+                potentialMaliciousPatients.Add(new PotentialMaliciousPatientDTO(patient,true));
+            foreach (Patient patient in _patientService.GetMaliciousPatients(dateForMaliciousPatients))
             {
-                potentialMaliciousPatients.Append(new PotentialMaliciousPatientDTO(patient));
+                Boolean cont = false;
+                foreach (PotentialMaliciousPatientDTO potentialBlockedPatient in potentialMaliciousPatients)
+                    if (potentialBlockedPatient.Id == patient.Id)
+                    {
+                        cont = true;
+                        break;
+                    } 
+                if(!cont) potentialMaliciousPatients.Add(new PotentialMaliciousPatientDTO(patient));
             }
             return Ok(potentialMaliciousPatients);
         }

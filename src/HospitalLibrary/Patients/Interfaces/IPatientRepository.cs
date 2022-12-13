@@ -10,5 +10,6 @@ namespace HospitalLibrary.Patients.Interfaces
     {
         public Patient SearchByUid(string uid);
         public Task<IEnumerable<Patient>> GetMaliciousPatients(DateTime dateForMaliciousPatients);
+        public Task<IEnumerable<Patient>> GetBlockedPatients(DateTime dateForMaliciousPatients);
     }
 }

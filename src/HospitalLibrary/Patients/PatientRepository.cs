@@ -21,22 +21,31 @@ namespace HospitalLibrary.Patients
         }
         public async Task<IEnumerable<Patient>> GetMaliciousPatients(DateTime dateForMaliciousPatients)
         {
-            IEnumerable<Patient> potentialMaliciousPatients = await _dataContext.Patients
+            return await _dataContext.Patients
                 .Where(patient => patient.Appointments
                 .Where(appointment => appointment.State == AppointmentState.DELETED && 
                     appointment.StartAt > dateForMaliciousPatients)
                 .Count() >= 3)
                 .Include(patient => patient.Appointments
-                .Where (appointment => appointment.State == AppointmentState.DELETED))
+                .Where (appointment => appointment.State == AppointmentState.DELETED &&
+                        appointment.StartAt > dateForMaliciousPatients))
                 .ToListAsync();
-            foreach(Users.User user in _dataContext.Users.Where(user => user.Blocked == true))
+        }
+        public async Task<IEnumerable<Patient>> GetBlockedPatients(DateTime dateForMaliciousPatients)
+        {
+            List<Patient> potentialMaliciousPatients = new List<Patient>();
+            IEnumerable<Users.User> blockedUsers = await _dataContext.Users.Where(user => user.Blocked == true).ToListAsync();
+            foreach (Users.User user in blockedUsers)
             {
-                potentialMaliciousPatients.Append(_dataContext.Patients
+                potentialMaliciousPatients.Add(_dataContext.Patients
                     .Where(patient => patient.Id == user.Id)
                     .Include(patient => patient.Appointments
-                    .Where(appointment => appointment.State == AppointmentState.DELETED)).First());
+                    .Where(appointment => appointment.State == AppointmentState.DELETED &&
+                        appointment.StartAt > dateForMaliciousPatients))
+                    .First());
             }
-            return potentialMaliciousPatients;
+            return potentialMaliciousPatients.AsEnumerable();
         }
+
     }
 }
