@@ -23,18 +23,18 @@ namespace HospitalLibrary.Patients
         {
             IEnumerable<Patient> potentialMaliciousPatients = await _dataContext.Patients
                 .Where(patient => patient.Appointments
-                .Where(appointment => appointment.State == AppointmentState.CANCELED && 
+                .Where(appointment => appointment.State == AppointmentState.DELETED && 
                     appointment.StartAt > dateForMaliciousPatients)
                 .Count() >= 3)
                 .Include(patient => patient.Appointments
-                .Where (appointment => appointment.State == AppointmentState.CANCELED))
+                .Where (appointment => appointment.State == AppointmentState.DELETED))
                 .ToListAsync();
             foreach(Users.User user in _dataContext.Users.Where(user => user.Blocked == true))
             {
                 potentialMaliciousPatients.Append(_dataContext.Patients
                     .Where(patient => patient.Id == user.Id)
                     .Include(patient => patient.Appointments
-                    .Where(appointment => appointment.State == AppointmentState.CANCELED)).First());
+                    .Where(appointment => appointment.State == AppointmentState.DELETED)).First());
             }
             return potentialMaliciousPatients;
         }
