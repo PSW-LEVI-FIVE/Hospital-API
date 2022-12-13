@@ -75,7 +75,7 @@ namespace HospitalLibrary.Examination
             Patient patient = _unitOfWork.PatientRepository.GetOne(appointment.PatientId.Value);
             PopulateMedicines(examinationReport);
             var pdf = _generator.GenerateExaminationReportPdf(examinationReport, patient);
-            string file = await _storage.UploadFile(pdf, $"examination-report-{DateTime.Now.ToString("ddMMyyyy")}-{patient.Id}");
+            string file = await _storage.UploadFile(pdf, $"examination-report-{DateTime.Now.ToString("ddMMyyyyhhmmss")}-{patient.Id}");
             examinationReport.Url = file;
         }
     }
