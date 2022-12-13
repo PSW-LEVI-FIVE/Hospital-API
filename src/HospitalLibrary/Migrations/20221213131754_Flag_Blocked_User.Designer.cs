@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221213131754_Flag_Blocked_User")]
+    partial class Flag_Blocked_User
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -174,6 +176,9 @@ namespace HospitalLibrary.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<double>("Quantity")
+                        .HasColumnType("double precision");
+
                     b.Property<string>("Reason")
                         .HasColumnType("text");
 
@@ -261,9 +266,6 @@ namespace HospitalLibrary.Migrations
                     b.Property<int>("ExaminationId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Url")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DoctorId");
@@ -305,11 +307,20 @@ namespace HospitalLibrary.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<bool>("AllowPublishment")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Anonimity")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("FeedbackContent")
                         .HasColumnType("text");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("Published")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
@@ -514,40 +525,6 @@ namespace HospitalLibrary.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Medicines");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Renovation.Model.Renovation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime>("EndAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("MainRoomId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("SecondaryRoomId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("StartAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("State")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MainRoomId");
-
-                    b.HasIndex("SecondaryRoomId");
-
-                    b.ToTable("Renovations");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Rooms.Model.EquipmentReallocation", b =>
@@ -934,27 +911,7 @@ namespace HospitalLibrary.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("HospitalLibrary.Shared.Model.ValueObjects.Quantity", "Quantity", b1 =>
-                        {
-                            b1.Property<int>("BloodOrderId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                            b1.Property<double>("Count")
-                                .HasColumnType("double precision");
-
-                            b1.HasKey("BloodOrderId");
-
-                            b1.ToTable("BloodOrders");
-
-                            b1.WithOwner()
-                                .HasForeignKey("BloodOrderId");
-                        });
-
                     b.Navigation("Doctor");
-
-                    b.Navigation("Quantity");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Examination.ExaminationReport", b =>
@@ -1002,32 +959,6 @@ namespace HospitalLibrary.Migrations
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.OwnsOne("HospitalLibrary.Feedbacks.ValueObjects.FeedbackStatus", "FeedbackStatus", b1 =>
-                        {
-                            b1.Property<int>("FeedbackId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                            b1.Property<bool>("AllowPublishment")
-                                .HasColumnType("boolean");
-
-                            b1.Property<bool>("Anonimity")
-                                .HasColumnType("boolean");
-
-                            b1.Property<bool>("Published")
-                                .HasColumnType("boolean");
-
-                            b1.HasKey("FeedbackId");
-
-                            b1.ToTable("Feedbacks");
-
-                            b1.WithOwner()
-                                .HasForeignKey("FeedbackId");
-                        });
-
-                    b.Navigation("FeedbackStatus");
 
                     b.Navigation("Patient");
                 });
@@ -1120,23 +1051,6 @@ namespace HospitalLibrary.Migrations
                         .IsRequired();
 
                     b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Renovation.Model.Renovation", b =>
-                {
-                    b.HasOne("HospitalLibrary.Rooms.Model.Room", "MainRoom")
-                        .WithMany()
-                        .HasForeignKey("MainRoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HospitalLibrary.Rooms.Model.Room", "SecondaryRoom")
-                        .WithMany()
-                        .HasForeignKey("SecondaryRoomId");
-
-                    b.Navigation("MainRoom");
-
-                    b.Navigation("SecondaryRoom");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Rooms.Model.EquipmentReallocation", b =>

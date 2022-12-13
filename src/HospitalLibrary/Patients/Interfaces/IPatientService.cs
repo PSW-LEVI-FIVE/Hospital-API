@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Allergens;
@@ -12,7 +13,8 @@ namespace HospitalLibrary.Patients.Interfaces
         Task<Patient> AddAllergensAndDoctorToPatient(int patientId,List<Allergen> allergens,Doctor choosenDoctor);
         Patient SearchByUid(string uid);
         Task<Patient> GetOne(int patientId);
-        Task<IEnumerable<Patient>> GetMaliciousPatients();
+        IEnumerable<Patient> GetMaliciousPatients(DateTime dateForMaliciousPatients);
+        IEnumerable<Patient> GetBlockedPatients(DateTime dateForMaliciousPatients);
     }
     
 }

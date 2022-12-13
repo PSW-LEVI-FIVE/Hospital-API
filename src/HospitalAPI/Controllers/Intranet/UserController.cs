@@ -33,20 +33,20 @@ namespace HospitalAPI.Controllers.Intranet
 
         [HttpPut]
         [Route("blockuser")]
-        //[Authorize(Roles = "Manager")]
-        public IActionResult BlockMaliciousUser([FromQuery] int blockUserId)
+        [Authorize(Roles = "Manager")]
+        public IActionResult BlockMaliciousUser([FromQuery] int id)
         {
-            User blockedUser = _userService.BlockMaliciousUser(blockUserId);
-            return Ok(blockedUser);
+            _userService.BlockMaliciousUser(id);
+            return Ok();
         }
 
         [HttpPut]
         [Route("unblockuser")]
-        //[Authorize(Roles = "Manager")]
-        public IActionResult UnBlockMaliciousUser([FromQuery] int unblockUserId)
+        [Authorize(Roles = "Manager")]
+        public IActionResult UnBlockMaliciousUser([FromQuery] int id)
         {
-            User unblockedUser = _userService.UnBlockMaliciousUser(unblockUserId);
-            return Ok(unblockedUser);
+            _userService.UnBlockMaliciousUser(id);
+            return Ok();
         }
     }
 }

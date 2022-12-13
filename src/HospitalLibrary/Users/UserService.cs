@@ -4,6 +4,7 @@ using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.User.Interfaces;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Patients.Interfaces;
+using System;
 
 namespace HospitalLibrary.Users
 {
@@ -63,7 +64,7 @@ namespace HospitalLibrary.Users
         public User BlockMaliciousUser(int blockUserId)
         {
             User blockUser = _unitOfWork.UserRepository.GetOne(blockUserId);
-            foreach(Patient patient in patientService.GetMaliciousPatients().Result)
+            foreach(Patient patient in _unitOfWork.PatientRepository.GetMaliciousPatients(DateTime.Now.AddDays(-30)).Result)
             {
                 if(patient.Id == blockUser.Id)
                 {
@@ -76,9 +77,9 @@ namespace HospitalLibrary.Users
             return null;
         }
 
-        public User UnBlockMaliciousUser(int blockUserId)
+        public User UnBlockMaliciousUser(int unblockUserId)
         {
-            User unblockUser = _unitOfWork.UserRepository.GetOne(blockUserId);
+            User unblockUser = _unitOfWork.UserRepository.GetOne(unblockUserId);
             if (unblockUser.Blocked == false) return null;
             unblockUser.Blocked = false;
             _unitOfWork.UserRepository.Update(unblockUser);
