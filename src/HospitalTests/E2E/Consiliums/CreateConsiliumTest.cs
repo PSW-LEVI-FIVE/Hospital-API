@@ -58,7 +58,7 @@ public class CreateConsiliumTest
         Thread.Sleep(1000);
         
         element = Driver.FindElement(By.Id("from-consilium"));
-        // DeleteDate(element);
+        DeleteDate(element);
         element.SendKeys("12/25/2022");
         Thread.Sleep(1000);
 
