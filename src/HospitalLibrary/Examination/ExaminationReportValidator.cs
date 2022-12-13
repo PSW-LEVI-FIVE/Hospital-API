@@ -18,8 +18,11 @@ namespace HospitalLibrary.Examination
         public void ValidateCreate(ExaminationReport report)
         {
             ExaminationReport existing = _unitOfWork.ExaminationReportRepository.GetByExamination(report.ExaminationId);
-            Appointment appointment = _unitOfWork.AppointmentRepository.GetOne(existing.ExaminationId);
+            Appointment appointment = _unitOfWork.AppointmentRepository.GetOne(report.ExaminationId);
 
+            if (appointment == null)
+                throw new NotFoundException("Appointment not found");
+            
             if (appointment.Type != AppointmentType.EXAMINATION)
                 throw new BadRequestException("Appointment is not of type examination!");
             if (existing != null) 

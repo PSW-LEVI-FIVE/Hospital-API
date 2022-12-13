@@ -25,6 +25,8 @@ namespace HospitalLibrary.Examination
         public List<Prescription> Prescriptions { get; set; }
         public List<Symptom> Symptoms { get; set; }
         
+        public string? Url { get; set; }
+        
         public ExaminationReport() {}        
     }
 }

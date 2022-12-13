@@ -68,7 +68,7 @@ public class ExaminationTests: BaseIntegrationTest
 
 
     [Fact]
-    public void Create_report()
+    public async Task Create_report()
     {
         using var scope = Factory.Services.CreateScope();
         var controller = SetupController(scope);
@@ -105,7 +105,7 @@ public class ExaminationTests: BaseIntegrationTest
             DoctorId = 4
         };
 
-        var result = ((OkObjectResult)controller.Create(dto)).Value as ExaminationReport;
+        var result = ((OkObjectResult) await controller.Create(dto)).Value as ExaminationReport;
 
         result.ShouldNotBeNull();
     }
