@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.AnnualLeaves.Dtos;
 using HospitalLibrary.Appointments;
@@ -12,5 +13,6 @@ namespace HospitalLibrary.AnnualLeaves.Interfaces
         List<int> GetDoctorsThatHaveAnnualLeaveInRange(TimeInterval range);
         IEnumerable<AnnualLeave> GetDoctorsAnnualLeavesInRange(int doctorId, TimeInterval range);
         IEnumerable<AnnualLeave> GetAllPending();
+        IEnumerable<AnnualLeave> GetMonthlyLeavesByDoctorId(int doctorId, DateTime firstOfMonth);
     }
 }

@@ -9,6 +9,13 @@ using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Doctors;
+using HospitalLibrary.Allergens.Dtos;
+using HospitalLibrary.Allergens;
+using System;
+using ceTe.DynamicPDF;
+using HospitalLibrary.Migrations;
+using HospitalLibrary.Appointments;
+using ceTe.DynamicPDF.Merger;
 
 namespace HospitalLibrary.AnnualLeaves
 {
@@ -68,5 +75,37 @@ namespace HospitalLibrary.AnnualLeaves
             _unitOfWork.AnnualLeaveRepository.Save();
             return leave;
         }
+
+        public IEnumerable<MonthlyLeavesDTO> GetMonthlyStatisticsByDoctorId(int doctorId)
+        {
+            List<MonthlyLeavesDTO> monthlyLeavesDTOs = new List<MonthlyLeavesDTO>();            
+            for(int month = 1; month<=12; month++)
+            {
+                DateTime firstOfMonth = new DateTime(DateTime.Now.Year, month, 1);
+                IEnumerable<AnnualLeave> thisMonthLeaves = _unitOfWork.AnnualLeaveRepository.GetMonthlyLeavesByDoctorId(doctorId, firstOfMonth);
+                TimeInterval wholeMonth = new TimeInterval(firstOfMonth, firstOfMonth.AddMonths(1).AddDays(-1));
+                int daysCount = 0;
+                foreach (AnnualLeave annualLeave in thisMonthLeaves)
+                {
+                    daysCount += CountSameMonthLeaveDays(annualLeave, wholeMonth);
+                }
+                monthlyLeavesDTOs.Add(new MonthlyLeavesDTO(firstOfMonth, daysCount));
+            } 
+            return monthlyLeavesDTOs;
+        }
+
+        public int CountSameMonthLeaveDays(AnnualLeave annualLeave, TimeInterval wholeMonth)
+        {
+            int count = 0;
+            DateTime max = annualLeave.EndAt <= wholeMonth.End ? annualLeave.EndAt : wholeMonth.End;
+            DateTime min = annualLeave.StartAt >= wholeMonth.Start ? annualLeave.StartAt: wholeMonth.Start;
+            for (var d = min; d <= max; d = d.AddDays(1))
+            {
+                if (!(d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday))
+                    count++;
+            }
+            return count; 
+        }
+
     }
 }
