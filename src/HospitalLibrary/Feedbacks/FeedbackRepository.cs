@@ -16,7 +16,7 @@ namespace HospitalLibrary.Feedbacks
 
         public async Task<IEnumerable<Feedback>> GetPublished()
         {
-            return await _dataContext.Feedbacks.Where(f => f.Published).ToListAsync();
+            return await _dataContext.Feedbacks.Where(f => f.FeedbackStatus.GetPublished()).ToListAsync();
         }
     }
 }

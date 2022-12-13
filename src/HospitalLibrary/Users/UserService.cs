@@ -39,9 +39,9 @@ namespace HospitalLibrary.Users
             _unitOfWork.UserRepository.Save();
             return user;
         }
-        public async Task<User> ActivateAccount(User user)
+        public async Task<User> ActivateAccount(User user,string code)
         {
-            user.ActivateAccount();
+            user.ActivateAccount(code);
             _unitOfWork.UserRepository.Update(user);
             _unitOfWork.UserRepository.Save();
             return user;

@@ -81,9 +81,11 @@ namespace HospitalLibrary.Auth
             await _userService.Create(user);
             await _patientService.AddAllergensAndDoctorToPatient(user.Id,patientsAllergens, choosenDoctor);
             
-            PatientDTO registeredPatient = new PatientDTO(createPatientDTO);
-            registeredPatient.ActivationCode = user.ActivationCode;
-            
+            PatientDTO registeredPatient = new PatientDTO(createPatientDTO)
+            {
+                ActivationCode = user.ActivationCode
+            };
+
             return registeredPatient;
         }
 
@@ -92,7 +94,7 @@ namespace HospitalLibrary.Auth
             Users.User user = await _userService.GetOneByCode(code);
             if (user == null)
                 throw new BadRequestException("Activation code not valid!");
-            await _userService.ActivateAccount(user);
+            await _userService.ActivateAccount(user,code);
             return new PatientDTO(user);
         }
 

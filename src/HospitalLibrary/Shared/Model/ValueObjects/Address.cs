@@ -21,6 +21,14 @@ namespace HospitalLibrary.Shared.Model.ValueObjects
             StreetNumber = streetNumber;
             Validate();
         }
+        public Address(Address address)
+        {
+            Country = address.Country;
+            City = address.City;
+            Street = address.Street;
+            StreetNumber = address.StreetNumber;
+            Validate();
+        }
         
 
         private void Validate()

@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿
+using HospitalLibrary.Feedbacks.ValueObjects;
 
 namespace HospitalLibrary.Feedbacks.Dtos
 {
@@ -8,10 +9,9 @@ namespace HospitalLibrary.Feedbacks.Dtos
          public int Id { get; set; }
          public string Patient { get; set; }
          public string FeedbackContent { get; set; }
-         public bool AllowPublishment { get; set; }
-         public bool Published { get; set; }
+         public FeedbackStatus FeedbackStatus { get; set; }
 
-         public ManagersFeedbackDTO(int id, string patient, string feedbackContent, bool allowPublishment,bool published, bool anonymous)
+         public ManagersFeedbackDTO(int id, string patient, string feedbackContent, FeedbackStatus feedbackStatus, bool anonymous)
          {
              if (anonymous)
                  Patient = "Anonymous";
@@ -19,8 +19,7 @@ namespace HospitalLibrary.Feedbacks.Dtos
                  Patient = patient;
              Id = id;
              FeedbackContent = feedbackContent;
-             AllowPublishment = allowPublishment;
-             Published = published;
+             FeedbackStatus = feedbackStatus;
          }
 
     }
