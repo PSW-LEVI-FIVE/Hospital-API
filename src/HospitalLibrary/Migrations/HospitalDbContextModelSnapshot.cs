@@ -308,11 +308,20 @@ namespace HospitalLibrary.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<bool>("AllowPublishment")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Anonimity")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("FeedbackContent")
                         .HasColumnType("text");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("Published")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
@@ -948,32 +957,6 @@ namespace HospitalLibrary.Migrations
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.OwnsOne("HospitalLibrary.Feedbacks.ValueObjects.FeedbackStatus", "FeedbackStatus", b1 =>
-                        {
-                            b1.Property<int>("FeedbackId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                            b1.Property<bool>("AllowPublishment")
-                                .HasColumnType("boolean");
-
-                            b1.Property<bool>("Anonimity")
-                                .HasColumnType("boolean");
-
-                            b1.Property<bool>("Published")
-                                .HasColumnType("boolean");
-
-                            b1.HasKey("FeedbackId");
-
-                            b1.ToTable("Feedbacks");
-
-                            b1.WithOwner()
-                                .HasForeignKey("FeedbackId");
-                        });
-
-                    b.Navigation("FeedbackStatus");
 
                     b.Navigation("Patient");
                 });
