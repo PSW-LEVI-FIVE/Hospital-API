@@ -8,6 +8,7 @@ using HospitalLibrary.Consiliums.Dtos;
 using HospitalLibrary.Consiliums.Interfaces;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Shared.Interfaces;
+using LinqKit;
 
 namespace HospitalLibrary.Consiliums
 {
@@ -41,85 +42,47 @@ namespace HospitalLibrary.Consiliums
         {
             List<DateTime> dates = timeInterval.GetDatesForDateRange();
             int overallDoctorsOverlap = 0;
-            List<int> overallOverlapedDoctors = new List<int>();
-            TimeInterval overallBestConsiliumTime=null; 
-            
+            List<int> overallOverlappedDoctors = new List<int>();
+            TimeInterval overallBestConsiliumTime = null;
+
             foreach (DateTime date in dates)
             {
-                Console.WriteLine("Novi Datum");
-                Console.WriteLine(date);
-                Doctor doctorScheduler = null;
                 IEnumerable<Doctor> datedDoctors = _unitOfWork.DoctorRepository.GetDoctorsForDate(doctors, date);
                 List<TimeIntervalDoctor> freeTimes = new List<TimeIntervalDoctor>();
-                
-                //Load all free times for doctors
-                foreach (Doctor doc in datedDoctors)
-                {
-                    Console.WriteLine(doc.Id);
-                    Console.WriteLine(doc.Name);
-                    Console.WriteLine(doc.Surname);
-                    List<TimeIntervalDoctor> freeTime =
-                        GetFreeTimeIntervalsForDoctor(doc, date, consiliumDuration, doc.Id);
-                    foreach (TimeIntervalDoctor time in freeTime)
-                    {
-                        //OBIRASTI OVU FOR PETLJU, SLUZI SAMO ZA ISPIS
-                        Console.WriteLine(time.Interval);
-                    }
-                    freeTimes.AddRange(freeTime);
-                }
 
-                //Generate all possible sets
-                List<List<TimeIntervalDoctor>> allPossibleSets = new List<List<TimeIntervalDoctor>>();
-                foreach (TimeIntervalDoctor timeDoc in freeTimes)
-                {
-                    bool isSchedulerPresent = timeDoc.DoctorId == schedulerDoctor;
-                    
-                    List<TimeIntervalDoctor> set = new List<TimeIntervalDoctor>();
-                    set.Add(timeDoc);
-                    foreach (TimeIntervalDoctor subTimeDoc in freeTimes)
-                    {
-                        if (subTimeDoc.DoctorId == timeDoc.DoctorId)
-                            continue;
+                datedDoctors.ForEach(d =>
+                    freeTimes.AddRange(GetFreeTimeIntervalsForDoctor(d, date, consiliumDuration, d.Id)));
 
-                        if (!timeDoc.Interval.IsOtherStartWithingMe(subTimeDoc.Interval))
-                            continue;
+                List<List<TimeIntervalDoctor>> allPossibleSets = GenerateFreeTimeSets(freeTimes, schedulerDoctor);
 
-                        if (subTimeDoc.DoctorId == schedulerDoctor)
-                            isSchedulerPresent = true;
-                        
-                        set.Add(subTimeDoc);
-                    }
-                    
-                    if(isSchedulerPresent)
-                        allPossibleSets.Add(set);
-                }
 
                 //Generate the best possible consilium for date
                 int dateDoctorsOverlap = 0;
                 List<int> dateOverlapedDoctors = new List<int>();
-                TimeInterval dateBestConsiliumTime = null; 
+                TimeInterval dateBestConsiliumTime = null;
                 foreach (List<TimeIntervalDoctor> possibleSet in allPossibleSets)
                 {
                     //Ako je nasao 3 doktora da se preklapaju nema smisla da gleda SubSetove sa 3 i manje preklapajuca
                     if (possibleSet.Count <= dateDoctorsOverlap && dateDoctorsOverlap != 0) //Pitanje jel mi treba 0?
                         continue;
-                    
+
                     int setMaximumOverlaps = 0;
                     TimeInterval setBestConsiliumTime = null;
                     List<int> setOverlapedDoctors = new List<int>();
-                    
+
                     //Every starter inside a set is a separate epoch
                     foreach (TimeIntervalDoctor starter in possibleSet)
                     {
-                        TimeInterval possibleConsilum = new TimeInterval(starter.Interval.Start,
+                        TimeInterval possibleConsilium = new TimeInterval(starter.Interval.Start,
                             starter.Interval.Start.AddMinutes(consiliumDuration));
                         int epochMaximumOverlaps = 0;
                         bool isSchedulerPresent = false;
                         List<int> epochOverlapedDoctors = new List<int>();
-                        
+
+
                         foreach (TimeIntervalDoctor sub in possibleSet)
                         {
-                            if (TimeInterval.IsIntervalInside(sub.Interval, possibleConsilum))
+                            if (TimeInterval.IsIntervalInside(sub.Interval, possibleConsilium))
                             {
                                 if (sub.DoctorId == schedulerDoctor)
                                     isSchedulerPresent = true;
@@ -128,9 +91,10 @@ namespace HospitalLibrary.Consiliums
                             }
                         }
 
+
                         if (epochMaximumOverlaps > setMaximumOverlaps && isSchedulerPresent)
                         {
-                            setBestConsiliumTime = possibleConsilum;
+                            setBestConsiliumTime = possibleConsilium;
                             setMaximumOverlaps = epochMaximumOverlaps;
                             setOverlapedDoctors = epochOverlapedDoctors;
                         }
@@ -143,22 +107,53 @@ namespace HospitalLibrary.Consiliums
                         dateOverlapedDoctors = setOverlapedDoctors;
                     }
                 }
+
                 if (dateDoctorsOverlap > overallDoctorsOverlap)
                 {
                     overallDoctorsOverlap = dateDoctorsOverlap;
                     overallBestConsiliumTime = dateBestConsiliumTime;
-                    overallOverlapedDoctors = dateOverlapedDoctors;
+                    overallOverlappedDoctors = dateOverlapedDoctors;
                 }
-                
-                Console.WriteLine("********");
             }
 
-            Console.WriteLine("==========");
-            GetBestConsiliumsDTO cons = new GetBestConsiliumsDTO(overallBestConsiliumTime.Start,overallBestConsiliumTime.End,
-                overallOverlapedDoctors,schedulerDoctor,consiliumDuration);
+            GetBestConsiliumsDTO cons = new GetBestConsiliumsDTO(overallBestConsiliumTime.Start,
+                overallBestConsiliumTime.End,
+                overallOverlappedDoctors, schedulerDoctor, consiliumDuration);
             return cons;
         }
 
+        private List<List<TimeIntervalDoctor>> GenerateFreeTimeSets(List<TimeIntervalDoctor> freeTimes,
+            int schedulerDoctor)
+        {
+            List<List<TimeIntervalDoctor>> allMatchingSets = new List<List<TimeIntervalDoctor>>();
+
+            foreach (TimeIntervalDoctor freeTime in freeTimes)
+            {
+                bool isSchedulerPresent = freeTime.DoctorId == schedulerDoctor;
+
+                List<TimeIntervalDoctor> possibleSet = new List<TimeIntervalDoctor>();
+                possibleSet.Add(freeTime);
+
+                foreach (TimeIntervalDoctor sampleFreeTime in freeTimes)
+                {
+                    if (sampleFreeTime.DoctorId == freeTime.DoctorId)
+                        continue;
+
+                    if (!freeTime.Interval.IsOtherStartWithingMe(sampleFreeTime.Interval))
+                        continue;
+
+                    if (sampleFreeTime.DoctorId == schedulerDoctor)
+                        isSchedulerPresent = true;
+
+                    possibleSet.Add(sampleFreeTime);
+                }
+
+                if (isSchedulerPresent)
+                    allMatchingSets.Add(possibleSet);
+            }
+
+            return allMatchingSets;
+        }
 
         private List<TimeIntervalDoctor> GetFreeTimeIntervalsForDoctor(Doctor doctor, DateTime date, int consDuration,
             int docId)
