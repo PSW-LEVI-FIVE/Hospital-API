@@ -20,7 +20,7 @@ namespace HospitalLibrary.Examination
             ExaminationReport existing = _unitOfWork.ExaminationReportRepository.GetByExamination(report.ExaminationId);
             Appointment appointment = _unitOfWork.AppointmentRepository.GetOne(existing.ExaminationId);
 
-            if (appointment.Type != AppointmentType.CONSILIUM)
+            if (appointment.Type != AppointmentType.EXAMINATION)
                 throw new BadRequestException("Appointment is not of type examination!");
             if (existing != null) 
                 throw new BadRequestException("Report for given examination has already been generated!");
