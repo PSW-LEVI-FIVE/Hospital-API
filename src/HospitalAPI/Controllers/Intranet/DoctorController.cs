@@ -35,7 +35,7 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
         [HttpGet]
-        [Authorize(Roles="Doctor")]
+        [Authorize(Roles="Doctor, Manager")]
         public async Task<IActionResult> GetAll()
         {
             IEnumerable<Doctor> doctors = await _doctorService.GetAll();

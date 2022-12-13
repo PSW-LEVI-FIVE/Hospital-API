@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,6 +58,15 @@ namespace HospitalLibrary.AnnualLeaves
         public IEnumerable<AnnualLeave> GetAllPending()
         {
             return _dataContext.AnnualLeaves.Where(al => al.State == AnnualLeaveState.PENDING).ToList();
+        }
+
+        public IEnumerable<AnnualLeave> GetMonthlyLeavesByDoctorId(int doctorId, DateTime firstOfMonth)
+        {
+            return _dataContext.AnnualLeaves
+                .Where(al => al.State == AnnualLeaveState.APPROVED)
+                .Where(al => al.DoctorId == doctorId)
+                .Where(al => (al.StartAt <= firstOfMonth.AddMonths(1).AddDays(-1) && al.EndAt >= firstOfMonth))
+                .ToList();
         }
     }
 }
