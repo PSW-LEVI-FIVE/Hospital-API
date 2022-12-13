@@ -1,4 +1,5 @@
-﻿using HospitalLibrary.Examination.Interfaces;
+﻿using HospitalLibrary.Appointments;
+using HospitalLibrary.Examination.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
 
@@ -17,8 +18,13 @@ namespace HospitalLibrary.Examination
         public void ValidateCreate(ExaminationReport report)
         {
             ExaminationReport existing = _unitOfWork.ExaminationReportRepository.GetByExamination(report.ExaminationId);
+            Appointment appointment = _unitOfWork.AppointmentRepository.GetOne(existing.ExaminationId);
+
+            if (appointment.Type != AppointmentType.CONSILIUM)
+                throw new BadRequestException("Appointment is not of type examination!");
             if (existing != null) 
                 throw new BadRequestException("Report for given examination has already been generated!");
+            
         }
     }
 }
