@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Shared.Model;
 
@@ -31,10 +32,13 @@ namespace HospitalLibrary.Users
         public User()
         {
         }
-
-        public void ActivateAccount()
+        public void ActivateAccount(string code)
         {
-            ActiveStatus = ActiveStatus.Active;
+            if(code.Equals(ActivationCode))
+                ActiveStatus = ActiveStatus.Active;
+            else
+                throw new Exception("Code not valid");
+            
         }
 
         public User(string username, string password, Role role,int id,ActiveStatus activeStatus)
@@ -44,6 +48,14 @@ namespace HospitalLibrary.Users
             Role = role;
             Id = id;
             ActiveStatus = activeStatus;
+        }
+        private void Validate()
+        {
+            if (Username.Trim().Equals("")
+                || Password.Trim().Equals(""))
+            {
+                throw new Exception("Username and password cannot be empty!");
+            }
         }
     }
 }

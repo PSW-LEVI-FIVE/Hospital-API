@@ -1,11 +1,6 @@
-﻿using HospitalLibrary.Patients;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HospitalLibrary.Feedbacks.ValueObjects;
 
 namespace HospitalLibrary.Feedbacks.Dtos
 {
@@ -15,12 +10,9 @@ namespace HospitalLibrary.Feedbacks.Dtos
         public int PatientId { get; set; }
         [Required]
         public string FeedbackContent { get; set; }
+
         [Required]
-        public Boolean AllowPublishment { get; set; }
-        [Required]
-        public Boolean Published { get; set; }
-        [Required]
-        public Boolean Anonimity { get; set; }
+        public FeedbackStatusDTO FeedbackStatus { get; set; }
 
         public Feedback MapToModel()
         {
@@ -28,12 +20,8 @@ namespace HospitalLibrary.Feedbacks.Dtos
             {
                 PatientId = PatientId,
                 FeedbackContent = FeedbackContent,
-                AllowPublishment = AllowPublishment,
-                Published = Published,
-                Anonimity = Anonimity
+                FeedbackStatus = new FeedbackStatus(FeedbackStatus)
             };  
         }
-
-
     }
 }

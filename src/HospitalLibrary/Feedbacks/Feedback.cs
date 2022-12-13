@@ -2,6 +2,7 @@ using HospitalLibrary.Patients;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using HospitalLibrary.Feedbacks.ValueObjects;
 
 namespace HospitalLibrary.Feedbacks
 {
@@ -14,15 +15,8 @@ namespace HospitalLibrary.Feedbacks
         public int PatientId { get; set; }
         public Patient Patient  {get;set;}
         public string FeedbackContent { get; set; }
-        public Boolean AllowPublishment { get; set; }
-        public Boolean Published { get; set; }
-        public Boolean Anonimity { get; set; }
+        public FeedbackStatus FeedbackStatus { get; set; }
 
         public Feedback () { }
-
-        public void Update(bool feedbackPublishmentStatus)
-        {
-            Published = feedbackPublishmentStatus && AllowPublishment;
-        }
     }
 }

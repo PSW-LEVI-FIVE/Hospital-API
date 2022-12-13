@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using HospitalLibrary.Feedbacks.Interfaces;
 using HospitalLibrary.Feedbacks;
 using HospitalLibrary.Feedbacks.Dtos;
+using HospitalLibrary.Users;
+using HospitalLibrary.Users.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +29,7 @@ namespace HospitalAPI.Controllers.Public
         [Authorize(Roles="Patient")]
         public IActionResult Create([FromBody] CreateFeedbackDTO createFeedbackDto)
         {
+            createFeedbackDto.PatientId = GetCurrentUser().Id;
             Feedback created = _feedbackService.Create(createFeedbackDto.MapToModel());
             return Ok(created);
         }
@@ -36,6 +40,19 @@ namespace HospitalAPI.Controllers.Public
         {
             IEnumerable<PublishedFeedbackDTO> publishedFeedbacks = await _feedbackService.GetPublishedFeedbacks();
             return Ok(publishedFeedbacks);
+        }
+        private UserDTO GetCurrentUser()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            if (identity == null) return null;
+            var userClaims = identity.Claims;
+            return new UserDTO
+            {
+                Id = int.Parse(userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value),
+                Role = Role.Patient,
+                Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value
+            };
         }
     }
 }
