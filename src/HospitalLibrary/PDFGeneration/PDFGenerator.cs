@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using ceTe.DynamicPDF;
 using ceTe.DynamicPDF.PageElements;
+using HospitalLibrary.Examination;
 using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.Patients;
+using HospitalLibrary.Symptoms;
 using HospitalLibrary.Therapies.Model;
 
 namespace HospitalLibrary.PDFGeneration
@@ -25,6 +27,77 @@ namespace HospitalLibrary.PDFGeneration
             GenerateHeaderForTherapies(page, hospitalization.MedicalRecord.Patient);
             GenerateTherapiesList(page, therapies);
             return document.Draw();
+        }
+        
+        public byte[] GenerateExaminationReportPdf(ExaminationReport examinationReport, Patient patient)
+        {
+            Document document = new Document();
+
+            Page page = new Page(PageSize.Letter, PageOrientation.Portrait, 54.0f);
+            document.Pages.Add(page);
+
+            GenerateHeaderForExaminationReports(page, patient);
+            int y = GenerateSymptomsList(page, examinationReport.Symptoms);
+            y = GenerateContent(page, examinationReport.Content, y);
+            GeneratePrescriptionsList(page, examinationReport.Prescriptions, y);
+            return document.Draw();
+        }
+
+        private int GenerateContent(Page page, string examinationReportContent, int y)
+        {
+            var x = 20;
+            string header = "Content:";
+            Label label = new Label(header, 0, y, THERAPY_LABEL_WIDTH, THERAPY_LABEL_HEIGHT, Font.Helvetica, LABEL_FONT_SIZE, TextAlign.Left);
+            page.Elements.Add(label);
+            y += 20;
+            string txt = examinationReportContent;
+            Label lbl = new Label(txt, x, y, THERAPY_LABEL_WIDTH, THERAPY_LABEL_HEIGHT, Font.Helvetica, LABEL_FONT_SIZE, TextAlign.Left);
+            page.Elements.Add(lbl);
+            y += 20;
+
+            return y;
+        }
+
+        private void GeneratePrescriptionsList(Page page, List<Prescription> examinationReportPrescriptions, int y)
+        {
+            var x = 20;
+            string header = "Prescriptions:";
+            Label label = new Label(header, 0, y, THERAPY_LABEL_WIDTH, THERAPY_LABEL_HEIGHT, Font.Helvetica, LABEL_FONT_SIZE, TextAlign.Left);
+            page.Elements.Add(label);
+            y += 20;
+            foreach (var prescription in examinationReportPrescriptions)
+            {
+                string txt = prescription.Medicine.Name;
+                Label lbl = new Label(txt, x, y, THERAPY_LABEL_WIDTH, THERAPY_LABEL_HEIGHT, Font.Helvetica, LABEL_FONT_SIZE, TextAlign.Left);
+                page.Elements.Add(lbl);
+                y += 20;
+            }
+        }
+
+        private int GenerateSymptomsList(Page page, List<Symptom> examinationReportSymptoms)
+        {
+            var y = 60;
+            var x = 20;
+            string header = "Symptoms:";
+            Label label = new Label(header, 0, y, THERAPY_LABEL_WIDTH, THERAPY_LABEL_HEIGHT, Font.Helvetica, LABEL_FONT_SIZE, TextAlign.Left);
+            page.Elements.Add(label);
+            y += 20;
+            foreach (var symptom in examinationReportSymptoms)
+            {
+                string txt = symptom.Name;
+                Label lbl = new Label(txt, x, y, THERAPY_LABEL_WIDTH, THERAPY_LABEL_HEIGHT, Font.Helvetica, LABEL_FONT_SIZE, TextAlign.Left);
+                page.Elements.Add(lbl);
+                y += 20;
+            }
+
+            return y;
+        }
+
+        private void GenerateHeaderForExaminationReports(Page page, Patient patient)
+        {
+            var labelText = $"Examination report for patient: ({patient.Name} {patient.Surname})";
+            var label = new Label(labelText, 0, 0, THERAPY_LABEL_WIDTH, THERAPIES_HEADER_HEIGHT, Font.Helvetica, HEADER_FONT_SIZE, TextAlign.Center);
+            page.Elements.Add(label);
         }
 
         private void GenerateTherapiesList(Page page, List<Therapy> therapies)

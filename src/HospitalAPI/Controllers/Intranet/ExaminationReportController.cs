@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using HospitalLibrary.Examination;
 using HospitalLibrary.Examination.Dtos;
 using HospitalLibrary.Examination.Interfaces;
@@ -41,10 +42,10 @@ namespace HospitalAPI.Controllers.Intranet
 
         [HttpPost]
         [Route("report")]
-        public IActionResult Create(CreateExaminationReportDTO reportDto)
+        public async Task<IActionResult> Create(CreateExaminationReportDTO reportDto)
         {
             reportDto.DoctorId = GetCurrentUser().Id;
-            ExaminationReport report = _examinationReportService.Create(reportDto.MapToModel());
+            ExaminationReport report = await _examinationReportService.Create(reportDto.MapToModel());
             return Ok(report);
         }
         

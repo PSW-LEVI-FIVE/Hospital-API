@@ -32,7 +32,7 @@ public class CreateExaminationReport
 
         uow.Setup(u => u.ExaminationReportRepository.GetByExamination(It.IsAny<int>())).Returns(report);
         var validator = new ExaminationReportValidator(uow.Object);
-        var service = new ExaminationReportService(uow.Object, validator);
+        var service = new ExaminationReportService(uow.Object, validator, null, null);
 
         Should.Throw<BadRequestException>(() => service.Create(report));
     }

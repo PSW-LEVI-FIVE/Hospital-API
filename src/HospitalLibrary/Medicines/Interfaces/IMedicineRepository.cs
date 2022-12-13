@@ -8,5 +8,7 @@ namespace HospitalLibrary.Medicines.Interfaces
         IEnumerable<Medicine> GetCompatibleForPatient(List<int> allergenIds);
 
         IEnumerable<Medicine> Search(string name);
+
+        List<Medicine> GetAllByIds(List<int> ids);
     }
 }
