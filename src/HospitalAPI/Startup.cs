@@ -59,6 +59,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using HospitalLibrary.Managers.Interfaces;
 using HospitalLibrary.Managers;
+using HospitalLibrary.Renovation;
+using HospitalLibrary.Renovation.Interface;
 using HospitalLibrary.Symptoms;
 using HospitalLibrary.Symptoms.Interfaces;
 using Newtonsoft.Json;
@@ -123,6 +125,8 @@ namespace HospitalAPI
             services.AddScoped<IRoomEquipmentService, RoomEquipmentService>();
             services.AddScoped<IRoomEquipmentValidator, RoomEquipmentValidator>();
             services.AddScoped<IExaminationReportValidator, ExaminationReportValidator>();
+            services.AddScoped<IRenovationService, RenovationService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });

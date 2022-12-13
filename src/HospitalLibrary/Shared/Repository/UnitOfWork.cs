@@ -32,6 +32,8 @@ using HospitalLibrary.Patients;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Persons;
 using HospitalLibrary.Persons.Interfaces;
+using HospitalLibrary.Renovation.Interface;
+using HospitalLibrary.Renovation.Repository;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Repositories;
@@ -79,6 +81,7 @@ namespace HospitalLibrary.Shared.Repository
         private IExaminationReportRepository _examinationReportRepository;
         private ISymptomRepository _symptomRepository;
         private IConsiliumRepository _consiliumRepository;
+        private IRenovationRepository _renovationRepository;
 
         public UnitOfWork(HospitalDbContext dataContext)
         {
@@ -127,5 +130,7 @@ namespace HospitalLibrary.Shared.Repository
         public ISymptomRepository SymptomRepository => _symptomRepository ??= new SymptomRepository(_dataContext);
         public IConsiliumRepository ConsiliumRepository =>
             _consiliumRepository ??= new ConsiliumRepository(_dataContext);
+        public IRenovationRepository RenovationRepository => _renovationRepository ??= new RenovationRepository(_dataContext);
+
     }
 }
