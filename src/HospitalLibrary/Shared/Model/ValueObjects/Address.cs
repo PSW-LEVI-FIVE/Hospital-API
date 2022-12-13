@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using HospitalLibrary.Shared.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Shared.Model.ValueObjects
@@ -22,6 +23,14 @@ namespace HospitalLibrary.Shared.Model.ValueObjects
             Validate();
         }
         public Address(Address address)
+        {
+            Country = address.Country;
+            City = address.City;
+            Street = address.Street;
+            StreetNumber = address.StreetNumber;
+            Validate();
+        }
+        public Address(AddressDTO address)
         {
             Country = address.Country;
             City = address.City;

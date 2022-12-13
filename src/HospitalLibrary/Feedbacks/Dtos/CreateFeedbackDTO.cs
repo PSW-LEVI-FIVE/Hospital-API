@@ -12,7 +12,7 @@ namespace HospitalLibrary.Feedbacks.Dtos
         public string FeedbackContent { get; set; }
 
         [Required]
-        public FeedbackStatus FeedbackStatus { get; set; }
+        public FeedbackStatusDTO FeedbackStatus { get; set; }
 
         public Feedback MapToModel()
         {
@@ -20,10 +20,8 @@ namespace HospitalLibrary.Feedbacks.Dtos
             {
                 PatientId = PatientId,
                 FeedbackContent = FeedbackContent,
-                FeedbackStatus = FeedbackStatus
+                FeedbackStatus = new FeedbackStatus(FeedbackStatus)
             };  
         }
-
-
     }
 }

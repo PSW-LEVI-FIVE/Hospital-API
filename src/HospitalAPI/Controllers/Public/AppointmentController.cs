@@ -78,18 +78,14 @@ namespace HospitalAPI.Controllers.Public
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
 
-            if (identity != null)
+            if (identity == null) return null;
+            var userClaims = identity.Claims;
+            return new UserDTO
             {
-                var userClaims = identity.Claims;
-                return new UserDTO
-                {
-                    Id = int.Parse(userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value),
-                    Role = Role.Patient,
-                    Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value
-                };
-            }
-
-            return null;
+                Id = int.Parse(userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value),
+                Role = Role.Patient,
+                Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value
+            };
         }
         [HttpGet]
         [Route("myAppointments")]

@@ -44,7 +44,6 @@
     <Folder Include="MedicalRecords\Repository\" />
     <Folder Include="Migrations" />
     <Folder Include="Prescriptions" />
-    <Folder Include="Shared\Dtos" />
     <Folder Include="Shared\Service" />
   </ItemGroup>
 

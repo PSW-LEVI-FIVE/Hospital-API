@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using HospitalLibrary.Allergens.Dtos;
 using HospitalLibrary.BloodStorages;
+using HospitalLibrary.Shared.Dtos;
 using HospitalLibrary.Shared.DTOValidators;
 using HospitalLibrary.Shared.Model;
 using HospitalLibrary.Shared.Model.ValueObjects;
@@ -36,8 +37,7 @@ namespace HospitalLibrary.Patients.Dtos
         [DateValidator(ErrorMessage ="Invalid date")]
         public DateTime BirthDate { get; set;  }
         [Required]
-        [RegularExpression(@"^[A-Z][A-Za-z0-9( )]+$", ErrorMessage = "Address input not valid.")]
-        public Address Address { get; set; }
+        public AddressDTO Address { get; set; }
         [Required]
         public string Username { get; set; }
         [Required]
@@ -52,7 +52,7 @@ namespace HospitalLibrary.Patients.Dtos
         public string DoctorUid { get; set; }
         
         public CreatePatientDTO(string name, string surname, string email, string uid, 
-            string phoneNumber, DateTime birthDate, Address address, BloodType bloodType,
+            string phoneNumber, DateTime birthDate, AddressDTO address, BloodType bloodType,
             string username,string password, List<AllergenDTO> allergens,string doctorUid)
         {
             Name = name;
