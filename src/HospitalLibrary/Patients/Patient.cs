@@ -14,7 +14,7 @@ namespace HospitalLibrary.Patients
         public List<Allergen> Allergens { get; set; }
         public Doctor ChoosenDoctor { get; set; }
         public Patient() {}
-        public Patient(string name, string surname, string email, string uid, string phoneNumber, DateTime birthDate, Address address, BloodType bloodType) : base( name, surname, email, uid, phoneNumber, birthDate, address)
+        public Patient(string name, string surname, string email, string uid, PhoneNumber phoneNumber, DateTime birthDate, Address address, BloodType bloodType) : base( name, surname, email, uid, phoneNumber, birthDate, address)
         {
             BloodType = bloodType;
         }
