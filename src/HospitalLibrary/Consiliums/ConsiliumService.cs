@@ -7,6 +7,8 @@ using HospitalLibrary.Appointments;
 using HospitalLibrary.Consiliums.Dtos;
 using HospitalLibrary.Consiliums.Interfaces;
 using HospitalLibrary.Doctors;
+using HospitalLibrary.Rooms.Interfaces;
+using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using LinqKit;
@@ -17,18 +19,21 @@ namespace HospitalLibrary.Consiliums
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ITimeIntervalValidationService _intervalValidation;
+        private readonly IRoomService _roomService;
 
-        public ConsiliumService(IUnitOfWork unitOfWork, ITimeIntervalValidationService intervalValidation)
+        public ConsiliumService(IUnitOfWork unitOfWork, ITimeIntervalValidationService intervalValidation, IRoomService roomService)
         {
             _unitOfWork = unitOfWork;
             _intervalValidation = intervalValidation;
+            _roomService = roomService;
         }
 
         public async Task<Consilium> Create(Appointment appointment, List<int> doctors)
         {
             Consilium consilium = appointment.Consilium;
             _unitOfWork.ConsiliumRepository.Add(consilium);
-            //TREBA DODATI PROVERU ZA SLOBODNU SOBU I DODELITI SVAKOM DOKTOR-APPOINTMENTU   
+            Room room = await _roomService.GetFirstAvailableRoom(new TimeInterval(appointment.StartAt,appointment.EndAt));
+            appointment.RoomId = room.Id;
             foreach (int doctorId in doctors)
             {
                 Appointment doctorAppointment = new Appointment(appointment);
