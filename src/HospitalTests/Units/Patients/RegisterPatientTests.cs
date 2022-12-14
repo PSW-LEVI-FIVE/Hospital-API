@@ -39,7 +39,7 @@ namespace HospitalTests.Units.Patients
             unitOfWork.Setup(unit => unit.DoctorRepository).Returns(doctorRepository.Object);
             
             Patient p1 = new Patient("Pera","Peric","gmail1@gmail.com",
-                                            "11111111","420420",new DateTime(2000,2,2),
+                                            "11111111",new PhoneNumber("420420"),new DateTime(2000,2,2),
                                             new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),BloodType.ZERO_NEGATIVE);
             
             User u1 = new User("kiki", "sifra", Role.Patient,1,ActiveStatus.Active);
@@ -51,7 +51,7 @@ namespace HospitalTests.Units.Patients
                 Address = new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
                 BirthDate = DateTime.Now,
                 Email = "nekimail1@gmail.com",
-                PhoneNumber = "063555333",
+                PhoneNumber = new PhoneNumber("063555333"),
                 Speciality = new Speciality(1, "INTERNAL_MEDICINE"),
                 SpecialityId = 1,
                 Uid = "67676767",
@@ -64,7 +64,7 @@ namespace HospitalTests.Units.Patients
                 Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
                 BirthDate = DateTime.Now,
                 Email = "nekimail2@gmail.com",
-                PhoneNumber = "063555333",
+                PhoneNumber = new PhoneNumber("063555333"),
                 Speciality = new Speciality(1, "INTERNAL_MEDICINE"),
                 SpecialityId = 1,
                 Uid = "89898989",
@@ -109,7 +109,7 @@ namespace HospitalTests.Units.Patients
                 new AllergenDTO("Cetirizine")
             };
             CreatePatientDTO patientToCreate = new CreatePatientDTO("Zika", "Zikic", "gmail2@gmail.com",
-                "11111111", "555555", new DateTime(2000,2,2), 
+                "11111111", new PhoneNumber("555555"), new DateTime(2000,2,2), 
                 new AddressDTO("Jovina 12","Jovina 12","Jovina 12","Jovina 12"),
                 BloodType.ZERO_NEGATIVE,"proxm","sifra",patientAllergens,"67676767");
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup().
@@ -124,7 +124,7 @@ namespace HospitalTests.Units.Patients
                 new AllergenDTO("Cetirizine")
             };
             CreatePatientDTO patientToCreate = new CreatePatientDTO("Zika", "Zikic", "gmail1@gmail.com",
-                "99999999", "555555", new DateTime(2000,2,2), 
+                "99999999", new PhoneNumber("555555"), new DateTime(2000,2,2), 
                 new AddressDTO("Jovina 12","Jovina 12","Jovina 12","Jovina 12"),
                 BloodType.ZERO_NEGATIVE,"proxm","sifra",patientAllergens,"67676767");
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup().
@@ -139,7 +139,7 @@ namespace HospitalTests.Units.Patients
                 new AllergenDTO("notAllergen")
             };
             CreatePatientDTO patientToCreate = new CreatePatientDTO("Zika", "Zikic", "gmail2@gmail.com",
-                "99999999", "555555", new DateTime(2000,2,2), 
+                "99999999", new PhoneNumber("555555"), new DateTime(2000,2,2), 
                 new AddressDTO("Jovina 12","Jovina 12","Jovina 12","Jovina 12"),
                 BloodType.ZERO_NEGATIVE,"proxm","sifra",patientAllergens,"67676767");
             
@@ -155,7 +155,7 @@ namespace HospitalTests.Units.Patients
                 new AllergenDTO("Cetirizine")
             };
             CreatePatientDTO patientToCreate = new CreatePatientDTO("Zika", "Zikic", "gmail2@gmail.com",
-                "99999999", "555555", new DateTime(2000,2,2), 
+                "99999999", new PhoneNumber("555555"), new DateTime(2000,2,2), 
                 new AddressDTO("Jovina 12","Jovina 12","Jovina 12","Jovina 12"),
                 BloodType.ZERO_NEGATIVE,"kiki","sifra",patientAllergens,"67676767");
             
@@ -171,7 +171,7 @@ namespace HospitalTests.Units.Patients
                 new AllergenDTO("Cetirizine")
             };
             CreatePatientDTO patientToCreate = new CreatePatientDTO("Zika", "Zikic", "gmail2@gmail.com",
-                "99999999", "555555", new DateTime(2000,2,2), 
+                "99999999", new PhoneNumber("555555"), new DateTime(2000,2,2), 
                 new AddressDTO("Jovina 12","Jovina 12","Jovina 12","Jovina 12"),
                 BloodType.ZERO_NEGATIVE,"proxm","sifra",patientAllergens,"88888888");
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup().

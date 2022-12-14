@@ -59,7 +59,7 @@ public class PdfGeneration
             BirthDate = DateTime.Now,
             BloodType = BloodType.A_NEGATIVE,
             Email = "sasas@gmail.com",
-            PhoneNumber = "213123",
+            PhoneNumber = new PhoneNumber("213123"),
             Uid = "ASDASDASDASD"
         };
         
@@ -133,7 +133,7 @@ public class PdfGeneration
             BirthDate = DateTime.Now,
             BloodType = BloodType.A_NEGATIVE,
             Email = "sasas@gmail.com",
-            PhoneNumber = "213123",
+            PhoneNumber = new PhoneNumber("213123"),
             Uid = "ASDASDASDASD"
         };
         
@@ -191,7 +191,7 @@ public class PdfGeneration
             BirthDate = DateTime.Now,
             BloodType = BloodType.A_NEGATIVE,
             Email = "sasas@gmail.com",
-            PhoneNumber = "213123",
+            PhoneNumber = new PhoneNumber("213123"),
             Uid = "ASDASDASDASD"
         };
         
