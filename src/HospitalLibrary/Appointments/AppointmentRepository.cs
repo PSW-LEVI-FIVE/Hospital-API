@@ -6,6 +6,7 @@ using HospitalLibrary.Shared.Repository;
 using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
+using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.Appointments
 {
@@ -108,6 +109,16 @@ namespace HospitalLibrary.Appointments
                 .ToListAsync();
         }
 
-        
+        public async Task<TimeInterval> GetLastForDate(DateTime date)
+        {
+            return await _dataContext.Appointments
+                    .Where(a => a.StartAt.Date == date.Date)
+                    .Where(a => a.State == AppointmentState.PENDING)
+                    .OrderByDescending(a => a.StartAt)
+                    .Select(a => new TimeInterval(a.StartAt, a.EndAt))
+                    .FirstOrDefaultAsync();
+            
+        }
+
     }
 }

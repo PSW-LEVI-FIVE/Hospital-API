@@ -17,5 +17,7 @@ namespace HospitalLibrary.Appointments.Interfaces
 
         Task<IEnumerable<TimeInterval>> GetAllDoctorTakenIntervalsForDateExcept(int roomId, DateTime date, int ignore);
         Task<IEnumerable<TimeInterval>> GetAllRoomTakenIntervalsForDateExcept(int roomId, DateTime date, int ignore);
+        Task<TimeInterval> GetLastForDate(DateTime date);
+
     }
 }

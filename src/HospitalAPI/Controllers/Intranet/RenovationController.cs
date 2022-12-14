@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using HospitalLibrary.Renovation.Interface;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
@@ -15,12 +15,23 @@ namespace HospitalAPI.Controllers.Intranet
         {
             _renovationService = renovationService;
         }
+        [HttpGet]
+        [Route("latest/")]
+        public async Task<IActionResult> GetLatest()
+        {
+            var pending = await _renovationService.GetLatest();
+            return Ok(pending);
+        }
+
 
         [HttpGet]
+        [Route("pending/")]
         public async Task<IActionResult> GetAllPending()
         {
             var pending= await _renovationService.GetAllPending();
             return Ok(pending);
         }
+
+   
     }
 }

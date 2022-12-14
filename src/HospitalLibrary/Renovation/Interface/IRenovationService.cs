@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HospitalLibrary.Appointments;
 
 namespace HospitalLibrary.Renovation.Interface
 {
@@ -11,5 +12,6 @@ namespace HospitalLibrary.Renovation.Interface
     { 
         Task<List<Model.Renovation>> GetAllPending();
         Task<Model.Renovation> Create(Model.Renovation renovation);
+        Task<TimeInterval> GetLatest();
     }
 }

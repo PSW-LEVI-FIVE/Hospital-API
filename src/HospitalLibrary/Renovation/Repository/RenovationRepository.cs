@@ -33,5 +33,15 @@ namespace HospitalLibrary.Renovation.Repository
                 .Where(a=> interval.End.Date.CompareTo(a.StartAt.Date) > 0)
                 .ToListAsync();
         }
+
+        public async Task<TimeInterval> GetLastPendingForDay(DateTime date)
+        {
+            return await _dataContext.Renovations
+                .Where(a => a.StartAt.Date == date.Date)
+                .Where(a=>a.State==RenovationState.PENDING)
+                .OrderByDescending(a => a.StartAt)
+                .Select(a => new TimeInterval(a.StartAt, a.EndAt))
+                .FirstOrDefaultAsync();
+        }
     }
 }

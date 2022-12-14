@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Subjects;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -70,7 +71,10 @@ namespace HospitalLibrary.Rooms
         {
             return _unitOfWork.RoomEquipmentRepository.GetNumberOfUsedEquipment(equipmentId);
         }
-
+        public async Task<List<EquipmentReallocation>> GetAllPendingForDate(DateTime date)
+        {
+            return await _unitOfWork.EquipmentReallocationRepository.GetAllPendingForDate(date);
+        }
         public async Task<List<TimeInterval>> GetPossibleInterval(int Starting_roomId, int Destination_roomId,DateTime date, TimeSpan duration)
         {
             List<TimeInterval> intervalsA =await GetTakenIntervals(Starting_roomId,date);
