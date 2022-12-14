@@ -172,7 +172,7 @@ namespace HospitalLibrary.Appointments
                         {
                             StartsAt = new TimeOfDayDTO(app.StartAt.TimeOfDay),
                             EndsAt = new TimeOfDayDTO(app.EndAt.TimeOfDay),
-                            Patient = app.Patient == null ? app.Patient.Name + " " + app.Patient.Surname : null,
+                            Patient = app.Patient != null ? app.Patient.Name + " " + app.Patient.Surname : null,
                             Type = app.Type,
                             Id = app.Id
                         });
