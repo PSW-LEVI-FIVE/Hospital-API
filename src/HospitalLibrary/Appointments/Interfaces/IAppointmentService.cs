@@ -17,6 +17,7 @@ namespace HospitalLibrary.Appointments.Interfaces
 
         Task<IEnumerable<Appointment>> GetUpcomingForDoctor(Doctor doctor);
 
+        Task<IEnumerable<Appointment>> GetUpcomingAppointmentsForRoom(int roomId);
         Task<Appointment> Create(Appointment appointment);
 
         public Task<IEnumerable<Appointment>> GetAllPatientAppointments(int patientId);

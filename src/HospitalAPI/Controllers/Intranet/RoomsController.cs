@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Dtos;
 using HospitalLibrary.Rooms.Interfaces;
@@ -17,9 +18,11 @@ namespace HospitalAPI.Controllers.Intranet
     public class RoomsController : ControllerBase
     {
         private IRoomService _roomService;
-        public RoomsController(IRoomService roomService)
+        private IAppointmentService _appointmentService;
+        public RoomsController(IRoomService roomService, IAppointmentService appointmentService)
         {
             _roomService = roomService;
+            _appointmentService = appointmentService;
         }
         
 
@@ -81,6 +84,15 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(rooms);
           
         }
+
+        [Route("schedule/{roomId}")]
+        [HttpGet]
+        public async Task<IActionResult> GetRoomSchedule(int roomId)
+        {
+            var appointments = await _appointmentService.GetUpcomingAppointmentsForRoom(roomId);
+            return Ok(appointments);
+        }
+        
 
 
     }
