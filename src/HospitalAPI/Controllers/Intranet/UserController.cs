@@ -33,7 +33,7 @@ namespace HospitalAPI.Controllers.Intranet
 
         [HttpPut]
         [Route("blockuser")]
-        //[Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager")]
         public IActionResult BlockMaliciousUser([FromQuery] int id)
         {
             _userService.BlockMaliciousUser(id);
@@ -42,7 +42,7 @@ namespace HospitalAPI.Controllers.Intranet
 
         [HttpPut]
         [Route("unblockuser")]
-        //[Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager")]
         public IActionResult UnblockMaliciousUser([FromQuery] int id)
         {
             _userService.UnBlockMaliciousUser(id);
