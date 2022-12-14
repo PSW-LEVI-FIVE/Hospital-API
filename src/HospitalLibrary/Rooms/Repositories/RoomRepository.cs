@@ -26,6 +26,11 @@ namespace HospitalLibrary.Rooms.Repositories
             return await _dataContext.Rooms.Where(r => r.RoomType == RoomType.EXAMINATION_ROOM).ToListAsync();
         }
 
+        public async Task<IEnumerable<Room>> GetHospitalConsiliumRooms()
+        {
+            return await _dataContext.Rooms.Where(r => r.RoomType == (RoomType.HOSPITAL_ROOM | RoomType.NO_TYPE )).ToListAsync();
+        }
+
         public async Task<IEnumerable<Room>> SearchByTypeAndName(RoomSearchDTO roomsSearchDTO, int floorId)
         {
 

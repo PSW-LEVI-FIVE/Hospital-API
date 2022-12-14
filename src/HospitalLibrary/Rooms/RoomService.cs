@@ -57,7 +57,7 @@ namespace HospitalLibrary.Rooms
 
             return _unitOfWork.RoomRepository.SearchByTypeAndName(searchRoomDTO, floorId);
         }
-        public async Task<Room> GetFirstAvailableRoom(TimeInterval choosenInterval)
+        public async Task<Room> GetFirstAvailableExaminationRoom(TimeInterval choosenInterval)
         {
             IEnumerable<Room> examinationRooms = await _unitOfWork.RoomRepository.GetHospitalExaminationRooms();
             foreach (Room room in examinationRooms)
@@ -68,6 +68,19 @@ namespace HospitalLibrary.Rooms
             }
             throw new NotFoundException("Couldn't find single free room");
         }
+        
+        public async Task<Room> GetFirstAvailableConsiliumRoom(TimeInterval choosenInterval)
+        {
+            IEnumerable<Room> examinationRooms = await _unitOfWork.RoomRepository.GetHospitalConsiliumRooms();
+            foreach (Room room in examinationRooms)
+            {
+                bool isOverlapping = await _intervalValidation.IsTimeIntervalOverlapingWithRoomsAppointments(room.Id,choosenInterval);
+                if (!isOverlapping)
+                    return room;
+            }
+            throw new NotFoundException("Couldn't find single free room");
+        }
+        
         public Task<IEnumerable<RoomEquipment>> GetAllEquipmentbyRoomId(int id)
         {
             return _unitOfWork.RoomRepository.GetAllEquipmentbyRoom(id);

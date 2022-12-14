@@ -81,7 +81,7 @@ public class RoomsForStepByStep
         timeEnd = timeEnd.Date + timeSpanEnd1;
         RoomService roomService = RoomServiceSetup();
         Should.Throw<NotFoundException>(() => RoomServiceSetup()
-            .GetFirstAvailableRoom(new TimeInterval(timeBegin.Date + timeSpanBegin1,
+            .GetFirstAvailableExaminationRoom(new TimeInterval(timeBegin.Date + timeSpanBegin1,
                 timeEnd.Date + timeSpanEnd1))).Message.ShouldBe("Couldn't find single free room");
     }
     [Fact]
@@ -94,7 +94,7 @@ public class RoomsForStepByStep
         TimeSpan timeSpanEnd1 = new TimeSpan(19, 0, 0);
         timeEnd = timeEnd.Date + timeSpanEnd1;
         RoomServiceSetup()
-            .GetFirstAvailableRoom(new TimeInterval(timeBegin.Date + timeSpanBegin1,
+            .GetFirstAvailableExaminationRoom(new TimeInterval(timeBegin.Date + timeSpanBegin1,
                 timeEnd.Date + timeSpanEnd1)).Result.ShouldNotBeNull();
     }
     

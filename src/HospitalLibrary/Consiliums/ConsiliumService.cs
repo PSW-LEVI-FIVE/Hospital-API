@@ -32,7 +32,7 @@ namespace HospitalLibrary.Consiliums
         {
             Consilium consilium = appointment.Consilium;
             _unitOfWork.ConsiliumRepository.Add(consilium);
-            Room room = await _roomService.GetFirstAvailableRoom(new TimeInterval(appointment.StartAt,appointment.EndAt));
+            Room room = await _roomService.GetFirstAvailableConsiliumRoom(new TimeInterval(appointment.StartAt,appointment.EndAt));
             appointment.RoomId = room.Id;
             foreach (int doctorId in doctors)
             {
