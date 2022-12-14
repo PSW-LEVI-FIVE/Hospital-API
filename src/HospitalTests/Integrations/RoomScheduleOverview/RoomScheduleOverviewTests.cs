@@ -23,7 +23,7 @@ public class RoomScheduleOverviewTests: BaseIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var controller = new RoomsController(scope.ServiceProvider.GetRequiredService<IRoomService>(),scope.ServiceProvider.GetRequiredService<IAppointmentService>());
-        var result = ((OkObjectResult)controller.GetRoomSchedule(1).Result).Value as IEnumerable<Appointment>;
+        var result = ((OkObjectResult)controller.GetRoomSchedule(2).Result).Value as IEnumerable<Appointment>;
         result.ShouldNotBeEmpty();
     }
     

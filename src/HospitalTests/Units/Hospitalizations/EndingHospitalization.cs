@@ -33,7 +33,6 @@ public class EndingHospitalization
     {
         var unitOfWork = SetupUOW();
         var dbHospitalization = new Hospitalization(1, 1, 1, new DateTime(), HospitalizationState.ACTIVE);
-        var validator = new HospitalizationValidator(unitOfWork.Object);
         Hospitalization updateResult = null;
 
 
@@ -42,10 +41,10 @@ public class EndingHospitalization
             .Callback((Hospitalization h) => { updateResult = h; });
         unitOfWork.Setup(u => u.HospitalizationRepository.GetOne(It.IsAny<int>())).Returns(dbHospitalization);
 
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, null, null);
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, null, null);
 
         var dto = new EndHospitalizationDTO() { EndTime = DateTime.Now.AddDays(1) };
-        var result = hospitalizationService.EndHospitalization(1, dto);
+        var result = hospitalizationService.EndHospitalization(1, dto.EndTime);
 
         result.State.ShouldBe(HospitalizationState.FINISHED);
         result.EndTime.ShouldNotBeNull();
@@ -59,7 +58,6 @@ public class EndingHospitalization
         var unitOfWork = SetupUOW();
         var today = DateTime.Now;
         var dbHospitalization = new Hospitalization(1, 1, 1, today, HospitalizationState.ACTIVE);
-        var validator = new HospitalizationValidator(unitOfWork.Object);
         Hospitalization updateResult = null;
 
         unitOfWork
@@ -67,10 +65,10 @@ public class EndingHospitalization
             .Callback((Hospitalization h) => { updateResult = h; });
         unitOfWork.Setup(u => u.HospitalizationRepository.GetOne(It.IsAny<int>())).Returns(dbHospitalization);
 
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, null, null);
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object,  null, null);
 
         var dto = new EndHospitalizationDTO() { EndTime = today.AddDays(-10) };
-        Should.Throw<HospitalLibrary.Shared.Exceptions.BadRequestException>(() => hospitalizationService.EndHospitalization(1, dto));
+        Should.Throw<BadRequestException>(() => hospitalizationService.EndHospitalization(1, dto.EndTime));
     }
 
     [Fact]
@@ -79,7 +77,6 @@ public class EndingHospitalization
         var unitOfWork = SetupUOW();
         var today = DateTime.Now;
         var dbHospitalization = new Hospitalization(1, 1, 1, today, HospitalizationState.ACTIVE);
-        var validator = new HospitalizationValidator(unitOfWork.Object);
         Hospitalization updateResult = null;
 
         unitOfWork
@@ -87,10 +84,10 @@ public class EndingHospitalization
             .Callback((Hospitalization h) => { updateResult = h; });
         unitOfWork.Setup(u => u.HospitalizationRepository.GetOne(It.IsAny<int>())).Returns(dbHospitalization);
 
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, null, null);
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, null, null);
 
         var dto = new EndHospitalizationDTO() { EndTime = today };
-        Should.Throw<HospitalLibrary.Shared.Exceptions.BadRequestException>(() => hospitalizationService.EndHospitalization(1, dto));
+        Should.Throw<HospitalLibrary.Shared.Exceptions.BadRequestException>(() => hospitalizationService.EndHospitalization(1, dto.EndTime));
     }
 
     [Fact]
@@ -99,7 +96,6 @@ public class EndingHospitalization
         var unitOfWork = SetupUOW();
         var today = DateTime.Now;
         var dbHospitalization = new Hospitalization(1, 1, 1, today, HospitalizationState.ACTIVE);
-        var validator = new HospitalizationValidator(unitOfWork.Object);
         Hospitalization updateResult = null;
 
         unitOfWork
@@ -107,10 +103,10 @@ public class EndingHospitalization
             .Callback((Hospitalization h) => { updateResult = h; });
         unitOfWork.Setup(u => u.HospitalizationRepository.GetOne(It.IsAny<int>())).Returns(null as Hospitalization);
 
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, null, null);
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, null, null);
 
         var dto = new EndHospitalizationDTO() { EndTime = today };
-        Should.Throw<NotFoundException>(() => hospitalizationService.EndHospitalization(1, dto));
+        Should.Throw<NotFoundException>(() => hospitalizationService.EndHospitalization(1, dto.EndTime));
     }
 
     [Fact]
@@ -119,7 +115,6 @@ public class EndingHospitalization
         var unitOfWork = SetupUOW();
         var today = DateTime.Now;
         var dbHospitalization = new Hospitalization(1, 1, 1, today, HospitalizationState.FINISHED);
-        var validator = new HospitalizationValidator(unitOfWork.Object);
         Hospitalization updateResult = null;
 
         unitOfWork
@@ -127,10 +122,10 @@ public class EndingHospitalization
             .Callback((Hospitalization h) => { updateResult = h; });
         unitOfWork.Setup(u => u.HospitalizationRepository.GetOne(It.IsAny<int>())).Returns(dbHospitalization);
 
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, null, null);
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, null, null);
 
         var dto = new EndHospitalizationDTO() { EndTime = today };
-        Should.Throw<HospitalLibrary.Shared.Exceptions.BadRequestException>(() => hospitalizationService.EndHospitalization(1, dto));
+        Should.Throw<HospitalLibrary.Shared.Exceptions.BadRequestException>(() => hospitalizationService.EndHospitalization(1, dto.EndTime));
     }
 
 

@@ -15,14 +15,7 @@ namespace HospitalLibrary.Hospitalizations.Dtos
 
         public Hospitalization MapToModel()
         {
-            return new Hospitalization
-            {
-                BedId = BedId,
-                MedicalRecordId = MedicalRecordId,
-                StartTime = StartTime,
-                State = HospitalizationState.ACTIVE
-            };
-
+            return new Hospitalization(BedId, MedicalRecordId, StartTime, HospitalizationState.ACTIVE);
         }
     }
 }

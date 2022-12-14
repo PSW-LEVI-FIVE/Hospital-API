@@ -57,10 +57,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-
-        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn";
-
-
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=123";
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
@@ -214,15 +211,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Allergens = allergens,
         };
 
-        Hospitalization hospitalization = new Hospitalization()
-        {
-            Id = 10,
-            BedId = 2,
-            State = HospitalizationState.ACTIVE,
-            StartTime = DateTime.Now,
-            PdfUrl = "",
-            MedicalRecordId = 2,
-        };
+        Hospitalization hospitalization = new Hospitalization(10, 2, 2, DateTime.Now, HospitalizationState.ACTIVE);
 
         User user2 = new User()
         {
@@ -430,7 +419,19 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
         Appointment examination1 = new Appointment()
         {
-            Id = 1,
+            Id = 500,
+            DoctorId = 4,
+            PatientId = 1,
+            RoomId = 2,
+            State = AppointmentState.PENDING,
+            Type = AppointmentType.EXAMINATION,
+            StartAt = today,
+            EndAt = today.AddDays(1)
+        };
+
+        Appointment examinationDontTouch = new Appointment()
+        {
+            Id = 41,
             DoctorId = 4,
             PatientId = 1,
             RoomId = 2,
@@ -545,7 +546,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Appointments.Add(appointment1);
         dbContext.Appointments.Add(appointment2);
         dbContext.Appointments.Add(examination1);
-
+        dbContext.Appointments.Add(examinationDontTouch);
         dbContext.ExaminationReports.Add(rp);
         dbContext.SaveChanges();
 
