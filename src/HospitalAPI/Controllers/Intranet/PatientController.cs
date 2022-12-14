@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Patients;
@@ -42,7 +43,7 @@ namespace HospitalAPI.Controllers.Intranet
 
         [HttpGet]
         [Route("maliciouspatints")]
-        [Authorize(Roles = "Manager")]
+        //[Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetMaliciousPatients()
         {
             DateTime dateForMaliciousPatients = DateTime.Now.AddDays(-30);
@@ -63,7 +64,6 @@ namespace HospitalAPI.Controllers.Intranet
             }
             return Ok(potentialMaliciousPatients);
         }
-
 
     }
 }
