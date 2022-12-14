@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Doctors;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.BloodOrders
 {
@@ -23,7 +24,7 @@ namespace HospitalLibrary.BloodOrders
         
         public string Reason { get; set; }
         
-        public double Quantity { get; set; }
+        public Quantity Quantity { get; set; }
 
         public BloodOrder()
         {
