@@ -37,7 +37,6 @@ namespace HospitalAPI.Controllers.Intranet
         [Route("suggest")]
         public IActionResult GetBestConsiliums([FromBody] GetBestConsiliumsDTO bestConsiliumsDto)
         {
-            Console.WriteLine("USO");
             bestConsiliumsDto.SchedulerDoctor = GetCurrentUser().Id;
             bestConsiliumsDto.Doctors.Add(GetCurrentUser().Id);
             TimeInterval timeInterval = new TimeInterval(bestConsiliumsDto.From, bestConsiliumsDto.To);
