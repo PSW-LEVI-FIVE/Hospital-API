@@ -2,12 +2,17 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.User.Interfaces;
+using HospitalLibrary.Patients;
+using HospitalLibrary.Patients.Interfaces;
+using System;
+using System.Linq;
 
 namespace HospitalLibrary.Users
 {
     public class UserService: IUserService
     {
         private IUnitOfWork _unitOfWork;
+        private IPatientService patientService;
 
         public UserService(IUnitOfWork unitOfWork)
         {
@@ -55,6 +60,27 @@ namespace HospitalLibrary.Users
         public User UserExist(string username, string password)
         {
             return _unitOfWork.UserRepository.UserExist(username, password);
+        }
+
+        public User BlockMaliciousUser(int blockUserId)
+        {
+            User blockUser = _unitOfWork.UserRepository.GetOne(blockUserId);
+            if (_unitOfWork.PatientRepository.GetMaliciousPatients(DateTime.Now.AddDays(-30)).Result.All(patient => patient.Id != blockUser.Id))
+                return null;
+            blockUser.Blocked = true;
+            _unitOfWork.UserRepository.Update(blockUser);
+            _unitOfWork.UserRepository.Save();
+            return blockUser;
+        }
+
+        public User UnBlockMaliciousUser(int unblockUserId)
+        {
+            User unblockUser = _unitOfWork.UserRepository.GetOne(unblockUserId);
+            if (unblockUser.Blocked == false) return null;
+            unblockUser.Blocked = false;
+            _unitOfWork.UserRepository.Update(unblockUser);
+            _unitOfWork.UserRepository.Save();
+            return unblockUser;
         }
     }
 }

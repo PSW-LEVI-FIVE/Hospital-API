@@ -28,6 +28,7 @@ namespace HospitalLibrary.Users
         public Role Role { get; set; }
         public string ActivationCode { get; set; }
         public ActiveStatus ActiveStatus { get; set; }
+        public Boolean Blocked { get; set; }
 
         public User()
         {
@@ -48,6 +49,7 @@ namespace HospitalLibrary.Users
             Role = role;
             Id = id;
             ActiveStatus = activeStatus;
+            Blocked = false;
         }
         private void Validate()
         {

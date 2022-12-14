@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Allergens;
 using HospitalLibrary.Doctors;
@@ -47,5 +48,16 @@ namespace HospitalLibrary.Patients
         {
             return _unitOfWork.PatientRepository.SearchByUid(uid);
         }
+        public IEnumerable<Patient> GetMaliciousPatients(DateTime dateForMaliciousPatients)
+        {
+            return _unitOfWork.PatientRepository.GetMaliciousPatients(dateForMaliciousPatients).Result;
+        }
+
+        public IEnumerable<Patient> GetBlockedPatients(DateTime dateForMaliciousPatients)
+        {
+
+            return _unitOfWork.PatientRepository.GetBlockedPatients(dateForMaliciousPatients).Result;
+        }
+
     }
 }
