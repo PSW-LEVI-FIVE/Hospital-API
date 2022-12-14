@@ -66,7 +66,18 @@ public class AnnualLeaveTests:BaseIntegrationTest
         result.Reason.ShouldNotBeNull();
 
     }
-    
+    [Fact]
+    public void Get_Statistics()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var annualLeaveController = SetupController(scope);
+        var doctorId = 4;
+        var result = ((OkObjectResult)annualLeaveController.GetMonthlyStatisticsByDoctorId(doctorId)).Value as IEnumerable<MonthlyLeavesDTO>;
+
+        result.ShouldNotBeEmpty();
+        result.Count().ShouldBe(12);
+    }
+
     private AnnualLeaveController CreateFakeControllerWithIdentity(IAnnualLeaveService annualLeaveService) {
         var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
         {

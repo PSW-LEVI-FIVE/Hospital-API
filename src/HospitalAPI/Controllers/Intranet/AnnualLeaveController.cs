@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using HospitalLibrary.Hospitalizations.Dtos;
 using HospitalLibrary.Hospitalizations;
 using Microsoft.AspNetCore.Mvc;
+using HospitalLibrary.Allergens;
 
 namespace HospitalAPI.Controllers.Intranet
 {
@@ -87,6 +88,14 @@ namespace HospitalAPI.Controllers.Intranet
         {
             AnnualLeave leave = _annualLeaveService.ReviewRequest(reviewLeaveRequestDto, id);
             return Ok(leave);
+        }
+
+        [Route("statistics/{id:int}")]
+        [HttpGet]
+        public IActionResult GetMonthlyStatisticsByDoctorId(int id)
+        {
+            IEnumerable<MonthlyLeavesDTO> monthlyLeavesDTOs = _annualLeaveService.GetMonthlyStatisticsByDoctorId(id);
+            return Ok(monthlyLeavesDTOs);
         }
 
     }

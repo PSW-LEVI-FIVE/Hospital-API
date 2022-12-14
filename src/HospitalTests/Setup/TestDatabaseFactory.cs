@@ -289,6 +289,8 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Id = 15,
             DoctorId = 4,
             State = AnnualLeaveState.PENDING,
+            StartAt = new DateTime(2022,02,11,00,00,00),
+            EndAt = new DateTime(2022,03,11,00,00,00)
 
         };
         AnnualLeave annualLeave2 = new AnnualLeave()
@@ -297,6 +299,8 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             DoctorId = 4,
             State = AnnualLeaveState.PENDING,
             Reason = "",
+            StartAt = new DateTime(2022, 05, 23, 00, 00, 00),
+            EndAt = new DateTime(2022, 09, 11, 00, 00, 00)
 
         };
         
