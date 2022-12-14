@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using HospitalLibrary.BloodStorages;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.BloodOrders.Dtos
 {
@@ -36,7 +37,7 @@ namespace HospitalLibrary.BloodOrders.Dtos
                 DoctorId = DoctorId,
                 OrderDate = DateTime.Today,
                 Reason = Reason,
-                Quantity = Quantity
+                Quantity = new Quantity(Quantity)
             };
         }
         
