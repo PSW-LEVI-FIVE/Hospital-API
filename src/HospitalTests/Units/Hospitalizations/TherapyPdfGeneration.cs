@@ -34,19 +34,12 @@ public class PdfGeneration
         return storage;
     }
     
-    private Mock<IHospitalizationValidator> SetupValidator()
-    {
-        var validator = new Mock<IHospitalizationValidator>();
-        return validator;
-    }
-
     
     [Fact]
     public async Task PDF_generated_successfully()
     {
         var unitOfWork = SetupUOW();
         var storage = SetupStorage();
-        var validator = SetupValidator();
         var generator = new PdfGenerator();
 
         
@@ -78,22 +71,11 @@ public class PdfGeneration
 
 
 
-        var hosp = new Hospitalization()
-        {
-            Id = 1,
-            BedId = 1,
-            EndTime = DateTime.Now,
-            StartTime = DateTime.Now,
-            MedicalRecordId = 1,
-            MedicalRecord = medRec,
-            PdfUrl = "",
-            State = HospitalizationState.FINISHED,
-            Therapies = therapies
-        };
+        var hosp = new Hospitalization(1, 1, null, 1, medRec, HospitalizationState.FINISHED, DateTime.Now, DateTime.Now, "", therapies);
         
 
         unitOfWork.Setup(u => u.HospitalizationRepository.GetOnePopulated(It.IsAny<int>())).Returns(hosp);
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator.Object, storage.Object, generator);
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, storage.Object, generator);
 
         var result = await hospitalizationService.GenerateTherapyReport(1);
 
@@ -105,12 +87,11 @@ public class PdfGeneration
     {
         var unitOfWork = SetupUOW();
         var storage = SetupStorage();
-        var validator = new HospitalizationValidator(unitOfWork.Object);
         var generator = new PdfGenerator();
         
         unitOfWork.Setup(u => u.HospitalizationRepository.GetOnePopulated(It.IsAny<int>())).Returns(null as Hospitalization);
         
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, storage.Object, generator);
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, storage.Object, generator);
 
         Should.Throw<NotFoundException>(async () => await hospitalizationService.GenerateTherapyReport(1));
     }
@@ -120,7 +101,6 @@ public class PdfGeneration
     {
         var unitOfWork = SetupUOW();
         var storage = SetupStorage();
-        var validator = new HospitalizationValidator(unitOfWork.Object);
         var generator = new PdfGenerator();
 
         
@@ -151,26 +131,14 @@ public class PdfGeneration
         };
 
 
-
-        var hosp = new Hospitalization()
-        {
-            Id = 1,
-            BedId = 1,
-            EndTime = DateTime.Now,
-            StartTime = DateTime.Now,
-            MedicalRecordId = 1,
-            MedicalRecord = medRec,
-            PdfUrl = "",
-            State = HospitalizationState.ACTIVE,
-            Therapies = therapies
-        };
+        var hosp = new Hospitalization(1, 1, null, 1, medRec, HospitalizationState.ACTIVE, DateTime.Now, DateTime.Now, "", therapies);
         
 
         unitOfWork.Setup(u => u.HospitalizationRepository.GetOnePopulated(It.IsAny<int>())).Returns(hosp);
         
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, storage.Object, generator);
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, storage.Object, generator);
 
-        Should.Throw<HospitalLibrary.Shared.Exceptions.BadRequestException>(async () => await hospitalizationService.GenerateTherapyReport(1));
+        Should.Throw<BadRequestException>(async () => await hospitalizationService.GenerateTherapyReport(1));
     }
     
     [Fact]
@@ -178,7 +146,6 @@ public class PdfGeneration
     {
         var unitOfWork = SetupUOW();
         var storage = SetupStorage();
-        var validator = new HospitalizationValidator(unitOfWork.Object);
         var generator = new PdfGenerator();
 
         
@@ -208,25 +175,11 @@ public class PdfGeneration
             new MedicineTherapy(1,  DateTime.Now, 1, 10, 4)
         };
 
-
-
-        var hosp = new Hospitalization()
-        {
-            Id = 1,
-            BedId = 1,
-            EndTime = DateTime.Now,
-            StartTime = DateTime.Now,
-            MedicalRecordId = 1,
-            MedicalRecord = medRec,
-            PdfUrl = "asadasda",
-            State = HospitalizationState.FINISHED,
-            Therapies = therapies
-        };
-        
+        var hosp = new Hospitalization(1, 1, null, 1, medRec, HospitalizationState.FINISHED, DateTime.Now, DateTime.Now, "asadasda", therapies);
 
         unitOfWork.Setup(u => u.HospitalizationRepository.GetOnePopulated(It.IsAny<int>())).Returns(hosp);
         
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, storage.Object, generator);
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, storage.Object, generator);
 
         Should.Throw<HospitalLibrary.Shared.Exceptions.BadRequestException>(async () => await hospitalizationService.GenerateTherapyReport(1));
     }

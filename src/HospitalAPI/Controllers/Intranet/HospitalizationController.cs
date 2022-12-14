@@ -39,7 +39,7 @@ namespace HospitalAPI.Controllers.Intranet
         [Authorize(Roles="Doctor")]
         public IActionResult EndHospitalization([FromBody] EndHospitalizationDTO endHospitalizationDto, int id)
         {
-            Hospitalization hospitalization = _hospitalizationService.EndHospitalization(id, endHospitalizationDto);
+            Hospitalization hospitalization = _hospitalizationService.EndHospitalization(id, endHospitalizationDto.EndTime);
             return Ok(hospitalization);
         }
 

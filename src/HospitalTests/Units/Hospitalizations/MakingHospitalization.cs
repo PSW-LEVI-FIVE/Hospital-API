@@ -33,15 +33,13 @@ public class Hospitalization_Making
 
         Hospitalization hospitalizationResult = null;
         
-        unitOfWork.Setup(u => u.HospitalizationRepository.Add(It.IsAny<Hospitalization>()))
+        unitOfWork.Setup(u => u.HospitalizationRepository.Create(It.IsAny<Hospitalization>()))
             .Callback<Hospitalization>(val => hospitalizationResult = val);
-        unitOfWork.Setup(u => u.HospitalizationRepository.Save()).Verifiable();
         unitOfWork.Setup(u => u.BedRepository.IsBedFree(It.IsAny<int>())).Returns(true);
         unitOfWork.Setup(u => u.MedicalRecordRepository.Exists(It.IsAny<int>())).Returns(true);
 
         
-        var validator = new HospitalizationValidator(unitOfWork.Object);
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, null, null);
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object,null, null);
 
         var hospObj = new Hospitalization(1, 1, 1, new DateTime(), HospitalizationState.ACTIVE);
         
@@ -64,8 +62,7 @@ public class Hospitalization_Making
 
 
         
-        var validator = new HospitalizationValidator(unitOfWork.Object);
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, null, null);
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object, null, null);
 
         var hospObj = new Hospitalization(1, 1, 1, new DateTime(), HospitalizationState.ACTIVE);
 
@@ -87,8 +84,7 @@ public class Hospitalization_Making
         unitOfWork.Setup(u => u.MedicalRecordRepository.Exists(It.IsAny<int>())).Returns(false);
 
         
-        var validator = new HospitalizationValidator(unitOfWork.Object);
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, null, null);
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object,  null, null);
 
         var hospObj = new Hospitalization(1, 1, 1, new DateTime(), HospitalizationState.ACTIVE);
 
@@ -107,8 +103,7 @@ public class Hospitalization_Making
         unitOfWork.Setup(u => u.MedicalRecordRepository.Exists(It.IsAny<int>())).Returns(true);
 
         
-        var validator = new HospitalizationValidator(unitOfWork.Object);
-        var hospitalizationService = new HospitalizationService(unitOfWork.Object, validator, null, null);
+        var hospitalizationService = new HospitalizationService(unitOfWork.Object,  null, null);
 
         var hospObj = new Hospitalization(1, 1, 1, new DateTime(), HospitalizationState.ACTIVE);
 

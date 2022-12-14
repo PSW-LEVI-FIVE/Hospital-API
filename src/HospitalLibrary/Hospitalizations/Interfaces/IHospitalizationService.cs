@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using HospitalLibrary.Hospitalizations.Dtos;
 
 namespace HospitalLibrary.Hospitalizations.Interfaces
 {
     public interface IHospitalizationService
     {
         public Hospitalization Create(Hospitalization hospObj);
-        public Hospitalization EndHospitalization(int id, EndHospitalizationDTO dto);
+        public Hospitalization EndHospitalization(int id, DateTime endTime);
         public Task<string> GenerateTherapyReport(int id);
 
         public Task<IEnumerable<Hospitalization>> GetAllForPatient(int id);
