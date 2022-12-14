@@ -28,7 +28,17 @@ namespace HospitalLibrary.Doctors
         public Doctor()
         {
         }
-        
+
+        public DateTime GetStartWorkingHoursDate(DateTime date)
+        {
+            TimeSpan startWork = WorkingHours.First(w => w.Day.Equals((int)date.DayOfWeek)).Start;
+            return new DateTime(date.Year, date.Month, date.Day, startWork.Hours, startWork.Minutes, 0);
+        }   
+        public DateTime GetEndWorkingHoursDate(DateTime date)
+        {
+            TimeSpan endWork = WorkingHours.First(w => w.Day.Equals((int)date.DayOfWeek)).End;
+            return new DateTime(date.Year, date.Month, date.Day, endWork.Hours, endWork.Minutes, 0);
+        }
         
         
     }
