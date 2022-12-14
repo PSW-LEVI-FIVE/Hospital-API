@@ -15,7 +15,8 @@ namespace HospitalLibrary.Rooms.Interfaces
         Room Create(Room room);
 
         Task<IEnumerable<Room>> SearchRoom(RoomSearchDTO searchRoomDto,int floorId);
-        Task<Room> GetFirstAvailableRoom(TimeInterval choosenInterval);
+        Task<Room> GetFirstAvailableExaminationRoom(TimeInterval choosenInterval);
         Task<IEnumerable<RoomEquipment>> GetAllEquipmentbyRoomId(int id);
+        Task<Room> GetFirstAvailableConsiliumRoom(TimeInterval timeInterval);
     }
 }

@@ -47,7 +47,6 @@ namespace HospitalLibrary.Appointments
             return (this.End - this.Start).TotalHours >= duration;
         }
 
-        //OVO SE TREBA REFAKTORISATI!
         public static bool IsIntervalInside(TimeInterval outside, TimeInterval inside)
         {
             return outside.Start <= inside.Start && outside.End >= inside.End;
