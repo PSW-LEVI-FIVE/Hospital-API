@@ -14,7 +14,7 @@ namespace HospitalLibrary.Appointments.Interfaces
         Task<IEnumerable<TimeIntervalWithDoctorDTO>> GetTimeIntervalsForRecommendation(Doctor doctor, DateTime start, DateTime end);
         Task<IEnumerable<TimeIntervalWithDoctorDTO>> GetTimeIntervalsForRecommendationDatePriority(int patientId, string speciality, DateTime start, DateTime end);
         AppointmentCancelledDTO CancelAppointment(int appointmentId);
-
+        Appointment CancelPatientAppointment(int appointmentId);
         Task<IEnumerable<Appointment>> GetUpcomingForDoctor(Doctor doctor);
 
         Task<IEnumerable<Appointment>> GetUpcomingAppointmentsForRoom(int roomId);

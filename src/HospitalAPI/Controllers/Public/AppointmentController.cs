@@ -100,8 +100,10 @@ namespace HospitalAPI.Controllers.Public
         [HttpPost]
         public IActionResult Cancel([FromBody]int id)
         {
-            AppointmentCancelledDTO appointment = _appointmentService.CancelAppointment(id);
+            Appointment appointment = _appointmentService.CancelPatientAppointment(id);
+            if (appointment == null) return BadRequest("You can't cancel appointment 24h before start");
             return Ok(appointment);
         }
+        
     }
 }
