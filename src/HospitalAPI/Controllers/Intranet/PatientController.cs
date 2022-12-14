@@ -43,7 +43,7 @@ namespace HospitalAPI.Controllers.Intranet
 
         [HttpGet]
         [Route("maliciouspatints")]
-        //[Authorize(Roles = "Manager")]
+        [Authorize(Roles = "Manager")]
         public async Task<IActionResult> GetMaliciousPatients()
         {
             DateTime dateForMaliciousPatients = DateTime.Now.AddDays(-30);
