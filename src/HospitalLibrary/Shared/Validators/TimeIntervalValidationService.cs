@@ -112,7 +112,7 @@ namespace HospitalLibrary.Shared.Validators
             ThrowIfIntervalsAreOverlaping(mixedIntervals.ToList(), requestedTimeInterval);
         }
 
-        private void ThrowIfEndBeforeStart(DateTime start, DateTime end)
+        public void ThrowIfEndBeforeStart(DateTime start, DateTime end)
         {
             if (start.CompareTo(end) >= 0)
             {

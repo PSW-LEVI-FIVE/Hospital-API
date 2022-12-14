@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Model;
@@ -28,5 +29,17 @@ namespace HospitalLibrary.Doctors
         {
         }
 
+        public DateTime GetStartWorkingHoursDate(DateTime date)
+        {
+            TimeSpan startWork = WorkingHours.First(w => w.Day.Equals((int)date.DayOfWeek)).Start;
+            return new DateTime(date.Year, date.Month, date.Day, startWork.Hours, startWork.Minutes, 0);
+        }   
+        public DateTime GetEndWorkingHoursDate(DateTime date)
+        {
+            TimeSpan endWork = WorkingHours.First(w => w.Day.Equals((int)date.DayOfWeek)).End;
+            return new DateTime(date.Year, date.Month, date.Day, endWork.Hours, endWork.Minutes, 0);
+        }
+        
+        
     }
 }

@@ -67,7 +67,7 @@ namespace HospitalAPI.Controllers.Public
         {
             int patientId = GetCurrentUser().Id;
             Appointment newApp = createAppointmentDto.MapToModel();
-            newApp.RoomId = (await _roomService.GetFirstAvailableRoom(createAppointmentDto.ChosenTimeInterval)).Id;
+            newApp.RoomId = (await _roomService.GetFirstAvailableExaminationRoom(createAppointmentDto.ChosenTimeInterval)).Id;
             newApp.DoctorId = (await _doctorService.GetDoctorByUid(createAppointmentDto.DoctorUid)).Id;
             newApp.PatientId = patientId;
             Appointment appointment = await _appointmentService.Create(newApp);
