@@ -58,7 +58,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
     private static string CreateTestingConnectionString()
     {
 
-        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn111";
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn";
 
 
     }
@@ -93,7 +93,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BirthDate = DateTime.Now,
             Email = "nekimail@gmail.com",
-            PhoneNumber = "063555333",
+            PhoneNumber = new PhoneNumber("063555333"),
             SpecialityId = 2,
             Uid = "55557888",
             WorkingHours = new List<WorkingHours>()
@@ -181,7 +181,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Surname = "Markovic",
             Email = "asdasd1@gmail.coma",
             Uid = "67676767",
-            PhoneNumber = "123123123",
+            PhoneNumber = new PhoneNumber("123123123"),
             BirthDate = new DateTime(2000, 2, 2),
             Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BloodType = BloodType.A_NEGATIVE,
@@ -206,7 +206,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Surname = "Markovic",
             Email = "asdasd2@gmail.com",
             Uid = "78787878",
-            PhoneNumber = "123123123",
+            PhoneNumber = new PhoneNumber("123123123"),
             BirthDate = new DateTime(2000,2,3), 
             Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"), 
             BloodType = BloodType.A_NEGATIVE,
@@ -240,7 +240,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Address = new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BirthDate = DateTime.Now,
             Email = "nekimail1@gmail.com",
-            PhoneNumber = "063555333",
+            PhoneNumber = new PhoneNumber("123123123"),
             SpecialityId = 1,
             Uid = "67867867",
             WorkingHours = new List<WorkingHours>()
@@ -280,7 +280,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Surname = "Markovic",
             Email = "asdasd65@gmail.com",
             Uid = "78787899",
-            PhoneNumber = "123123123",
+            PhoneNumber = new PhoneNumber("123123123"),
             BirthDate = new DateTime(2000,2,3), 
             Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BloodType = BloodType.A_NEGATIVE,
