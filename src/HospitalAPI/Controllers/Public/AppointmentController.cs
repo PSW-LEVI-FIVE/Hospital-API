@@ -95,5 +95,15 @@ namespace HospitalAPI.Controllers.Public
             IEnumerable<Appointment> appointmentList = await _appointmentService.GetAllPatientAppointments(patientId);
             return Ok(appointmentList);
         }
+        
+        [Route("cancel")]
+        [HttpPost]
+        public IActionResult Cancel([FromBody]int id)
+        {
+            Appointment appointment = _appointmentService.CancelPatientAppointment(id);
+            if (appointment == null) return BadRequest("You can't cancel appointment 24h before start");
+            return Ok(appointment);
+        }
+        
     }
 }

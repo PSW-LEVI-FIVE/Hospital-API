@@ -12,6 +12,7 @@ using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Dtos;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Shared.Model;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using SendGrid.Helpers.Errors.Model;
 
@@ -119,6 +120,22 @@ namespace HospitalLibrary.Appointments
             _unitOfWork.AppointmentRepository.Update(canceled);
             _unitOfWork.AppointmentRepository.Save();
             return retDto;
+        }
+        
+        public Appointment CancelPatientAppointment(int appointmentId)
+        {
+            Appointment canceled = _unitOfWork.AppointmentRepository.GetOne(appointmentId);
+            Appointment retAppointment = null;
+            canceled.State = AppointmentState.DELETED;
+            if (!((canceled.StartAt.Date.AddDays(-1).Equals(DateTime.Now.Date) 
+                   && ((canceled.StartAt.Hour < DateTime.Now.Hour) || (canceled.StartAt.Hour == DateTime.Now.Hour && canceled.StartAt.Minute < DateTime.Now.Minute)))
+                  || (canceled.StartAt.Date.Equals(DateTime.Now.Date))))
+            {
+                _unitOfWork.AppointmentRepository.Update(canceled);
+                _unitOfWork.AppointmentRepository.Save();
+                retAppointment = canceled;
+            }
+            return retAppointment;
         }
 
         public Task<IEnumerable<Appointment>> GetUpcomingForDoctor(Doctor doctor)
