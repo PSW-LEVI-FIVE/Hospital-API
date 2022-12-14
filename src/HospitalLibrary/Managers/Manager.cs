@@ -13,7 +13,7 @@ namespace HospitalLibrary.Managers
     {
         public Manager() { }
 
-        public Manager(string name, string surname, string email, string uid, string phoneNumber, DateTime birthDate, Address address) : base(name, surname, email, uid, phoneNumber, birthDate, address)
+        public Manager(string name, string surname, string email, string uid, PhoneNumber phoneNumber, DateTime birthDate, Address address) : base(name, surname, email, uid, phoneNumber, birthDate, address)
         {
         }
     }

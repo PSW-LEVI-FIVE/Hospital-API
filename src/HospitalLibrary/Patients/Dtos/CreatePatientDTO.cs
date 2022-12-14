@@ -31,7 +31,7 @@ namespace HospitalLibrary.Patients.Dtos
         public string Uid { get; set; }
         [Required]
         [RegularExpression(@"^[+]*[0-9-]+$", ErrorMessage = "Phone number input not valid.")]
-        public string PhoneNumber { get; set; }
+        public PhoneNumber PhoneNumber { get; set; }
         [Required]
         [Display(Name = "Date of birth")]
         [DateValidator(ErrorMessage ="Invalid date")]
@@ -52,7 +52,7 @@ namespace HospitalLibrary.Patients.Dtos
         public string DoctorUid { get; set; }
         
         public CreatePatientDTO(string name, string surname, string email, string uid, 
-            string phoneNumber, DateTime birthDate, AddressDTO address, BloodType bloodType,
+            PhoneNumber phoneNumber, DateTime birthDate, AddressDTO address, BloodType bloodType,
             string username,string password, List<AllergenDTO> allergens,string doctorUid)
         {
             Name = name;

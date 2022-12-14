@@ -20,7 +20,7 @@ namespace HospitalLibrary.Doctors
         public List<Patient> Patients { get; set; }
         public List<Appointment> Appointments { get; set; }
 
-        public Doctor(string name, string surname, string email, string uid, string phoneNumber, DateTime birthDate, Address address, Speciality speciality) : base(name, surname, email, uid, phoneNumber, birthDate, address)
+        public Doctor(string name, string surname, string email, string uid, PhoneNumber phoneNumber, DateTime birthDate, Address address, Speciality speciality) : base(name, surname, email, uid, phoneNumber, birthDate, address)
         {
             Speciality = speciality;
         }
