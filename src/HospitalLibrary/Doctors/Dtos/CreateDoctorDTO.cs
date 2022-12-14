@@ -15,7 +15,7 @@ namespace HospitalLibrary.Doctors.Dtos
         [Required]
         public string Uid { get; set; }
         [Required]
-        public string PhoneNumber { get; set; }
+        public PhoneNumber PhoneNumber { get; set; }
         [Required]        
         public DateTime BirthDate { get; set;  }
         [Required]

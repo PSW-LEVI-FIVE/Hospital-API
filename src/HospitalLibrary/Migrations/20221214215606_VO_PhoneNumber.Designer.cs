@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221214215606_VO_PhoneNumber")]
+    partial class VO_PhoneNumber
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -713,9 +715,6 @@ namespace HospitalLibrary.Migrations
                     b.Property<int>("ActiveStatus")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("Blocked")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("Password")
                         .HasColumnType("text");
 
@@ -871,7 +870,7 @@ namespace HospitalLibrary.Migrations
                         .IsRequired();
 
                     b.HasOne("HospitalLibrary.Patients.Patient", "Patient")
-                        .WithMany("Appointments")
+                        .WithMany()
                         .HasForeignKey("PatientId");
 
                     b.HasOne("HospitalLibrary.Rooms.Model.Room", "Room")
@@ -1326,11 +1325,6 @@ namespace HospitalLibrary.Migrations
                     b.Navigation("Patients");
 
                     b.Navigation("WorkingHours");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Patients.Patient", b =>
-                {
-                    b.Navigation("Appointments");
                 });
 #pragma warning restore 612, 618
         }
