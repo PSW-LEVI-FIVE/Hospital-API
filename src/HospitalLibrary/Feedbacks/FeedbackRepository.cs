@@ -14,10 +14,10 @@ namespace HospitalLibrary.Feedbacks
         {
         }
 
-        public async Task<IEnumerable<Feedback>> GetPublished()
+        public Task<IEnumerable<Feedback>> GetPublished()
         {
-            return await _dataContext.Feedbacks.Where(f => f.FeedbackStatus.GetPublished())
-                .Include(f => f.FeedbackStatus).ToListAsync();
+            return Task.FromResult(_dataContext.Feedbacks.ToList()
+                .Where(f => f.FeedbackStatus.GetPublished()));
         }
     }
 }

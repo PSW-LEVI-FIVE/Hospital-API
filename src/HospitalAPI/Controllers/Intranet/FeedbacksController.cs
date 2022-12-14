@@ -32,14 +32,9 @@ namespace HospitalAPI.Controllers.Intranet
         [HttpPut]
         [Route("{id}")]
         [Authorize(Roles="Manager")]
-        public IActionResult ChangePublishmentStatus(int id, [FromBody] bool feedbackPublishmentStatus)
+        public IActionResult ChangePublishmentStatus(int id)
         {
-            Feedback feedback = _feedbackService.Get(id);
-            if (feedback.FeedbackStatus.GetPublished())
-                feedback.FeedbackStatus.Withdraw();
-            else
-                feedback.FeedbackStatus.Publish();
-            Feedback updated = _feedbackService.ChangePublishmentStatus(feedback);
+            Feedback updated = _feedbackService.ChangePublishmentStatus(id);
             return Ok(updated);
         }
     }

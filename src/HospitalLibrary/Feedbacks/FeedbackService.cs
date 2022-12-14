@@ -29,8 +29,13 @@ namespace HospitalLibrary.Feedbacks
         {
             return _unitOfWork.FeedbackRepository.GetAll();
         }
-        public Feedback ChangePublishmentStatus(Feedback feedback)
+        public Feedback ChangePublishmentStatus(int feedbackId)
         {
+            Feedback feedback = Get(feedbackId);
+            if (feedback.FeedbackStatus.GetPublished())
+                feedback.FeedbackStatus.Withdraw();
+            else
+                feedback.FeedbackStatus.Publish();
             _unitOfWork.FeedbackRepository.Update(feedback);
             _unitOfWork.FeedbackRepository.Save();
             return feedback;
@@ -54,10 +59,6 @@ namespace HospitalLibrary.Feedbacks
                 let patient = _unitOfWork.PatientRepository.GetOne(feedback.PatientId) 
                 select new PublishedFeedbackDTO(patient.Name + " " + patient.Surname, feedback.FeedbackContent, feedback.FeedbackStatus.GetAnonymity())).ToList();
             return await Task.FromResult(publishedFeedbacks);
-        }
-        public Task<IEnumerable<Feedback>> GetPublished()
-        {
-            return _unitOfWork.FeedbackRepository.GetPublished();
         }
     }
 }
