@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using HospitalLibrary.Renovation.Interface;
 
 namespace HospitalLibrary.Shared.Service
 {
@@ -46,6 +47,16 @@ namespace HospitalLibrary.Shared.Service
                     if (real.EndAt < DateTime.Now) 
                     {
                         await equipmentReallocationService.InitiateReallocation(real);           
+                    }
+                }
+                IRenovationService renovation = scope.ServiceProvider.GetService<IRenovationService>();
+
+                List<Renovation.Model.Renovation> renovations = await renovation.GetAllPending();
+                foreach (Renovation.Model.Renovation reno in renovations)
+                {
+                    if (reno.EndAt < DateTime.Now)
+                    {
+                        await renovation.initiateRenovation(reno);
                     }
                 }
             }

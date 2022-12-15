@@ -24,6 +24,7 @@ namespace HospitalLibrary.Renovation.Model
         public RenovationState State { get; set; }
         public DateTime StartAt { get; set; }
         public DateTime EndAt { get; set; }
+        public String? roomName { get; set; }
 
         public Renovation()
         {
