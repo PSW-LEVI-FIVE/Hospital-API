@@ -53,8 +53,8 @@ namespace HospitalLibrary.Shared.Service
                 }
                 IRenovationService renovation = scope.ServiceProvider.GetService<IRenovationService>();
 
-                List<Renovation> renovations = await renovation.GetAllPending();
-                foreach (Renovation reno in renovations)
+                List<Renovations.Model.Renovation> renovations = await renovation.GetAllPending();
+                foreach (Renovations.Model.Renovation reno in renovations)
                 {
                   if (reno.EndAt < DateTime.Now)
                   {

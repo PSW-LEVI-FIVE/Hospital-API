@@ -48,7 +48,7 @@ namespace HospitalLibrary.Shared.Validators
                 _unitOfWork.EquipmentReallocationRepository.GetAllPendingForSpecificRoom(roomId);
         }
         
-        public async Task ValidateRenovation(Renovation renovation)
+        public async Task ValidateRenovation(Renovations.Model.Renovation renovation)
         {
           ThrowIfEndBeforeStart(renovation.StartAt, renovation.EndAt);
           ThrowIfInPast(renovation.StartAt);
