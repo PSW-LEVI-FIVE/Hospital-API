@@ -177,5 +177,19 @@ namespace HospitalTests.Units.Patients
             Should.Throw<BadRequestException>(() => RegistrationServiceSetup().
                 RegisterPatient(patientToCreate)).Message.ShouldBe("Doctor doesnt exist or not valid!");
         }
+        [Fact]
+        public void Create_patient_with_wrong_number()
+        {
+            List<AllergenDTO> patientAllergens = new List<AllergenDTO>
+            {
+                new AllergenDTO("Milk"),
+                new AllergenDTO("Cetirizine")
+            };
+            CreatePatientDTO patientToCreate = new CreatePatientDTO("Zika", "Zikic", "gmail2@gmail.com",
+                "01521321", "00345678", new DateTime(2000,2,2), 
+                new AddressDTO("Jovina 12","Jovina 12","Jovina 12","Jovina 12"),
+                BloodType.ZERO_NEGATIVE,"proxm", "sifra123",patientAllergens,"67676767");
+            Should.Throw<Exception>(() => RegistrationServiceSetup().RegisterPatient(patientToCreate));
+        }
     }
 }

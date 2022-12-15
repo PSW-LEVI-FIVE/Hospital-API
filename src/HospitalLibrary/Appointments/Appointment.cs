@@ -56,6 +56,17 @@ namespace HospitalLibrary.Appointments
         {
         }
 
+        public Appointment(int id, int doctorId, int patientId,int roomId,DateTime startAt,DateTime endAt,AppointmentState state,AppointmentType type)
+        {
+            Id = id;
+            DoctorId = doctorId;
+            PatientId = patientId;
+            RoomId = roomId;
+            StartAt = startAt;
+            EndAt = endAt;
+            State = state;
+            Type = type;
+        }
         public Appointment(Appointment appointment)
         {
             Id = appointment.Id;

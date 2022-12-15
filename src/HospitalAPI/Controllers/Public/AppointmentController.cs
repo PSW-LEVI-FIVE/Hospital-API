@@ -98,7 +98,7 @@ namespace HospitalAPI.Controllers.Public
         
         [Route("cancel")]
         [HttpPost]
-        public IActionResult Cancel([FromBody]int id)
+        public async Task<IActionResult> Cancel([FromBody]int id)
         {
             Appointment appointment = _appointmentService.CancelPatientAppointment(id);
             if (appointment == null) return BadRequest("You can't cancel appointment 24h before start");
