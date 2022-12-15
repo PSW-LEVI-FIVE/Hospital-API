@@ -8,7 +8,7 @@ namespace HospitalLibrary.Feedbacks.Interfaces
     public interface IFeedbackService
     {
         Task<IEnumerable<Feedback>> GetAll();
-        Feedback Create(Feedback Feedback);
+        Task<Feedback> Create(Feedback Feedback);
         Feedback ChangePublishmentStatus(int feedbackId);
         Task<IEnumerable<PublishedFeedbackDTO>> GetPublishedFeedbacks();
         public Task<IEnumerable<ManagersFeedbackDTO>> GetManagersFeedbacks();

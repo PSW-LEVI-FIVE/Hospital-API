@@ -27,10 +27,10 @@ namespace HospitalAPI.Controllers.Public
 
         [HttpPost]
         [Authorize(Roles="Patient")]
-        public IActionResult Create([FromBody] CreateFeedbackDTO createFeedbackDto)
+        public async Task<IActionResult> Create([FromBody] CreateFeedbackDTO createFeedbackDto)
         {
             createFeedbackDto.PatientId = GetCurrentUser().Id;
-            Feedback created = _feedbackService.Create(createFeedbackDto.MapToModel());
+            Feedback created = await _feedbackService.Create(createFeedbackDto.MapToModel());
             return Ok(created);
         }
         
