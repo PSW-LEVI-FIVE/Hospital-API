@@ -57,7 +57,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn";
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=123";
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
@@ -151,6 +151,23 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             FloorId = 2,
             RoomNumber = "123",
             RoomType = RoomType.EXAMINATION_ROOM
+        };
+        
+        Room room3 = new Room()
+        {
+            Id = 6,
+            Area = 10,
+            FloorId = 2,
+            RoomNumber = "145",
+            RoomType = RoomType.NO_TYPE
+        };
+        Room room4 = new Room()
+        {
+            Id = 7,
+            Area = 10,
+            FloorId = 2,
+            RoomNumber = "146",
+            RoomType = RoomType.HOSPITAL_ROOM
         };
 
         RoomEquipment equipment = new Bed(1, 10, "Bed", 2, 1);
@@ -519,6 +536,8 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.WorkingHours.Add(doctor2Wh7);
         dbContext.Rooms.Add(room1);
         dbContext.Rooms.Add(room2);
+        dbContext.Rooms.Add(room3);
+        dbContext.Rooms.Add(room4);
         dbContext.Doctors.Add(doctor);
         dbContext.Doctors.Add(doctor2);
         dbContext.AnnualLeaves.Add(annualLeave1);
