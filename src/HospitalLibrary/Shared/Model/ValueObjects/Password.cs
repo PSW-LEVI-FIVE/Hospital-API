@@ -30,18 +30,18 @@ namespace HospitalLibrary.Shared.Model.ValueObjects
             Regex validatePasswordRegex = new Regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$");
             if (!validatePasswordRegex.IsMatch(PasswordString))
             {
-                System.Console.WriteLine(PasswordString);
                 throw new BadRequestException("Password has to have at least 6 characters and at least one number!");
             }
         }
         protected override bool EqualsCore(Password other)
         {
-            throw new NotImplementedException();
+            return PasswordString.Equals(other.PasswordString);
         }
 
         protected override int GetHashCodeCore()
         {
-            throw new NotImplementedException();
+            int hashcode = PasswordString.GetHashCode();
+            return hashcode;
         }
     }
 }

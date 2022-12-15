@@ -8,7 +8,7 @@ namespace HospitalLibrary.Shared.Model.ValueObjects
     [Owned]
     public class PhoneNumber: ValueObject<PhoneNumber>
     {
-        public string CellNumber { get; set; }
+        public string CellNumber { get; private set; }
         
         public PhoneNumber(string cellNumber)
         {
