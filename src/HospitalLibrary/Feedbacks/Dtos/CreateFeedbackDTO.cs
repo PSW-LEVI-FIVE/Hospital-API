@@ -16,12 +16,7 @@ namespace HospitalLibrary.Feedbacks.Dtos
 
         public Feedback MapToModel()
         {
-            return new Feedback
-            {
-                PatientId = PatientId,
-                FeedbackContent = FeedbackContent,
-                FeedbackStatus = new FeedbackStatus(FeedbackStatus)
-            };  
+            return new Feedback(0,PatientId, FeedbackContent, new FeedbackStatus(FeedbackStatus));
         }
     }
 }
