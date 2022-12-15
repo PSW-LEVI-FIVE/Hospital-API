@@ -400,6 +400,30 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             StartAt = today,
             EndAt = today.AddDays(1)
         };
+        
+        Appointment examination76 = new Appointment()
+        {
+            Id = 89,
+            DoctorId = 4,
+            PatientId = 1,
+            RoomId = 2,
+            State = AppointmentState.PENDING,
+            Type = AppointmentType.EXAMINATION,
+            StartAt = DateTime.Now,
+            EndAt = DateTime.Now.AddHours(1)
+        };
+        
+        Appointment examination105 = new Appointment()
+        {
+            Id = 106,
+            DoctorId = 4,
+            PatientId = 6,
+            RoomId = 2,
+            State = AppointmentState.PENDING,
+            Type = AppointmentType.EXAMINATION,
+            StartAt = DateTime.Now.AddDays(1),
+            EndAt = DateTime.Now.AddDays(1).AddHours(1)
+        };
 
         Appointment examination1 = new Appointment()
         {
@@ -530,6 +554,8 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Appointments.Add(appointment1);
         dbContext.Appointments.Add(appointment2);
         dbContext.Appointments.Add(examination1);
+        dbContext.Appointments.Add(examination76);
+        dbContext.Appointments.Add(examination105);
         dbContext.Appointments.Add(examinationDontTouch);
         dbContext.ExaminationReports.Add(rp);
         dbContext.SaveChanges();

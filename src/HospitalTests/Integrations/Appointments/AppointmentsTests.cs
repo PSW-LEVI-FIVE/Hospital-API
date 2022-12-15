@@ -22,6 +22,7 @@ public class AppointmentsTests: BaseIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
     }
+    
     private AppointmentController CreateFakeControllerWithIdentity(IDoctorService doctorService,IRoomService roomService,IAppointmentService appointmentService) {
         var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
         {
@@ -56,4 +57,38 @@ public class AppointmentsTests: BaseIntegrationTest
         var result = ((OkObjectResult)controller.Create(new CreateAppointmentForPatientDTO(doctorUid,chosenTimeInterval)).Result).Value as Appointment;
         result.ShouldNotBeNull();
     }
-}
+
+    [Fact]
+    public void Cancel_appointment_fail()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var doctorService = scope.ServiceProvider.GetRequiredService<IDoctorService>();
+        var roomService = scope.ServiceProvider.GetRequiredService<IRoomService>();
+        var appointmentService = scope.ServiceProvider.GetRequiredService<IAppointmentService>();
+        var controller = CreateFakeControllerWithIdentity(doctorService,roomService,appointmentService);
+        var result = ((BadRequestObjectResult)controller.Cancel(89).Result).Value as string;
+        result.ShouldBe("You can't cancel appointment 24h before start");
+    }
+    [Fact]
+    public void Cancel_appointment_success()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var doctorService = scope.ServiceProvider.GetRequiredService<IDoctorService>();
+        var roomService = scope.ServiceProvider.GetRequiredService<IRoomService>();
+        var appointmentService = scope.ServiceProvider.GetRequiredService<IAppointmentService>();
+        var controller = CreateFakeControllerWithIdentity(doctorService,roomService,appointmentService);
+        var result = ((OkObjectResult)controller.Cancel(106).Result).Value as Appointment;
+        result.ShouldNotBeNull();
+    }
+    [Fact]
+    public void Get_patient_appointments()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var doctorService = scope.ServiceProvider.GetRequiredService<IDoctorService>();
+        var roomService = scope.ServiceProvider.GetRequiredService<IRoomService>();
+        var appointmentService = scope.ServiceProvider.GetRequiredService<IAppointmentService>();
+        var controller = CreateFakeControllerWithIdentity(doctorService,roomService,appointmentService);
+        var result = ((OkObjectResult)controller.GetPatientAppointments().Result).Value as IEnumerable<Appointment>;
+        result?.Count().ShouldBeEquivalentTo(1);
+    }
+}    
