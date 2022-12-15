@@ -14,5 +14,10 @@ namespace HospitalLibrary.Rooms.Interfaces
         Task<List<TimeInterval>> GetAllRoomTakenInrevalsForDate(int roomId, DateTime date);
         Task<List<EquipmentReallocation>> GetAllPending();
         Task<List<EquipmentReallocation>> GetAllPendingForToday();
+        Task<EquipmentReallocation> GetLastPendingForDay(DateTime date,int roomid);
+        Task<EquipmentReallocation> GetFirstPendingForDay(DateTime date, int roomid);
+        Task<List<EquipmentReallocation>> GetAllPendingForDateAndRoom(DateTime date, int roomid);
+        Task<List<EquipmentReallocation>> GetAllForRoom(int roomid);
+
     }
 }

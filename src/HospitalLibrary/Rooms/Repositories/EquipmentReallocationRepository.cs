@@ -38,7 +38,23 @@ namespace HospitalLibrary.Rooms.Repositories
                 .ToListAsync();
         }
 
-        public async Task<List<TimeInterval>> GetAllRoomTakenInrevalsForDate(int roomId, DateTime date)
+        public async Task<EquipmentReallocation> GetFirstPendingForDay(DateTime date, int roomid)
+        {
+            return await _dataContext.EquipmentReallocations
+                .Where(a => a.StartingRoomId == roomid || a.DestinationRoomId==roomid)
+                .Where(a => a.StartAt.Date == date.Date)
+                .Where(a => a.state == ReallocationState.PENDING)
+                .OrderBy(a => a.StartAt).FirstOrDefaultAsync();
+        }
+
+        public async Task<List<EquipmentReallocation>> GetAllForRoom(int roomid)
+        {
+            return await _dataContext.EquipmentReallocations
+                .Where(a => a.StartingRoomId == roomid || a.DestinationRoomId == roomid)
+                .ToListAsync();
+        }
+
+        public async Task<List<TimeInterval>> GetAllRoomTakenInrevalsForDate(int? roomId, DateTime date)
         {
             return await _dataContext.EquipmentReallocations
                 .Where(a => a.StartingRoomId == roomId || a.DestinationRoomId == roomId)
