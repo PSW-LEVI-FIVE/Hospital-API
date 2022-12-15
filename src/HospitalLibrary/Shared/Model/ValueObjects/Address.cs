@@ -39,7 +39,6 @@ namespace HospitalLibrary.Shared.Model.ValueObjects
             Validate();
         }
         
-
         private void Validate()
         {
             if (Country.Trim().Equals("")

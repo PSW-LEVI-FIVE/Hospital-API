@@ -41,8 +41,7 @@ namespace HospitalLibrary.Patients.Dtos
         [Required]
         public string Username { get; set; }
         [Required]
-        [RegularExpression(@"^[A-Za-z0-9]{5}[A-Za-z0-9]+$", ErrorMessage = "Password not valid or must be longer.")]
-        public string Password { get; set; }
+        public PasswordDTO Password { get; set; }
         [Required]
         public BloodType BloodType { get; set; }
         [Required]
@@ -53,7 +52,7 @@ namespace HospitalLibrary.Patients.Dtos
         
         public CreatePatientDTO(string name, string surname, string email, string uid, 
             PhoneNumber phoneNumber, DateTime birthDate, AddressDTO address, BloodType bloodType,
-            string username,string password, List<AllergenDTO> allergens,string doctorUid)
+            string username,PasswordDTO password, List<AllergenDTO> allergens,string doctorUid)
         {
             Name = name;
             Surname = surname;
@@ -90,7 +89,7 @@ namespace HospitalLibrary.Patients.Dtos
             {
                 Id = Id,
                 Username = Username,
-                Password = Password,
+                Password = Password.PasswordString,
                 Role = Role.Patient,
                 ActiveStatus = ActiveStatus.Pending
             };
