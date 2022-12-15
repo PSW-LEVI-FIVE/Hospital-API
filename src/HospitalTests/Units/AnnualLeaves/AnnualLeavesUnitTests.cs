@@ -138,7 +138,7 @@ public class AnnualLeavesUnitTests
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
         AnnualLeaveService service = new AnnualLeaveService(mock.Object, validator);
         var dto = new ReviewLeaveRequestDTO() { State = AnnualLeaveState.CANCELED};
-        Assert.Throws<HospitalLibrary.Shared.Exceptions.BadRequestException>(() => service.ReviewRequest(dto, annualLeave.Id));
+        Assert.Throws<Exception>(() => service.ReviewRequest(dto, annualLeave.Id));
     }
 
     [Fact]
