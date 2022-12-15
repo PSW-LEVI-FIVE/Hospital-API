@@ -31,19 +31,36 @@ public class MovingExamination
     public void Test()
     {
         Login();
-        Navigate("http://localhost:4200/doctor/appointments/1");
+        Navigate("http://localhost:4200/doctor/appointments/create");
 
-        IWebElement element = Driver.FindElement(By.Id("clickFromTime"));
-        element.Click();
-        Sleep(25000);
+        Click("patient-select");
+        ReadOnlyCollection<IWebElement> patientOptions = FindAllByCssSelector(".mat-option-text");
+        patientOptions[0].Click();
+        Sleep(1000);
+
+        Click("room-select");
+        ReadOnlyCollection<IWebElement> roomOptions = FindAllByCssSelector(".mat-option-text");
+        roomOptions[0].Click();
+        Sleep(1000);
         
-        element = FindById("Test");
-        element.SendKeys("12");
-        element.SendKeys("20");
-        Sleep(2000);
         
+        Click("date-input");
+        DeleteCharacters("date-input", 10);
+        TypeInInput("date-input", "12/17/2022");
+        Sleep(1000);
         
+        Click("time-from");
+        TypeInInput("time-from", "10");
+        TypeInInput("time-from", "00");
+        TypeInInput("time-from", "AM");
         
+        Click("time-to");
+        TypeInInput("time-to", "11");
+        TypeInInput("time-to", "00");
+        TypeInInput("time-to", "AM");
+        
+        Click("btn-create");
+        Sleep(10000);
         Assert.Pass();
     }
     
