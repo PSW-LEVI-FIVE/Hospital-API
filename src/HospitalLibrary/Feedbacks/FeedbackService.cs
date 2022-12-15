@@ -18,7 +18,7 @@ namespace HospitalLibrary.Feedbacks
             _unitOfWork = unitOfWork;
         }
 
-        public Feedback Create(Feedback feedback)
+        public async Task<Feedback> Create(Feedback feedback)
         {
             _unitOfWork.FeedbackRepository.Add(feedback);
             _unitOfWork.FeedbackRepository.Save();
