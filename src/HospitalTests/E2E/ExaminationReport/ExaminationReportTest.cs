@@ -72,7 +72,7 @@ public class ExaminationReportTest
     private void Login()
     {
         TypeInInput("input-username", "doktor");
-        TypeInInput("input-password", "asdasd");
+        TypeInInput("input-password", "asdasd123");
         Submit("submit-login");
     }
 

@@ -42,7 +42,7 @@ public class CreateConsiliumTest
         Thread.Sleep(1000);
 
         element = Driver.FindElement(By.Id("input-password"));
-        element.SendKeys("asdasd");
+        element.SendKeys("asdasd123");
         Thread.Sleep(1000);
         
         element = Driver.FindElement(By.Id("submit-login"));
