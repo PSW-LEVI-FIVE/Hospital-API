@@ -1,5 +1,6 @@
 ﻿using HospitalLibrary.Shared.Dtos;
 using HospitalLibrary.Shared.Exceptions;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace HospitalLibrary.Shared.Model.ValueObjects
 {
+    [Owned]
     public class Password : ValueObject<Password>
     {
         public string PasswordString { get; private set; }
