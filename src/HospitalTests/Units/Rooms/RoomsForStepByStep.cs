@@ -7,9 +7,7 @@ using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Shared.Validators;
 using Moq;
-using SendGrid.Helpers.Errors.Model;
 using Shouldly;
-using NotFoundException = SendGrid.Helpers.Errors.Model.NotFoundException;
 
 namespace HospitalTests.Units.Rooms;
 
