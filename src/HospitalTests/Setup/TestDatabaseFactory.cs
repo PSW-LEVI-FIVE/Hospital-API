@@ -249,7 +249,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Quantity = 12.0,
             Allergens = allergens,
         };
-        User user3 = new User("Menjdjer", "nekakulsifra", Role.Doctor,4,ActiveStatus.Active);
+        User user3 = new User("Menjdjer", "nekakulsifra12", Role.Doctor,4,ActiveStatus.Active);
         Allergen allergen2 = new Allergen(2,"Cetirizine");
         Allergen allergen3 = new Allergen(3,"Budesonide");
 
@@ -259,7 +259,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         BloodTherapy bloodTherapy1 = new BloodTherapy(10, DateTime.Now, BloodType.A_NEGATIVE, 2.0, 4);
         BloodTherapy bloodTherapy2 = new BloodTherapy(10, DateTime.Now, BloodType.A_NEGATIVE, 3.0, 4);
 
-        User user4 = new User("PacijentIpo", "nekakulsifra", Role.Patient, 6, ActiveStatus.Pending);
+        User user4 = new User("PacijentIpo", "nekakulsifra12", Role.Patient, 6, ActiveStatus.Pending);
         user4.ActivationCode = "asdasd";
 
         Patient patient4 = new Patient()
