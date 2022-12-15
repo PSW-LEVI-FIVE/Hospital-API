@@ -290,7 +290,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Id = 16,
             DoctorId = 4,
             State = AnnualLeaveState.PENDING,
-            Reason = "",
+            Reason = new Reason("Razlog"),
             StartAt = new DateTime(2022, 05, 23, 00, 00, 00),
             EndAt = new DateTime(2022, 09, 11, 00, 00, 00)
 
