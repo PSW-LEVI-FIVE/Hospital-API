@@ -16,7 +16,7 @@ namespace HospitalLibrary.Shared.Model.ValueObjects
 
         private void Validate()
         {
-            if (Text.Trim().Equals(""))
+            if (Text == null || Text.Trim().Equals(""))
                 throw new Exception("Reason should not be empty!");
             
         }
