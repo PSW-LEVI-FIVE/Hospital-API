@@ -15,7 +15,8 @@ public class DoctorsBySpecialty
     {
         var unitOfWork = new Mock<IUnitOfWork>();
         var doctorRepository = new Mock<IDoctorRepository>();
-        Doctor doc = new Doctor("Marko", "Markic", "email", "123456", "555333",
+        PhoneNumber number = new PhoneNumber("55553333");
+        Doctor doc = new Doctor("Marko", "Markic", "email", "123456", number,
             new DateTime(), new Address("string", "string", "string", "string"), new Speciality(0, "UROLOGY"));
         IEnumerable<Doctor> docs = new List<Doctor>();
         docs.Append(doc);
