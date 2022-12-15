@@ -49,12 +49,12 @@ public class ConsiliumTests:BaseIntegrationTest
             End = DateTime.Now.AddDays(8),
             Doctors = new List<int> { 4, 5 },
             RoomId = 1,
-            Title = "some Title"
+            Title = "Sometitle"
         };
         var res = ((OkObjectResult )await consiliumController.Create(createConsiliumDto)).Value
             as Consilium;
         
         res.ShouldNotBeNull();
-        res.Title.ShouldBe("some Title");
+        res.Title.TitleString.ShouldBe("Sometitle");
     }
 }
