@@ -119,6 +119,16 @@ namespace HospitalLibrary.Appointments
                     .FirstOrDefaultAsync();
             
         }
+        public async Task<TimeInterval> GetFirstForDate(DateTime date)
+        {
+            return await _dataContext.Appointments
+                .Where(a => a.StartAt.Date == date.Date)
+                .Where(a => a.State == AppointmentState.PENDING)
+                .OrderBy(a => a.StartAt)
+                .Select(a => new TimeInterval(a.StartAt, a.EndAt))
+                .FirstOrDefaultAsync();
+
+        }
 
     }
 }

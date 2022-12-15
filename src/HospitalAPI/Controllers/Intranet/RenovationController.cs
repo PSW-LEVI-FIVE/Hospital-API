@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using HospitalLibrary.Appointments;
 using HospitalLibrary.Renovation.Interface;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,9 +20,17 @@ namespace HospitalAPI.Controllers.Intranet
         [Route("latest/")]
         public async Task<IActionResult> GetLatest()
         {
-            var pending = await _renovationService.GetLatest();
+            var pending = await _renovationService.GetLatest(DateTime.Now);
             return Ok(pending);
         }
+        [HttpGet]
+        [Route("timeslot/")]
+        public async Task<IActionResult> GetTimeSlots()
+        {
+            var slots = await _renovationService.GenerateTimeSlots(new TimeInterval(DateTime.Now,DateTime.Now.AddDays(5)),2);
+            return Ok(slots);
+        }
+
 
 
         [HttpGet]

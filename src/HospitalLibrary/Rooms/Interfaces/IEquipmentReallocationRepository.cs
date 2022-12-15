@@ -16,5 +16,7 @@ namespace HospitalLibrary.Rooms.Interfaces
         Task<List<EquipmentReallocation>> GetAllPendingForDate(DateTime date);
         Task<List<EquipmentReallocation>> GetAllPendingForToday();
         Task<EquipmentReallocation> GetLastPendingForDay(DateTime date);
+        Task<EquipmentReallocation> GetFirstPendingForDay(DateTime date);
+
     }
 }

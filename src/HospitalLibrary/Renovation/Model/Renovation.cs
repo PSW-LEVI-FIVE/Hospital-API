@@ -19,10 +19,8 @@ namespace HospitalLibrary.Renovation.Model
         public Room MainRoom { get; set; }
 
         [ForeignKey("SecondaryRoomId")] public int SecondaryRoomId { get; set; }
-
-        public RenovationType Type { get; set; }
-
         public Room SecondaryRoom { get; set; }
+        public RenovationType Type { get; set; }
         public RenovationState State { get; set; }
         public DateTime StartAt { get; set; }
         public DateTime EndAt { get; set; }

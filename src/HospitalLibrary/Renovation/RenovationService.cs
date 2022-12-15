@@ -4,6 +4,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ceTe.DynamicPDF.PageElements.Forms;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Renovation.Interface;
 using HospitalLibrary.Rooms.Model;
@@ -29,16 +30,74 @@ namespace HospitalLibrary.Renovation
             return renovation;
         }
 
-        public async Task<TimeInterval> GetLatest()
+        public async Task<List<TimeInterval>> GenerateTimeSlots(TimeInterval timeInterval,int duration)
         {
-            DateTime date = DateTime.Now;
+            List<TimeInterval> slots = new List<TimeInterval>();
+            var numberOfDaysInInterval = (timeInterval.End.Date.Subtract(timeInterval.Start.Date)).Days;
+            for (int i = 0; i <= numberOfDaysInInterval - duration; i++)
+            {
+                var day = timeInterval.Start.AddDays(i);
+                var latest =await GetLatest(day);
+
+                if (latest != null)
+                {
+                    if  (duration<=1 && !IsRoomFreeForDays(latest.Start, numberOfDaysInInterval - 1)) continue;
+                        var earliest = await GetEarliest(latest.Start.AddDays(duration));
+
+                    if (earliest != null && earliest.Start.Subtract(latest.Start.AddDays(duration)).Minutes>0) 
+                        slots.Add(new TimeInterval(latest.Start,latest.Start.AddDays(duration)));
+                    //napravi proveri da li je soba potpuno slobodna za dane izmdju pocetnog datuma koja trazis 
+                    //checked
+                    //napravi proveru da li je najraniji appointment pre krajnjeg
+                    //checked
+                }
+                else
+                {
+                    if (duration <= 1 && !IsRoomFreeForDays(latest.Start, numberOfDaysInInterval - 1)) continue;
+                        var earliest = await GetEarliest(timeInterval.Start.AddDays(i+duration));
+
+                    if (earliest != null) slots.Add(new TimeInterval(earliest.Start.AddDays(-2),earliest.Start));
+
+                    var a=BreakInto30MinuteSlots(day.AddHours(20), day.AddDays(duration).AddHours(20));
+
+                    //prvo proveri da li su ostali dani slobodni ako jesu pravi samo termine na svakih pola h
+                    //a ako nije poslednji samo idi od najranijeg pa pravi odatle 
+                }
+            }
+            return slots;
+        }
+
+        public List<TimeInterval> BreakInto30MinuteSlots(DateTime startDate, DateTime EndDate)
+        {   
+            var list = new List<TimeInterval>();
+            var repeats=EndDate.Date.Hour/8;
+            for (int i = 0; i < repeats; i++)
+            {
+                list.Add(new TimeInterval(new TimeInterval(startDate.AddMinutes(-30*i), EndDate.AddMinutes(-30*i))));
+            }
+
+            return list;
+        }
+        public Boolean IsRoomFreeForDays(DateTime day,int numberOfDays)
+        {
+            for(int i = 0; i < numberOfDays; i++)
+                if(!IsRoomFreeForDay(day.AddDays(i))) return false;
+            return true;
+        }
+        public Boolean IsRoomFreeForDay(DateTime day)
+        {
+            if (GetLatest(day) == null)
+                return true;
+            return false;
+        }
+        public async Task<TimeInterval> GetLatest(DateTime date)
+        {
             var latest = await GetAllLatestForDate( date);
             if (latest.Count == 0) return null;
             latest.OrderByDescending(x => x.End);
             return latest[0];
         }
-
-        private async Task<List<TimeInterval>> GetAllLatestForDate( DateTime date)
+        private async Task<List<TimeInterval>> GetAllLatestForDate(DateTime date)
         {
             List<TimeInterval> latest = new List<TimeInterval>();
             var latestReallocation = await _unitOfWork.EquipmentReallocationRepository.GetLastPendingForDay(date);
@@ -46,13 +105,37 @@ namespace HospitalLibrary.Renovation
             var latestAppointment = await _unitOfWork.AppointmentRepository.GetLastForDate(DateTime.Now);
             if (latestReallocation != null)
                 latest.Add(new TimeInterval(latestReallocation.StartAt, latestReallocation.EndAt));
-            if(latestRenovation!=null) 
+            if (latestRenovation != null)
                 latest.Add(latestRenovation);
-            if(latestAppointment!=null)
+            if (latestAppointment != null)
                 latest.Add(latestAppointment);
 
             return latest;
         }
+        public async Task<TimeInterval> GetEarliest(DateTime date)
+        {
+            var earliest = await GetAllEarliestForDate(date);
+            if (earliest.Count == 0) return null;
+            earliest.OrderBy(x => x.End);
+            return earliest[0];
+        }
+
+        private async Task<List<TimeInterval>> GetAllEarliestForDate(DateTime date)
+        {
+            List<TimeInterval> latest = new List<TimeInterval>();
+            var latestReallocation = await _unitOfWork.EquipmentReallocationRepository.GetLastPendingForDay(date);
+            var latestRenovation = await _unitOfWork.RenovationRepository.GetLastPendingForDay(date);
+            var latestAppointment = await _unitOfWork.AppointmentRepository.GetLastForDate(DateTime.Now);
+            if (latestReallocation != null)
+                latest.Add(new TimeInterval(latestReallocation.StartAt, latestReallocation.EndAt));
+            if (latestRenovation != null)
+                latest.Add(latestRenovation);
+            if (latestAppointment != null)
+                latest.Add(latestAppointment);
+
+            return latest;
+        }
+       
 
 
         public void Update(Model.Renovation renovation)

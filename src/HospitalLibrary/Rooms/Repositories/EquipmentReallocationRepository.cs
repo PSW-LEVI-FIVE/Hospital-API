@@ -52,6 +52,14 @@ namespace HospitalLibrary.Rooms.Repositories
                 .OrderByDescending(a => a.StartAt).FirstOrDefaultAsync();
         }
 
+        public async Task<EquipmentReallocation> GetFirstPendingForDay(DateTime date)
+        {
+            return await _dataContext.EquipmentReallocations
+                .Where(a => a.StartAt.Date == date.Date)
+                .Where(a => a.state == ReallocationState.PENDING)
+                .OrderBy(a => a.StartAt).FirstOrDefaultAsync();
+        }
+
 
         public async Task<List<TimeInterval>> GetAllRoomTakenInrevalsForDate(int roomId, DateTime date)
         {

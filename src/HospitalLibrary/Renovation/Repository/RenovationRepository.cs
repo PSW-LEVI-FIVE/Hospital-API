@@ -43,5 +43,14 @@ namespace HospitalLibrary.Renovation.Repository
                 .Select(a => new TimeInterval(a.StartAt, a.EndAt))
                 .FirstOrDefaultAsync();
         }
+        public async Task<TimeInterval> GetFirstPendingForDay(DateTime date)
+        {
+            return await _dataContext.Renovations
+                .Where(a => a.StartAt.Date == date.Date)
+                .Where(a => a.State == RenovationState.PENDING)
+                .OrderBy(a => a.StartAt)
+                .Select(a => new TimeInterval(a.StartAt, a.EndAt))
+                .FirstOrDefaultAsync();
+        }
     }
 }
