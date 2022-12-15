@@ -86,14 +86,12 @@ namespace HospitalLibrary.Therapies
         private async Task<bool> ValidateBloodAmount(BloodType type, double quantity)
         {
             BloodStorage blood = await _unitOfWork.BloodStorageRepository.GetByType(type);
-            bool valid = _bloodStorageService.SubtractQuantity(blood, quantity);
-            return valid;
+            return _bloodStorageService.SubtractQuantity(blood, quantity);
         }
 
         private bool ValidateMedicineAmount(int id, double quantity)
         {
-            bool valid = _medicineService.SubtractQuantity(id, quantity);
-            return valid;
+            return _medicineService.SubtractQuantity(id, quantity);
         }
     }
 }
