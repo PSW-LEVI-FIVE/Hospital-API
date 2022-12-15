@@ -74,6 +74,25 @@ public class ReviewRequestTests
         element.Text.ShouldBe("You didn't choose review option");
     }
 
+    [Test]
+    public void Fail_didnt_enter_reason()
+    {
+        Login();
+        Navigate("http://localhost:4200/manager/annual-leave");
+        Sleep(700);
+        IWebElement element = FindAllByTagName("button")[0];
+        element.Click();
+        Sleep(200);
+        element = Driver.FindElement(By.TagName("mat-select"));
+        element.Click();
+        IWebElement matOption = Driver.FindElement(By.XPath("//mat-option[@value='CANCELED']"));
+        matOption.Click();
+        element = Driver.FindElement(By.TagName("button"));
+        element.Click();
+        Sleep(200);
+        element = Driver.FindElement(By.ClassName("err"));
+        element.Text.ShouldBe("You didn't enter rejection reason");
+    }
 
     private void Login()
     {
