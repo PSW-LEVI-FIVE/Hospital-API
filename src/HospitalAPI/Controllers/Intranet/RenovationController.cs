@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Renovation.Interface;
+using HospitalLibrary.Renovation.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
@@ -24,11 +25,11 @@ namespace HospitalAPI.Controllers.Intranet
             var pending = await _renovationService.GetLatest(DateTime.Now,1);
             return Ok(pending);
         }
-        [HttpGet]
+        [HttpPost]
         [Route("timeslot/")]
-        public async Task<IActionResult> GetTimeSlots()
+        public async Task<IActionResult> GetTimeSlots([FromBody] TimeSlotReqDTo reqdto)
         {
-            var slots = await _renovationService.GenerateTimeSlots(new TimeInterval(DateTime.Now.Date,DateTime.Now.Date.AddDays(7)),2,1);
+            var slots = await _renovationService.GenerateTimeSlots(new TimeInterval(reqdto.startDate, reqdto.endDate), reqdto.duration, reqdto.roomId);
             return Ok(slots);
         }
 

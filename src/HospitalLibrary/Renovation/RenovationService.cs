@@ -61,12 +61,13 @@ namespace HospitalLibrary.Renovation
                     var freeRoom = await IsRoomFreeForDays(day, duration - 1, roomid);
 
                     if (duration <= 1 || !freeRoom) continue;
-                        var earliest = await GetEarliest(timeInterval.Start.AddDays(i+duration),roomid);
+                    
+                    var earliest = await GetEarliest(day.AddDays(duration),roomid);
 
                     if (earliest != null) slots.Add(new TimeInterval(earliest.Start.AddDays(-2),earliest.Start));
 
-                    var a=BreakInto30MinuteSlots(day.Date.AddHours(20), day.Date.AddDays(duration).AddHours(20));
-                    slots.AddRange(a);
+                   // var a=BreakInto30MinuteSlots(day.Date.AddHours(20), day.Date.AddDays(duration).AddHours(20));
+                   // slots.AddRange(a);
                 }
             }
             return slots;
