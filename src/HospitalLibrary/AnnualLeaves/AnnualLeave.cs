@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Shared.Model;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.AnnualLeaves
 {
@@ -20,7 +21,7 @@ namespace HospitalLibrary.AnnualLeaves
         public int DoctorId { get; set; }
         public Doctor Doctor { get; set; }
         
-        public string Reason { get; set; }
+        public Reason Reason { get; set; }
         
         public DateTime StartAt { get; set; }
         public DateTime EndAt { get; set; }
@@ -38,7 +39,7 @@ namespace HospitalLibrary.AnnualLeaves
         {
             DoctorId = doctorId;
             Doctor = doctor;
-            Reason = reason;
+            Reason = new Reason(reason);
             StartAt = startAt;
             EndAt = endAt;
             State = state;
