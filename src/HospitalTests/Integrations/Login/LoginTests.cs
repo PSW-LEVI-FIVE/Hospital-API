@@ -24,7 +24,7 @@ public class LoginTests : BaseIntegrationTest {
         using var scope = Factory.Services.CreateScope();
         var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>(),
                                     scope.ServiceProvider.GetRequiredService<IEmailService>());
-        User user = new User("Mika", "plsradi", Role.Patient,1,ActiveStatus.Active);
+        User user = new User("Mika", "plsradi123", Role.Patient,1,ActiveStatus.Active);
         var result = ((OkObjectResult)controller.UserExist(new UserDTO(user.Username,user.Password.PasswordString,user.Role))).Value as LoggedIn;
         result.ShouldNotBeNull();
     }
@@ -34,7 +34,7 @@ public class LoginTests : BaseIntegrationTest {
         using var scope = Factory.Services.CreateScope();
         var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>(),
                                     scope.ServiceProvider.GetRequiredService<IEmailService>());
-        User user = new User("pas","password",Role.Patient,1,ActiveStatus.Active);
+        User user = new User("pas","password123",Role.Patient,1,ActiveStatus.Active);
         var result = ((NotFoundObjectResult)controller.UserExist(new UserDTO(user.Username,user.Password.PasswordString,user.Role))).Value as string;
         result.ShouldNotBeNull();
     }
@@ -43,7 +43,7 @@ public class LoginTests : BaseIntegrationTest {
     {
         using var scope = Factory.Services.CreateScope();
         var controller = new HospitalAPI.Controllers.Intranet.AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>());
-        User user = new User("Mika1", "plsradi", Role.Doctor,10,ActiveStatus.Active);
+        User user = new User("Mika1", "plsradi123", Role.Doctor,10,ActiveStatus.Active);
         var result = ((OkObjectResult)controller.UserExist(new UserDTO(user.Username,user.Password.PasswordString,user.Role))).Value as LoggedIn;
         result.ShouldNotBeNull();
     }
@@ -52,7 +52,7 @@ public class LoginTests : BaseIntegrationTest {
     {
         using var scope = Factory.Services.CreateScope();
         var controller = new HospitalAPI.Controllers.Intranet.AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>());
-        User user = new User("nema","usera",Role.Doctor,1,ActiveStatus.Active);
+        User user = new User("nema","usera123",Role.Doctor,1,ActiveStatus.Active);
         var result = ((NotFoundObjectResult)controller.UserExist(new UserDTO(user.Username,user.Password.PasswordString,user.Role))).Value as string;
         result.ShouldNotBeNull();
     }
