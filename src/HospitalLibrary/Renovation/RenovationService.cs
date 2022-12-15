@@ -70,7 +70,7 @@ namespace HospitalLibrary.Renovation
         public List<TimeInterval> BreakInto30MinuteSlots(DateTime startDate, DateTime EndDate)
         {   
             var list = new List<TimeInterval>();
-            var repeats=EndDate.Hour/0.5;
+            var repeats=(EndDate- EndDate.Date.AddHours(8)).Hours/0.5;
             for (int i = 0; i < repeats; i++)
             {
                 list.Add(new TimeInterval(new TimeInterval(startDate.AddMinutes(-30*i), EndDate.AddMinutes(-30*i))));
@@ -86,10 +86,9 @@ namespace HospitalLibrary.Renovation
         }
         public Boolean IsRoomFreeForDay(DateTime day)
         {
-            if (GetLatest(day) == null)
-                return true;
-            return false;
+            return _unitOfWork.RenovationRepository.GetFirstPendingForDay(day) == null && _unitOfWork.EquipmentReallocationRepository.GetAllPendingForDate(day)==null && _unitOfWork.AppointmentRepository.GetAllPendingForDate(day)==null;
         }
+
         public async Task<TimeInterval> GetLatest(DateTime date)
         {
             var latest = await GetAllLatestForDate( date);

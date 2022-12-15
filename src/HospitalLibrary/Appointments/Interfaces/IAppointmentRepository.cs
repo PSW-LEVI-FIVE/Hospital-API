@@ -20,6 +20,6 @@ namespace HospitalLibrary.Appointments.Interfaces
         Task<TimeInterval> GetLastForDate(DateTime date);
 
         Task<TimeInterval> GetFirstForDate(DateTime date);
-
+        Task<List<TimeInterval>> GetAllPendingForDate(DateTime date);
     }
 }

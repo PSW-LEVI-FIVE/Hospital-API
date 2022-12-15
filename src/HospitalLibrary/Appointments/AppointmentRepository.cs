@@ -130,5 +130,15 @@ namespace HospitalLibrary.Appointments
 
         }
 
+        public async Task<List<TimeInterval>> GetAllPendingForDate(DateTime date)
+        { 
+            return await _dataContext.Appointments
+                .Where(a => a.State == AppointmentState.PENDING)
+                .Where(a => date.CompareTo(a.StartAt.Date) <= 0)
+                .Where(a => date.Date.CompareTo(a.StartAt.Date) > 0)
+                .Select(a=>new TimeInterval(a.StartAt,a.EndAt))
+                .ToListAsync();
+        }
+
     }
 }
