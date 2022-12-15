@@ -109,7 +109,7 @@ public class AnnualLeavesUnitTests
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
         AnnualLeaveService service = new AnnualLeaveService(mock.Object, validator);
         var dto = new ReviewLeaveRequestDTO() { State = AnnualLeaveState.CANCELED, Reason = "some reason" };
-        Assert.Throws<NotFoundException>(() => service.ReviewRequest(dto, annualLeave.Id));
+        Assert.Throws<HospitalLibrary.Shared.Exceptions.NotFoundException>(() => service.ReviewRequest(dto, annualLeave.Id));
     }
 
     [Fact]

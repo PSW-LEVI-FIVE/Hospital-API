@@ -38,22 +38,6 @@ public class AppointmentsTests: BaseIntegrationTest
         return controller;
     }
     
-    private HospitalAPI.Controllers.Intranet.AppointmentController CreateFakeControllerWithIdentityIntranet(IAppointmentService appointmentService, IEmailService emailService) {
-        var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-        {
-            new Claim(ClaimTypes.Name, "Somebody"),
-            new Claim(ClaimTypes.NameIdentifier, "4"),
-            new Claim(ClaimTypes.Role, "Doctor"),
-        }, "mock"));
-        
-        var controller = new HospitalAPI.Controllers.Intranet.AppointmentController(appointmentService,emailService);
-        controller.ControllerContext = new ControllerContext()
-        {
-            HttpContext = new DefaultHttpContext() { User = user }
-        };
-        return controller;
-    }
-
     [Fact]
     public void Create_appointment()
     {
@@ -70,22 +54,6 @@ public class AppointmentsTests: BaseIntegrationTest
         chosenTimeInterval.Start = date.Date + timeSpanBegin;
         chosenTimeInterval.End = date.Date + timeSpanEnd;
         var result = ((OkObjectResult)controller.Create(new CreateAppointmentForPatientDTO(doctorUid,chosenTimeInterval)).Result).Value as Appointment;
-        result.ShouldNotBeNull();
-    }
-    
-    public void Create_appointment_for_other_doctor()
-    {
-        using var scope = Factory.Services.CreateScope();
-        var appointmentService = scope.ServiceProvider.GetRequiredService<IAppointmentService>();
-        var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
-        var controller = CreateFakeControllerWithIdentityIntranet(appointmentService,emailService);
-        DateTime date = DateTime.Today.AddDays(3);
-        TimeInterval chosenTimeInterval = new TimeInterval();
-        TimeSpan timeSpanBegin = new TimeSpan(11, 35, 0);
-        TimeSpan timeSpanEnd = new TimeSpan(12, 25, 0);
-        chosenTimeInterval.Start = date.Date + timeSpanBegin;
-        chosenTimeInterval.End = date.Date + timeSpanEnd;
-        var result = ((OkObjectResult)controller.CreateForAnotherDoctor(new CreateAppointmentDTO(5,6,2,date,date)).Result).Value as Appointment;
         result.ShouldNotBeNull();
     }
 }
