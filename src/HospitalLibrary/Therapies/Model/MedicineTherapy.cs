@@ -16,8 +16,5 @@ namespace HospitalLibrary.Therapies.Model
             MedicineId = medicineId;
             Quantity = quantity;
         }
-        public MedicineTherapy() : base()
-        {
-        }
     }
 }
