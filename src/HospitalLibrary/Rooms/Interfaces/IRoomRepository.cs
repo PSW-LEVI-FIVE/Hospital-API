@@ -12,5 +12,6 @@ namespace HospitalLibrary.Rooms.Interfaces
         Task<IEnumerable<Room>> GetHospitalExaminationRooms();
         Task<IEnumerable<RoomEquipment>> GetAllEquipmentbyRoom(int id);
         Task<IEnumerable<Room>> SearchByTypeAndName(RoomSearchDTO roomSearchDto,int floorId);
+        int GetMaxId();
     }
 }

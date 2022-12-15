@@ -147,9 +147,19 @@ namespace HospitalLibrary.Renovation
 
             return latest;
         }
-       
 
 
+        public async Task initiateRenovation(Model.Renovation renovation)
+        {
+            if (renovation.Type == RenovationType.SPLIT)
+            {
+                Room room2 = new Room(_unitOfWork.RoomRepository.GetMaxId()+1,"102",renovation.MainRoom.Area/2,renovation.MainRoom.FloorId,renovation.MainRoom.RoomType);
+                _unitOfWork.RoomRepository.Add(room2);
+                Room room1 = renovation.MainRoom;
+                room1.Area = room1.Area / 2;
+                _unitOfWork.RoomRepository.Update(room1);
+            }
+        }
         public void Update(Model.Renovation renovation)
         {
             //validate renovation

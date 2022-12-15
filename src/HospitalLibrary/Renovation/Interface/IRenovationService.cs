@@ -14,5 +14,6 @@ namespace HospitalLibrary.Renovation.Interface
         Task<Model.Renovation> Create(Model.Renovation renovation);
         Task<TimeInterval> GetLatest(DateTime date,int roomid);
         Task<List<TimeInterval>> GenerateTimeSlots(TimeInterval timeInterval, int duration, int roomid);
+        Task initiateRenovation(Model.Renovation renovation);
     }
 }
