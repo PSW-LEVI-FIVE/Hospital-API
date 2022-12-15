@@ -65,18 +65,21 @@ namespace HospitalLibrary.Users
         public User BlockMaliciousUser(int blockUserId)
         {
             User blockUser = _unitOfWork.UserRepository.GetOne(blockUserId);
-            if (_unitOfWork.PatientRepository.GetMaliciousPatients(DateTime.Now.AddDays(-30)).Result.All(patient => patient.Id != blockUser.Id))
-                return null;
+            if (blockUser.Blocked)
+                throw new Exception("Patient is already blocked!");
+            if (blockUser.Role != Role.Patient) 
+                throw new Exception("You can only block patients!");
             blockUser.Blocked = true;
             _unitOfWork.UserRepository.Update(blockUser);
             _unitOfWork.UserRepository.Save();
             return blockUser;
         }
 
-        public User UnBlockMaliciousUser(int unblockUserId)
+        public User UnblockMaliciousUser(int unblockUserId)
         {
             User unblockUser = _unitOfWork.UserRepository.GetOne(unblockUserId);
-            if (unblockUser.Blocked == false) return null;
+            if (!unblockUser.Blocked) 
+                throw new Exception("User is not blocked!");
             unblockUser.Blocked = false;
             _unitOfWork.UserRepository.Update(unblockUser);
             _unitOfWork.UserRepository.Save();

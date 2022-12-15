@@ -45,7 +45,7 @@ namespace HospitalAPI.Controllers.Intranet
         [Authorize(Roles = "Manager")]
         public IActionResult UnblockMaliciousUser([FromQuery] int id)
         {
-            _userService.UnBlockMaliciousUser(id);
+            _userService.UnblockMaliciousUser(id);
             return Ok();
         }
     }
