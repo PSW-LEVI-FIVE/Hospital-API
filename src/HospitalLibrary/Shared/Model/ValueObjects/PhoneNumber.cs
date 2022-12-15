@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using HospitalLibrary.Shared.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Shared.Model.ValueObjects
@@ -14,7 +15,7 @@ namespace HospitalLibrary.Shared.Model.ValueObjects
             CellNumber = cellNumber;
             Validate();
         }
-        
+   
         public PhoneNumber(PhoneNumber phoneNumber)
         {
             CellNumber = phoneNumber.CellNumber;

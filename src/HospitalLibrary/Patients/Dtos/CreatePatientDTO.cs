@@ -30,7 +30,7 @@ namespace HospitalLibrary.Patients.Dtos
         [RegularExpression(@"^\d{8}$", ErrorMessage = "Uid input not valid.")]
         public string Uid { get; set; }
         [Required]
-        public PhoneNumber PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         [Required]
         [Display(Name = "Date of birth")]
         [DateValidator(ErrorMessage ="Invalid date")]
@@ -40,7 +40,6 @@ namespace HospitalLibrary.Patients.Dtos
         [Required]
         public string Username { get; set; }
         [Required]
-        [RegularExpression(@"^[A-Za-z0-9]{5}[A-Za-z0-9]+$", ErrorMessage = "Password not valid or must be longer.")]
         public string Password { get; set; }
         [Required]
         public BloodType BloodType { get; set; }
@@ -51,7 +50,7 @@ namespace HospitalLibrary.Patients.Dtos
         public string DoctorUid { get; set; }
         
         public CreatePatientDTO(string name, string surname, string email, string uid, 
-            PhoneNumber phoneNumber, DateTime birthDate, AddressDTO address, BloodType bloodType,
+            string phoneNumber, DateTime birthDate, AddressDTO address, BloodType bloodType,
             string username,string password, List<AllergenDTO> allergens,string doctorUid)
         {
             Name = name;
@@ -77,7 +76,7 @@ namespace HospitalLibrary.Patients.Dtos
                 Surname = Surname,
                 Email = Email,
                 Uid = Uid,
-                PhoneNumber = PhoneNumber,
+                PhoneNumber = new PhoneNumber(PhoneNumber),
                 BirthDate = BirthDate,
                 Address = new Address(Address),
                 BloodType = BloodType
@@ -89,7 +88,7 @@ namespace HospitalLibrary.Patients.Dtos
             {
                 Id = Id,
                 Username = Username,
-                Password = Password,
+                Password = new Password(Password),
                 Role = Role.Patient,
                 ActiveStatus = ActiveStatus.Pending
             };
