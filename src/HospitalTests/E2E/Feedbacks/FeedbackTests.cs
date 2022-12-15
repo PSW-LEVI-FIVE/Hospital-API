@@ -38,7 +38,7 @@ public class FeedbackTests
         Navigate("http://localhost:4200/login");
         
         TypeInInput("username", "pRoXm3691");
-        TypeInInput("password", "asdasd");
+        TypeInInput("password", "asdasd123");
         Submit("login");
         Sleep(700);
         FindById("error").Text.ShouldBe("Username or password not valid!");
@@ -50,7 +50,7 @@ public class FeedbackTests
         Navigate("http://localhost:4200/login");
         
         TypeInInput("username", "pRoXm369");
-        TypeInInput("password", "asdasd");
+        TypeInInput("password", "asdasd123");
         Submit("login");
         Sleep(700);
         Navigate("http://localhost:4200/patient/feedback/create");
@@ -64,7 +64,7 @@ public class FeedbackTests
         Navigate("http://localhost:4200/login");
         
         TypeInInput("username", "pRoXm369");
-        TypeInInput("password", "asdasd");
+        TypeInInput("password", "asdasd123");
         Submit("login");
         Sleep(700);
         Navigate("http://localhost:4200/patient/feedback/create");
@@ -80,7 +80,7 @@ public class FeedbackTests
         Navigate("http://localhost:4200/login");
         
         TypeInInput("username", "pRoXm369");
-        TypeInInput("password", "asdasd");
+        TypeInInput("password", "asdasd123");
         Submit("login");
         Sleep(700);
         Navigate("http://localhost:4200/patient/feedback/create");
@@ -95,7 +95,7 @@ public class FeedbackTests
         Navigate("http://localhost:4200/login");
         
         TypeInInput("username", "pRoXm369");
-        TypeInInput("password", "asdasd");
+        TypeInInput("password", "asdasd123");
         Submit("login");
         Sleep(700);
         Navigate("http://localhost:4200/patient/feedback/create");
@@ -109,7 +109,7 @@ public class FeedbackTests
         Navigate("http://localhost:4200/login");
         
         TypeInInput("username", "pRoXm369");
-        TypeInInput("password", "asdasd");
+        TypeInInput("password", "asdasd123");
         Submit("login");
         Sleep(700);
         Navigate("http://localhost:4200/patient/feedback/create");
