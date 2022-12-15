@@ -510,40 +510,6 @@ namespace HospitalLibrary.Migrations
                     b.ToTable("Medicines");
                 });
 
-            modelBuilder.Entity("HospitalLibrary.Renovation.Model.Renovation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime>("EndAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("MainRoomId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("SecondaryRoomId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("StartAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("State")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MainRoomId");
-
-                    b.HasIndex("SecondaryRoomId");
-
-                    b.ToTable("Renovations");
-                });
-
             modelBuilder.Entity("HospitalLibrary.Rooms.Model.EquipmentReallocation", b =>
                 {
                     b.Property<int>("Id")
@@ -1148,23 +1114,6 @@ namespace HospitalLibrary.Migrations
                         .IsRequired();
 
                     b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Renovation.Model.Renovation", b =>
-                {
-                    b.HasOne("HospitalLibrary.Rooms.Model.Room", "MainRoom")
-                        .WithMany()
-                        .HasForeignKey("MainRoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HospitalLibrary.Rooms.Model.Room", "SecondaryRoom")
-                        .WithMany()
-                        .HasForeignKey("SecondaryRoomId");
-
-                    b.Navigation("MainRoom");
-
-                    b.Navigation("SecondaryRoom");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Rooms.Model.EquipmentReallocation", b =>
