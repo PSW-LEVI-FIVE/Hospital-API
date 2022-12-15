@@ -64,6 +64,18 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(appointment);
         }
 
+        [Route("{startDate}/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> GetCalendarIntervalsForDoctorInRange(DateTime startDate, int id)
+        {
+            TimeInterval interval = new TimeInterval(startDate.AddDays(-3), startDate.AddDays(4));
+            IEnumerable<Appointment> appointments =
+                await _appointmentService.GetAllForDoctorAndRange(id, interval);
+            IEnumerable<CalendarAppointmentsDTO> calendarIntervals =
+                _appointmentService.FormatAppointmentsForCalendar(appointments, interval);
+            return Ok(calendarIntervals);
+        }
+        
         [Route("{startDate}/week")]
         [HttpGet]
         public async Task<IActionResult> GetCalendarIntervals(DateTime startDate)
@@ -85,7 +97,17 @@ namespace HospitalAPI.Controllers.Intranet
             _emailService.SendAppointmentCanceledEmail(appointment.PatientEmail, appointment.AppointmentTime);
                 return Ok(appointment);
         }
-        
+
+        [Route("for")]
+        [HttpPost]
+        public async Task<IActionResult> CreateForAnotherDoctor([FromBody] CreateAppointmentDTO createAppointmentDto)
+        {
+            Appointment newApp = createAppointmentDto.MapToModel();
+            Appointment appointment = await _appointmentService.Create(newApp);
+            return Ok(appointment);
+        }
+
+
         private UserDTO GetCurrentUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -103,5 +125,6 @@ namespace HospitalAPI.Controllers.Intranet
 
             return null;
         }
+        
     }
 }

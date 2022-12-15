@@ -6,6 +6,7 @@ using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Rooms.Interfaces;
+using HospitalLibrary.Shared.Interfaces;
 using HospitalTests.Setup;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,7 @@ public class AppointmentsTests: BaseIntegrationTest
         };
         return controller;
     }
+    
     [Fact]
     public void Create_appointment()
     {

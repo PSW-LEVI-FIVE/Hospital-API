@@ -61,5 +61,14 @@ namespace HospitalAPI.Controllers.Intranet
             IEnumerable<Speciality> specialities = await _doctorService.GetAllSpecialities();
             return Ok(specialities);
         }
+        
+        [HttpGet]
+        [Authorize(Roles="Doctor")]
+        [Route("specialities/{specialty}")]
+        public async Task<IActionResult> GetAllDoctorsBySpecialty(int specialty)
+        {
+            IEnumerable<Doctor> doctors = await _doctorService.GetAllDoctorsBySpecialization(specialty);
+            return Ok(doctors);
+        }
     }
 }

@@ -55,6 +55,7 @@ namespace HospitalLibrary.Doctors
             Doctor mostUnburdened = await GetMostUnburdenedDoctor();
             return await _unitOfWork.DoctorRepository.GetUnburdenedDoctors(mostUnburdened.Patients.Count);
         }
+        
         public Task<IEnumerable<Doctor>> GetDoctorsByAgeRange(int fromAge, int toAge)
         {
             DateTime dateFromAge = new DateTime(DateTime.Now.Year - fromAge, DateTime.Now.Month, DateTime.Now.Day);
@@ -65,6 +66,12 @@ namespace HospitalLibrary.Doctors
         public async Task<IEnumerable<Speciality>> GetAllSpecialities()
         {
             return await _unitOfWork.DoctorRepository.GetAllSpecialitiesInUse();
+        }
+
+        public async Task<IEnumerable<Doctor>> GetAllDoctorsBySpecialization(int specialtyId)
+        {
+            Speciality specialty = _unitOfWork.DoctorRepository.GetSpecializationById(specialtyId);
+            return await _unitOfWork.DoctorRepository.GetAllDoctorsBySpecialization(specialty);
         }
     }
 }
