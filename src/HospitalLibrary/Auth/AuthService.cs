@@ -123,6 +123,7 @@ namespace HospitalLibrary.Auth
             var currentUser = UserExist(userDto.Username, userDto.Password);
             if (currentUser != null)
             {
+                if (currentUser.Blocked) return null;
                 if (currentUser.ActiveStatus == ActiveStatus.Active)
                 {
                     return new UserDTO(currentUser.Username, currentUser.Password.PasswordString, currentUser.Role, currentUser.Id);
