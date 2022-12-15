@@ -24,7 +24,7 @@ namespace HospitalTests.Integrations.Equipment
         }
         public RoomsController SetupController(IServiceScope scope)
         {
-            return new RoomsController(scope.ServiceProvider.GetRequiredService<IRoomService>(),scope.ServiceProvider.GetRequiredService<IAppointmentService>());
+            return new RoomsController(scope.ServiceProvider.GetRequiredService<IRoomService>(),scope.ServiceProvider.GetRequiredService<IAppointmentService>(),scope.ServiceProvider.GetRequiredService<IEquipmentReallocationService>());
         }
 
         [Fact]

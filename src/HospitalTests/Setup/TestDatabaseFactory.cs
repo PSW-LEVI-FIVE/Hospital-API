@@ -143,6 +143,14 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             RoomNumber = "1",
             RoomType = RoomType.EXAMINATION_ROOM
         };
+        Room room5 = new Room()
+        {
+            Id = 1,
+            Area = 10,
+            FloorId = 2,
+            RoomNumber = "soba",
+            RoomType = RoomType.EXAMINATION_ROOM
+        };
         
         Room room2 = new Room()
         {
@@ -172,6 +180,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
         RoomEquipment equipment = new Bed(1, 10, "Bed", 2, 1);
         RoomEquipment equipment2 = new Bed(2, 10, "Bed", 2, 1);
+        RoomEquipment equipment3 = new Bed(3, 10, "Bed", 1, 1);
 
         MapRoom mapRoom = new MapRoom()
         {
@@ -502,9 +511,30 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             StartAt = timeBegin,
             EndAt = timeEnd
         };
-
-
         ExaminationReport rp = new ExaminationReport(10, 4, "Something test", 41, "");
+
+        /*ExaminationReport rp = new ExaminationReport()
+        {
+            Id = 10,
+            Content = "Something test",
+            Prescriptions = null,
+            Symptoms = null,
+            DoctorId = 4,
+            ExaminationId = 41
+        };*/
+
+        EquipmentReallocation equipmentReallocation = new EquipmentReallocation()
+        {
+            Id = 1,
+            StartingRoomId = 1,
+            EquipmentId = 3,
+            amount = 2,
+            state = ReallocationState.PENDING,
+            StartAt = today.AddDays(1),
+            EndAt = today.AddDays(3)
+
+        };
+
         
         dbContext.Specialities.Add(speciality1);
         dbContext.Specialities.Add(speciality2);
@@ -538,6 +568,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.MapRooms.Add(mapRoom);
         dbContext.RoomEquipment.Add(equipment);
         dbContext.RoomEquipment.Add(equipment2);
+        dbContext.RoomEquipment.Add(equipment3);
         dbContext.Patients.Add(patient);
         dbContext.Patients.Add(patient2);
         dbContext.Patients.Add(patient4);
@@ -568,6 +599,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Appointments.Add(examination76);
         dbContext.Appointments.Add(examination105);
         dbContext.Appointments.Add(examinationDontTouch);
+        dbContext.EquipmentReallocations.Add(equipmentReallocation);
         dbContext.ExaminationReports.Add(rp);
         dbContext.SaveChanges();
 

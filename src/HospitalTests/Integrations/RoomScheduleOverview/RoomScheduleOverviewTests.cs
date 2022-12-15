@@ -1,6 +1,7 @@
 ﻿using HospitalAPI;
 using HospitalAPI.Controllers.Intranet;
 using HospitalLibrary.Appointments;
+
 using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Rooms.Dtos;
 using HospitalLibrary.Rooms.Interfaces;
@@ -22,10 +23,21 @@ public class RoomScheduleOverviewTests: BaseIntegrationTest
     public void get_all_appointments()
     {
         using var scope = Factory.Services.CreateScope();
-        var controller = new RoomsController(scope.ServiceProvider.GetRequiredService<IRoomService>(),scope.ServiceProvider.GetRequiredService<IAppointmentService>());
+
+        var controller = new RoomsController(scope.ServiceProvider.GetRequiredService<IRoomService>(),scope.ServiceProvider.GetRequiredService<IAppointmentService>(),scope.ServiceProvider.GetRequiredService<IEquipmentReallocationService>());
         var result = ((OkObjectResult)controller.GetRoomSchedule(2).Result).Value as IEnumerable<Appointment>;
         result.ShouldNotBeEmpty();
     }
+    
+    [Fact]
+    public void get_all_equipment_reloactions()
+    {
+        using var scope = Factory.Services.CreateScope();
+        var controller = new RoomsController(scope.ServiceProvider.GetRequiredService<IRoomService>(),scope.ServiceProvider.GetRequiredService<IAppointmentService>(),scope.ServiceProvider.GetRequiredService<IEquipmentReallocationService>());
+        var result = ((OkObjectResult)controller.GetRoomEquipmentRelocation(1).Result).Value as IEnumerable<HospitalLibrary.Rooms.Model.EquipmentReallocation>;
+        result.ShouldNotBeEmpty();
+    }
+    
     
     
     

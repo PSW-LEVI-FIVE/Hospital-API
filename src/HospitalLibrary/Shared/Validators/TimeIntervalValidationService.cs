@@ -39,8 +39,17 @@ namespace HospitalLibrary.Shared.Validators
             ThrowIfIntervalsAreOverlaping(mixedIntervals.ToList(), requestedTimeInterval);
         }
 
+<<<<<<< HEAD
         public async Task ValidateRenovation(Renovation renovation)
         {
+=======
+        public void GetAllEquipmentRellocationForRoom(int roomId)
+        {
+            var list =
+                _unitOfWork.EquipmentReallocationRepository.GetAllPendingForSpecificRoom(roomId);
+        }
+        
+>>>>>>> 3e94a4d (implemeted equipment rellcation cancelation and overview)
 
           ThrowIfEndBeforeStart(renovation.StartAt, renovation.EndAt);
           ThrowIfInPast(renovation.StartAt);
@@ -107,6 +116,8 @@ namespace HospitalLibrary.Shared.Validators
         {
             ThrowIfNotInWorkingHours(appointment.StartAt, appointment.EndAt, appointment.DoctorId);
         }
+        
+        //private void ThrowIfEquipmentRelocationInProgress(Appointment appointment)
         
         private void ThrowIfNotInWorkingHours(DateTime appointmentStartAt, DateTime appointmentEndAt, int doctorId)
         {

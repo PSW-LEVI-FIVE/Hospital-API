@@ -27,7 +27,7 @@ namespace HospitalTests.Integrations.Rooms
         public   void empty_search_field()
         {
             using var scope = Factory.Services.CreateScope();
-            var controller = new RoomsController(scope.ServiceProvider.GetRequiredService<IRoomService>(),scope.ServiceProvider.GetRequiredService<IAppointmentService>());
+            var controller = new RoomsController(scope.ServiceProvider.GetRequiredService<IRoomService>(),scope.ServiceProvider.GetRequiredService<IAppointmentService>(),scope.ServiceProvider.GetRequiredService<IEquipmentReallocationService>());
             var dto = new RoomSearchDTO(RoomType.NO_TYPE, "");
             var result =  controller.SearchRooms(1,dto).Result;
             var res = ((OkObjectResult) result).Value as IEnumerable<Room>;
@@ -38,7 +38,7 @@ namespace HospitalTests.Integrations.Rooms
         public   void filled_search_field()
         {
             var scope = Factory.Services.CreateScope();
-            var controller = new RoomsController(scope.ServiceProvider.GetRequiredService<IRoomService>(),scope.ServiceProvider.GetRequiredService<IAppointmentService>());
+            var controller = new RoomsController(scope.ServiceProvider.GetRequiredService<IRoomService>(),scope.ServiceProvider.GetRequiredService<IAppointmentService>(),scope.ServiceProvider.GetRequiredService<IEquipmentReallocationService>());
             var dto = new RoomSearchDTO(RoomType.CAFETERIA,"1");
             var res = controller.SearchRooms(1,dto).Result;
             var result = ((OkObjectResult)res).Value as Room;

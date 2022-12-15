@@ -19,10 +19,13 @@ namespace HospitalAPI.Controllers.Intranet
     {
         private IRoomService _roomService;
         private IAppointmentService _appointmentService;
-        public RoomsController(IRoomService roomService, IAppointmentService appointmentService)
+        private IEquipmentReallocationService _reallocationService;
+        public RoomsController(IRoomService roomService, IAppointmentService appointmentService,IEquipmentReallocationService equipmentReallocationService)
         {
             _roomService = roomService;
             _appointmentService = appointmentService;
+            _reallocationService = equipmentReallocationService;
+
         }
         
 
@@ -85,13 +88,43 @@ namespace HospitalAPI.Controllers.Intranet
           
         }
 
-        [Route("schedule/{roomId}")]
+        [Route("schedule/appointment/{roomId}")]
         [HttpGet]
         public async Task<IActionResult> GetRoomSchedule(int roomId)
         {
             var appointments = await _appointmentService.GetUpcomingAppointmentsForRoom(roomId);
+            
             return Ok(appointments);
         }
+        
+        [Route("schedule/relocation/{roomId}")]
+        [HttpGet]
+        public async Task<IActionResult> GetRoomEquipmentRelocation(int roomId)
+        {
+            var equipmentRelocations = await _reallocationService.GetAllPendingForSpecificRoom(roomId);
+            return Ok(equipmentRelocations);
+        }
+        
+        [Route("schedule/renovation/{roomId}")]
+        [HttpGet]
+        public async Task<IActionResult> GetRoomRenovation(int roomId)
+        {
+            var equipmentRelocations = await _reallocationService.GetAllPendingForSpecificRoom(roomId);
+            return Ok(equipmentRelocations);
+        }
+
+        [Route("schedule/cancel/relocation")]
+        [HttpPost]
+
+        public  IActionResult CancelEquipmentRelocation(int equipmentReallocationId)
+        {
+            EquipmentReallocation reallocation =   _reallocationService.CancelEquipmentRelocation(equipmentReallocationId);
+            return Ok();
+
+        }
+        
+        
+        
         
 
 

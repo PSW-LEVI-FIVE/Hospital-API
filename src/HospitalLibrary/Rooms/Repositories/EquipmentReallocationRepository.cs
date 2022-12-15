@@ -40,6 +40,15 @@ namespace HospitalLibrary.Rooms.Repositories
         {
             return await _dataContext.EquipmentReallocations
                 .Where(a=> a.state==ReallocationState.PENDING)
+              
+                .ToListAsync();
+        }
+
+        public async Task<List<EquipmentReallocation>> GetAllPendingForSpecificRoom(int roomId)
+        {
+            return await _dataContext.EquipmentReallocations
+                .Where(a => a.state == ReallocationState.PENDING)
+                .Where(a=>(a.StartingRoomId == roomId)||(a.DestinationRoomId==roomId))
                 .ToListAsync();
         }
         private int maxID()
