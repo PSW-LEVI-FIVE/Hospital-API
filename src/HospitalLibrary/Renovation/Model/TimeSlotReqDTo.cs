@@ -11,10 +11,8 @@ namespace HospitalLibrary.Renovation.Model
     {
         [Required] public DateTime startDate { get; set; }
         [Required] public DateTime endDate { get; set; }
-        [Required]
-        public int roomId { get; set; }
-        [Required]
-        public int duration { get; set; }
+        [Required] public int roomId { get; set; }
+        [Required] public int duration { get; set; }
 
     }
 }

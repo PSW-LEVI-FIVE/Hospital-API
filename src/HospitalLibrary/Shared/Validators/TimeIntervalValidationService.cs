@@ -31,13 +31,21 @@ namespace HospitalLibrary.Shared.Validators
             IEnumerable<TimeInterval> destinationRoomTimeIntervals =
                 await _unitOfWork.EquipmentReallocationRepository.GetAllRoomTakenInrevalsForDate(renovation.SecondaryRoomId,
                     renovation.StartAt.Date);
-
+            ThrowIfRenovationsAreOverlaping(new TimeInterval(renovation.StartAt, renovation.EndAt));
             IEnumerable<TimeInterval> mixedIntervals = startingRoomTimeIntervals.Concat(destinationRoomTimeIntervals);
 
             TimeInterval requestedTimeInterval = new TimeInterval(renovation.StartAt, renovation.EndAt);
 
             ThrowIfIntervalsAreOverlaping(mixedIntervals.ToList(), requestedTimeInterval);
         }
+
+        private async void ThrowIfRenovationsAreOverlaping(TimeInterval timeInterval)
+        {
+            var overlaping= await _unitOfWork.RenovationRepository.GetAllPendingForRange(timeInterval);
+            if (overlaping.Count>0)
+                throw new BadRequestException("Requested time does not follow the working hours rule");
+        }
+
         public async Task ValidateReallocation(EquipmentReallocation reallocation)
         {
             ThrowIfEndBeforeStart(reallocation.StartAt, reallocation.EndAt);
