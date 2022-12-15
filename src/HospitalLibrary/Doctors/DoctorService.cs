@@ -68,9 +68,10 @@ namespace HospitalLibrary.Doctors
             return await _unitOfWork.DoctorRepository.GetAllSpecialitiesInUse();
         }
 
-        public Task<IEnumerable<Doctor>> GetDoctorsBySpecialization(Speciality specialty)
+        public async Task<IEnumerable<Doctor>> GetAllDoctorsBySpecialization(int specialtyId)
         {
-            return _unitOfWork.DoctorRepository.GetDoctorsBySpecialization(specialty);
+            Speciality specialty = _unitOfWork.DoctorRepository.GetSpecializationById(specialtyId);
+            return await _unitOfWork.DoctorRepository.GetAllDoctorsBySpecialization(specialty);
         }
     }
 }
