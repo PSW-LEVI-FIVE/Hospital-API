@@ -27,7 +27,7 @@ public class ActivateAccountTests
                                         "11111111",new PhoneNumber("+12420420"),new DateTime(2000,2,2),
                                         new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),BloodType.ZERO_NEGATIVE);
         
-        User u1 = new User("kiki", "sifra", Role.Patient,1,ActiveStatus.Pending);
+        User u1 = new User("kiki", "sifras123", Role.Patient,1,ActiveStatus.Pending);
         u1.ActivationCode = "asdasd";
         u1.Person = p1;
         personRepository.Setup(unit => unit.GetOneByEmail("gmail1@gmail.com")).Returns(p1);

@@ -1,4 +1,5 @@
 ﻿using HospitalLibrary.Shared.Dtos;
+using HospitalLibrary.Shared.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,17 +23,13 @@ namespace HospitalLibrary.Shared.Model.ValueObjects
             PasswordString = password.PasswordString;
             Validate();
         }
-        public Password(PasswordDTO password)
-        {
-            PasswordString = password.PasswordString;
-            Validate();
-        }
         private void Validate()
         {
-            Regex validatePasswordRegex = new Regex("^(?=.*[0-9]).{6,}$");
+            Regex validatePasswordRegex = new Regex("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,}$");
             if (!validatePasswordRegex.IsMatch(PasswordString))
             {
-                throw new Exception("Password has to have at least 6 characters and at least one number!");
+                System.Console.WriteLine(PasswordString);
+                throw new BadRequestException("Password has to have at least 6 characters and at least one number!");
             }
         }
         protected override bool EqualsCore(Password other)

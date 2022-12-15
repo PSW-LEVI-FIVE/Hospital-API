@@ -24,7 +24,7 @@ public class LoginTests
         var unitOfWork = SetupUOW();
         unitOfWork.Setup(u => u.UserRepository.UsernameExist(It.IsAny<string>())).Returns(true);
         var userService = new UserService(unitOfWork.Object);
-        User userObject = new User("username", "password", Role.Manager, 2,ActiveStatus.Active);
+        User userObject = new User("username", "password123", Role.Manager, 2,ActiveStatus.Active);
         bool result = userService.UsernameExist(userObject.Username);
 
         result.ShouldBeTrue();
@@ -36,7 +36,7 @@ public class LoginTests
         unitOfWork.Setup(u => u.UserRepository.UsernameExist(It.IsAny<string>())).Returns(false);
         var userService = new UserService(unitOfWork.Object);
 
-        var userObject = new User("Jova", "Jova",Role.Secretary,1,ActiveStatus.Active);
+        var userObject = new User("Jova", "Jovaasd123",Role.Secretary,1,ActiveStatus.Active);
 
         bool result = userService.UsernameExist(userObject.Username);
 

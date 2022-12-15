@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Shared.Model;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.Users
 {
@@ -24,7 +25,7 @@ namespace HospitalLibrary.Users
         public int Id { get; set; }
         public Person Person { get; set; }
         public string Username { get; set; }
-        public string Password { get; set; }
+        public Password Password { get; set; }
         public Role Role { get; set; }
         public string ActivationCode { get; set; }
         public ActiveStatus ActiveStatus { get; set; }
@@ -45,7 +46,7 @@ namespace HospitalLibrary.Users
         public User(string username, string password, Role role,int id,ActiveStatus activeStatus)
         {
             Username = username;
-            Password = password;
+            Password = new Password(password);
             Role = role;
             Id = id;
             ActiveStatus = activeStatus;
@@ -54,7 +55,7 @@ namespace HospitalLibrary.Users
         private void Validate()
         {
             if (Username.Trim().Equals("")
-                || Password.Trim().Equals(""))
+                || Password.PasswordString.Trim().Equals(""))
             {
                 throw new Exception("Username and password cannot be empty!");
             }
