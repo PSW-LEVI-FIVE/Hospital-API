@@ -27,7 +27,7 @@ namespace HospitalAPI.Controllers.Intranet
         [Route("timeslot/")]
         public async Task<IActionResult> GetTimeSlots()
         {
-            var slots = await _renovationService.GenerateTimeSlots(new TimeInterval(DateTime.Now,DateTime.Now.AddDays(5)),2);
+            var slots = await _renovationService.GenerateTimeSlots(new TimeInterval(DateTime.Now.Date,DateTime.Now.Date.AddDays(7)),2);
             return Ok(slots);
         }
 

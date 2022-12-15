@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Renovation.Interface;
+using HospitalLibrary.Renovation.Model;
 
 namespace HospitalLibrary.Renovation.Repository
 {
@@ -51,6 +52,14 @@ namespace HospitalLibrary.Renovation.Repository
                 .OrderBy(a => a.StartAt)
                 .Select(a => new TimeInterval(a.StartAt, a.EndAt))
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<TimeInterval> GetActiveRenovationForDay(DateTime date)
+        {
+            return await _dataContext.Renovations
+                .Where(a => a.StartAt.Date <= date.Date && a.EndAt.Date>=date.Date)
+                .Select(a => new TimeInterval(a.StartAt, a.EndAt))
+                .SingleOrDefaultAsync();
         }
     }
 }

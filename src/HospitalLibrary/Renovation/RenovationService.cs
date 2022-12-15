@@ -36,32 +36,28 @@ namespace HospitalLibrary.Renovation
             var numberOfDaysInInterval = (timeInterval.End.Date.Subtract(timeInterval.Start.Date)).Days;
             for (int i = 0; i <= numberOfDaysInInterval - duration; i++)
             {
-                var day = timeInterval.Start.AddDays(i);
+                var day = timeInterval.Start.Date.AddDays(i);
                 var latest =await GetLatest(day);
 
-                if (latest != null)
+                if (latest!=null)
                 {
-                    if  (duration<=1 && !IsRoomFreeForDays(latest.Start, numberOfDaysInInterval - 1)) continue;
+                    if  (duration<=1 && ! await IsRoomFreeForDays(latest.Start, numberOfDaysInInterval - 1)) continue;
                         var earliest = await GetEarliest(latest.Start.AddDays(duration));
 
                     if (earliest != null && earliest.Start.Subtract(latest.Start.AddDays(duration)).Minutes>0) 
                         slots.Add(new TimeInterval(latest.Start,latest.Start.AddDays(duration)));
-                    //napravi proveri da li je soba potpuno slobodna za dane izmdju pocetnog datuma koja trazis 
-                    //checked
-                    //napravi proveru da li je najraniji appointment pre krajnjeg
-                    //checked
                 }
                 else
                 {
-                    if (duration <= 1 && !IsRoomFreeForDays(latest.Start, numberOfDaysInInterval - 1)) continue;
+                    var b = numberOfDaysInInterval - 1;
+                    Console.WriteLine(await IsRoomFreeForDays(day, numberOfDaysInInterval - 1));
+                    if (duration <= 1 || ! await IsRoomFreeForDays(day, numberOfDaysInInterval - 1)) continue;
                         var earliest = await GetEarliest(timeInterval.Start.AddDays(i+duration));
 
                     if (earliest != null) slots.Add(new TimeInterval(earliest.Start.AddDays(-2),earliest.Start));
 
                     var a=BreakInto30MinuteSlots(day.Date.AddHours(20), day.Date.AddDays(duration).AddHours(20));
                     slots.AddRange(a);
-                    //prvo proveri da li su ostali dani slobodni ako jesu pravi samo termine na svakih pola h
-                    //a ako nije poslednji samo idi od najranijeg pa pravi odatle 
                 }
             }
             return slots;
@@ -78,15 +74,23 @@ namespace HospitalLibrary.Renovation
 
             return list;
         }
-        public Boolean IsRoomFreeForDays(DateTime day,int numberOfDays)
+        public async Task<Boolean> IsRoomFreeForDays(DateTime day,int numberOfDays)
         {
             for(int i = 0; i < numberOfDays; i++)
-                if(!IsRoomFreeForDay(day.AddDays(i))) return false;
+                if( !await IsRoomFreeForDay(day.AddDays(i))) return false;
             return true;
         }
-        public Boolean IsRoomFreeForDay(DateTime day)
+        public async Task<Boolean> IsRoomFreeForDay(DateTime day)
         {
-            return _unitOfWork.RenovationRepository.GetFirstPendingForDay(day) == null && _unitOfWork.EquipmentReallocationRepository.GetAllPendingForDate(day)==null && _unitOfWork.AppointmentRepository.GetAllPendingForDate(day)==null;
+            var renovations = await _unitOfWork.RenovationRepository.GetFirstPendingForDay(day);
+            var reallocations = await _unitOfWork.EquipmentReallocationRepository.GetAllPendingForDate(day);
+            var appointments = await _unitOfWork.AppointmentRepository.GetAllPendingForDate(day);
+            var activeReno = await _unitOfWork.RenovationRepository.GetActiveRenovationForDay(day);
+
+            if (renovations == null &&activeReno==null && reallocations.Count==0 && appointments.Count==0)
+                //&& _unitOfWork.EquipmentReallocationRepository.GetAllPendingForDate(day) && _unitOfWork.AppointmentRepository.GetAllPendingForDate(day)==null)
+                return  true;
+            return false;
         }
 
         public async Task<TimeInterval> GetLatest(DateTime date)
