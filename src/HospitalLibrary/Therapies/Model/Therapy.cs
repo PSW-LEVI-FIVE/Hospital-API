@@ -33,9 +33,5 @@ namespace HospitalLibrary.Therapies.Model
             GivenAt = givenAt;
             DoctorId = doctorId;
         }
-
-        public Therapy()
-        {
-        }
     }
 }
