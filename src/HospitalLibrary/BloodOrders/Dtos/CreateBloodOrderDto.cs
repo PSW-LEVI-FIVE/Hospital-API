@@ -30,15 +30,8 @@ namespace HospitalLibrary.BloodOrders.Dtos
 
         public BloodOrder MapToModel()
         {
-            return new BloodOrder
-            {
-                Arrival = Arrival,
-                BloodType = BloodType,
-                DoctorId = DoctorId,
-                OrderDate = DateTime.Today,
-                Reason = new Reason(Reason),
-                Quantity = new Quantity(Quantity)
-            };
+            return new BloodOrder(DoctorId, Arrival, DateTime.Today, BloodType, new Reason(Reason),
+                new Quantity(Quantity));
         }
         
         
