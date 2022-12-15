@@ -1,4 +1,5 @@
-﻿using HospitalLibrary.Examination;
+﻿using HospitalLibrary.Appointments;
+using HospitalLibrary.Examination;
 using HospitalLibrary.Examination.Dtos;
 using HospitalLibrary.Examination.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
@@ -29,8 +30,14 @@ public class CreateExaminationReport
         {
             ExaminationId = 1
         };
+        Appointment appointment = new Appointment()
+        {
+            Id = 1,
+            Type = AppointmentType.EXAMINATION
+        };
 
         uow.Setup(u => u.ExaminationReportRepository.GetByExamination(It.IsAny<int>())).Returns(report);
+        uow.Setup(u => u.AppointmentRepository.GetOne(It.IsAny<int>())).Returns(appointment);
         var validator = new ExaminationReportValidator(uow.Object);
         var service = new ExaminationReportService(uow.Object, validator, null, null);
 
