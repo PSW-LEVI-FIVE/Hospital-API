@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using HospitalLibrary.Appointments;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.Consiliums.Dtos
 {
