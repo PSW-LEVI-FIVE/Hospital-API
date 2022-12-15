@@ -58,8 +58,8 @@ namespace HospitalLibrary.Renovation
 
                     if (earliest != null) slots.Add(new TimeInterval(earliest.Start.AddDays(-2),earliest.Start));
 
-                    var a=BreakInto30MinuteSlots(day.AddHours(20), day.AddDays(duration).AddHours(20));
-
+                    var a=BreakInto30MinuteSlots(day.Date.AddHours(20), day.Date.AddDays(duration).AddHours(20));
+                    slots.AddRange(a);
                     //prvo proveri da li su ostali dani slobodni ako jesu pravi samo termine na svakih pola h
                     //a ako nije poslednji samo idi od najranijeg pa pravi odatle 
                 }
@@ -70,7 +70,7 @@ namespace HospitalLibrary.Renovation
         public List<TimeInterval> BreakInto30MinuteSlots(DateTime startDate, DateTime EndDate)
         {   
             var list = new List<TimeInterval>();
-            var repeats=EndDate.Date.Hour/8;
+            var repeats=EndDate.Hour/0.5;
             for (int i = 0; i < repeats; i++)
             {
                 list.Add(new TimeInterval(new TimeInterval(startDate.AddMinutes(-30*i), EndDate.AddMinutes(-30*i))));
