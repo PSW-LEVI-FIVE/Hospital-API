@@ -36,7 +36,7 @@ namespace HospitalLibrary.BloodOrders.Dtos
                 BloodType = BloodType,
                 DoctorId = DoctorId,
                 OrderDate = DateTime.Today,
-                Reason = Reason,
+                Reason = new Reason(Reason),
                 Quantity = new Quantity(Quantity)
             };
         }

@@ -23,7 +23,7 @@ namespace HospitalLibrary.AnnualLeaves.Dtos
             Id = annualLeave.Id;
             DoctorId = annualLeave.DoctorId;
             Doctor = doctor.Name+' '+doctor.Surname;
-            Reason = annualLeave.Reason;
+            Reason = annualLeave.Reason.Text;
             StartAt = annualLeave.StartAt;
             EndAt = annualLeave.EndAt;
             State = annualLeave.State;

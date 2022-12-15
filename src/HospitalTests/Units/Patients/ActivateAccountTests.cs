@@ -24,7 +24,7 @@ public class ActivateAccountTests
         unitOfWork.Setup(unit => unit.UserRepository).Returns(userRepository.Object);
         
         Patient p1 = new Patient("Pera","Peric","gmail1@gmail.com",
-                                        "11111111",new PhoneNumber("420420"),new DateTime(2000,2,2),
+                                        "11111111",new PhoneNumber("+12420420"),new DateTime(2000,2,2),
                                         new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),BloodType.ZERO_NEGATIVE);
         
         User u1 = new User("kiki", "sifra", Role.Patient,1,ActiveStatus.Pending);

@@ -35,6 +35,12 @@ namespace HospitalLibrary.Shared.Repository
             return _dataContext.SaveChanges();
         }
 
+        public int UpdateAndSave(T entity)
+        {
+            Update(entity);
+            return Save();
+        }
+
         public T GetOne(int key)
         {
             return  _dataContext.Set<T>().Find(key);
@@ -43,6 +49,12 @@ namespace HospitalLibrary.Shared.Repository
         public async Task<IEnumerable<T>> GetAll()
         {
             return await _dataContext.Set<T>().ToListAsync();
+        }
+
+        public int Create(T entity)
+        {
+            Add(entity);
+            return Save();
         }
     }
 }

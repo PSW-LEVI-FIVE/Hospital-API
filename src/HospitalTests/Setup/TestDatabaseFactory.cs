@@ -57,10 +57,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-
-        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn";
-
-
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=123";
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
@@ -93,7 +90,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BirthDate = DateTime.Now,
             Email = "nekimail@gmail.com",
-            PhoneNumber = new PhoneNumber("063555333"),
+            PhoneNumber = new PhoneNumber("+1233555333"),
             SpecialityId = 2,
             Uid = "55557888",
             WorkingHours = new List<WorkingHours>()
@@ -181,7 +178,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Surname = "Markovic",
             Email = "asdasd1@gmail.coma",
             Uid = "67676767",
-            PhoneNumber = new PhoneNumber("123123123"),
+            PhoneNumber = new PhoneNumber("+123123123"),
             BirthDate = new DateTime(2000, 2, 2),
             Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BloodType = BloodType.A_NEGATIVE,
@@ -206,7 +203,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Surname = "Markovic",
             Email = "asdasd2@gmail.com",
             Uid = "78787878",
-            PhoneNumber = new PhoneNumber("123123123"),
+            PhoneNumber = new PhoneNumber("+1233123123"),
             BirthDate = new DateTime(2000,2,3), 
             Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"), 
             BloodType = BloodType.A_NEGATIVE,
@@ -214,15 +211,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Allergens = allergens,
         };
 
-        Hospitalization hospitalization = new Hospitalization()
-        {
-            Id = 10,
-            BedId = 2,
-            State = HospitalizationState.ACTIVE,
-            StartTime = DateTime.Now,
-            PdfUrl = "",
-            MedicalRecordId = 2,
-        };
+        Hospitalization hospitalization = new Hospitalization(10, 2, 2, DateTime.Now, HospitalizationState.ACTIVE);
 
         User user2 = new User()
         {
@@ -240,7 +229,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Address = new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BirthDate = DateTime.Now,
             Email = "nekimail1@gmail.com",
-            PhoneNumber = new PhoneNumber("123123123"),
+            PhoneNumber = new PhoneNumber("+123123123"),
             SpecialityId = 1,
             Uid = "67867867",
             WorkingHours = new List<WorkingHours>()
@@ -280,7 +269,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Surname = "Markovic",
             Email = "asdasd65@gmail.com",
             Uid = "78787899",
-            PhoneNumber = new PhoneNumber("123123123"),
+            PhoneNumber = new PhoneNumber("+123123123"),
             BirthDate = new DateTime(2000,2,3), 
             Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BloodType = BloodType.A_NEGATIVE,
@@ -301,7 +290,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Id = 16,
             DoctorId = 4,
             State = AnnualLeaveState.PENDING,
-            Reason = "",
+            Reason = new Reason("Razlog"),
             StartAt = new DateTime(2022, 05, 23, 00, 00, 00),
             EndAt = new DateTime(2022, 09, 11, 00, 00, 00)
 
@@ -430,7 +419,19 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
         Appointment examination1 = new Appointment()
         {
-            Id = 1,
+            Id = 500,
+            DoctorId = 4,
+            PatientId = 1,
+            RoomId = 2,
+            State = AppointmentState.PENDING,
+            Type = AppointmentType.EXAMINATION,
+            StartAt = today,
+            EndAt = today.AddDays(1)
+        };
+
+        Appointment examinationDontTouch = new Appointment()
+        {
+            Id = 41,
             DoctorId = 4,
             PatientId = 1,
             RoomId = 2,
@@ -545,7 +546,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Appointments.Add(appointment1);
         dbContext.Appointments.Add(appointment2);
         dbContext.Appointments.Add(examination1);
-
+        dbContext.Appointments.Add(examinationDontTouch);
         dbContext.ExaminationReports.Add(rp);
         dbContext.SaveChanges();
 
