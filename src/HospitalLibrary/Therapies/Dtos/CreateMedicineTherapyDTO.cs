@@ -20,14 +20,7 @@ namespace HospitalLibrary.Therapies.Dtos
 
         public MedicineTherapy MapToModel()
         {
-            return new MedicineTherapy
-            {
-                HospitalizationId = HospitalizationId,
-                GivenAt = GivenAt,
-                MedicineId = MedicineId,
-                Quantity = Quantity,
-                DoctorId = DoctorId
-            };
+            return new MedicineTherapy(HospitalizationId, GivenAt, MedicineId, Quantity, DoctorId);
         }
     }
 }
