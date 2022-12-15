@@ -17,6 +17,7 @@ using HospitalLibrary.MedicalRecords.Interfaces;
 using HospitalLibrary.Medicines.Interfaces;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Persons.Interfaces;
+using HospitalLibrary.Renovation.Interface;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Symptoms.Interfaces;
 using HospitalLibrary.Therapies.Interfaces;
@@ -54,5 +55,6 @@ namespace HospitalLibrary.Shared.Interfaces
         IExaminationReportRepository ExaminationReportRepository { get;  }
         ISymptomRepository SymptomRepository { get; }
         IConsiliumRepository ConsiliumRepository { get; }
+        IRenovationRepository RenovationRepository { get; }
     }
 }

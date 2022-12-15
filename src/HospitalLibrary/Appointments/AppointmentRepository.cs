@@ -6,6 +6,7 @@ using HospitalLibrary.Shared.Repository;
 using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
+using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.Appointments
 {
@@ -125,6 +126,36 @@ namespace HospitalLibrary.Appointments
                 .ToListAsync();
         }
 
-        
+        public async Task<TimeInterval> GetLastForDate(DateTime date,int roomId)
+        {
+            return await _dataContext.Appointments
+                    .Where(a => a.StartAt.Date == date.Date)
+                    .Where(a => a.State == AppointmentState.PENDING && a.RoomId == roomId)
+                    .OrderByDescending(a => a.StartAt)
+                    .Select(a => new TimeInterval(a.StartAt, a.EndAt))
+                    .FirstOrDefaultAsync();
+            
+        }
+        public async Task<TimeInterval> GetFirstForDate(DateTime date, int roomId)
+        {
+            return await _dataContext.Appointments
+                .Where(a => a.StartAt.Date == date.Date)
+                .Where(a => a.State == AppointmentState.PENDING && a.RoomId == roomId)
+                .OrderBy(a => a.StartAt)
+                .Select(a => new TimeInterval(a.StartAt, a.EndAt))
+                .FirstOrDefaultAsync();
+
+        }
+
+        public async Task<List<TimeInterval>> GetAllPendingForDate(DateTime date,int roomId)
+        { 
+            return await _dataContext.Appointments
+                .Where(a => a.State == AppointmentState.PENDING && a.RoomId==roomId)
+                .Where(a => date.CompareTo(a.StartAt.Date) <= 0)
+                .Where(a => date.Date.CompareTo(a.StartAt.Date) > 0)
+                .Select(a=>new TimeInterval(a.StartAt,a.EndAt))
+                .ToListAsync();
+        }
+
     }
 }
