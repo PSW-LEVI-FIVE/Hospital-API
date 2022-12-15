@@ -58,7 +58,6 @@ namespace HospitalLibrary.Shared.Interfaces
         IExaminationReportRepository ExaminationReportRepository { get;  }
         ISymptomRepository SymptomRepository { get; }
         IConsiliumRepository ConsiliumRepository { get; }
-        
         IExaminationEventRepository ExaminationEventRepository { get; }
         
         ISpecialtyRepository SpecialtyRepository { get; }
@@ -68,3 +67,8 @@ namespace HospitalLibrary.Shared.Interfaces
 
   }
 }
+
+
+       
+    
+

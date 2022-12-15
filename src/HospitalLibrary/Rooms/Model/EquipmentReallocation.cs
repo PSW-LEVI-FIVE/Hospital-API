@@ -47,15 +47,15 @@ namespace HospitalLibrary.Rooms.Model
             StartAt = startAt;
             EndAt = endAt;
         }
-<<<<<<< HEAD
+
         public TimeInterval GetInterval()
         {
           return new TimeInterval(StartAt, EndAt);
         }
-=======
+
 
         
->>>>>>> 3e94a4d (implemeted equipment rellcation cancelation and overview)
+
     }
 }
 

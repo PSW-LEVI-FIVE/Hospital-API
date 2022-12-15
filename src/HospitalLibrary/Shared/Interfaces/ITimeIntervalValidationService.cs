@@ -15,7 +15,7 @@ namespace HospitalLibrary.Shared.Interfaces
         Task ValidateRescheduling(Appointment appointment, DateTime start, DateTime end);
         Task<bool> IsIntervalOverlapingWithDoctorAppointments(int doctorId, TimeInterval possibleTimeInterval);
         Task<bool> IsTimeIntervalOverlapingWithRoomsAppointments(int roomId,TimeInterval possibleTimeInterval);
-        Task ValidateRenovation(Renovation renovation);
+        Task ValidateRenovation(Renovations.Model.Renovation renovation);
 
   }
 
