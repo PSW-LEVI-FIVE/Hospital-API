@@ -70,7 +70,7 @@ namespace HospitalLibrary.Rooms.Repositories
         }
 
 
-        public async Task<List<TimeInterval>> GetAllRoomTakenInrevalsForDate(int roomId, DateTime date)
+        public async Task<List<TimeInterval>> GetAllRoomTakenInrevalsForDate(int? roomId, DateTime date)
         {
             return await _dataContext.EquipmentReallocations
                 .Where(a => a.StartingRoomId == roomId || a.DestinationRoomId == roomId)

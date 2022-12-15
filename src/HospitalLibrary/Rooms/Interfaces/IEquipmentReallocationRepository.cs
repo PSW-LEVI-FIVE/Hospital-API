@@ -11,7 +11,7 @@ namespace HospitalLibrary.Rooms.Interfaces
 {
     public interface IEquipmentReallocationRepository: IBaseRepository<EquipmentReallocation>
     {
-        Task<List<TimeInterval>> GetAllRoomTakenInrevalsForDate(int roomId, DateTime date);
+        Task<List<TimeInterval>> GetAllRoomTakenInrevalsForDate(int? roomId, DateTime date);
         Task<List<EquipmentReallocation>> GetAllPending();
         Task<List<EquipmentReallocation>> GetAllPendingForDate(DateTime date);
         Task<List<EquipmentReallocation>> GetAllPendingForToday();
