@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shouldly;
 
 namespace HospitalTests.Integrations.Appointments;
-
+[Collection("Test")]
 public class AppointmentTestsIntranet : BaseIntegrationTest
 {
     public AppointmentTestsIntranet(TestDatabaseFactory<Startup> factory) : base(factory)
