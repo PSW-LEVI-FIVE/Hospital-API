@@ -16,7 +16,7 @@ namespace HospitalLibrary.Users
 
         public User GetOneByUsername(string username)
         {
-            return _dataContext.Users.Where(u => u.Username.Equals(username)).FirstOrDefault();
+            return _dataContext.Users.FirstOrDefault(u => u.Username.Equals(username));
         }
 
         public bool UsernameExist(string username)
