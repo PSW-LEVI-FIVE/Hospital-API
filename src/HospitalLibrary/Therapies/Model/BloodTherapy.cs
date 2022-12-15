@@ -14,9 +14,6 @@ namespace HospitalLibrary.Therapies.Model
             BloodType = bloodType;
             Quantity = quantity;
         }
-
-        public BloodTherapy() : base()
-        {
-        }
+        
     }
 }
