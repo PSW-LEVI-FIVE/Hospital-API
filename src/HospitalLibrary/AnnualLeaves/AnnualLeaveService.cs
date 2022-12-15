@@ -58,8 +58,7 @@ namespace HospitalLibrary.AnnualLeaves
         public AnnualLeave Delete(int annualLeaveId,int doctorId)
         {
             AnnualLeave leave=_unitOfWork.AnnualLeaveRepository.GetOne(annualLeaveId);
-            _annualLeaveValidator.CancelValidation(leave, doctorId);
-            leave.State = AnnualLeaveState.DELETED;
+            leave.DeleteAnnualLeave(doctorId);
             _unitOfWork.AnnualLeaveRepository.Update(leave);
             _unitOfWork.AnnualLeaveRepository.Save();
             return leave;
@@ -68,10 +67,10 @@ namespace HospitalLibrary.AnnualLeaves
         public AnnualLeave ReviewRequest(ReviewLeaveRequestDTO reviewLeaveRequestDTO,int id)
         {
             AnnualLeave leave = _unitOfWork.AnnualLeaveRepository.GetOne(id);
-            _annualLeaveValidator.ReviewAnnualLeaveValidation(leave,reviewLeaveRequestDTO);
-            leave.State = reviewLeaveRequestDTO.State;
-            if(leave.State == AnnualLeaveState.CANCELED)
-                leave.Reason = new Reason(reviewLeaveRequestDTO.Reason);
+            if (leave == null)
+                throw new NotFoundException("Annual leave with given id doesn't exist!");
+            // _annualLeaveValidator.ReviewAnnualLeaveValidation(leave,reviewLeaveRequestDTO);
+            leave.ReviewAnnualLeave(reviewLeaveRequestDTO.State, reviewLeaveRequestDTO.Reason);
             _unitOfWork.AnnualLeaveRepository.Update(leave);
             _unitOfWork.AnnualLeaveRepository.Save();
             return leave;

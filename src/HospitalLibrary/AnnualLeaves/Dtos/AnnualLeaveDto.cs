@@ -23,15 +23,12 @@ namespace HospitalLibrary.AnnualLeaves.Dtos
         
         public AnnualLeave MapToModel()
         {
-            return new AnnualLeave
-            {
-                DoctorId = DoctorId,
-                EndAt = EndAt,
-                IsUrgent = IsUrgent,
-                Reason = new Reason(Reason),
-                StartAt = StartAt,
-                State = AnnualLeaveState.PENDING
-            };
+            return new AnnualLeave(DoctorId, null, Reason, StartAt, EndAt, AnnualLeaveState.PENDING, IsUrgent);
+        }
+        
+        public AnnualLeave MapToModel(int doctorId)
+        {
+            return new AnnualLeave(doctorId, null, Reason, StartAt, EndAt, AnnualLeaveState.PENDING, IsUrgent);
         }
     }
 }

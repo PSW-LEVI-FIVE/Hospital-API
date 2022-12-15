@@ -56,10 +56,8 @@ public class AnnualLeavesUnitTests
     public void Can_delete_annual_leave()
     {
         var mock = AnnualLeaveRepositoryMock();
-        AnnualLeave annualLeave = new AnnualLeave(1, null, "Annual Leave is PENDING",
+        AnnualLeave annualLeave = new AnnualLeave(1, 1, null, "Annual Leave is PENDING",
                 DateTime.Now, DateTime.Now, AnnualLeaveState.PENDING, false);
-        annualLeave.Id = 1;
-        annualLeave.Reason = new Reason("some reason");
         mock.Setup(work =>
             work.AnnualLeaveRepository.GetOne(It.IsAny<int>())).Returns(annualLeave);
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
@@ -74,10 +72,9 @@ public class AnnualLeavesUnitTests
     public void Can_not_delete_annual_leave()
     {
         var mock = AnnualLeaveRepositoryMock();
-        AnnualLeave annualLeave = new AnnualLeave(1, null, "Annual Leave is NOT-PENDING",
+        AnnualLeave annualLeave = new AnnualLeave(1, 1, null, "Annual Leave is NOT-PENDING",
             DateTime.Now, DateTime.Now, AnnualLeaveState.APPROVED, false);
-        annualLeave.Id = 1;
-        annualLeave.Reason = new Reason("some reason");
+        
         mock.Setup(work =>
             work.AnnualLeaveRepository.GetOne(It.IsAny<int>())).Returns(annualLeave);
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
@@ -90,10 +87,8 @@ public class AnnualLeavesUnitTests
     public void Can_not_delete_annual_leave_false_doctorId()
     {
         var mock = AnnualLeaveRepositoryMock();
-        AnnualLeave annualLeave = new AnnualLeave(1, null, "Annual Leave is PENDING, but false DOCTOR_ID",
+        AnnualLeave annualLeave = new AnnualLeave(1, 1, null, "Annual Leave is PENDING, but false DOCTOR_ID",
             DateTime.Now, DateTime.Now, AnnualLeaveState.PENDING, false);
-        annualLeave.Id = 1;
-        annualLeave.Reason = new Reason("some reason");
         mock.Setup(work =>
             work.AnnualLeaveRepository.GetOne(It.IsAny<int>())).Returns(annualLeave);
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
@@ -106,10 +101,8 @@ public class AnnualLeavesUnitTests
     public void Cant_review_annual_leave_doesnt_exist()
     {
         var mock = AnnualLeaveRepositoryMock();
-        AnnualLeave annualLeave = new AnnualLeave(1, null, "some reason",
+        AnnualLeave annualLeave = new AnnualLeave(1, 1, null, "some reason",
             DateTime.Now, DateTime.Now, AnnualLeaveState.PENDING, false);
-        annualLeave.Id = 1;
-        annualLeave.Reason = new Reason("some reason");
         mock.Setup(work =>
             work.AnnualLeaveRepository.GetOne(It.IsAny<int>())).Returns(null as AnnualLeave);
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
@@ -122,10 +115,9 @@ public class AnnualLeavesUnitTests
     public void Cant_review_annual_leave_isnt_pending()
     {
         var mock = AnnualLeaveRepositoryMock();
-        AnnualLeave annualLeave = new AnnualLeave(1, null, "some reason",
+        AnnualLeave annualLeave = new AnnualLeave(1, 1, null, "some reason",
             DateTime.Now, DateTime.Now, AnnualLeaveState.APPROVED, false);
-        annualLeave.Id = 1;
-        annualLeave.Reason = new Reason("some reason");
+        
         mock.Setup(work =>
             work.AnnualLeaveRepository.GetOne(It.IsAny<int>())).Returns(annualLeave);
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
@@ -138,10 +130,9 @@ public class AnnualLeavesUnitTests
     public void Cant_reject_request_without_reason()
     {
         var mock = AnnualLeaveRepositoryMock();
-        AnnualLeave annualLeave = new AnnualLeave(1, null, "some reason",
+        AnnualLeave annualLeave = new AnnualLeave(1, 1, null, "some reason",
             DateTime.Now, DateTime.Now, AnnualLeaveState.PENDING, false);
-        annualLeave.Id = 1;
-        annualLeave.Reason = new Reason("some reason");
+        
         mock.Setup(work =>
             work.AnnualLeaveRepository.GetOne(It.IsAny<int>())).Returns(annualLeave);
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
@@ -154,10 +145,8 @@ public class AnnualLeavesUnitTests
     public void Request_reviewed_successfully()
     {
         var mock = AnnualLeaveRepositoryMock();
-        AnnualLeave annualLeave = new AnnualLeave(1, null, "some reason",
+        AnnualLeave annualLeave = new AnnualLeave(1, 1, null, "some reason",
             DateTime.Now, DateTime.Now, AnnualLeaveState.PENDING, false);
-        annualLeave.Id = 1;
-        annualLeave.Reason = new Reason("some reason");
         mock.Setup(work =>
             work.AnnualLeaveRepository.GetOne(It.IsAny<int>())).Returns(annualLeave);
         IAnnualLeaveValidator validator = new AnnualLeaveValidator(mock.Object, null);
