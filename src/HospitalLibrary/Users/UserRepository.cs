@@ -1,4 +1,5 @@
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Settings;
@@ -26,7 +27,7 @@ namespace HospitalLibrary.Users
 
         public User UserExist(string username, string password)
         {
-            return _dataContext.Users.FirstOrDefault(m => m.Password.Equals(password) && m.Username.Equals(username));
+            return _dataContext.Users.FirstOrDefault(m => m.Username.Equals(username) && string.Compare(m.Username,username) == 0);
         }
 
         public bool IsCodeUnique(string code)
