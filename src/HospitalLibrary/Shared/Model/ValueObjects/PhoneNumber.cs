@@ -24,7 +24,6 @@ namespace HospitalLibrary.Shared.Model.ValueObjects
         private void Validate()
         {
             Regex validatePhoneNumberRegex = new Regex("^\\+?[1-9][0-9]{7,14}$");
-            Console.WriteLine(CellNumber + " Evo broja");
             if(!validatePhoneNumberRegex.IsMatch(CellNumber))
             {
                 throw new Exception("Invalid phone number");
