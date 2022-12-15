@@ -22,7 +22,7 @@ namespace HospitalLibrary.BloodOrders
         
         public BloodType BloodType { get; set; }
         
-        public string Reason { get; set; }
+        public Reason Reason { get; set; }
         
         public Quantity Quantity { get; set; }
 

@@ -16,6 +16,7 @@ using ceTe.DynamicPDF;
 using HospitalLibrary.Migrations;
 using HospitalLibrary.Appointments;
 using ceTe.DynamicPDF.Merger;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.AnnualLeaves
 {
@@ -70,7 +71,7 @@ namespace HospitalLibrary.AnnualLeaves
             _annualLeaveValidator.ReviewAnnualLeaveValidation(leave,reviewLeaveRequestDTO);
             leave.State = reviewLeaveRequestDTO.State;
             if(leave.State == AnnualLeaveState.CANCELED)
-                leave.Reason = reviewLeaveRequestDTO.Reason;
+                leave.Reason = new Reason(reviewLeaveRequestDTO.Reason);
             _unitOfWork.AnnualLeaveRepository.Update(leave);
             _unitOfWork.AnnualLeaveRepository.Save();
             return leave;

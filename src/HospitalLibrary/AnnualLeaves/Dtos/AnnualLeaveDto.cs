@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.AnnualLeaves.Dtos
 {
@@ -27,7 +28,7 @@ namespace HospitalLibrary.AnnualLeaves.Dtos
                 DoctorId = DoctorId,
                 EndAt = EndAt,
                 IsUrgent = IsUrgent,
-                Reason = Reason,
+                Reason = new Reason(Reason),
                 StartAt = StartAt,
                 State = AnnualLeaveState.PENDING
             };
