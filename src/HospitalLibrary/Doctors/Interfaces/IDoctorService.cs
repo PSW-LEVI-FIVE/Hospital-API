@@ -16,6 +16,6 @@ namespace HospitalLibrary.Doctors.Interfaces
         Task<Doctor> GetDoctorByUid(string doctorUid);
         Task<IEnumerable<Doctor>> GetDoctorsByAgeRange(int fromAge, int toAge);
         Task<IEnumerable<Speciality>> GetAllSpecialities();
-
+        Task<IEnumerable<Doctor>> GetAllDoctorsBySpecialization(int specialty);
     }
 }

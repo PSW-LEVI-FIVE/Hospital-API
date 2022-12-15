@@ -98,12 +98,18 @@ namespace HospitalLibrary.Doctors
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Doctor>> GetDoctorsBySpecialization(Speciality specialty)
+        public async Task<IEnumerable<Doctor>> GetAllDoctorsBySpecialization(Speciality specialty)
         {
             return await _dataContext.Doctors
                 .Where(doctor => doctor.Speciality
                     .Equals(specialty))
                 .ToListAsync();
+        }
+        
+        public Speciality GetSpecializationById(int specialtyId)
+        {
+            return _dataContext.Specialities
+                .Find(specialtyId);
         }
     }
 }
