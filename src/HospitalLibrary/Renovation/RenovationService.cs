@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using ceTe.DynamicPDF.PageElements.Forms;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Renovation.Interface;
+using HospitalLibrary.Renovation.Model;
 using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Shared.Interfaces;
 
@@ -148,18 +150,113 @@ namespace HospitalLibrary.Renovation
             return latest;
         }
 
-
+        public async Task<Model.Renovation> GetOne(int id)
+        {
+            var a= await _unitOfWork.RenovationRepository.GetAllPending();
+            return a[0];
+        }
         public async Task initiateRenovation(Model.Renovation renovation)
         {
             if (renovation.Type == RenovationType.SPLIT)
             {
-                Room room2 = new Room(_unitOfWork.RoomRepository.GetMaxId()+1,"102",renovation.MainRoom.Area/2,renovation.MainRoom.FloorId,renovation.MainRoom.RoomType);
+                Room room2 = new Room();
+                renovation.MainRoom = _unitOfWork.RoomRepository.GetOne(renovation.MainRoomId);
+                int a = _unitOfWork.RoomRepository.GetMaxId();
+                room2 = new Room( a + 1, "31As", renovation.MainRoom.Area / 2,
+                        renovation.MainRoom.FloorId, RoomType.OPERATION_ROOM);
+                
                 _unitOfWork.RoomRepository.Add(room2);
+                _unitOfWork.RoomRepository.Save();
                 Room room1 = renovation.MainRoom;
                 room1.Area = room1.Area / 2;
                 _unitOfWork.RoomRepository.Update(room1);
+                _unitOfWork.RoomRepository.Save();
+
+                renovation.State = RenovationState.FINISHED;
+                _unitOfWork.RenovationRepository.Update(renovation);
+                _unitOfWork.RenovationRepository.Save();
+
+            }
+            else if (renovation.Type == RenovationType.MERGE)
+            {
+                renovation.MainRoom = _unitOfWork.RoomRepository.GetOne(renovation.MainRoomId);
+               
+                renovation.SecondaryRoom = _unitOfWork.RoomRepository.GetOne((int)renovation.SecondaryRoomId);
+
+                renovation.MainRoom.Area += renovation.SecondaryRoom.Area;
+
+                _unitOfWork.RoomRepository.Update(renovation.MainRoom);
+                _unitOfWork.RoomRepository.Save();
+
+                await TransferAllEquipment(renovation.MainRoom, renovation.SecondaryRoom);
+                await TransferAllAppointments(renovation.MainRoom,renovation.SecondaryRoom);
+                await DeleteAllReallocation(renovation.SecondaryRoom);
+
+                _unitOfWork.RoomRepository.Delete(renovation.SecondaryRoom);
+                _unitOfWork.RoomRepository.Save();
+
+                renovation.State = RenovationState.FINISHED;
+                renovation.SecondaryRoom=null;
+                renovation.SecondaryRoomId = null;
+                    _unitOfWork.RenovationRepository.Update(renovation);
+                _unitOfWork.RenovationRepository.Save();
+
+              
             }
         }
+
+        private async Task DeleteAllReallocation(Room renovationSecondaryRoom)
+        {
+            var equipmentReallos = await _unitOfWork.EquipmentReallocationRepository.GetAllForRoom(renovationSecondaryRoom.Id);
+            foreach (var eq in equipmentReallos)
+                _unitOfWork.EquipmentReallocationRepository.Delete(eq);
+        }
+
+        private async Task TransferAllEquipment(Room mainRoom, Room secondaryRoom)
+        {
+          var secondaryRoomEq= await _unitOfWork.RoomEquipmentRepository.GetEquipmentByRoom(secondaryRoom.Id);
+          var primaryRoomEq = await _unitOfWork.RoomEquipmentRepository.GetEquipmentByRoom(secondaryRoom.Id);
+            foreach(var eq in secondaryRoomEq)
+            {
+                foreach(var item in primaryRoomEq)
+                    if (eq.Name == item.Name)
+                    {
+                        item.Quantity += eq.Quantity;
+                        _unitOfWork.RoomEquipmentRepository.Update(item);
+                        _unitOfWork.RoomEquipmentRepository.Delete(eq);
+                    }
+
+            }
+        }
+
+        private async Task TransferAllAppointments(Room mainRoom,Room secondaryRoom)
+        {
+           var appointmentsSecondary=await _unitOfWork.AppointmentRepository.GetAllPendingForRoom(secondaryRoom.Id);
+           var appointmentsMain = await _unitOfWork.AppointmentRepository.GetAllPendingForRoom(secondaryRoom.Id);
+
+           if (!appointmentsSecondary.Any()) return;
+           foreach (var appointment in appointmentsSecondary)
+           {
+               if (!IsMergable(appointmentsMain, appointment)) _unitOfWork.AppointmentRepository.Delete(appointment);
+               appointment.RoomId = mainRoom.Id;
+               _unitOfWork.AppointmentRepository.Update(appointment);
+           }
+        }
+
+        private Boolean IsMergable(List<Appointment> appointmentsMain, Appointment appointment)
+        {
+            foreach (var appointmentSec in appointmentsMain)
+            {
+                if (new TimeInterval(appointmentSec.StartAt, appointmentSec.EndAt).IsOverlaping(
+                        new TimeInterval(appointment.StartAt, appointment.EndAt)))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public void Update(Model.Renovation renovation)
         {
             //validate renovation

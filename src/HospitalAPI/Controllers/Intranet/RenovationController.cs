@@ -34,7 +34,14 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
 
-
+        [HttpGet]
+        [Route("Testing/")]
+        public async Task<IActionResult> GetTest()
+        {
+            var pending = await _renovationService.GetAllPending();
+            await _renovationService.initiateRenovation(pending[0]);
+            return Ok(pending);
+        }
         [HttpGet]
         [Route("pending/")]
         public async Task<IActionResult> GetAllPending()

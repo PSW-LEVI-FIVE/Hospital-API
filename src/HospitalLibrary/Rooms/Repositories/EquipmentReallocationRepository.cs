@@ -69,6 +69,12 @@ namespace HospitalLibrary.Rooms.Repositories
                 .OrderBy(a => a.StartAt).FirstOrDefaultAsync();
         }
 
+        public async Task<List<EquipmentReallocation>> GetAllForRoom(int roomid)
+        {
+            return await _dataContext.EquipmentReallocations
+                .Where(a => a.StartingRoomId == roomid || a.DestinationRoomId == roomid)
+                .ToListAsync();
+        }
 
         public async Task<List<TimeInterval>> GetAllRoomTakenInrevalsForDate(int? roomId, DateTime date)
         {

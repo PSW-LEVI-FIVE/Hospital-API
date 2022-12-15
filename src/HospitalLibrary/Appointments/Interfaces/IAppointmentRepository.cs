@@ -21,5 +21,6 @@ namespace HospitalLibrary.Appointments.Interfaces
 
         Task<TimeInterval> GetFirstForDate(DateTime date, int roomId);
         Task<List<TimeInterval>> GetAllPendingForDate(DateTime date, int roomId);
+        Task<List<Appointment>> GetAllPendingForRoom(int roomId);
     }
 }

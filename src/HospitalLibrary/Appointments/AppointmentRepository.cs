@@ -139,6 +139,12 @@ namespace HospitalLibrary.Appointments
                 .Select(a=>new TimeInterval(a.StartAt,a.EndAt))
                 .ToListAsync();
         }
+        public async Task<List<Appointment>> GetAllPendingForRoom(int roomId)
+        {
+            return await _dataContext.Appointments
+                .Where(a => a.State == AppointmentState.PENDING && a.RoomId == roomId)
+                .ToListAsync();
+        }
 
     }
 }
