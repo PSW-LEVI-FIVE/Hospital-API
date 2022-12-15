@@ -125,7 +125,7 @@ namespace HospitalLibrary.Auth
             {
                 if (currentUser.ActiveStatus == ActiveStatus.Active)
                 {
-                    return new UserDTO(currentUser.Username, currentUser.Password, currentUser.Role, currentUser.Id);
+                    return new UserDTO(currentUser.Username, currentUser.Password.PasswordString, currentUser.Role, currentUser.Id);
                 }
             }
             return null;

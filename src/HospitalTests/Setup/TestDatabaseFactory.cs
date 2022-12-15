@@ -188,7 +188,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         User user = new User()
         {
             Username = "Mika",
-            Password = "plsradi",
+            Password = new Password("plsradi123"),
             Role = Role.Patient,
             Id = 1
         };
@@ -216,7 +216,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         User user2 = new User()
         {
             Username = "Mika1",
-            Password = "plsradi",
+            Password = new Password("plsradi123"),
             Role = Role.Doctor,
             Id = 2
         };
