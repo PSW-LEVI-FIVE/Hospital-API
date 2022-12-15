@@ -111,9 +111,4 @@ public class ExaminationTests: BaseIntegrationTest
     }
     
 
-    
-    
-    
-    
-
 }
