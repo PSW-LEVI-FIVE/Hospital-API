@@ -38,9 +38,9 @@ namespace HospitalLibrary.Renovation.Repository
         public async Task<TimeInterval> GetLastPendingForDay(DateTime date,int roomId)
         {
             return await _dataContext.Renovations
-                .Where(a => a.StartAt.Date == date.Date)
+                .Where(a => a.EndAt.Date == date.Date)
                 .Where(a=>a.State==RenovationState.PENDING && a.MainRoomId == roomId)
-                .OrderByDescending(a => a.StartAt)
+                .OrderByDescending(a => a.EndAt)
                 .Select(a => new TimeInterval(a.StartAt, a.EndAt))
                 .FirstOrDefaultAsync();
         }

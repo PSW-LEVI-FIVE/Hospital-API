@@ -39,21 +39,28 @@ namespace HospitalLibrary.Renovation
             {
                 var day = timeInterval.Start.Date.AddDays(i);
                 var latest =await GetLatest(day,roomid);
-
-                if (latest!=null)
+                var empty = await IsRoomFreeForDay(timeInterval.Start.AddDays(i), roomid);
+                if (!empty )
                 {
-                    var freeRoom = await IsRoomFreeForDays(latest.Start, duration - 1, roomid);
-                    if  (duration<=1 && !freeRoom) continue;
-                        var earliest = await GetEarliest(latest.Start.AddDays(duration),roomid);
-                  
-                    if (earliest != null && earliest.Start.Subtract(latest.Start.AddDays(duration)).Minutes>0) 
-                        slots.Add(new TimeInterval(latest.End,latest.End.AddDays(duration)));
-                    else
-                        slots.Add(new TimeInterval(latest.End,latest.End.AddDays(duration)));
+                    if (latest == null) continue;
+                    var freeRoom = await IsRoomFreeForDays(latest.End, duration - 1, roomid);
+                    if  (duration<=1 || !freeRoom) continue;
+                    
+                    var earliest = await GetEarliest(latest.End.AddDays(duration),roomid);
+                   
+                    if(earliest==null) {slots.Add(new TimeInterval(latest.End, latest.End.AddDays(duration)));
+                        continue;
+                    }
+
+                    var a = earliest.Start.CompareTo(latest.End.AddDays(duration));
+                    if (a > 0)
+                        slots.Add(new TimeInterval(latest.End, latest.End.AddDays(duration)));
                 }
                 else
                 {
-                    if (duration <= 1 || ! await IsRoomFreeForDays(day, duration - 1, roomid)) continue;
+                    var freeRoom = await IsRoomFreeForDays(day, duration - 1, roomid);
+
+                    if (duration <= 1 || !freeRoom) continue;
                         var earliest = await GetEarliest(timeInterval.Start.AddDays(i+duration),roomid);
 
                     if (earliest != null) slots.Add(new TimeInterval(earliest.Start.AddDays(-2),earliest.Start));
@@ -78,7 +85,7 @@ namespace HospitalLibrary.Renovation
         }
         public async Task<Boolean> IsRoomFreeForDays(DateTime day,int numberOfDays,int roomid)
         {
-            for(int i = 0; i < numberOfDays; i++)
+            for(int i = 1; i < numberOfDays; i++)
                 if( !await IsRoomFreeForDay(day.AddDays(i),roomid)) return false;
             return true;
         }
@@ -127,9 +134,9 @@ namespace HospitalLibrary.Renovation
         private async Task<List<TimeInterval>> GetAllEarliestForDate(DateTime date,int roomId)
         {
             List<TimeInterval> latest = new List<TimeInterval>();
-            var latestReallocation = await _unitOfWork.EquipmentReallocationRepository.GetLastPendingForDay(date, roomId);
-            var latestRenovation = await _unitOfWork.RenovationRepository.GetLastPendingForDay(date, roomId);
-            var latestAppointment = await _unitOfWork.AppointmentRepository.GetLastForDate(date, roomId);
+            var latestReallocation = await _unitOfWork.EquipmentReallocationRepository.GetFirstPendingForDay(date, roomId);
+            var latestRenovation = await _unitOfWork.RenovationRepository.GetFirstPendingForDay(date, roomId);
+            var latestAppointment = await _unitOfWork.AppointmentRepository.GetFirstForDate(date, roomId);
             if (latestReallocation != null)
                 latest.Add(new TimeInterval(latestReallocation.StartAt, latestReallocation.EndAt));
             if (latestRenovation != null)
