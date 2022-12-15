@@ -101,7 +101,6 @@ namespace HospitalAPI
             services.AddScoped<ITimeIntervalValidationService, TimeIntervalValidationService>();
             services.AddScoped<IMedicalRecordService, MedicalRecordService>();
             services.AddScoped<IHospitalizationService, HospitalizationService>();
-            services.AddScoped<IHospitalizationValidator, HospitalizationValidator>();
             services.AddScoped<IAnnualLeaveService, AnnualLeaveService>();
             services.AddScoped<IAnnualLeaveValidator, AnnualLeaveValidator>();
             services.AddScoped<IAppointmentRescheduler, AppointmentRescheduler>();
