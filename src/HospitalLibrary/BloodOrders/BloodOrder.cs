@@ -12,6 +12,7 @@ namespace HospitalLibrary.BloodOrders
     {
 
 
+
         [ForeignKey("Doctor")]
         public int DoctorId { get; private set; }
         public Doctor Doctor { get; private set; }
@@ -21,6 +22,15 @@ namespace HospitalLibrary.BloodOrders
         public Reason Reason { get; private set; }
         public Quantity Quantity { get; private set; }
         
+        
+        public BloodOrder(int doctorId, DateTime arrival, DateTime orderDate, BloodType bloodType)
+        {
+            DoctorId = doctorId;
+            Arrival = arrival;
+            OrderDate = orderDate;
+            BloodType = bloodType;
+        }
+
         public BloodOrder(int doctorId, DateTime arrival, DateTime orderDate, BloodType bloodType, Reason reason, Quantity quantity)
         {
             DoctorId = doctorId;
@@ -30,6 +40,17 @@ namespace HospitalLibrary.BloodOrders
             Reason = reason;
             Quantity = quantity;
         }
+
+        public BloodOrder(int doctorId, DateTime arrival, DateTime orderDate, BloodType bloodType, string reason, double quantity)
+        {
+            DoctorId = doctorId;
+            Arrival = arrival;
+            OrderDate = orderDate;
+            BloodType = bloodType;
+            Reason = new Reason(reason);
+            Quantity = new Quantity(quantity);
+        }
+        
         
     }
 }
