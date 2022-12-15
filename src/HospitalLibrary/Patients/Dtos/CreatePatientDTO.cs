@@ -30,7 +30,6 @@ namespace HospitalLibrary.Patients.Dtos
         [RegularExpression(@"^\d{8}$", ErrorMessage = "Uid input not valid.")]
         public string Uid { get; set; }
         [Required]
-        [RegularExpression(@"^[+]*[0-9-]+$", ErrorMessage = "Phone number input not valid.")]
         public PhoneNumber PhoneNumber { get; set; }
         [Required]
         [Display(Name = "Date of birth")]
