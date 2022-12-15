@@ -5,8 +5,8 @@ namespace HospitalLibrary.Therapies.Model
 {
     public class BloodTherapy: Therapy
     {
-        public BloodType BloodType { get; set; }
-        public double Quantity { get; set; }
+        public BloodType BloodType { get; private set; }
+        public double Quantity { get; private set; }
         
         
         public BloodTherapy( int hospitalizationId, DateTime givenAt, BloodType bloodType, double quantity, int doctorId) : base(hospitalizationId, givenAt, doctorId)
