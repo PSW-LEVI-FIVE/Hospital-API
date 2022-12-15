@@ -215,18 +215,36 @@ namespace HospitalLibrary.Renovation
         private async Task TransferAllEquipment(Room mainRoom, Room secondaryRoom)
         {
           var secondaryRoomEq= await _unitOfWork.RoomEquipmentRepository.GetEquipmentByRoom(secondaryRoom.Id);
-          var primaryRoomEq = await _unitOfWork.RoomEquipmentRepository.GetEquipmentByRoom(secondaryRoom.Id);
+          var primaryRoomEq = await _unitOfWork.RoomEquipmentRepository.GetEquipmentByRoom(mainRoom.Id);
             foreach(var eq in secondaryRoomEq)
             {
-                foreach(var item in primaryRoomEq)
-                    if (eq.Name == item.Name)
-                    {
-                        item.Quantity += eq.Quantity;
-                        _unitOfWork.RoomEquipmentRepository.Update(item);
-                        _unitOfWork.RoomEquipmentRepository.Delete(eq);
-                    }
+                if(IsInPrimaryRoom(primaryRoomEq, eq))
+                {
+                    var item=await _unitOfWork.RoomEquipmentRepository.GetEquipmentByRoomAndName(mainRoom.Id, eq.Name);
+                    item.Quantity += eq.Quantity;
+                    _unitOfWork.RoomEquipmentRepository.Update(item);
+                    _unitOfWork.RoomEquipmentRepository.Save();
 
+                    _unitOfWork.RoomEquipmentRepository.Delete(eq);
+                    _unitOfWork.RoomEquipmentRepository.Save();
+
+
+                }
+                else
+                {
+                    eq.RoomId = mainRoom.Id;
+                    _unitOfWork.RoomEquipmentRepository.Update(eq);
+                    _unitOfWork.RoomEquipmentRepository.Save();
+                }
             }
+        }
+
+        private bool IsInPrimaryRoom(List<RoomEquipment> primaryRoomEq, RoomEquipment eq)
+        {
+            foreach (var item in primaryRoomEq)
+                if (eq.Name == item.Name)
+                    return true;
+            return false;
         }
 
         private async Task TransferAllAppointments(Room mainRoom,Room secondaryRoom)
