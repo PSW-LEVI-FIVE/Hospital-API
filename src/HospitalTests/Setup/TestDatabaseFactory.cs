@@ -57,7 +57,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn";
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=123";
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
@@ -276,24 +276,14 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             ChoosenDoctor = doctor
         };
         
-        AnnualLeave annualLeave1 = new AnnualLeave()
-        {
-            Id = 15,
-            DoctorId = 4,
-            State = AnnualLeaveState.PENDING,
-            StartAt = new DateTime(2022,02,11,00,00,00),
-            EndAt = new DateTime(2022,03,11,00,00,00),
-            Reason = new Reason("Some reason")
-        };
-        AnnualLeave annualLeave2 = new AnnualLeave()
-        {
-            Id = 16,
-            DoctorId = 4,
-            State = AnnualLeaveState.PENDING,
-            Reason = new Reason("Razlog"),
-            StartAt = new DateTime(2022, 05, 23, 00, 00, 00),
-            EndAt = new DateTime(2022, 09, 11, 00, 00, 00)
-        };
+        AnnualLeave annualLeave1 = new AnnualLeave(15, 4, null, "Some reason",
+            new DateTime(2022, 02, 11, 00, 00, 00), new DateTime(2022, 03, 11, 00, 00, 00), AnnualLeaveState.PENDING,
+            false);
+        
+        AnnualLeave annualLeave2 = new AnnualLeave(16, 4, null, "Razlog",
+            new DateTime(2022, 05, 23, 00, 00, 00), new DateTime(2022, 09, 11, 00, 00, 00), AnnualLeaveState.PENDING,
+            false);
+        
         
         Symptom cough = new Symptom()
         {
