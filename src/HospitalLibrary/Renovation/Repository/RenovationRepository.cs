@@ -35,28 +35,29 @@ namespace HospitalLibrary.Renovation.Repository
                 .ToListAsync();
         }
 
-        public async Task<TimeInterval> GetLastPendingForDay(DateTime date)
+        public async Task<TimeInterval> GetLastPendingForDay(DateTime date,int roomId)
         {
             return await _dataContext.Renovations
                 .Where(a => a.StartAt.Date == date.Date)
-                .Where(a=>a.State==RenovationState.PENDING)
+                .Where(a=>a.State==RenovationState.PENDING && a.MainRoomId == roomId)
                 .OrderByDescending(a => a.StartAt)
                 .Select(a => new TimeInterval(a.StartAt, a.EndAt))
                 .FirstOrDefaultAsync();
         }
-        public async Task<TimeInterval> GetFirstPendingForDay(DateTime date)
+        public async Task<TimeInterval> GetFirstPendingForDay(DateTime date,int roomId)
         {
             return await _dataContext.Renovations
                 .Where(a => a.StartAt.Date == date.Date)
-                .Where(a => a.State == RenovationState.PENDING)
+                .Where(a => a.State == RenovationState.PENDING && a.MainRoomId == roomId)
                 .OrderBy(a => a.StartAt)
                 .Select(a => new TimeInterval(a.StartAt, a.EndAt))
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<TimeInterval> GetActiveRenovationForDay(DateTime date)
+        public async Task<TimeInterval> GetActiveRenovationForDay(DateTime date,int roomId)
         {
             return await _dataContext.Renovations
+                .Where(a => a.State == RenovationState.PENDING && a.MainRoomId == roomId)
                 .Where(a => a.StartAt.Date <= date.Date && a.EndAt.Date>=date.Date)
                 .Select(a => new TimeInterval(a.StartAt, a.EndAt))
                 .SingleOrDefaultAsync();

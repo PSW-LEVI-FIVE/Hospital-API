@@ -12,7 +12,7 @@ namespace HospitalLibrary.Renovation.Interface
     { 
         Task<List<Model.Renovation>> GetAllPending();
         Task<Model.Renovation> Create(Model.Renovation renovation);
-        Task<TimeInterval> GetLatest(DateTime date);
-        Task<List<TimeInterval>> GenerateTimeSlots(TimeInterval timeInterval, int duration);
+        Task<TimeInterval> GetLatest(DateTime date,int roomid);
+        Task<List<TimeInterval>> GenerateTimeSlots(TimeInterval timeInterval, int duration, int roomid);
     }
 }

@@ -20,14 +20,15 @@ namespace HospitalAPI.Controllers.Intranet
         [Route("latest/")]
         public async Task<IActionResult> GetLatest()
         {
-            var pending = await _renovationService.GetLatest(DateTime.Now);
+            
+            var pending = await _renovationService.GetLatest(DateTime.Now,1);
             return Ok(pending);
         }
         [HttpGet]
         [Route("timeslot/")]
         public async Task<IActionResult> GetTimeSlots()
         {
-            var slots = await _renovationService.GenerateTimeSlots(new TimeInterval(DateTime.Now.Date,DateTime.Now.Date.AddDays(7)),2);
+            var slots = await _renovationService.GenerateTimeSlots(new TimeInterval(DateTime.Now.Date,DateTime.Now.Date.AddDays(7)),2,1);
             return Ok(slots);
         }
 

@@ -30,29 +30,31 @@ namespace HospitalLibrary.Renovation
             return renovation;
         }
 
-        public async Task<List<TimeInterval>> GenerateTimeSlots(TimeInterval timeInterval,int duration)
+        public async Task<List<TimeInterval>> GenerateTimeSlots(TimeInterval timeInterval,int duration,int roomid)
         {
             List<TimeInterval> slots = new List<TimeInterval>();
             var numberOfDaysInInterval = (timeInterval.End.Date.Subtract(timeInterval.Start.Date)).Days;
+
             for (int i = 0; i <= numberOfDaysInInterval - duration; i++)
             {
                 var day = timeInterval.Start.Date.AddDays(i);
-                var latest =await GetLatest(day);
+                var latest =await GetLatest(day,roomid);
 
                 if (latest!=null)
                 {
-                    if  (duration<=1 && ! await IsRoomFreeForDays(latest.Start, numberOfDaysInInterval - 1)) continue;
-                        var earliest = await GetEarliest(latest.Start.AddDays(duration));
-
+                    var freeRoom = await IsRoomFreeForDays(latest.Start, duration - 1, roomid);
+                    if  (duration<=1 && !freeRoom) continue;
+                        var earliest = await GetEarliest(latest.Start.AddDays(duration),roomid);
+                  
                     if (earliest != null && earliest.Start.Subtract(latest.Start.AddDays(duration)).Minutes>0) 
-                        slots.Add(new TimeInterval(latest.Start,latest.Start.AddDays(duration)));
+                        slots.Add(new TimeInterval(latest.End,latest.End.AddDays(duration)));
+                    else
+                        slots.Add(new TimeInterval(latest.End,latest.End.AddDays(duration)));
                 }
                 else
                 {
-                    var b = numberOfDaysInInterval - 1;
-                    Console.WriteLine(await IsRoomFreeForDays(day, numberOfDaysInInterval - 1));
-                    if (duration <= 1 || ! await IsRoomFreeForDays(day, numberOfDaysInInterval - 1)) continue;
-                        var earliest = await GetEarliest(timeInterval.Start.AddDays(i+duration));
+                    if (duration <= 1 || ! await IsRoomFreeForDays(day, duration - 1, roomid)) continue;
+                        var earliest = await GetEarliest(timeInterval.Start.AddDays(i+duration),roomid);
 
                     if (earliest != null) slots.Add(new TimeInterval(earliest.Start.AddDays(-2),earliest.Start));
 
@@ -74,38 +76,37 @@ namespace HospitalLibrary.Renovation
 
             return list;
         }
-        public async Task<Boolean> IsRoomFreeForDays(DateTime day,int numberOfDays)
+        public async Task<Boolean> IsRoomFreeForDays(DateTime day,int numberOfDays,int roomid)
         {
             for(int i = 0; i < numberOfDays; i++)
-                if( !await IsRoomFreeForDay(day.AddDays(i))) return false;
+                if( !await IsRoomFreeForDay(day.AddDays(i),roomid)) return false;
             return true;
         }
-        public async Task<Boolean> IsRoomFreeForDay(DateTime day)
+        public async Task<Boolean> IsRoomFreeForDay(DateTime day,int roomId)
         {
-            var renovations = await _unitOfWork.RenovationRepository.GetFirstPendingForDay(day);
-            var reallocations = await _unitOfWork.EquipmentReallocationRepository.GetAllPendingForDate(day);
-            var appointments = await _unitOfWork.AppointmentRepository.GetAllPendingForDate(day);
-            var activeReno = await _unitOfWork.RenovationRepository.GetActiveRenovationForDay(day);
+            var renovations = await _unitOfWork.RenovationRepository.GetFirstPendingForDay(day,roomId);
+            var reallocations = await _unitOfWork.EquipmentReallocationRepository.GetAllPendingForDateAndRoom(day,roomId);
+            var appointments = await _unitOfWork.AppointmentRepository.GetAllPendingForDate(day, roomId);
+            var activeReno = await _unitOfWork.RenovationRepository.GetActiveRenovationForDay(day, roomId);
 
             if (renovations == null &&activeReno==null && reallocations.Count==0 && appointments.Count==0)
-                //&& _unitOfWork.EquipmentReallocationRepository.GetAllPendingForDate(day) && _unitOfWork.AppointmentRepository.GetAllPendingForDate(day)==null)
                 return  true;
             return false;
         }
 
-        public async Task<TimeInterval> GetLatest(DateTime date)
+        public async Task<TimeInterval> GetLatest(DateTime date,int roomId)
         {
-            var latest = await GetAllLatestForDate( date);
+            var latest = await GetAllLatestForDate(date,roomId);
             if (latest.Count == 0) return null;
             latest.OrderByDescending(x => x.End);
             return latest[0];
         }
-        private async Task<List<TimeInterval>> GetAllLatestForDate(DateTime date)
+        private async Task<List<TimeInterval>> GetAllLatestForDate(DateTime date,int roomId)
         {
             List<TimeInterval> latest = new List<TimeInterval>();
-            var latestReallocation = await _unitOfWork.EquipmentReallocationRepository.GetLastPendingForDay(date);
-            var latestRenovation = await _unitOfWork.RenovationRepository.GetLastPendingForDay(date);
-            var latestAppointment = await _unitOfWork.AppointmentRepository.GetLastForDate(DateTime.Now);
+            var latestReallocation = await _unitOfWork.EquipmentReallocationRepository.GetLastPendingForDay(date, roomId);
+            var latestRenovation = await _unitOfWork.RenovationRepository.GetLastPendingForDay(date, roomId);
+            var latestAppointment = await _unitOfWork.AppointmentRepository.GetLastForDate(date, roomId);
             if (latestReallocation != null)
                 latest.Add(new TimeInterval(latestReallocation.StartAt, latestReallocation.EndAt));
             if (latestRenovation != null)
@@ -115,20 +116,20 @@ namespace HospitalLibrary.Renovation
 
             return latest;
         }
-        public async Task<TimeInterval> GetEarliest(DateTime date)
+        public async Task<TimeInterval> GetEarliest(DateTime date,int roomId)
         {
-            var earliest = await GetAllEarliestForDate(date);
+            var earliest = await GetAllEarliestForDate(date, roomId);
             if (earliest.Count == 0) return null;
             earliest.OrderBy(x => x.End);
             return earliest[0];
         }
 
-        private async Task<List<TimeInterval>> GetAllEarliestForDate(DateTime date)
+        private async Task<List<TimeInterval>> GetAllEarliestForDate(DateTime date,int roomId)
         {
             List<TimeInterval> latest = new List<TimeInterval>();
-            var latestReallocation = await _unitOfWork.EquipmentReallocationRepository.GetLastPendingForDay(date);
-            var latestRenovation = await _unitOfWork.RenovationRepository.GetLastPendingForDay(date);
-            var latestAppointment = await _unitOfWork.AppointmentRepository.GetLastForDate(DateTime.Now);
+            var latestReallocation = await _unitOfWork.EquipmentReallocationRepository.GetLastPendingForDay(date, roomId);
+            var latestRenovation = await _unitOfWork.RenovationRepository.GetLastPendingForDay(date, roomId);
+            var latestAppointment = await _unitOfWork.AppointmentRepository.GetLastForDate(date, roomId);
             if (latestReallocation != null)
                 latest.Add(new TimeInterval(latestReallocation.StartAt, latestReallocation.EndAt));
             if (latestRenovation != null)

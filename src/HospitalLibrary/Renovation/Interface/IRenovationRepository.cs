@@ -11,9 +11,9 @@ namespace HospitalLibrary.Renovation.Interface
     {
         Task<List<Model.Renovation>> GetAllPending();
         Task<List<Model.Renovation>> GetAllPendingForRange(TimeInterval interval);
-        Task<TimeInterval> GetLastPendingForDay(DateTime date);
-        Task<TimeInterval> GetFirstPendingForDay(DateTime date);
-        Task<TimeInterval> GetActiveRenovationForDay(DateTime date);
+        Task<TimeInterval> GetLastPendingForDay(DateTime date,int roomId);
+        Task<TimeInterval> GetFirstPendingForDay(DateTime date, int roomId);
+        Task<TimeInterval> GetActiveRenovationForDay(DateTime date, int roomId);
 
     }
 }
