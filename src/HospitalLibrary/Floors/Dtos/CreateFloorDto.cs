@@ -22,13 +22,9 @@ namespace HospitalLibrary.Floors.Dtos
         [Required]
         public string RgbColour;
 
-        public Floor DtoToFloor()
+        public Floor DtoToFloor(int buildingId)
         {
-            return new Floor()
-            {
-                Number = Number,
-                Area = Area
-            };
+            return new Floor(Number, Area,buildingId);
         }
 
         public MapFloor DtoToMapFloor()
