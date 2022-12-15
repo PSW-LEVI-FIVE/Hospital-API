@@ -3,31 +3,33 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Doctors;
+using HospitalLibrary.Shared.Model;
 using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.BloodOrders
 {
-    public class BloodOrder
+    public class BloodOrder: BaseEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity),Key()]
-        public int Id { get; set; }
-        
-        [ForeignKey("Doctor")]
-        public int DoctorId { get; set; }
-        public Doctor Doctor { get; set; }
-        
-        public DateTime Arrival { get; set; }
-        
-        public DateTime OrderDate { get; set; }
-        
-        public BloodType BloodType { get; set; }
-        
-        public Reason Reason { get; set; }
-        
-        public Quantity Quantity { get; set; }
 
-        public BloodOrder()
+
+        [ForeignKey("Doctor")]
+        public int DoctorId { get; private set; }
+        public Doctor Doctor { get; private set; }
+        public DateTime Arrival { get; private set; }
+        public DateTime OrderDate { get; private set; }
+        public BloodType BloodType { get; private set; }
+        public Reason Reason { get; private set; }
+        public Quantity Quantity { get; private set; }
+        
+        public BloodOrder(int doctorId, DateTime arrival, DateTime orderDate, BloodType bloodType, Reason reason, Quantity quantity)
         {
+            DoctorId = doctorId;
+            Arrival = arrival;
+            OrderDate = orderDate;
+            BloodType = bloodType;
+            Reason = reason;
+            Quantity = quantity;
         }
+        
     }
 }
