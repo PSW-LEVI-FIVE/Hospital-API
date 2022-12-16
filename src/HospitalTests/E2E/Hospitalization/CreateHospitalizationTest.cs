@@ -3,9 +3,10 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Assert = NUnit.Framework.Assert;
-namespace HospitalTests.E2E.ExaminationReport;
+using NUnit.Framework;
+namespace HospitalTests.E2E.Hospitalization;
 
-public class ExaminationReportTest
+public class CreateHospitalizationTest
 {
     IWebDriver Driver;
 
@@ -25,58 +26,52 @@ public class ExaminationReportTest
         Driver.Url = "http://localhost:4200/";
         Driver.Manage().Window.Maximize();
     }
-
+    
     [Test]
     public void Test()
     {
         Login();
-        Navigate("http://localhost:4200/doctor/examination/5/report");
+        Navigate("http://localhost:4200/doctor/records");
+
+        Click("create-button");
         
-        TypeInInput("input-symptoms", "Blood", 2000);
-        FindAllByCssSelector(".mat-option-text")[0].Click();
+        Click("patientBox");
+        Click("patientOption");
+        
+        Click("roomBox");
+        Click("roomOption");
+        
+        Click("bedBox");
+        Click("bedOption");
+
+        var DateTime = FindById("dateTimeBox");
+        DateTime.SendKeys("12");
+        DateTime.SendKeys("30");
+        DateTime.SendKeys("2022");
+        DateTime.SendKeys(Keys.Tab);
+        DateTime.SendKeys("10");
+        DateTime.SendKeys("10");
+        DateTime.SendKeys("AM");
         Sleep(1000);
-        DeleteCharacters("input-symptoms", 5);
-        Click("symptoms-next");
         
-        TypeInInput("report", "This is test for report");
-        Click("report-next");
+        Click("save-button");
         
-        
-        TypeInInput("input-medicine", "brufen", 2000);
-        FindAllByCssSelector(".mat-option-text")[0].Click();
-        Sleep(1000);
-        
-        FindAllByCssSelector(".prescription input")[0].SendKeys("3x3");
-        Click("prescriptions-next");
-        
-        Click("done");
-        
-        Sleep(10000);
+        Sleep(3000);
         
         Assert.Pass();
     }
     
-    
-    [TearDown]
-    public void CloseBrowser()
+    private void Sleep(int milliseconds)
     {
-        Driver.Quit();
+        Thread.Sleep(milliseconds);
     }
-
+    
     private void Navigate(string url)
     {
         Driver.Url = url;
-        Sleep(4000);
+        Sleep(3000);
     }
     
-    private void Login()
-    {
-        TypeInInput("input-username", "doktor");
-        TypeInInput("input-password", "asdasd");
-
-        Submit("submit-login");
-    }
-
     private void Click(string id)
     {
         var element = FindById(id);
@@ -84,11 +79,11 @@ public class ExaminationReportTest
         Sleep(1000);
     }
     
-    private void TypeInInput(string id, string text, int sleep=1000)
+    private void Login()
     {
-        var element = FindById(id);
-        element.SendKeys(text);
-        Sleep(sleep);
+        TypeInInput("input-username", "doktor");
+        TypeInInput("input-password", "asdasd");
+        Submit("submit-login");
     }
 
     private void Submit(string id)
@@ -98,29 +93,23 @@ public class ExaminationReportTest
         Sleep(1000);
     }
 
-    private void DeleteCharacters(string id, int characters)
+    private void TypeInInput(string id, string text, int sleep=1000)
     {
         var element = FindById(id);
-        for(var i = 0; i < characters; i++) 
-        {
-            element.SendKeys(Keys.Backspace);    
-        }
-        Sleep(1000);
+        element.SendKeys(text);
+        Sleep(sleep);
     }
-
-    private ReadOnlyCollection<IWebElement> FindAllByCssSelector(string selector)
-    {
-        return Driver.FindElements(By.CssSelector(selector));
-    }
-
+    
     private IWebElement FindById(string id)
     {
         return Driver.FindElement(By.Id(id));
     }
 
-    private void Sleep(int milliseconds)
+    [TearDown]
+    public void CloseBrowser()
     {
-        Thread.Sleep(milliseconds);
+        Driver.Quit();
     }
-
+    
+    
 }

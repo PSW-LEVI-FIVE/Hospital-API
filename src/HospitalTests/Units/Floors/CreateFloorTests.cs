@@ -22,11 +22,7 @@ public class CreateFloorTests
 
         var floorService = new FloorService(unitOfWork.Object);
 
-        Floor floor = new Floor()
-        {
-            Number = 1,
-            Area = 150
-        };
+        Floor floor = new Floor(1, 150);
 
         var result = floorService.Create(floor);
         result.ShouldNotBeNull();

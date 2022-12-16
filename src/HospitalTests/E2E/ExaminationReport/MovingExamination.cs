@@ -3,9 +3,10 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Assert = NUnit.Framework.Assert;
+
 namespace HospitalTests.E2E.ExaminationReport;
 
-public class ExaminationReportTest
+public class MovingExamination
 {
     IWebDriver Driver;
 
@@ -25,34 +26,41 @@ public class ExaminationReportTest
         Driver.Url = "http://localhost:4200/";
         Driver.Manage().Window.Maximize();
     }
-
+    
     [Test]
     public void Test()
     {
         Login();
-        Navigate("http://localhost:4200/doctor/examination/5/report");
-        
-        TypeInInput("input-symptoms", "Blood", 2000);
-        FindAllByCssSelector(".mat-option-text")[0].Click();
+        Navigate("http://localhost:4200/doctor/appointments/create");
+
+        Click("patient-select");
+        ReadOnlyCollection<IWebElement> patientOptions = FindAllByCssSelector(".mat-option-text");
+        patientOptions[0].Click();
         Sleep(1000);
-        DeleteCharacters("input-symptoms", 5);
-        Click("symptoms-next");
-        
-        TypeInInput("report", "This is test for report");
-        Click("report-next");
-        
-        
-        TypeInInput("input-medicine", "brufen", 2000);
-        FindAllByCssSelector(".mat-option-text")[0].Click();
+
+        Click("room-select");
+        ReadOnlyCollection<IWebElement> roomOptions = FindAllByCssSelector(".mat-option-text");
+        roomOptions[0].Click();
         Sleep(1000);
         
-        FindAllByCssSelector(".prescription input")[0].SendKeys("3x3");
-        Click("prescriptions-next");
         
-        Click("done");
+        Click("date-input");
+        DeleteCharacters("date-input", 10);
+        TypeInInput("date-input", "12/17/2022");
+        Sleep(1000);
         
+        Click("time-from");
+        TypeInInput("time-from", "10");
+        TypeInInput("time-from", "00");
+        TypeInInput("time-from", "AM");
+        
+        Click("time-to");
+        TypeInInput("time-to", "11");
+        TypeInInput("time-to", "00");
+        TypeInInput("time-to", "AM");
+        
+        Click("btn-create");
         Sleep(10000);
-        
         Assert.Pass();
     }
     
@@ -73,7 +81,6 @@ public class ExaminationReportTest
     {
         TypeInInput("input-username", "doktor");
         TypeInInput("input-password", "asdasd");
-
         Submit("submit-login");
     }
 
@@ -122,5 +129,4 @@ public class ExaminationReportTest
     {
         Thread.Sleep(milliseconds);
     }
-
 }

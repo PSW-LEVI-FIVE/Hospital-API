@@ -18,5 +18,6 @@ namespace HospitalLibrary.User.Interfaces
         public Users.User UserExist(string username, string password);
         public Users.User BlockMaliciousUser(int blockedUserId);
         public Users.User UnBlockMaliciousUser(int blockedUserId);
+
     }
 }

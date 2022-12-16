@@ -21,14 +21,7 @@ namespace HospitalLibrary.Therapies.Dtos
 
         public BloodTherapy MapToModel()
         {
-            return new BloodTherapy
-            {
-                HospitalizationId = HospitalizationId,
-                GivenAt = GivenAt,
-                BloodType = (BloodType)Type,
-                Quantity = Quantity,
-                DoctorId = DoctorId
-            };
+            return new BloodTherapy(HospitalizationId, GivenAt, (BloodType)Type, Quantity, DoctorId);
         }
     }
 }

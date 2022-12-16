@@ -83,9 +83,7 @@ namespace HospitalAPI.Controllers.Intranet
         {
             MapBuilding mapBuilding = _mapService.GetBuildingById(createFloorDto.BuildingId);
 
-            Floor floor = createFloorDto.DtoToFloor();
-            floor.BuildingId = mapBuilding.BuildingId;
-
+            Floor floor = createFloorDto.DtoToFloor(mapBuilding.BuildingId);
             floor = _floorService.Create(floor);
             if (floor == null) return Problem("Error: floor was not created");
 

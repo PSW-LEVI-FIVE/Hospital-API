@@ -57,7 +57,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn";
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=123";
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
@@ -81,13 +81,13 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
         Speciality speciality1 = new Speciality(1, "INTERNAL_MEDICINE");
         Speciality speciality2 = new Speciality(2, "SURGERY");
-        
+
         Doctor doctor = new Doctor()
         {
             Id = 4,
             Name = "Prvi",
             Surname = "Drugi",
-            Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
+            Address = new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BirthDate = DateTime.Now,
             Email = "nekimail@gmail.com",
             PhoneNumber = new PhoneNumber("+1233555333"),
@@ -120,12 +120,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             RgbColour = "#FFFFFF"
         };
 
-        Floor floor = new Floor()
-        {
-            Id = 2,
-            Area = 100,
-            BuildingId = 2,
-        };
+        Floor floor = new Floor(2, 100, 2);
 
 
         MapFloor mapFloor = new MapFloor()
@@ -148,7 +143,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             RoomNumber = "1",
             RoomType = RoomType.EXAMINATION_ROOM
         };
-        
+
         Room room2 = new Room()
         {
             Id = 3,
@@ -156,6 +151,23 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             FloorId = 2,
             RoomNumber = "123",
             RoomType = RoomType.EXAMINATION_ROOM
+        };
+
+        Room room3 = new Room()
+        {
+            Id = 6,
+            Area = 10,
+            FloorId = 2,
+            RoomNumber = "145",
+            RoomType = RoomType.NO_TYPE
+        };
+        Room room4 = new Room()
+        {
+            Id = 7,
+            Area = 10,
+            FloorId = 2,
+            RoomNumber = "146",
+            RoomType = RoomType.HOSPITAL_ROOM
         };
 
         RoomEquipment equipment = new Bed(1, 10, "Bed", 2, 1);
@@ -180,7 +192,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Uid = "67676767",
             PhoneNumber = new PhoneNumber("+123123123"),
             BirthDate = new DateTime(2000, 2, 2),
-            Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
+            Address = new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BloodType = BloodType.A_NEGATIVE,
             ChoosenDoctor = doctor
         };
@@ -192,10 +204,10 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Role = Role.Patient,
             Id = 1
         };
-        Allergen allergen1 = new Allergen(1,"Milk");
+        Allergen allergen1 = new Allergen(1, "Milk");
         List<Allergen> allergens = new List<Allergen>();
         allergens.Add(allergen1);
-        
+
         Patient patient2 = new Patient()
         {
             Id = 2,
@@ -204,8 +216,8 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Email = "asdasd2@gmail.com",
             Uid = "78787878",
             PhoneNumber = new PhoneNumber("+1233123123"),
-            BirthDate = new DateTime(2000,2,3), 
-            Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"), 
+            BirthDate = new DateTime(2000, 2, 3),
+            Address = new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BloodType = BloodType.A_NEGATIVE,
             ChoosenDoctor = doctor,
             Allergens = allergens,
@@ -220,7 +232,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Role = Role.Doctor,
             Id = 2
         };
-        
+
         Doctor doctor2 = new Doctor()
         {
             Id = 5,
@@ -244,14 +256,14 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         Medicine medicine = new Medicine(1, "MedicineOne", 12.0);
         Medicine medicine2 = new Medicine()
         {
-            Id=2, 
-            Name ="MedicineOne" ,
+            Id = 2,
+            Name = "MedicineOne",
             Quantity = 12.0,
             Allergens = allergens,
         };
-        User user3 = new User("Menjdjer", "nekakulsifra12", Role.Doctor,4,ActiveStatus.Active);
-        Allergen allergen2 = new Allergen(2,"Cetirizine");
-        Allergen allergen3 = new Allergen(3,"Budesonide");
+        User user3 = new User("Menjdjer", "nekakulsifra12", Role.Doctor, 4, ActiveStatus.Active);
+        Allergen allergen2 = new Allergen(2, "Cetirizine");
+        Allergen allergen3 = new Allergen(3, "Budesonide");
 
         Therapy therapyBlo = new BloodTherapy(10, DateTime.Now, BloodType.A_NEGATIVE, 10, 4);
         Therapy therapyMed = new MedicineTherapy(10, DateTime.Now, 1, 10, 4);
@@ -270,21 +282,21 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Email = "asdasd65@gmail.com",
             Uid = "78787899",
             PhoneNumber = new PhoneNumber("+123123123"),
-            BirthDate = new DateTime(2000,2,3), 
-            Address =  new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
+            BirthDate = new DateTime(2000, 2, 3),
+            Address = new Address("Srbija", "Novi Sad", "Sase Krstica", "4"),
             BloodType = BloodType.A_NEGATIVE,
             ChoosenDoctor = doctor
         };
-        
+
         AnnualLeave annualLeave1 = new AnnualLeave(15, 4, null, "Some reason",
             new DateTime(2022, 02, 11, 00, 00, 00), new DateTime(2022, 03, 11, 00, 00, 00), AnnualLeaveState.PENDING,
             false);
-        
+
         AnnualLeave annualLeave2 = new AnnualLeave(16, 4, null, "Razlog",
             new DateTime(2022, 05, 23, 00, 00, 00), new DateTime(2022, 09, 11, 00, 00, 00), AnnualLeaveState.PENDING,
             false);
-        
-        
+
+
         Symptom cough = new Symptom()
         {
             Id = 10,
@@ -406,6 +418,30 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             EndAt = today.AddDays(1)
         };
 
+        Appointment examination76 = new Appointment()
+        {
+            Id = 89,
+            DoctorId = 4,
+            PatientId = 1,
+            RoomId = 2,
+            State = AppointmentState.PENDING,
+            Type = AppointmentType.EXAMINATION,
+            StartAt = DateTime.Now,
+            EndAt = DateTime.Now.AddHours(1)
+        };
+
+        Appointment examination105 = new Appointment()
+        {
+            Id = 106,
+            DoctorId = 4,
+            PatientId = 6,
+            RoomId = 2,
+            State = AppointmentState.PENDING,
+            Type = AppointmentType.EXAMINATION,
+            StartAt = DateTime.Now.AddDays(1),
+            EndAt = DateTime.Now.AddDays(1).AddHours(1)
+        };
+
         Appointment examination1 = new Appointment()
         {
             Id = 500,
@@ -430,14 +466,14 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             EndAt = today.AddDays(1)
         };
 
-        
+
         DateTime timeBegin = today.AddDays(2);
         DateTime timeEnd = today.AddDays(2);
         TimeSpan timeSpanBegin = new TimeSpan(11, 35, 0);
         timeBegin = timeBegin.Date + timeSpanBegin;
         TimeSpan timeSpanEnd = new TimeSpan(12, 25, 0);
         timeEnd = timeEnd.Date + timeSpanEnd;
-        
+
         Appointment appointment1 = new Appointment()
         {
             Id = 31,
@@ -477,7 +513,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             DoctorId = 4,
             ExaminationId = 41
         };
-        
+
         dbContext.Specialities.Add(speciality1);
         dbContext.Specialities.Add(speciality2);
         dbContext.Buildings.Add(building);
@@ -500,6 +536,8 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.WorkingHours.Add(doctor2Wh7);
         dbContext.Rooms.Add(room1);
         dbContext.Rooms.Add(room2);
+        dbContext.Rooms.Add(room3);
+        dbContext.Rooms.Add(room4);
         dbContext.Doctors.Add(doctor);
         dbContext.Doctors.Add(doctor2);
         dbContext.AnnualLeaves.Add(annualLeave1);
@@ -535,6 +573,8 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Appointments.Add(appointment1);
         dbContext.Appointments.Add(appointment2);
         dbContext.Appointments.Add(examination1);
+        dbContext.Appointments.Add(examination76);
+        dbContext.Appointments.Add(examination105);
         dbContext.Appointments.Add(examinationDontTouch);
         dbContext.ExaminationReports.Add(rp);
         dbContext.SaveChanges();

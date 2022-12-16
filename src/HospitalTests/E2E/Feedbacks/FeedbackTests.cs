@@ -39,6 +39,7 @@ public class FeedbackTests
         
         TypeInInput("username", "pRoXm3691");
         TypeInInput("password", "asdasd");
+
         Submit("login");
         Sleep(700);
         FindById("error").Text.ShouldBe("Username or password not valid!");
@@ -51,6 +52,7 @@ public class FeedbackTests
         
         TypeInInput("username", "pRoXm369");
         TypeInInput("password", "asdasd");
+
         Submit("login");
         Sleep(700);
         Navigate("http://localhost:4200/patient/feedback/create");
@@ -65,6 +67,7 @@ public class FeedbackTests
         
         TypeInInput("username", "pRoXm369");
         TypeInInput("password", "asdasd");
+
         Submit("login");
         Sleep(700);
         Navigate("http://localhost:4200/patient/feedback/create");
@@ -110,6 +113,7 @@ public class FeedbackTests
         
         TypeInInput("username", "pRoXm369");
         TypeInInput("password", "asdasd");
+
         Submit("login");
         Sleep(700);
         Navigate("http://localhost:4200/patient/feedback/create");

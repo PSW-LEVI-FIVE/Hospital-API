@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.Consiliums
 {
@@ -8,11 +9,21 @@ namespace HospitalLibrary.Consiliums
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key()]
         public int Id { get; set; }
         
-        public string Title { get; set; }
+        public Title Title { get; set; }
         
-        public Consilium(string title)
+        public Consilium(Title title)
         {
             Title = title;
         }
+        
+        public Consilium(string title)
+        {
+            Title = new Title(title);
+        }
+
+        public Consilium()
+        {
+        }
+
     }
 }
