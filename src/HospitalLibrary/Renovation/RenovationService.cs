@@ -17,15 +17,20 @@ namespace HospitalLibrary.Renovation
     public class RenovationService: IRenovationService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ITimeIntervalValidationService _intervalValidation;
 
-        public RenovationService(IUnitOfWork unitOfWork)
+        public RenovationService(IUnitOfWork unitOfWork, ITimeIntervalValidationService intervalValidation)
         {
             _unitOfWork=unitOfWork;
+            _intervalValidation = intervalValidation;
+
         }
 
         public async Task<Model.Renovation> Create(Model.Renovation renovation)
         {
             //validate renovation
+            await _intervalValidation.ValidateRenovation(renovation);
+
             _unitOfWork.RenovationRepository.Add(renovation);
             _unitOfWork.RenovationRepository.Save();
 

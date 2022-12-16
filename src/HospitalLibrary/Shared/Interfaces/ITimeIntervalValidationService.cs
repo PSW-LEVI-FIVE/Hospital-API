@@ -8,6 +8,7 @@ namespace HospitalLibrary.Shared.Interfaces
     public interface ITimeIntervalValidationService
     {
         Task ValidateAppointment(Appointment appointment);
+        Task ValidateRenovation(Renovation.Model.Renovation renovation);
 
         Task ValidateReallocation(EquipmentReallocation reallocation);
         void ThrowIfEndBeforeStart(DateTime start, DateTime end);

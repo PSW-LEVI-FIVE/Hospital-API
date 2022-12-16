@@ -32,6 +32,23 @@ namespace HospitalAPI.Controllers.Intranet
             var slots = await _renovationService.GenerateTimeSlots(new TimeInterval(reqdto.startDate, reqdto.endDate), reqdto.duration, reqdto.roomId);
             return Ok(slots);
         }
+        [HttpPost]
+        [Route("Create/Merge")]
+        public async Task<IActionResult> CreateMerge([FromBody] MergeDTO mergeDto)
+        {
+            var reno = mergeDto.MapToModel();
+            var slots = await _renovationService.Create(reno);
+            return Ok(slots);
+        }
+        [HttpPost]
+        [Route("Create/Split")]
+        public async Task<IActionResult> CreateSplit([FromBody] SplitDTO splitDto)
+        {
+            var reno = splitDto.MapToModel();
+
+            var slots = await _renovationService.Create(reno);
+            return Ok(slots);
+        }
 
 
         [HttpGet]
