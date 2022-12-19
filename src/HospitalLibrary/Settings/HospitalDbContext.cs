@@ -59,6 +59,8 @@ namespace HospitalLibrary.Settings
         public DbSet<Prescription> Prescriptions { get; set; }
         
         public DbSet<Speciality> Specialities { get; set; }
+
+        public DbSet<Renovation.Model.Renovation> Renovations { get; set; }
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

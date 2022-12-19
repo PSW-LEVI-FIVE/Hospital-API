@@ -21,27 +21,49 @@ namespace HospitalLibrary.Rooms.Repositories
         public async Task<List<EquipmentReallocation>> GetAllPending()
         {
             return await _dataContext.EquipmentReallocations
-                .Where(a=> a.state==ReallocationState.PENDING)
+                .Where(a => a.state == ReallocationState.PENDING)
                 .ToListAsync();
         }
         private int maxID()
         {
-         return _dataContext.RoomEquipment.OrderByDescending(a => a.Id).FirstOrDefault().Id;
+            return _dataContext.RoomEquipment.OrderByDescending(a => a.Id).FirstOrDefault().Id;
         }
-
+        public async Task<List<EquipmentReallocation>> GetAllPendingForDate(DateTime date)
+        {
+            return await _dataContext.EquipmentReallocations
+                .Where(a => a.StartAt.Date == date.Date)
+                .Where(a => a.state == ReallocationState.PENDING)
+                .ToListAsync();
+        }
         public async Task<List<EquipmentReallocation>> GetAllPendingForToday()
         {
             var Date = DateTime.Now;
             return await _dataContext.EquipmentReallocations
-                .Where(a => a.StartAt.Date<=Date.Date)
+                .Where(a => a.StartAt.Date <= Date.Date)
                 .Where(a => a.state == ReallocationState.PENDING)
                 .ToListAsync();
+        }
+        public async Task<List<EquipmentReallocation>> GetAllPendingForDateAndRoom(DateTime date, int roomid)
+        {
+            return await _dataContext.EquipmentReallocations
+                .Where(a => a.StartAt.Date == date.Date)
+                .Where(a => a.StartingRoomId == roomid || a.DestinationRoomId == roomid)
+                .Where(a => a.state == ReallocationState.PENDING)
+                .ToListAsync();
+        }
+        public async Task<EquipmentReallocation> GetLastPendingForDay(DateTime date, int roomid)
+        {
+            return await _dataContext.EquipmentReallocations
+                .Where(a => a.StartingRoomId == roomid || a.DestinationRoomId == roomid)
+                .Where(a => a.StartAt.Date == date.Date)
+                .Where(a => a.state == ReallocationState.PENDING)
+                .OrderByDescending(a => a.EndAt).FirstOrDefaultAsync();
         }
 
         public async Task<EquipmentReallocation> GetFirstPendingForDay(DateTime date, int roomid)
         {
             return await _dataContext.EquipmentReallocations
-                .Where(a => a.StartingRoomId == roomid || a.DestinationRoomId==roomid)
+                .Where(a => a.StartingRoomId == roomid || a.DestinationRoomId == roomid)
                 .Where(a => a.StartAt.Date == date.Date)
                 .Where(a => a.state == ReallocationState.PENDING)
                 .OrderBy(a => a.StartAt).FirstOrDefaultAsync();
