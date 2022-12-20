@@ -80,6 +80,68 @@ namespace HospitalLibrary.Renovation
             return slots;
         }
 
+        public async Task<List<TimeInterval>> GenerateCleanerTimeSlots(TimeInterval timeInterval, int duration,
+            int roomid)
+        {
+            List<TimeInterval> slots = new List<TimeInterval>();
+            var schedule =await GetRoomScheduleForRange(timeInterval, roomid);
+            schedule = schedule.OrderBy(a => a.Start).ToList();
+            DateTime previous = new DateTime(0);
+            foreach (var current in schedule)
+            {
+                if (previous == new DateTime(0)) previous = current.Start.Date.AddHours(8);
+
+                if (current.Start.Subtract(previous).CompareTo(new TimeSpan(duration,0,0,0))<0)
+                {
+                    previous = current.End; 
+                    continue;
+
+                }
+
+                //BreakInto30MinuteSlots(previous, current.Start.AddDays(-duration));
+                slots.Add(new TimeInterval(previous,current.Start));
+                previous = current.End;
+                
+            }
+            if(slots.Count==0) slots.Add(new TimeInterval(timeInterval));
+            return slots;
+        }
+
+        private static Dictionary<string,TimeInterval> joinDictionaries(Dictionary<string, TimeInterval> baseDictionary, Dictionary<string, TimeInterval> additionalDictionary)
+        {
+            foreach (var field in additionalDictionary)
+                baseDictionary.Add(field.Key,field.Value);
+            return baseDictionary;
+        }
+
+        private async Task<List<TimeInterval>> GetRoomScheduleForRange(TimeInterval interval, int roomId)
+        {
+            List<TimeInterval> latest = new List<TimeInterval>();
+           // Dictionary<string,TimeInterval> additional=new Dictionary<string,TimeInterval>();
+            var Realocations = await _unitOfWork.EquipmentReallocationRepository.GetAllPendingForRoomInTimeInterval(roomId,interval);
+            foreach (var realocation in Realocations)
+                latest.Add(realocation.GetInterval());
+            
+
+            var Appointment = await _unitOfWork.AppointmentRepository.GetAllPendingForRange(interval,roomId);
+            foreach (var appointment in Appointment)
+                latest.Add(new TimeInterval(appointment.Start,appointment.End));
+            
+
+            var Renovations = await _unitOfWork.RenovationRepository.GetAllPendingForRoomInRange(interval, roomId);
+            foreach (var r in Renovations)
+                latest.Add(r.GetInterval());
+            //var latestRenovation = await _unitOfWork.RenovationRepository.GetLastPendingForDay(date, roomId);
+            //var latestAppointment = await _unitOfWork.AppointmentRepository.GetLastForDate(date, roomId);
+            //if (latestReallocation != null)
+             //   latest.Add(new TimeInterval(latestReallocation.StartAt, latestReallocation.EndAt));
+            //if (latestRenovation != null)
+            //    latest.Add(latestRenovation);
+            //if (latestAppointment != null)
+            //    latest.Add(latestAppointment);
+
+            return latest;
+        }
         public List<TimeInterval> BreakInto30MinuteSlots(DateTime startDate, DateTime EndDate)
         {   
             var list = new List<TimeInterval>();

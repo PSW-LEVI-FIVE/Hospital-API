@@ -7,6 +7,7 @@ namespace HospitalLibrary.Appointments.Interfaces
 {
     public interface IAppointmentRepository : IBaseRepository<Appointment>
     {
+        Task<List<TimeInterval>> GetAllPendingForRange(TimeInterval interval, int roomId);
         Task<List<TimeInterval>> GetAllRoomTakenIntervalsForDate(int roomId, DateTime date);
         Task<IEnumerable<TimeInterval>> GetAllDoctorTakenIntervalsForDate(int doctorId, DateTime date);
         Task<IEnumerable<TimeInterval>> GetAllDoctorTakenIntervalsForTimeInterval(int doctorId, TimeInterval timeInterval);

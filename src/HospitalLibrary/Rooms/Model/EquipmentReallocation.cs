@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HospitalLibrary.Appointments;
 
 namespace HospitalLibrary.Rooms.Model
 {
@@ -44,6 +45,15 @@ namespace HospitalLibrary.Rooms.Model
             this.state = state;
             StartAt = startAt;
             EndAt = endAt;
+        }
+        public TimeInterval GetInterval()
+        {
+            return new TimeInterval(StartAt, EndAt);
+        }
+
+        public string GetDictionaryKet()
+        {
+            return "real" + Id.ToString();
         }
     }
 }

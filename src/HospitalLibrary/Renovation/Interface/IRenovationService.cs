@@ -9,7 +9,8 @@ using HospitalLibrary.Appointments;
 namespace HospitalLibrary.Renovation.Interface
 {
     public interface IRenovationService
-    { 
+    {
+        Task<List<TimeInterval>> GenerateCleanerTimeSlots(TimeInterval timeInterval, int duration, int roomid);
         Task<List<Model.Renovation>> GetAllPending();
         Task<Model.Renovation> Create(Model.Renovation renovation);
         Task<TimeInterval> GetLatest(DateTime date,int roomid);

@@ -19,6 +19,13 @@ namespace HospitalLibrary.Renovation.Repository
         {
         }
 
+        public async Task<List<Model.Renovation>> GetAllPendingForRoomInRange(TimeInterval interval,int roomId)
+        {
+            return await _dataContext.Renovations
+                .Where(a => a.State == RenovationState.PENDING)
+                .Where(a => a.MainRoomId == roomId || a.SecondaryRoomId==roomId).ToListAsync();
+        }
+
         public async Task<List<Model.Renovation>> GetAllPending()
         {
             return await _dataContext.Renovations
@@ -31,7 +38,7 @@ namespace HospitalLibrary.Renovation.Repository
             return await _dataContext.Renovations
                 .Where(a => a.State == RenovationState.PENDING)
                 .Where(a=>interval.Start.Date.CompareTo(a.StartAt.Date) <= 0)
-                .Where(a=> interval.End.Date.CompareTo(a.StartAt.Date) > 0)
+                .Where(a=> interval.End.Date.CompareTo(a.EndAt.Date) >= 0)
                 .ToListAsync();
         }
 

@@ -5,7 +5,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HospitalLibrary.Appointments;
 using HospitalLibrary.Rooms.Model;
+using Microsoft.VisualBasic;
 
 namespace HospitalLibrary.Renovation.Model
 {
@@ -49,6 +51,16 @@ namespace HospitalLibrary.Renovation.Model
             State = RenovationState.PENDING;
             Type = RenovationType.MERGE;
             SecondaryRoomId = secondaryRoomId;
+        }
+
+        public TimeInterval GetInterval()
+        {
+            return new TimeInterval(StartAt, EndAt);
+        }
+
+        public string GetDictionaryKet()
+        {
+            return "reno" + Id.ToString();
         }
     }
 }

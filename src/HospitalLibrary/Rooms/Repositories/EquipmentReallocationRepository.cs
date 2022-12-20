@@ -76,6 +76,7 @@ namespace HospitalLibrary.Rooms.Repositories
                 .ToListAsync();
         }
 
+
         public async Task<List<TimeInterval>> GetAllRoomTakenInrevalsForDate(int? roomId, DateTime date)
         {
             return await _dataContext.EquipmentReallocations
@@ -85,6 +86,15 @@ namespace HospitalLibrary.Rooms.Repositories
                 .ToListAsync();
         }
 
-
+        public async Task<List<EquipmentReallocation>> GetAllPendingForRoomInTimeInterval(int roomId,
+            TimeInterval timeInterval)
+        { 
+            return await _dataContext.EquipmentReallocations
+                .Where(a => a.StartingRoomId == roomId || a.DestinationRoomId == roomId)
+                .Where(a =>
+                    timeInterval.Start.Date.CompareTo(a.StartAt.Date) <= 0
+                    || timeInterval.End.Date.CompareTo(a.StartAt.Date) > 0)
+                .ToListAsync();
+        }
     }
 }
