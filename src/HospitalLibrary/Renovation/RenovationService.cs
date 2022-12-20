@@ -98,11 +98,12 @@ namespace HospitalLibrary.Renovation
 
                 }
 
-                //BreakInto30MinuteSlots(previous, current.Start.AddDays(-duration));
-                slots.Add(new TimeInterval(previous,current.Start));
+                var actual= BreakIntoDurationLenghtSlots(previous, current.Start,duration);
+                slots.AddRange(actual);
                 previous = current.End;
-                
             }
+            if(timeInterval.End.Subtract(previous).CompareTo(new TimeSpan(duration, 0, 0, 0)) >= 0) 
+                slots.AddRange(BreakIntoDurationLenghtSlots(previous,timeInterval.End,duration));
             if(slots.Count==0) slots.Add(new TimeInterval(timeInterval));
             return slots;
         }
@@ -142,13 +143,19 @@ namespace HospitalLibrary.Renovation
 
             return latest;
         }
-        public List<TimeInterval> BreakInto30MinuteSlots(DateTime startDate, DateTime EndDate)
+        public List<TimeInterval> BreakIntoDurationLenghtSlots(DateTime startDate, DateTime EndDate, int duration)
         {   
             var list = new List<TimeInterval>();
-            var repeats=(EndDate- EndDate.Date.AddHours(8)).Hours/0.5;
+            var repeats=EndDate.Subtract(startDate).Hours + EndDate.Subtract(startDate).Days*24;
+            repeats=repeats/(24*duration);
+            if(repeats<1)
+            {
+                list.Add(new TimeInterval(startDate, startDate.AddDays(1)));
+                return list;
+            } 
             for (int i = 0; i < repeats; i++)
             {
-                list.Add(new TimeInterval(new TimeInterval(startDate.AddMinutes(-30*i), EndDate.AddMinutes(-30*i))));
+                list.Add(new TimeInterval(new TimeInterval(startDate.AddDays(i), startDate.AddDays(i+1))));
             }
 
             return list;
