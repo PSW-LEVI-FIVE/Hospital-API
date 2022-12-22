@@ -86,8 +86,32 @@ namespace HospitalLibrary.Examination
             {
                 throw new BadRequestException("Examination report not found");
             }
+
             report.Apply(examinationReportDomainEvent);
             _unitOfWork.ExaminationReportRepository.Save();
+        }
+
+        public Task<IEnumerable<ExaminationReport>> Search(string phrase, int docId)
+        {
+            if (phrase.Length == 0)
+                throw new BadRequestException("Input can not be empty");
+            
+            if (phrase.Contains("'"))
+                isQuote(phrase);
+            else
+                isWords(phrase);
+            return null;
+        }
+
+        private void isWords(string phrase)
+        {
+            List<string> words = phrase.Split(" ").ToList();
+        } 
+
+        private void isQuote(string phrase)
+        {
+            phrase=phrase.Replace("'", "");
+            
         }
 
 

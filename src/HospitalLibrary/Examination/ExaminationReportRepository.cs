@@ -17,7 +17,7 @@ namespace HospitalLibrary.Examination
         {
             return _dataContext.ExaminationReports.FirstOrDefault(e => e.ExaminationId == examinationId);
         }
-
+        
         public List<ExaminationReport> FindAllBySpecialty(int specialtyId)
         {
             return _dataContext.ExaminationReports
@@ -28,5 +28,17 @@ namespace HospitalLibrary.Examination
             _dataContext.ExaminationReports
                 .Include(a => a.Examination)
                 .FirstOrDefault(e => e.Examination.Id == e.ExaminationId);
+
+        public IEnumerable<ExaminationReport> SearchByPhrase(string phrase)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<ExaminationReport> SearchByWords(List<string> words)
+        {
+            // return _dataContext.ExaminationReports
+                // .Where(a=> a.Content)
+            throw new System.NotImplementedException();
+        }
     }
 }
