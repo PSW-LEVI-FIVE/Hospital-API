@@ -112,6 +112,7 @@ namespace HospitalLibrary.Appointments
                 .Where(a => a.PatientId == patientId)
                 .Include(a => a.Doctor)
                 .Include(a => a.Room)
+                .OrderByDescending(a => a.StartAt)
                 .ToListAsync();
         }
 
