@@ -85,5 +85,10 @@ namespace HospitalLibrary.Users
             _unitOfWork.UserRepository.Save();
             return unblockUser;
         }
+
+        public User GetPopulatedWithPerson(int userId)
+        {
+            return _unitOfWork.UserRepository.GetPopulatedWithPerson(userId);
+        }
     }
 }

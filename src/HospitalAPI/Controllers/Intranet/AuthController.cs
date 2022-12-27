@@ -15,9 +15,11 @@ namespace HospitalAPI.Controllers.Intranet
     public class AuthController: ControllerBase
     {
         private IAuthService _authService;
-        public AuthController(IAuthService authService)
+        private IUserService _userService;
+        public AuthController(IAuthService authService, IUserService userService)
         {
             _authService = authService;
+            _userService = userService;
         }
         
         [AllowAnonymous]
@@ -41,10 +43,13 @@ namespace HospitalAPI.Controllers.Intranet
         public IActionResult PatientsEndpoint()
         {
             var currentUser = GetCurrentUser();
+            var userData = _userService.GetPopulatedWithPerson(currentUser.Id);
             var user = new Authenticated()
             {
                 Username = currentUser.Username,
-                Role = currentUser.Role
+                Role = currentUser.Role,
+                Name = userData.Person.Name,
+                Surname = userData.Person.Surname
             };
             return Ok(user);
         }

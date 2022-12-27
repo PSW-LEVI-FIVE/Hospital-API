@@ -34,6 +34,14 @@ namespace HospitalLibrary.Users
         {
             return (_dataContext.Users.FirstOrDefault(u => u.ActivationCode.Equals(code)) == null);
         }
+
+        public User GetPopulatedWithPerson(int userId)
+        {
+            return _dataContext.Users
+                .Include(u => u.Person)
+                .FirstOrDefault(u => u.Id == userId);
+        }
+
         public Task<User> GetOneByCode(string code)
         {
             return _dataContext.Users
