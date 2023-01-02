@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HospitalLibrary.AnnualLeaves.Dtos;
 using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Shared.Interfaces;
-using Supabase.Core.Extensions;
 
 namespace HospitalLibrary.AnnualLeaves
 {

@@ -504,15 +504,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         };
 
 
-        ExaminationReport rp = new ExaminationReport()
-        {
-            Id = 10,
-            Content = "Something test",
-            Prescriptions = null,
-            Symptoms = null,
-            DoctorId = 4,
-            ExaminationId = 41
-        };
+        ExaminationReport rp = new ExaminationReport(10, 4, "Something test", 41, "");
         
         dbContext.Specialities.Add(speciality1);
         dbContext.Specialities.Add(speciality2);
