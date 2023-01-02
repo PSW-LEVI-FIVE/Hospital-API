@@ -3,14 +3,13 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Doctors;
+using HospitalLibrary.Infrastructure.EventSourcing;
 using HospitalLibrary.Symptoms;
 
 namespace HospitalLibrary.Examination
 {
-    public class ExaminationReport
+    public class ExaminationReport: EventSourcedAggregate
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key()]
-        public int Id { get; set; }
 
         [ForeignKey("Doctor")] 
         public int DoctorId { get; set;}
@@ -27,6 +26,28 @@ namespace HospitalLibrary.Examination
         
         public string? Url { get; set; }
         
-        public ExaminationReport() {}        
+        public ExaminationReport() {}
+
+        public ExaminationReport(int doctorId, string content, int examinationId, string url)
+        {
+            DoctorId = doctorId;
+            Content = content;
+            ExaminationId = examinationId;
+            Url = url;
+        }
+        
+        public ExaminationReport(int id, int doctorId, string content, int examinationId, string url)
+        {
+            Id = id;
+            DoctorId = doctorId;
+            Content = content;
+            ExaminationId = examinationId;
+            Url = url;
+        }
+        
+        public override void Apply(DomainEvent @event)
+        {
+            Changes.Add(@event);
+        }
     }
 }
