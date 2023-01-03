@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ceTe.DynamicPDF.PageElements;
 using HospitalAPI.Storage;
 using HospitalLibrary.Appointments;
+using HospitalLibrary.Examination.Dtos;
 using HospitalLibrary.Examination.Interfaces;
 using HospitalLibrary.Infrastructure.EventSourcing.Events;
 using HospitalLibrary.Medicines;
@@ -32,16 +33,17 @@ namespace HospitalLibrary.Examination
             _generator = generator;
         }
         
-        public async Task<ExaminationReport> Create(ExaminationReport report)
+        public async Task<ExaminationReportDTO> Create(ExaminationReport report)
         {
             _validator.ValidateCreate(report);
-            var existing = _unitOfWork.ExaminationReportRepository.GetOne(report.Id);
-
+            var existing = _unitOfWork.ExaminationReportRepository.GetByExamination(report.ExaminationId);
+            var uuid = Guid.NewGuid().ToString();
             if (existing != null)
             {
-                existing.Apply(new ExaminationReportDomainEvent(report.Id, DateTime.Now, ExaminationReportEventType.STARTED));
+                existing.Apply(new ExaminationReportDomainEvent(report.Id, DateTime.Now, ExaminationReportEventType.STARTED, uuid));
                 _unitOfWork.ExaminationReportRepository.Save();
-                return existing;
+                
+                return new ExaminationReportDTO(existing, uuid);
             }
             // var symptoms = _unitOfWork.SymptomRepository.PopulateRange(report.Symptoms);
             // var notExisting = FindNotExisting(report.Symptoms, symptoms.ToList());
@@ -50,9 +52,9 @@ namespace HospitalLibrary.Examination
             // await GeneratePdf(report);
             _unitOfWork.ExaminationReportRepository.Add(report);
             _unitOfWork.ExaminationReportRepository.Save();
-            report.Apply(new ExaminationReportDomainEvent(report.Id, DateTime.Now, ExaminationReportEventType.STARTED));
+            report.Apply(new ExaminationReportDomainEvent(report.Id, DateTime.Now, ExaminationReportEventType.STARTED, uuid));
             _unitOfWork.ExaminationReportRepository.Save();
-            return report;
+            return new ExaminationReportDTO(report, uuid);
         }
         
         public ExaminationReport GetByExamination(int examinationId)
@@ -65,7 +67,7 @@ namespace HospitalLibrary.Examination
             return _unitOfWork.ExaminationReportRepository.GetOne(id);
         }
 
-        public async Task<ExaminationReport> Update(ExaminationReport report)
+        public async Task<ExaminationReport> Update(ExaminationReport report, string uuid)
         {
             var existing = _unitOfWork.ExaminationReportRepository.GetOne(report.Id);
             if (existing == null) 
@@ -77,7 +79,7 @@ namespace HospitalLibrary.Examination
                 existing.Id, existing.DoctorId, report.Content, existing.ExaminationId, url, report.Prescriptions, symptoms.ToList());
             existing.UpdateAdditional(newReport);
             _unitOfWork.ExaminationReportRepository.Save();
-            existing.Apply(new ExaminationReportDomainEvent(existing.Id, DateTime.Now, ExaminationReportEventType.FINISHED));
+            existing.Apply(new ExaminationReportDomainEvent(existing.Id, DateTime.Now, ExaminationReportEventType.FINISHED, uuid));
             _unitOfWork.ExaminationReportRepository.Save();
             return existing;
         }
