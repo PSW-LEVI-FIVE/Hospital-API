@@ -24,13 +24,7 @@ namespace HospitalLibrary.Examination.Dtos
 
         public ExaminationReport MapInitialToModel()
         {
-            return new ExaminationReport()
-            {
-                DoctorId = DoctorId,
-                Prescriptions = new(),
-                Symptoms = new(),
-                ExaminationId = ExaminationId
-            };
+            return new ExaminationReport(DoctorId, ExaminationId);
         }
     }
 }

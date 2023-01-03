@@ -10,6 +10,7 @@ using HospitalLibrary.Infrastructure.EventSourcing.Events;
 using HospitalLibrary.Medicines;
 using HospitalLibrary.Patients;
 using HospitalLibrary.PDFGeneration;
+using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Symptoms;
 
@@ -34,6 +35,14 @@ namespace HospitalLibrary.Examination
         public async Task<ExaminationReport> Create(ExaminationReport report)
         {
             _validator.ValidateCreate(report);
+            var existing = _unitOfWork.ExaminationReportRepository.GetOne(report.Id);
+
+            if (existing != null)
+            {
+                existing.Apply(new ExaminationReportDomainEvent(report.Id, DateTime.Now, ExaminationReportEventType.STARTED));
+                _unitOfWork.ExaminationReportRepository.Save();
+                return existing;
+            }
             // var symptoms = _unitOfWork.SymptomRepository.PopulateRange(report.Symptoms);
             // var notExisting = FindNotExisting(report.Symptoms, symptoms.ToList());
             // symptoms = symptoms.Concat(notExisting);
@@ -56,9 +65,21 @@ namespace HospitalLibrary.Examination
             return _unitOfWork.ExaminationReportRepository.GetOne(id);
         }
 
-        public Task<ExaminationReport> Update(ExaminationReport report)
+        public async Task<ExaminationReport> Update(ExaminationReport report)
         {
-            throw new NotImplementedException();
+            var existing = _unitOfWork.ExaminationReportRepository.GetOne(report.Id);
+            if (existing == null) 
+                throw new BadRequestException("Examination report doesn't exist");
+            string url = await GeneratePdf(report);
+            
+            var symptoms = _unitOfWork.SymptomRepository.PopulateRange(report.Symptoms);
+            var newReport = new ExaminationReport(
+                existing.Id, existing.DoctorId, report.Content, existing.ExaminationId, url, report.Prescriptions, symptoms.ToList());
+            existing.UpdateAdditional(newReport);
+            _unitOfWork.ExaminationReportRepository.Save();
+            existing.Apply(new ExaminationReportDomainEvent(existing.Id, DateTime.Now, ExaminationReportEventType.FINISHED));
+            _unitOfWork.ExaminationReportRepository.Save();
+            return existing;
         }
 
 
@@ -77,14 +98,14 @@ namespace HospitalLibrary.Examination
             }
         }
 
-        private async Task GeneratePdf(ExaminationReport examinationReport)
+        private async Task<string> GeneratePdf(ExaminationReport examinationReport)
         {
             Appointment appointment = _unitOfWork.AppointmentRepository.GetOne(examinationReport.ExaminationId);
             Patient patient = _unitOfWork.PatientRepository.GetOne(appointment.PatientId.Value);
             PopulateMedicines(examinationReport);
             var pdf = _generator.GenerateExaminationReportPdf(examinationReport, patient);
             string file = await _storage.UploadFile(pdf, $"examination-report-{DateTime.Now.ToString("ddMMyyyyhhmmss")}-{patient.Id}");
-            examinationReport.Url = file;
+            return file;
         }
     }
 }
