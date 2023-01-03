@@ -8,7 +8,7 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Events
     {
         public ExaminationReportEventType Type { get; private set; }
         
-        public ExaminationReportDomainEvent(int aggregateId, DateTime timestamp, string name, ExaminationReportEventType type) : base(aggregateId, timestamp, name)
+        public ExaminationReportDomainEvent(int aggregateId, DateTime timestamp, ExaminationReportEventType type) : base(aggregateId, timestamp)
         {
             Type = type;
         }

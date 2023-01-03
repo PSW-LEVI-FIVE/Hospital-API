@@ -10,13 +10,11 @@ namespace HospitalLibrary.Infrastructure.EventSourcing
         public int Id { get; set; }
         public int AggregateId { get; private set; }
         public DateTime Timestamp { get; private set; }
-        public string Name { get; private set; }
 
-        public DomainEvent(int aggregateId, DateTime timestamp, string name)
+        public DomainEvent(int aggregateId, DateTime timestamp)
         {
             AggregateId = aggregateId;
             Timestamp = timestamp;
-            Name = name;
         }
     }
 }
