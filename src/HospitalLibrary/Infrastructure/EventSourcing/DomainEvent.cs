@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HospitalLibrary.Infrastructure.EventSourcing
 {
-    public class DomainEvent
+    public abstract class DomainEvent
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

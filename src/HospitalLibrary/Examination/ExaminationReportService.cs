@@ -6,6 +6,7 @@ using ceTe.DynamicPDF.PageElements;
 using HospitalAPI.Storage;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Examination.Interfaces;
+using HospitalLibrary.Infrastructure.EventSourcing.Events;
 using HospitalLibrary.Medicines;
 using HospitalLibrary.Patients;
 using HospitalLibrary.PDFGeneration;
@@ -33,12 +34,14 @@ namespace HospitalLibrary.Examination
         public async Task<ExaminationReport> Create(ExaminationReport report)
         {
             _validator.ValidateCreate(report);
-            var symptoms = _unitOfWork.SymptomRepository.PopulateRange(report.Symptoms);
-            var notExisting = FindNotExisting(report.Symptoms, symptoms.ToList());
-            symptoms = symptoms.Concat(notExisting);
-            report.Symptoms = symptoms.ToList();
-            await GeneratePdf(report);
+            // var symptoms = _unitOfWork.SymptomRepository.PopulateRange(report.Symptoms);
+            // var notExisting = FindNotExisting(report.Symptoms, symptoms.ToList());
+            // symptoms = symptoms.Concat(notExisting);
+            // report.Symptoms = symptoms.ToList();
+            // await GeneratePdf(report);
             _unitOfWork.ExaminationReportRepository.Add(report);
+            _unitOfWork.ExaminationReportRepository.Save();
+            report.Apply(new ExaminationReportDomainEvent(report.Id, DateTime.Now, ExaminationReportEventType.STARTED));
             _unitOfWork.ExaminationReportRepository.Save();
             return report;
         }
@@ -51,6 +54,11 @@ namespace HospitalLibrary.Examination
         public ExaminationReport GetById(int id)
         {
             return _unitOfWork.ExaminationReportRepository.GetOne(id);
+        }
+
+        public Task<ExaminationReport> Update(ExaminationReport report)
+        {
+            throw new NotImplementedException();
         }
 
 

@@ -15,7 +15,7 @@ namespace HospitalLibrary.Examination
         public int DoctorId { get; set;}
         public Doctor Doctor { get; set;}
 
-        public string Content { get; set; }
+        public string? Content { get; set; }
         
         [ForeignKey("Examination")]
         public int ExaminationId { get; set; }
@@ -34,6 +34,16 @@ namespace HospitalLibrary.Examination
             Content = content;
             ExaminationId = examinationId;
             Url = url;
+        }
+
+        public ExaminationReport(int id, int doctorId, List<Prescription> prescriptions, List<Symptom> symptoms, int examinationId, string content)
+        {
+            Id = id;
+            DoctorId = doctorId;
+            Prescriptions = prescriptions;
+            Symptoms = symptoms;
+            ExaminationId = examinationId;
+            Content = content;
         }
         
         public ExaminationReport(int id, int doctorId, string content, int examinationId, string url)
