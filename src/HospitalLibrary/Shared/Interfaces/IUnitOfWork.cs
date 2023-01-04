@@ -12,6 +12,7 @@ using HospitalLibrary.Examination.Interfaces;
 using HospitalLibrary.Feedbacks.Interfaces;
 using HospitalLibrary.Floors.Interfaces;
 using HospitalLibrary.Hospitalizations.Interfaces;
+using HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationReport;
 using HospitalLibrary.Map.Interfaces;
 using HospitalLibrary.MedicalRecords.Interfaces;
 using HospitalLibrary.Medicines.Interfaces;
@@ -54,5 +55,9 @@ namespace HospitalLibrary.Shared.Interfaces
         IExaminationReportRepository ExaminationReportRepository { get;  }
         ISymptomRepository SymptomRepository { get; }
         IConsiliumRepository ConsiliumRepository { get; }
+        
+        IExaminationEventRepository ExaminationEventRepository { get; }
+        
+        ISpecialtyRepository SpecialtyRepository { get; }
     }
 }
