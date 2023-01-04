@@ -61,6 +61,8 @@ namespace HospitalLibrary.Settings
         
         public DbSet<Speciality> Specialities { get; set; }
         
+        public DbSet<Advertisement.Advertisement> Advertisement { get; set; }
+        
         public DbSet<ExaminationReportDomainEvent> ExaminationReportDomainEvents { get; set; }
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
