@@ -8,12 +8,12 @@ using HospitalLibrary.Shared.Repository;
 
 namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationReport
 {
-    public class ExaminationEventRepository: BaseRepository<ExaminationReportDomainEvent>, IExaminationEventRepository
+    public class ExaminationEventRepository : BaseRepository<ExaminationReportDomainEvent>, IExaminationEventRepository
     {
         public ExaminationEventRepository(HospitalDbContext context) : base(context)
         {
         }
-        
+
         public int GetSuccessfulEventsCount()
         {
             return _dataContext.ExaminationReportDomainEvents
@@ -36,7 +36,7 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
         public int GetSpecialtyAllEventsCount(List<int> reportIds)
         {
             return _dataContext.ExaminationReportDomainEvents
-                .Count(e => reportIds.Any(r => r == e.AggregateId)  && e.Type == ExaminationReportEventType.STARTED);
+                .Count(e => reportIds.Any(r => r == e.AggregateId) && e.Type == ExaminationReportEventType.STARTED);
         }
 
         public double GetAverageTimeForStep(ExaminationReportEventType stepStart, ExaminationReportEventType stepEnd)
@@ -53,7 +53,7 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
                     })
                 .Where(el => el.Start != null && el.End != null)
                 .Select(el => new { Diff = el.End.Timestamp.Subtract(el.Start.Timestamp) })
-                .DefaultIfEmpty(new { Diff = new TimeSpan(0, 0, 0)})
+                .DefaultIfEmpty(new { Diff = new TimeSpan(0, 0, 0) })
                 .Average(el => el.Diff.TotalMinutes);
         }
 
@@ -76,7 +76,7 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
                 .Select(g => new PerHourAverageDTO(g.Key, g.Average(el => el.Diff)))
                 .ToList();
         }
-        
+
         public double GetMinTime()
         {
             return _dataContext.ExaminationReportDomainEvents
@@ -133,3 +133,5 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
                 .ToList()
                 .Average(el => el.TotalMinutes);
         }
+    }
+}
