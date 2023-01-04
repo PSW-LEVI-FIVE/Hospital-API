@@ -56,5 +56,62 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
                 .DefaultIfEmpty(new { Diff = new TimeSpan(0, 0, 0)})
                 .Average(el => el.Diff.TotalMinutes);
         }
+
+        public double GetMinTime()
+        {
+            return _dataContext.ExaminationReportDomainEvents
+                .Where(e => e.Type == ExaminationReportEventType.STARTED ||
+                            e.Type == ExaminationReportEventType.FINISHED)
+                .ToList()
+                .GroupBy(e => e.Uuid)
+                .Select(g =>
+                    new
+                    {
+                        Start = g.FirstOrDefault(el => el.Type == ExaminationReportEventType.STARTED),
+                        End = g.FirstOrDefault(el => el.Type == ExaminationReportEventType.FINISHED)
+                    })
+                .Where(el => el.Start != null && el.End != null)
+                .Select(el => el.End.Timestamp - el.Start.Timestamp)
+                .ToList()
+                .Min().TotalMinutes;
+        }
+
+        public double GetMaxTime()
+        {
+            return _dataContext.ExaminationReportDomainEvents
+                .Where(e => e.Type == ExaminationReportEventType.STARTED ||
+                            e.Type == ExaminationReportEventType.FINISHED)
+                .ToList()
+                .GroupBy(e => e.Uuid)
+                .Select(g =>
+                    new
+                    {
+                        Start = g.FirstOrDefault(el => el.Type == ExaminationReportEventType.STARTED),
+                        End = g.FirstOrDefault(el => el.Type == ExaminationReportEventType.FINISHED)
+                    })
+                .Where(el => el.Start != null && el.End != null)
+                .Select(el => el.End.Timestamp - el.Start.Timestamp)
+                .ToList()
+                .Max().TotalMinutes;
+        }
+
+        public double GetAvgTime()
+        {
+            return _dataContext.ExaminationReportDomainEvents
+                .Where(e => e.Type == ExaminationReportEventType.STARTED ||
+                            e.Type == ExaminationReportEventType.FINISHED)
+                .ToList()
+                .GroupBy(e => e.Uuid)
+                .Select(g =>
+                    new
+                    {
+                        Start = g.FirstOrDefault(el => el.Type == ExaminationReportEventType.STARTED),
+                        End = g.FirstOrDefault(el => el.Type == ExaminationReportEventType.FINISHED)
+                    })
+                .Where(el => el.Start != null && el.End != null)
+                .Select(el => el.End.Timestamp - el.Start.Timestamp)
+                .ToList()
+                .Average(el => el.TotalMinutes);
+        }
     }
 }

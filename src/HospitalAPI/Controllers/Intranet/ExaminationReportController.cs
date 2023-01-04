@@ -16,7 +16,7 @@ using OpenQA.Selenium.Interactions;
 namespace HospitalAPI.Controllers.Intranet
 {
     [ApiController, Route("api/intranet/examination")]
-    // [Authorize(Roles="Doctor")]
+    [Authorize(Roles="Doctor")]
     public class ExaminationReportController: ControllerBase
     {
         private IExaminationReportService _examinationReportService;
@@ -77,6 +77,14 @@ namespace HospitalAPI.Controllers.Intranet
         public IActionResult GetSuccUnsuccExaminationReports()
         {
             SuccessfulUnsuccessfulReportsDto dto = _examinationReportStatistics.CalculateSuccessfulUnsuccessfulReports();
+            return Ok(dto);
+        }
+        
+        [HttpGet]
+        [Route("statistics/min-max-avg")]
+        public IActionResult GetMinMaxAvg()
+        {
+            MinMaxDTO dto = _examinationReportStatistics.CalculateMinMaxDto();
             return Ok(dto);
         }
 
