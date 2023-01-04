@@ -24,7 +24,8 @@ public class LoginTests : BaseIntegrationTest {
     {
         using var scope = Factory.Services.CreateScope();
         var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>(),
-                                    scope.ServiceProvider.GetRequiredService<IEmailService>());
+                                    scope.ServiceProvider.GetRequiredService<IEmailService>(),
+                                    scope.ServiceProvider.GetRequiredService<IUserService>());
         User user = new User("Mika", "plsradi123", Role.Patient,1,ActiveStatus.Active);
         var result = ((OkObjectResult)controller.UserExist(new UserDTO(user.Username,user.Password.PasswordString,user.Role))).Value as LoggedIn;
         result.ShouldNotBeNull();
@@ -34,7 +35,8 @@ public class LoginTests : BaseIntegrationTest {
     {
         using var scope = Factory.Services.CreateScope();
         var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>(),
-                                    scope.ServiceProvider.GetRequiredService<IEmailService>());
+                                    scope.ServiceProvider.GetRequiredService<IEmailService>(),
+                                    scope.ServiceProvider.GetRequiredService<IUserService>());
         User user = new User("pas","password123",Role.Patient,1,ActiveStatus.Active);
         var result = ((NotFoundObjectResult)controller.UserExist(new UserDTO(user.Username,user.Password.PasswordString,user.Role))).Value as string;
         result.ShouldNotBeNull();

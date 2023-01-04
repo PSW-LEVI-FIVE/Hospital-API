@@ -56,10 +56,9 @@ namespace HospitalLibrary.Users
         {
             return await _unitOfWork.UserRepository.GetOneByCode(code);
         }
-
-        public User UserExist(string username, string password)
+        public User GetOneByUsername(string username)
         {
-            return _unitOfWork.UserRepository.UserExist(username, password);
+            return _unitOfWork.UserRepository.GetOneByUsername(username);
         }
 
         public User BlockMaliciousUser(int blockUserId)

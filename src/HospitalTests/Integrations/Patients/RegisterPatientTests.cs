@@ -6,6 +6,7 @@ using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Shared.Dtos;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.User.Interfaces;
 using HospitalTests.Setup;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,7 +32,8 @@ public class PatientTests: BaseIntegrationTest
             new AllergenDTO("Cetirizine")
         };
         var emailService = new Mock<IEmailService>();
-        var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>(),emailService.Object);
+        var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>(),emailService.Object,
+                                    scope.ServiceProvider.GetRequiredService<IUserService>());
         CreatePatientDTO createPatientDTO = new CreatePatientDTO("Pera", "Peric", "dusanjanosevic007@gmail.com","29857236",
             "+1235455454",new DateTime(2001,2,25),new AddressDTO("Jovina 12","Jovina 12","Jovina 12","Jovina 12"),
             BloodType.ZERO_NEGATIVE,"pRoXm","xdwqrw12",allergens,"67867867");
@@ -49,7 +51,8 @@ public class PatientTests: BaseIntegrationTest
             new AllergenDTO("Cetirizine")
         };
         var emailService = new Mock<IEmailService>();
-        var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>(),emailService.Object);
+        var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>(),emailService.Object,
+                                    scope.ServiceProvider.GetRequiredService<IUserService>());
         CreatePatientDTO createPatientDTO = new CreatePatientDTO("Pera", "Peric", "dusanjanosevic007@gmail.com","29857236",
             "+1235455454",new DateTime(2001,2,25),new AddressDTO("Jovina 12","Jovina 12","Jovina 12","Jovina 12"),
             BloodType.ZERO_NEGATIVE,

@@ -4,6 +4,7 @@ using HospitalLibrary.Auth.Interfaces;
 using HospitalLibrary.BloodStorages;
 using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.User.Interfaces;
 using HospitalTests.Setup;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,7 +25,8 @@ public class ActivateAccountTests: BaseIntegrationTest
     {
         using var scope = Factory.Services.CreateScope();
         var emailService = new Mock<IEmailService>();
-        var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>(),emailService.Object);
+        var controller = new AuthController(scope.ServiceProvider.GetRequiredService<IAuthService>(),emailService.Object,
+                                    scope.ServiceProvider.GetRequiredService<IUserService>());
         string code = "asdasd";
         var result = ((OkObjectResult)controller.ActivateAccount(code).Result).Value as PatientDTO;
         result.ShouldNotBeNull();
