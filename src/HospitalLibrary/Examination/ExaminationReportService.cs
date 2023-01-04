@@ -40,16 +40,11 @@ namespace HospitalLibrary.Examination
             var uuid = Guid.NewGuid().ToString();
             if (existing != null)
             {
-                existing.Apply(new ExaminationReportDomainEvent(report.Id, DateTime.Now, ExaminationReportEventType.STARTED, uuid));
+                existing.Apply(new ExaminationReportDomainEvent(existing.Id, DateTime.Now, ExaminationReportEventType.STARTED, uuid));
                 _unitOfWork.ExaminationReportRepository.Save();
-                
                 return new ExaminationReportDTO(existing, uuid);
             }
-            // var symptoms = _unitOfWork.SymptomRepository.PopulateRange(report.Symptoms);
-            // var notExisting = FindNotExisting(report.Symptoms, symptoms.ToList());
-            // symptoms = symptoms.Concat(notExisting);
-            // report.Symptoms = symptoms.ToList();
-            // await GeneratePdf(report);
+            
             _unitOfWork.ExaminationReportRepository.Add(report);
             _unitOfWork.ExaminationReportRepository.Save();
             report.Apply(new ExaminationReportDomainEvent(report.Id, DateTime.Now, ExaminationReportEventType.STARTED, uuid));
