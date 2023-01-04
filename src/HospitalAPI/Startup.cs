@@ -29,6 +29,7 @@ using HospitalLibrary.Floors;
 using HospitalLibrary.Floors.Interfaces;
 using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.Hospitalizations.Interfaces;
+using HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationReport;
 using HospitalLibrary.Map;
 using HospitalLibrary.Map.Interfaces;
 using HospitalLibrary.MedicalRecords;
@@ -122,6 +123,7 @@ namespace HospitalAPI
             services.AddScoped<IRoomEquipmentService, RoomEquipmentService>();
             services.AddScoped<IRoomEquipmentValidator, RoomEquipmentValidator>();
             services.AddScoped<IExaminationReportValidator, ExaminationReportValidator>();
+            services.AddScoped<IExaminationReportStatistics, ExaminationReportStatistics>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });

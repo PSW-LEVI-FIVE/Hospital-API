@@ -3,6 +3,7 @@ using System.Linq;
 using HospitalLibrary.Examination.Interfaces;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Examination
 {
@@ -17,6 +18,11 @@ namespace HospitalLibrary.Examination
             return _dataContext.ExaminationReports.FirstOrDefault(e => e.ExaminationId == examinationId);
         }
 
-
+        public List<ExaminationReport> FindAllBySpecialty(int specialtyId)
+        {
+            return _dataContext.ExaminationReports
+                .Where(e => e.Doctor.SpecialityId == specialtyId)
+                .ToList();
+        }
     }
 }
