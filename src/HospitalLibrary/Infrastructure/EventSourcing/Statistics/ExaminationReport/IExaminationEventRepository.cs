@@ -15,6 +15,7 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
 
         double GetAverageTimeForStep(ExaminationReportEventType stepStart, ExaminationReportEventType stepEnd);
 
+        List<PerHourAverageDTO> GetPerHourAverage();
 
     }
 }
