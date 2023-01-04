@@ -6,6 +6,8 @@ using HospitalAPI.ErrorHandling;
 using Microsoft.Extensions.Hosting;
 using HospitalAPI.Storage;
 using HospitalAPI.Storage.Providers;
+using HospitalLibrary.Advertisement;
+using HospitalLibrary.Advertisement.Interfaces;
 using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.BloodOrders;
@@ -124,6 +126,7 @@ namespace HospitalAPI
             services.AddScoped<IRoomEquipmentValidator, RoomEquipmentValidator>();
             services.AddScoped<IExaminationReportValidator, ExaminationReportValidator>();
             services.AddScoped<IExaminationReportStatistics, ExaminationReportStatistics>();
+            services.AddScoped<IAdvertisementService, AdvertisementService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });
