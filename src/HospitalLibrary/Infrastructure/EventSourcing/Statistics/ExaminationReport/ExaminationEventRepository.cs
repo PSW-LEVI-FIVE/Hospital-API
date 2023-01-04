@@ -57,6 +57,26 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
                 .Average(el => el.Diff.TotalMinutes);
         }
 
+        public List<PerHourAverageDTO> GetPerHourAverage()
+        {
+            return _dataContext.ExaminationReportDomainEvents
+                .Where(d => d.Type == ExaminationReportEventType.STARTED || d.Type == ExaminationReportEventType.FINISHED)
+                .ToList()
+                .GroupBy(d => d.Uuid)
+                .Select(g =>
+                    new
+                    {
+                        Start = g.FirstOrDefault(el => el.Type == ExaminationReportEventType.STARTED),
+                        End = g.FirstOrDefault(el => el.Type == ExaminationReportEventType.FINISHED)
+                    })
+                .Where(el => el.Start != null && el.End != null)
+                .Select(el => new { Hour = el.Start.Timestamp.Hour, Diff = el.End.Timestamp.Subtract(el.Start.Timestamp).TotalMinutes })
+                .ToList()
+                .GroupBy(el => el.Hour)
+                .Select(g => new PerHourAverageDTO(g.Key, g.Average(el => el.Diff)))
+                .ToList();
+        }
+        
         public double GetMinTime()
         {
             return _dataContext.ExaminationReportDomainEvents
@@ -113,5 +133,3 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
                 .ToList()
                 .Average(el => el.TotalMinutes);
         }
-    }
-}

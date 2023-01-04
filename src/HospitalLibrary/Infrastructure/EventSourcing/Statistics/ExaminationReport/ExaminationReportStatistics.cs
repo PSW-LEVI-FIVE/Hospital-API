@@ -58,8 +58,17 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
                 .GetAverageTimeForStep(ExaminationReportEventType.FINISHED_REPORT, ExaminationReportEventType.FINISHED_PRESCRPITION);
 
             return new AverageStepDTO(symptomAverage, reportAverage, prescriptionAverage);
+        }
 
-
+        public Dictionary<int, double> GetAveragePerHour()
+        {
+            var result =  _unitOfWork.ExaminationEventRepository.GetPerHourAverage();
+            var dictionary = result.ToDictionary(el => el.Hour, el => el.Average);
+            
+            Enumerable.Range(1, 24)
+                .ToList()
+                .ForEach(el => dictionary.TryAdd(el, 0));
+            return dictionary;
         }
 
         public MinMaxDTO CalculateMinMaxDto()

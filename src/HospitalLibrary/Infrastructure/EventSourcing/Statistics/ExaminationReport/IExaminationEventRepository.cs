@@ -18,5 +18,6 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
         double GetMinTime();
         double GetMaxTime();
         double GetAvgTime();
+        List<PerHourAverageDTO> GetPerHourAverage();
     }
 }
