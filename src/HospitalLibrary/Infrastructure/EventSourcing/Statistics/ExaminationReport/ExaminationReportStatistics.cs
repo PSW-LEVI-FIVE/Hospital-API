@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Doctors;
+using HospitalLibrary.Infrastructure.EventSourcing.Events;
 using HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationReport.Dtos;
 using HospitalLibrary.Shared.Interfaces;
 
@@ -44,6 +45,21 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
             }
 
             return results;
+        }
+
+        public AverageStepDTO CalculateStepsAverageTime()
+        {
+
+            var symptomAverage = _unitOfWork.ExaminationEventRepository
+                .GetAverageTimeForStep(ExaminationReportEventType.STARTED, ExaminationReportEventType.FINISHED_SYMPTOMS);
+            var reportAverage = _unitOfWork.ExaminationEventRepository
+                .GetAverageTimeForStep(ExaminationReportEventType.FINISHED_SYMPTOMS, ExaminationReportEventType.FINISHED_REPORT);
+            var prescriptionAverage = _unitOfWork.ExaminationEventRepository
+                .GetAverageTimeForStep(ExaminationReportEventType.FINISHED_REPORT, ExaminationReportEventType.FINISHED_PRESCRPITION);
+
+            return new AverageStepDTO(symptomAverage, reportAverage, prescriptionAverage);
+
+
         }
     }
 }

@@ -13,6 +13,8 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
         int GetSpecialtySuccessfulCount(List<int> reportIds);
         int GetSpecialtyAllEventsCount(List<int> reportIds);
 
-    
+        double GetAverageTimeForStep(ExaminationReportEventType stepStart, ExaminationReportEventType stepEnd);
+
+
     }
 }

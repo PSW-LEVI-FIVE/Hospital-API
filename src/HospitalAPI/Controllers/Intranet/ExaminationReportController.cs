@@ -11,6 +11,7 @@ using HospitalLibrary.Users;
 using HospitalLibrary.Users.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OpenQA.Selenium.Interactions;
 
 namespace HospitalAPI.Controllers.Intranet
 {
@@ -77,6 +78,14 @@ namespace HospitalAPI.Controllers.Intranet
         {
             var dtos = await _examinationReportStatistics.CalculateSuccessfulUnsuccessfulPerSpecialty();
             return Ok(dtos);
+        }
+
+        [HttpGet]
+        [Route("statistics/steps")]
+        public IActionResult GetStepStatistics()
+        {
+            var result = _examinationReportStatistics.CalculateStepsAverageTime();
+            return Ok(result);
         }
         
         private UserDTO GetCurrentUser()
