@@ -95,6 +95,14 @@ namespace HospitalAPI.Controllers.Intranet
             var result = _examinationReportStatistics.CalculateStepsAverageTime();
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("statistics/hours")]
+        public IActionResult GetAveragePerHour()
+        {
+            var result = _examinationReportStatistics.GetAveragePerHour();
+            return Ok(result);
+        }
         
         private UserDTO GetCurrentUser()
         {
