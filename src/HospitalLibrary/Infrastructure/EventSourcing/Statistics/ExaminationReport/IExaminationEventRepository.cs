@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using HospitalLibrary.Infrastructure.EventSourcing.Events;
 using HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationReport.Dtos;
 using HospitalLibrary.Shared.Interfaces;
@@ -14,8 +15,9 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
         int GetSpecialtyAllEventsCount(List<int> reportIds);
 
         double GetAverageTimeForStep(ExaminationReportEventType stepStart, ExaminationReportEventType stepEnd);
-
+        double GetMinTime();
+        double GetMaxTime();
+        double GetAvgTime();
         List<PerHourAverageDTO> GetPerHourAverage();
-
     }
 }

@@ -70,5 +70,19 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
                 .ForEach(el => dictionary.TryAdd(el, 0));
             return dictionary;
         }
+
+        public MinMaxDTO CalculateMinMaxDto()
+        {
+            var min = _unitOfWork.ExaminationEventRepository.GetMinTime();
+            var max = _unitOfWork.ExaminationEventRepository.GetMaxTime();
+            var avg = _unitOfWork.ExaminationEventRepository.GetAvgTime();
+
+            return new MinMaxDTO()
+            {
+                Min = min,
+                Max = max,
+                Avg = avg
+            };
+        }
     }
 }

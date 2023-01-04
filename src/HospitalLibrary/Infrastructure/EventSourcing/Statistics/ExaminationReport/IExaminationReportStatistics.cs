@@ -10,7 +10,7 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
         SuccessfulUnsuccessfulReportsDto CalculateSuccessfulUnsuccessfulReports();
         Task<List<SpecialtyCountDTO>> CalculateSuccessfulUnsuccessfulPerSpecialty();
         AverageStepDTO CalculateStepsAverageTime();
+        MinMaxDTO CalculateMinMaxDto();
         Dictionary<int, double> GetAveragePerHour();
-
     }
 }
