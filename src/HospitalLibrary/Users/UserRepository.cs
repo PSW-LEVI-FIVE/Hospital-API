@@ -17,19 +17,15 @@ namespace HospitalLibrary.Users
 
         public User GetOneByUsername(string username)
         {
-            return _dataContext.Users.FirstOrDefault(u => u.Username.Equals(username));
+            return _dataContext.Users
+                .Include(u => u.Password)
+                .FirstOrDefault(u => u.Username.Equals(username));
         }
 
         public bool UsernameExist(string username)
         {
             return _dataContext.Users.Any(m => m.Username.Equals(username));
         }
-
-        public User UserExist(string username, string password)
-        {
-            return _dataContext.Users.FirstOrDefault(m => m.Username.Equals(username) && string.Compare(m.Username,username) == 0);
-        }
-
         public bool IsCodeUnique(string code)
         {
             return (_dataContext.Users.FirstOrDefault(u => u.ActivationCode.Equals(code)) == null);

@@ -8,7 +8,6 @@ namespace HospitalLibrary.Users.Interfaces
     { 
         User GetOneByUsername(string username);
         bool UsernameExist(string username);
-        User UserExist(string username, string password);
         Task<User> GetOneByCode(string code);
         public bool IsCodeUnique(string code);
         public User GetPopulatedWithPerson(int userId);

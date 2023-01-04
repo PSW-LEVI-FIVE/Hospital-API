@@ -97,11 +97,6 @@ namespace HospitalLibrary.Auth
             await _userService.ActivateAccount(user,code);
             return new PatientDTO(user);
         }
-
-        public Users.User UserExist(string username, string password)
-        {
-            return _unitOfWork.UserRepository.UserExist(username, password);
-        }
         public string Generate(UserDTO user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -120,16 +115,17 @@ namespace HospitalLibrary.Auth
 
         public UserDTO Authenticate(UserDTO userDto)
         {
-            var currentUser = UserExist(userDto.Username, userDto.Password);
-            if (currentUser != null)
-            {
-                if (currentUser.Blocked) return null;
-                if (currentUser.ActiveStatus == ActiveStatus.Active)
-                {
-                    return new UserDTO(currentUser.Username, currentUser.Password.PasswordString, currentUser.Role, currentUser.Id);
-                }
-            }
-            return null;
+            Users.User currentUser = _userService.GetOneByUsername(userDto.Username);
+            if (!CanUserLogin(userDto, currentUser)) return null;
+            return new UserDTO(currentUser.Username, currentUser.Password.PasswordString, currentUser.Role,
+            currentUser.Id);
+        }
+
+        private static bool CanUserLogin(UserDTO userDto, Users.User currentUser)
+        {
+            if (currentUser == null) return false;
+            if (currentUser.Blocked) return false;
+            return currentUser.ActiveStatus == ActiveStatus.Active && currentUser.Password.PasswordString.Equals(userDto.Password);
         }
     }
 }
