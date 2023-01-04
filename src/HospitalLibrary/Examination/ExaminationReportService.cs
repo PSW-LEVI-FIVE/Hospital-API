@@ -79,6 +79,17 @@ namespace HospitalLibrary.Examination
             return existing;
         }
 
+        public void AddEvent(ExaminationReportDomainEvent examinationReportDomainEvent)
+        {
+            var report = _unitOfWork.ExaminationReportRepository.GetOne(examinationReportDomainEvent.AggregateId);
+            if (report == null)
+            {
+                throw new BadRequestException("Examination report not found");
+            }
+            report.Apply(examinationReportDomainEvent);
+            _unitOfWork.ExaminationReportRepository.Save();
+        }
+
 
         private IEnumerable<Symptom> FindNotExisting(List<Symptom> old, List<Symptom> existing)
         {

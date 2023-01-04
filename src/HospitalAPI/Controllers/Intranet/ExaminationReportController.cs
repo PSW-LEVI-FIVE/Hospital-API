@@ -16,7 +16,7 @@ using OpenQA.Selenium.Interactions;
 namespace HospitalAPI.Controllers.Intranet
 {
     [ApiController, Route("api/intranet/examination")]
-    [Authorize(Roles="Doctor")]
+    // [Authorize(Roles="Doctor")]
     public class ExaminationReportController: ControllerBase
     {
         private IExaminationReportService _examinationReportService;
@@ -36,6 +36,14 @@ namespace HospitalAPI.Controllers.Intranet
         {
             ExaminationReport report = _examinationReportService.GetById(id);
             return Ok(report);
+        }
+        
+        [HttpPost]
+        [Route("report/event")]
+        public IActionResult AddEvent(EventDTO eventDto)
+        {
+            _examinationReportService.AddEvent(eventDto.MapToModel());
+            return Ok();
         }
 
         [HttpGet]
