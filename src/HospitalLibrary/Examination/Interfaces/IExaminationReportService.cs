@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using HospitalLibrary.Examination.Dtos;
+using HospitalLibrary.Infrastructure.EventSourcing.Events;
 
 namespace HospitalLibrary.Examination.Interfaces
 {
@@ -8,7 +9,7 @@ namespace HospitalLibrary.Examination.Interfaces
         public Task<ExaminationReportDTO> Create(ExaminationReport report);
         public ExaminationReport GetByExamination(int examinationId);
         public ExaminationReport GetById(int id);
-
         public Task<ExaminationReport> Update(ExaminationReport report, string uuid);
+        public void AddEvent(ExaminationReportDomainEvent examinationReportDomainEvent);
     }
 }
