@@ -12,19 +12,19 @@ namespace HospitalLibrary.Examination
     {
 
         [ForeignKey("Doctor")] 
-        public int DoctorId { get; set;}
-        public Doctor Doctor { get; set;}
+        public int DoctorId { get; private set;}
+        public Doctor Doctor { get; private set;}
 
-        public string Content { get; set; }
+        public string? Content { get; private set; }
         
         [ForeignKey("Examination")]
-        public int ExaminationId { get; set; }
-        public Appointment Examination { get; set; }
+        public int ExaminationId { get; private set; }
+        public Appointment Examination { get; private set; }
         
-        public List<Prescription> Prescriptions { get; set; }
-        public List<Symptom> Symptoms { get; set; }
+        public List<Prescription> Prescriptions { get; private set; }
+        public List<Symptom> Symptoms { get; private set; }
         
-        public string? Url { get; set; }
+        public string? Url { get; private set; }
         
         public ExaminationReport() {}
 
@@ -34,6 +34,24 @@ namespace HospitalLibrary.Examination
             Content = content;
             ExaminationId = examinationId;
             Url = url;
+        }
+
+        public ExaminationReport(int doctorId, int examinationId)
+        {
+            DoctorId = doctorId;
+            ExaminationId = examinationId;
+            Prescriptions = new();
+            Symptoms = new();
+        }
+
+        public ExaminationReport(int id, int doctorId, List<Prescription> prescriptions, List<Symptom> symptoms, int examinationId, string content)
+        {
+            Id = id;
+            DoctorId = doctorId;
+            Prescriptions = prescriptions;
+            Symptoms = symptoms;
+            ExaminationId = examinationId;
+            Content = content;
         }
         
         public ExaminationReport(int id, int doctorId, string content, int examinationId, string url)
@@ -45,9 +63,29 @@ namespace HospitalLibrary.Examination
             Url = url;
         }
         
+        public ExaminationReport(int id, int doctorId, string content, int examinationId, string url, List<Prescription> prescriptions, List<Symptom> symptoms)
+        {
+            Id = id;
+            DoctorId = doctorId;
+            Content = content;
+            ExaminationId = examinationId;
+            Url = url;
+            Prescriptions = prescriptions;
+            Symptoms = symptoms;
+
+        }
+        
         public override void Apply(DomainEvent @event)
         {
             Changes.Add(@event);
+        }
+
+        public void UpdateAdditional(ExaminationReport report)
+        {
+            Prescriptions = report.Prescriptions;
+            Symptoms = report.Symptoms;
+            Content = report.Content;
+            Url = report.Url;
         }
     }
 }

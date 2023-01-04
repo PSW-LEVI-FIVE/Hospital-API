@@ -28,7 +28,7 @@ public class CreateExaminationReport
         var uow = SetupUOW();
         ExaminationReport report = new ExaminationReport()
         {
-            ExaminationId = 1
+            // ExaminationId = 1
         };
         Appointment appointment = new Appointment()
         {

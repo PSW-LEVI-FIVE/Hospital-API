@@ -22,10 +22,9 @@ namespace HospitalLibrary.Examination
 
             if (appointment == null)
                 throw new NotFoundException("Appointment not found");
-            
             if (appointment.Type != AppointmentType.EXAMINATION)
                 throw new BadRequestException("Appointment is not of type examination!");
-            if (existing != null) 
+            if (existing != null && existing.Url != null) 
                 throw new BadRequestException("Report for given examination has already been generated!");
             
         }

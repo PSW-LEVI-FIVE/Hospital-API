@@ -45,7 +45,16 @@ namespace HospitalAPI.Controllers.Intranet
         public async Task<IActionResult> Create(CreateExaminationReportDTO reportDto)
         {
             reportDto.DoctorId = GetCurrentUser().Id;
-            ExaminationReport report = await _examinationReportService.Create(reportDto.MapToModel());
+            var report = await _examinationReportService.Create(reportDto.MapInitialToModel());
+            return Ok(report);
+        }
+
+        [HttpPatch]
+        [Route("report/{uuid}")]
+        public async Task<IActionResult> Update(CreateExaminationReportDTO reportDto, string uuid)
+        {
+            reportDto.DoctorId = GetCurrentUser().Id;
+            ExaminationReport report = await _examinationReportService.Update(reportDto.MapToModel(), uuid);
             return Ok(report);
         }
         

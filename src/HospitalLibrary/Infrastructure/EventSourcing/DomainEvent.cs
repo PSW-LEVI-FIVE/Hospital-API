@@ -4,19 +4,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HospitalLibrary.Infrastructure.EventSourcing
 {
-    public class DomainEvent
+    public abstract class DomainEvent
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int AggregateId { get; private set; }
         public DateTime Timestamp { get; private set; }
-        public string Name { get; private set; }
 
-        public DomainEvent(int aggregateId, DateTime timestamp, string name)
+        public DomainEvent(int aggregateId, DateTime timestamp)
         {
             AggregateId = aggregateId;
             Timestamp = timestamp;
-            Name = name;
         }
     }
 }
