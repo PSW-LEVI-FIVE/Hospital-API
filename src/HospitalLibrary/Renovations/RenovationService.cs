@@ -16,14 +16,16 @@ namespace HospitalLibrary.Renovations
     private readonly ITimeIntervalValidationService _intervalValidation;
     private readonly IRoomEquipmentService _equipmentService;
     private readonly IRoomService _roomService;
+    private IRenovationValidator _renovationValidator;
 
     public RenovationService(IUnitOfWork unitOfWork, ITimeIntervalValidationService intervalValidation, IRoomEquipmentService equipmentService,
-                            IRoomService roomService)
+                            IRoomService roomService,IRenovationValidator renovationValidator)
     {
       _unitOfWork = unitOfWork;
       _intervalValidation = intervalValidation;
       _equipmentService = equipmentService;
       _roomService = roomService;
+      _renovationValidator = renovationValidator;
 
     }
 
@@ -128,6 +130,24 @@ namespace HospitalLibrary.Renovations
         default:
           throw new ArgumentOutOfRangeException();
       }
+    }
+
+    public Task<List<Model.Renovation>> GetAllPendingForSpecificRoom(int roomId)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Model.Renovation CancelRenovation(int renovationId)
+    {
+
+      Model.Renovation renovation =
+                      _unitOfWork.RenovationRepository.GetOne(renovationId);
+                  _renovationValidator.ThrowIfLessThan24hours(renovation);
+                  renovation.State = RenovationState.CANCELED;
+                  _unitOfWork.RenovationRepository.Update(renovation);
+                  _unitOfWork.RenovationRepository.Save();
+                  return renovation;
+              
     }
 
     private async Task MergeRooms(Room mainRoom, Room secondaryRoom)

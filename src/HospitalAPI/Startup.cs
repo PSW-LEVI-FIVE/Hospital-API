@@ -131,6 +131,8 @@ namespace HospitalAPI
             services.AddScoped<IAdvertisementService, AdvertisementService>();
             services.AddScoped<IRenovationService, RenovationService>();
             services.AddScoped<IEquipmenrRelocationValidator, EquipmentRelocationValidator>();
+            services.AddScoped<IRenovationValidator, RenovationValidator>();
+
 
             services.AddSwaggerGen(c =>
             {

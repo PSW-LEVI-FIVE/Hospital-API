@@ -37,10 +37,11 @@ namespace HospitalLibrary.Rooms.Model
         public EquipmentReallocation() 
         {
         }
-        public EquipmentReallocation(int id, int startingRoomId, int destinationRoomd, int equipmentId, int amount, ReallocationState state, DateTime startAt, DateTime endAt)
+        public EquipmentReallocation(int id, int startingRoomId, int destinationRoomId, int equipmentId, int amount, ReallocationState state, DateTime startAt, DateTime endAt)
         {
             Id = id;
             StartingRoomId = startingRoomId;
+            DestinationRoomId = destinationRoomId;
             EquipmentId = equipmentId;
             this.amount = amount;
             this.state = state;

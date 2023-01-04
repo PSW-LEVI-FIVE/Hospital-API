@@ -47,7 +47,7 @@ namespace HospitalLibrary.Rooms.Repositories
         public async Task<List<EquipmentReallocation>> GetAllPendingForSpecificRoom(int roomId)
         {
             return await _dataContext.EquipmentReallocations
-                .Where(a => a.state == ReallocationState.PENDING)
+                .Where((a => a.state == ReallocationState.PENDING))
                 .Where(a=>(a.StartingRoomId == roomId)||(a.DestinationRoomId==roomId))
                 .ToListAsync();
         }

@@ -22,6 +22,7 @@ using Microsoft.Extensions.DependencyInjection;
 using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Examination;
+using HospitalLibrary.Renovations.Model;
 using HospitalLibrary.Shared.Model.ValueObjects;
 using HospitalLibrary.Symptoms;
 
@@ -513,15 +514,6 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         };
         ExaminationReport rp = new ExaminationReport(10, 4, "Something test", 41, "");
 
-        /*ExaminationReport rp = new ExaminationReport()
-        {
-            Id = 10,
-            Content = "Something test",
-            Prescriptions = null,
-            Symptoms = null,
-            DoctorId = 4,
-            ExaminationId = 41
-        };*/
 
         EquipmentReallocation equipmentReallocation = new EquipmentReallocation()
         {
@@ -532,6 +524,18 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             state = ReallocationState.PENDING,
             StartAt = today.AddDays(1),
             EndAt = today.AddDays(3)
+
+        };
+
+        Renovation renovation = new Renovation()
+        {
+            Id = 1,
+            MainRoomId = 1,
+            StartAt = today.AddDays(1),
+            EndAt = today.AddDays(3),
+            State = RenovationState.PENDING,
+            Type = RenovationType.MERGE,
+            SecondaryRoomId = 2
 
         };
 
@@ -601,6 +605,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Appointments.Add(examinationDontTouch);
         dbContext.EquipmentReallocations.Add(equipmentReallocation);
         dbContext.ExaminationReports.Add(rp);
+        dbContext.Renovations.Add(renovation);
         dbContext.SaveChanges();
 
 

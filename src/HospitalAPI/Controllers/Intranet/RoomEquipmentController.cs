@@ -35,6 +35,22 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(result);
         }
 
+        [Route("get/{equipmentId}")]
+        [HttpGet]
+        
+        public IActionResult GetEquipment(int equipmentId)
+        {
+            var equipment = _roomEquipmentService.GetEquipmentById(equipmentId);
+            return Ok(equipment);
+        }
+        [Route("room/{roomId}")]
+        [HttpGet]
+        public async Task<IActionResult> GetEquipmentForRoom(int roomId)
+        {
+            var result = await _roomEquipmentService.GetRoomEquipment(roomId);
+            return Ok(result);
+        }
+
 
     }
 }
