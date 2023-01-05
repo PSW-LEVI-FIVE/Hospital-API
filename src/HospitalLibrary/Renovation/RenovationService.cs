@@ -20,12 +20,14 @@ namespace HospitalLibrary.Renovation
         private readonly IUnitOfWork _unitOfWork;
         private readonly ITimeIntervalValidationService _intervalValidation;
         private readonly IRoomEquipmentService _equipmentService;
+        private readonly IRoomService _roomService;
 
-        public RenovationService(IUnitOfWork unitOfWork, ITimeIntervalValidationService intervalValidation,IRoomEquipmentService equipmentService)
+        public RenovationService(IUnitOfWork unitOfWork, ITimeIntervalValidationService intervalValidation,IRoomEquipmentService equipmentService,IRoomService roomService)
         {
             _unitOfWork=unitOfWork;
             _intervalValidation = intervalValidation;
             _equipmentService = equipmentService;
+            _roomService = roomService;
 
         }
 
@@ -145,27 +147,26 @@ namespace HospitalLibrary.Renovation
                     break;
                 }
                 case RenovationType.MERGE:
-                    renovation.MainRoom = _unitOfWork.RoomRepository.GetOne(renovation.MainRoomId);
-               
-                    renovation.SecondaryRoom = _unitOfWork.RoomRepository.GetOne((int)renovation.SecondaryRoomId);
+                    if (renovation.SecondaryRoomId == null) throw new Exception("secondary room can't be null");
 
-                    renovation.MainRoom.Area += renovation.SecondaryRoom.Area;
+                    var MainRoom = _unitOfWork.RoomRepository.GetOne(renovation.MainRoomId);
+                    var SecondaryRoom = _unitOfWork.RoomRepository.GetOne((int)renovation.SecondaryRoomId);
+                    
+                    MainRoom.Area +=SecondaryRoom.Area;
 
-                    _unitOfWork.RoomRepository.Update(renovation.MainRoom);
-                    _unitOfWork.RoomRepository.Save();
+                    _roomService.Update(MainRoom);
 
-                    await TransferAllEquipment(renovation.MainRoom, renovation.SecondaryRoom);
-                    await TransferAllAppointments(renovation.MainRoom,renovation.SecondaryRoom);
-                    await DeleteAllReallocation(renovation.SecondaryRoom);
+                    await TransferAllEquipment(MainRoom, SecondaryRoom);
+                    await TransferAllAppointments(MainRoom, SecondaryRoom);
+                    await DeleteAllReallocation(SecondaryRoom);
 
-                    _unitOfWork.RoomRepository.Delete(renovation.SecondaryRoom);
+
+                    _unitOfWork.RoomRepository.Delete(SecondaryRoom);
                     _unitOfWork.RoomRepository.Save();
 
                     renovation.State = RenovationState.FINISHED;
-                    renovation.SecondaryRoom=null;
-                    renovation.SecondaryRoomId = null;
-                    _unitOfWork.RenovationRepository.Update(renovation);
-                    _unitOfWork.RenovationRepository.Save();
+                    Update(renovation);
+                    
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -179,16 +180,18 @@ namespace HospitalLibrary.Renovation
                 MainRoom.FloorId, RoomType.OPERATION_ROOM);
 
             MainRoom.Area = MainRoom.Area / 2;
-            _unitOfWork.RoomRepository.Add(room2);
-            _unitOfWork.RoomRepository.Update(MainRoom);
-            _unitOfWork.RoomRepository.Save();
+            _roomService.Create(room2);
+            _roomService.Update(MainRoom);
         }
 
         private async Task DeleteAllReallocation(Room renovationSecondaryRoom)
         {
             var equipmentReallos = await _unitOfWork.EquipmentReallocationRepository.GetAllForRoom(renovationSecondaryRoom.Id);
             foreach (var eq in equipmentReallos)
+            {
                 _unitOfWork.EquipmentReallocationRepository.Delete(eq);
+                _unitOfWork.EquipmentReallocationRepository.Save();
+            }
         }
 
         private async Task TransferAllEquipment(Room mainRoom, Room secondaryRoom)
