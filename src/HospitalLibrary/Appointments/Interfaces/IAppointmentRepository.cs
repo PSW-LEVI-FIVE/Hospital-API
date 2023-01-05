@@ -9,6 +9,8 @@ namespace HospitalLibrary.Appointments.Interfaces
     {
         Task<List<TimeInterval>> GetAllPendingForRange(TimeInterval interval, int roomId);
         Task<List<TimeInterval>> GetAllRoomTakenIntervalsForDate(int roomId, DateTime date);
+        Task<List<Appointment>> GetAllForRoom(int roomId);
+
         Task<IEnumerable<TimeInterval>> GetAllDoctorTakenIntervalsForDate(int doctorId, DateTime date);
         Task<IEnumerable<TimeInterval>> GetAllDoctorTakenIntervalsForTimeInterval(int doctorId, TimeInterval timeInterval);
         Task<IEnumerable<Appointment>> GetAllDoctorUpcomingAppointments(int doctorId);
