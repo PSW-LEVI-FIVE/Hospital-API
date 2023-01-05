@@ -40,11 +40,7 @@ public class CancelAppointmentTest
     {
         Navigate("http://localhost:4200/login");
         TypeInInput("username", "pRoXm369");
-<<<<<<< HEAD
         TypeInInput("password", "asdasd");
-=======
-        TypeInInput("password", "asdasd123");
->>>>>>> 2837106c45bde0d4e09111a8c3586fe3ab34d24b
         Submit("login");
         Sleep(700);
         Navigate("http://localhost:4200/patient/myAppointments");
