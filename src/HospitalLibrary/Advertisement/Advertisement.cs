@@ -22,9 +22,8 @@ namespace HospitalLibrary.Advertisement
         {
         }
         
-        public Advertisement(int id, string title,string text,string pictureUrl,DateTime createDate)
+        public Advertisement( string title,string text,string pictureUrl,DateTime createDate)
         {
-            Id = id;
             Title = title;
             Text = text;
             PictureUrl = pictureUrl;

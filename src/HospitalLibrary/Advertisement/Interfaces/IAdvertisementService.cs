@@ -2,6 +2,6 @@
 {
     public interface IAdvertisementService
     {
-        
+        public Advertisement Create(Advertisement advertisement);
     }
 }
