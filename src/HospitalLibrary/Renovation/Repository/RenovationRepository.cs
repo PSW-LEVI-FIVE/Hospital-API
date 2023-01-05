@@ -23,7 +23,10 @@ namespace HospitalLibrary.Renovation.Repository
         {
             return await _dataContext.Renovations
                 .Where(a => a.State == RenovationState.PENDING)
-                .Where(a => a.MainRoomId == roomId || a.SecondaryRoomId==roomId).ToListAsync();
+                .Where(a => a.MainRoomId == roomId || a.SecondaryRoomId==roomId)
+                .Where(a => interval.Start.Date.CompareTo(a.StartAt.Date) <= 0)
+                .Where(a => interval.End.Date.CompareTo(a.EndAt.Date) >= 0)
+                .ToListAsync();
         }
 
         public async Task<List<Model.Renovation>> GetAllPending()

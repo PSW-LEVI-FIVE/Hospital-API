@@ -37,59 +37,15 @@ namespace HospitalLibrary.Renovation
             return renovation;
         }
 
-        public async Task<List<TimeInterval>> GenerateTimeSlots(TimeInterval timeInterval,int duration,int roomid)
-        {
-            List<TimeInterval> slots = new List<TimeInterval>();
-            var numberOfDaysInInterval = (timeInterval.End.Date.Subtract(timeInterval.Start.Date)).Days;
-
-            for (int i = 0; i <= numberOfDaysInInterval - duration; i++)
-            {
-                var day = timeInterval.Start.Date.AddDays(i);
-                var latest =await GetLatest(day,roomid);
-                var empty = await IsRoomFreeForDay(timeInterval.Start.AddDays(i), roomid);
-                if (!empty )
-                {
-                    if (latest == null) continue;
-                    var freeRoom = await IsRoomFreeForDays(latest.End, duration - 1, roomid);
-                    if  (duration<=1 || !freeRoom) continue;
-                    
-                    var earliest = await GetEarliest(latest.End.AddDays(duration),roomid);
-                   
-                    if(earliest==null) {slots.Add(new TimeInterval(latest.End, latest.End.AddDays(duration)));
-                        continue;
-                    }
-
-                    var a = earliest.Start.CompareTo(latest.End.AddDays(duration));
-                    if (a > 0)
-                        slots.Add(new TimeInterval(latest.End, latest.End.AddDays(duration)));
-                }
-                else
-                {
-                    var freeRoom = await IsRoomFreeForDays(day, duration - 1, roomid);
-
-                    if (duration <= 1 || !freeRoom) continue;
-                    
-                    var earliest = await GetEarliest(day.AddDays(duration),roomid);
-
-                    if (earliest != null) slots.Add(new TimeInterval(earliest.Start.AddDays(-2),earliest.Start));
-
-                   // var a=BreakInto30MinuteSlots(day.Date.AddHours(20), day.Date.AddDays(duration).AddHours(20));
-                   // slots.AddRange(a);
-                }
-            }
-            return slots;
-        }
-
         public async Task<List<TimeInterval>> GenerateCleanerTimeSlots(TimeInterval timeInterval, int duration,
-            int roomid)
+            int roomId)
         {
             List<TimeInterval> slots = new List<TimeInterval>();
-            var schedule =await GetRoomScheduleForRange(timeInterval, roomid);
-            schedule = schedule.OrderBy(a => a.Start).ToList();
-            DateTime previous = new DateTime(0);
+            var schedule =await GetRoomScheduleForRange(timeInterval, roomId);
+            DateTime previous = timeInterval.Start;
+                ;
             foreach (var current in schedule)
             {
-                if (previous == new DateTime(0)) previous = current.Start.Date.AddHours(8);
 
                 if (current.Start.Subtract(previous).CompareTo(new TimeSpan(duration,0,0,0))<0)
                 {
@@ -98,27 +54,20 @@ namespace HospitalLibrary.Renovation
 
                 }
 
-                var actual= BreakIntoDurationLenghtSlots(previous, current.Start,duration);
+                var actual= BreakIntoDurationLengthSlots(previous, current.Start,duration);
                 slots.AddRange(actual);
                 previous = current.End;
             }
-            if(timeInterval.End.Subtract(previous).CompareTo(new TimeSpan(duration, 0, 0, 0)) >= 0) 
-                slots.AddRange(BreakIntoDurationLenghtSlots(previous,timeInterval.End,duration));
-            if(slots.Count==0) slots.Add(new TimeInterval(timeInterval));
-            return slots;
-        }
 
-        private static Dictionary<string,TimeInterval> joinDictionaries(Dictionary<string, TimeInterval> baseDictionary, Dictionary<string, TimeInterval> additionalDictionary)
-        {
-            foreach (var field in additionalDictionary)
-                baseDictionary.Add(field.Key,field.Value);
-            return baseDictionary;
+            if(timeInterval.End.Subtract(previous).CompareTo(new TimeSpan(duration, 0, 0, 0)) >= 0) 
+                slots.AddRange(BreakIntoDurationLengthSlots(previous,timeInterval.End,duration));
+
+            return slots;
         }
 
         private async Task<List<TimeInterval>> GetRoomScheduleForRange(TimeInterval interval, int roomId)
         {
             List<TimeInterval> latest = new List<TimeInterval>();
-           // Dictionary<string,TimeInterval> additional=new Dictionary<string,TimeInterval>();
             var Realocations = await _unitOfWork.EquipmentReallocationRepository.GetAllPendingForRoomInTimeInterval(roomId,interval);
             foreach (var realocation in Realocations)
                 latest.Add(realocation.GetInterval());
@@ -132,52 +81,25 @@ namespace HospitalLibrary.Renovation
             var Renovations = await _unitOfWork.RenovationRepository.GetAllPendingForRoomInRange(interval, roomId);
             foreach (var r in Renovations)
                 latest.Add(r.GetInterval());
-            //var latestRenovation = await _unitOfWork.RenovationRepository.GetLastPendingForDay(date, roomId);
-            //var latestAppointment = await _unitOfWork.AppointmentRepository.GetLastForDate(date, roomId);
-            //if (latestReallocation != null)
-             //   latest.Add(new TimeInterval(latestReallocation.StartAt, latestReallocation.EndAt));
-            //if (latestRenovation != null)
-            //    latest.Add(latestRenovation);
-            //if (latestAppointment != null)
-            //    latest.Add(latestAppointment);
+            
 
-            return latest;
+            return latest.OrderBy(a => a.Start).ToList();
         }
-        public List<TimeInterval> BreakIntoDurationLenghtSlots(DateTime startDate, DateTime EndDate, int duration)
+
+        public List<TimeInterval> BreakIntoDurationLengthSlots(DateTime startDate, DateTime EndDate, int duration)
         {   
             var list = new List<TimeInterval>();
             var repeats=EndDate.Subtract(startDate).Hours + EndDate.Subtract(startDate).Days*24;
             repeats=repeats/(24*duration);
-            if(repeats<1)
+
+            for (var i = 0; i < repeats; i++)
             {
-                list.Add(new TimeInterval(startDate, startDate.AddDays(1)));
-                return list;
-            } 
-            for (int i = 0; i < repeats; i++)
-            {
-                list.Add(new TimeInterval(new TimeInterval(startDate.AddDays(i), startDate.AddDays(i+1))));
+                list.Add(new TimeInterval(startDate.AddDays(i), startDate.AddDays(i+1)));
             }
 
             return list;
         }
-        public async Task<Boolean> IsRoomFreeForDays(DateTime day,int numberOfDays,int roomid)
-        {
-            for(int i = 1; i < numberOfDays; i++)
-                if( !await IsRoomFreeForDay(day.AddDays(i),roomid)) return false;
-            return true;
-        }
-        public async Task<Boolean> IsRoomFreeForDay(DateTime day,int roomId)
-        {
-            var renovations = await _unitOfWork.RenovationRepository.GetFirstPendingForDay(day,roomId);
-            var reallocations = await _unitOfWork.EquipmentReallocationRepository.GetAllPendingForDateAndRoom(day,roomId);
-            var appointments = await _unitOfWork.AppointmentRepository.GetAllPendingForDate(day, roomId);
-            var activeReno = await _unitOfWork.RenovationRepository.GetActiveRenovationForDay(day, roomId);
-
-            if (renovations == null &&activeReno==null && reallocations.Count==0 && appointments.Count==0)
-                return  true;
-            return false;
-        }
-
+       
         public async Task<TimeInterval> GetLatest(DateTime date,int roomId)
         {
             var latest = await GetAllLatestForDate(date,roomId);
@@ -200,83 +122,66 @@ namespace HospitalLibrary.Renovation
 
             return latest;
         }
-        public async Task<TimeInterval> GetEarliest(DateTime date,int roomId)
-        {
-            var earliest = await GetAllEarliestForDate(date, roomId);
-            if (earliest.Count == 0) return null;
-            earliest.OrderBy(x => x.End);
-            return earliest[0];
-        }
-
-        private async Task<List<TimeInterval>> GetAllEarliestForDate(DateTime date,int roomId)
-        {
-            List<TimeInterval> latest = new List<TimeInterval>();
-            var latestReallocation = await _unitOfWork.EquipmentReallocationRepository.GetFirstPendingForDay(date, roomId);
-            var latestRenovation = await _unitOfWork.RenovationRepository.GetFirstPendingForDay(date, roomId);
-            var latestAppointment = await _unitOfWork.AppointmentRepository.GetFirstForDate(date, roomId);
-            if (latestReallocation != null)
-                latest.Add(new TimeInterval(latestReallocation.StartAt, latestReallocation.EndAt));
-            if (latestRenovation != null)
-                latest.Add(latestRenovation);
-            if (latestAppointment != null)
-                latest.Add(latestAppointment);
-
-            return latest;
-        }
 
         public async Task<Model.Renovation> GetOne(int id)
         {
             var a= await _unitOfWork.RenovationRepository.GetAllPending();
             return a[0];
         }
+
         public async Task initiateRenovation(Model.Renovation renovation)
         {
-            if (renovation.Type == RenovationType.SPLIT)
+            switch (renovation.Type)
             {
-                Room room2 = new Room();
-                renovation.MainRoom = _unitOfWork.RoomRepository.GetOne(renovation.MainRoomId);
-                int a = _unitOfWork.RoomRepository.GetMaxId();
-                room2 = new Room( a + 1, "31As", renovation.MainRoom.Area / 2,
-                        renovation.MainRoom.FloorId, RoomType.OPERATION_ROOM);
-                
-                _unitOfWork.RoomRepository.Add(room2);
-                _unitOfWork.RoomRepository.Save();
-                Room room1 = renovation.MainRoom;
-                room1.Area = room1.Area / 2;
-                _unitOfWork.RoomRepository.Update(room1);
-                _unitOfWork.RoomRepository.Save();
+                case RenovationType.SPLIT:
+                {
+                    var MainRoom = _unitOfWork.RoomRepository.GetOne(renovation.MainRoomId);
+                    var roomNumber = renovation.roomName;
+                    NewMethod(roomNumber, MainRoom);
 
-                renovation.State = RenovationState.FINISHED;
-                _unitOfWork.RenovationRepository.Update(renovation);
-                _unitOfWork.RenovationRepository.Save();
-
-            }
-            else if (renovation.Type == RenovationType.MERGE)
-            {
-                renovation.MainRoom = _unitOfWork.RoomRepository.GetOne(renovation.MainRoomId);
-               
-                renovation.SecondaryRoom = _unitOfWork.RoomRepository.GetOne((int)renovation.SecondaryRoomId);
-
-                renovation.MainRoom.Area += renovation.SecondaryRoom.Area;
-
-                _unitOfWork.RoomRepository.Update(renovation.MainRoom);
-                _unitOfWork.RoomRepository.Save();
-
-                await TransferAllEquipment(renovation.MainRoom, renovation.SecondaryRoom);
-                await TransferAllAppointments(renovation.MainRoom,renovation.SecondaryRoom);
-                await DeleteAllReallocation(renovation.SecondaryRoom);
-
-                _unitOfWork.RoomRepository.Delete(renovation.SecondaryRoom);
-                _unitOfWork.RoomRepository.Save();
-
-                renovation.State = RenovationState.FINISHED;
-                renovation.SecondaryRoom=null;
-                renovation.SecondaryRoomId = null;
+                    renovation.State = RenovationState.FINISHED;
                     _unitOfWork.RenovationRepository.Update(renovation);
-                _unitOfWork.RenovationRepository.Save();
+                    _unitOfWork.RenovationRepository.Save();
+                    break;
+                }
+                case RenovationType.MERGE:
+                    renovation.MainRoom = _unitOfWork.RoomRepository.GetOne(renovation.MainRoomId);
+               
+                    renovation.SecondaryRoom = _unitOfWork.RoomRepository.GetOne((int)renovation.SecondaryRoomId);
 
-              
+                    renovation.MainRoom.Area += renovation.SecondaryRoom.Area;
+
+                    _unitOfWork.RoomRepository.Update(renovation.MainRoom);
+                    _unitOfWork.RoomRepository.Save();
+
+                    await TransferAllEquipment(renovation.MainRoom, renovation.SecondaryRoom);
+                    await TransferAllAppointments(renovation.MainRoom,renovation.SecondaryRoom);
+                    await DeleteAllReallocation(renovation.SecondaryRoom);
+
+                    _unitOfWork.RoomRepository.Delete(renovation.SecondaryRoom);
+                    _unitOfWork.RoomRepository.Save();
+
+                    renovation.State = RenovationState.FINISHED;
+                    renovation.SecondaryRoom=null;
+                    renovation.SecondaryRoomId = null;
+                    _unitOfWork.RenovationRepository.Update(renovation);
+                    _unitOfWork.RenovationRepository.Save();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private void NewMethod(string roomNumber, Room MainRoom)
+        {
+            var id = _unitOfWork.RoomRepository.GetMaxId();
+            var room2 = new Room(id + 1, roomNumber, MainRoom.Area / 2,
+                MainRoom.FloorId, RoomType.OPERATION_ROOM);
+
+            MainRoom.Area = MainRoom.Area / 2;
+            _unitOfWork.RoomRepository.Add(room2);
+            _unitOfWork.RoomRepository.Update(MainRoom);
+            _unitOfWork.RoomRepository.Save();
         }
 
         private async Task DeleteAllReallocation(Room renovationSecondaryRoom)
