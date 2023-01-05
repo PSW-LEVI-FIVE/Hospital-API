@@ -11,6 +11,8 @@ namespace HospitalLibrary.Rooms.Interfaces
     public interface IRoomEquipmentService
     {
         void UpdateEquipment(RoomEquipment realEq);
+        void DeleteEquipment(RoomEquipment realEq);
+
         void CreateEquipment(int destinationRoomId, int amount, RoomEquipment equipment);
         Task<IEnumerable<RoomEquipment>> SearchEquipmentInRoom(RoomEquipmentDTO roomEquipmentDTO);
         IEnumerable<Room> SearchRoomsByFloorContainingEquipment(RoomEquipmentDTO roomEquipmentDTO);

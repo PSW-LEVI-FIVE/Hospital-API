@@ -32,6 +32,12 @@ namespace HospitalLibrary.Rooms
             _unitOfWork.RoomEquipmentRepository.Update(realEq);
             _unitOfWork.RoomEquipmentRepository.Save();
         }
+
+        public void DeleteEquipment(RoomEquipment realEq)
+        {
+            _unitOfWork.RoomEquipmentRepository.Delete(realEq);
+            _unitOfWork.RoomEquipmentRepository.Save();
+        }
         
         public Task<IEnumerable<RoomEquipment>> SearchEquipmentInRoom(RoomEquipmentDTO roomEquipmentDTO)
         {

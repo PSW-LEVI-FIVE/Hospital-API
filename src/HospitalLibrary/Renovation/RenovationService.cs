@@ -9,6 +9,7 @@ using ceTe.DynamicPDF.PageElements.Forms;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Renovation.Interface;
 using HospitalLibrary.Renovation.Model;
+using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Shared.Interfaces;
 
@@ -18,11 +19,13 @@ namespace HospitalLibrary.Renovation
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ITimeIntervalValidationService _intervalValidation;
+        private readonly IRoomEquipmentService _equipmentService;
 
-        public RenovationService(IUnitOfWork unitOfWork, ITimeIntervalValidationService intervalValidation)
+        public RenovationService(IUnitOfWork unitOfWork, ITimeIntervalValidationService intervalValidation,IRoomEquipmentService equipmentService)
         {
             _unitOfWork=unitOfWork;
             _intervalValidation = intervalValidation;
+            _equipmentService = equipmentService;
 
         }
 
@@ -125,7 +128,7 @@ namespace HospitalLibrary.Renovation
 
         public async Task<Model.Renovation> GetOne(int id)
         {
-            var a= await _unitOfWork.RenovationRepository.GetAllPending();
+            var a = await _unitOfWork.RenovationRepository.GetAllPending();
             return a[0];
         }
 
@@ -135,13 +138,10 @@ namespace HospitalLibrary.Renovation
             {
                 case RenovationType.SPLIT:
                 {
-                    var MainRoom = _unitOfWork.RoomRepository.GetOne(renovation.MainRoomId);
-                    var roomNumber = renovation.roomName;
-                    NewMethod(roomNumber, MainRoom);
+                    SplitRoom(renovation.roomName, _unitOfWork.RoomRepository.GetOne(renovation.MainRoomId));
 
                     renovation.State = RenovationState.FINISHED;
-                    _unitOfWork.RenovationRepository.Update(renovation);
-                    _unitOfWork.RenovationRepository.Save();
+                    Update(renovation);
                     break;
                 }
                 case RenovationType.MERGE:
@@ -172,7 +172,7 @@ namespace HospitalLibrary.Renovation
             }
         }
 
-        private void NewMethod(string roomNumber, Room MainRoom)
+        private void SplitRoom(string roomNumber, Room MainRoom)
         {
             var id = _unitOfWork.RoomRepository.GetMaxId();
             var room2 = new Room(id + 1, roomNumber, MainRoom.Area / 2,
@@ -201,29 +201,21 @@ namespace HospitalLibrary.Renovation
                 {
                     var item=await _unitOfWork.RoomEquipmentRepository.GetEquipmentByRoomAndName(mainRoom.Id, eq.Name);
                     item.Quantity += eq.Quantity;
-                    _unitOfWork.RoomEquipmentRepository.Update(item);
-                    _unitOfWork.RoomEquipmentRepository.Save();
+                    _equipmentService.UpdateEquipment(item);
 
-                    _unitOfWork.RoomEquipmentRepository.Delete(eq);
-                    _unitOfWork.RoomEquipmentRepository.Save();
-
-
+                    _equipmentService.DeleteEquipment(eq);
                 }
                 else
                 {
                     eq.RoomId = mainRoom.Id;
-                    _unitOfWork.RoomEquipmentRepository.Update(eq);
-                    _unitOfWork.RoomEquipmentRepository.Save();
+                    _equipmentService.UpdateEquipment(eq);
                 }
             }
         }
 
         private bool IsInPrimaryRoom(List<RoomEquipment> primaryRoomEq, RoomEquipment eq)
         {
-            foreach (var item in primaryRoomEq)
-                if (eq.Name == item.Name)
-                    return true;
-            return false;
+            return primaryRoomEq.Any(item => eq.Name == item.Name);
         }
 
         private async Task TransferAllAppointments(Room mainRoom,Room secondaryRoom)
@@ -234,24 +226,16 @@ namespace HospitalLibrary.Renovation
            if (!appointmentsSecondary.Any()) return;
            foreach (var appointment in appointmentsSecondary)
            {
-               if (!IsMergable(appointmentsMain, appointment)) _unitOfWork.AppointmentRepository.Delete(appointment);
+               if (!IsMergeable(appointmentsMain, appointment)) _unitOfWork.AppointmentRepository.Delete(appointment);
                appointment.RoomId = mainRoom.Id;
                _unitOfWork.AppointmentRepository.Update(appointment);
            }
         }
 
-        private Boolean IsMergable(List<Appointment> appointmentsMain, Appointment appointment)
+        private static bool IsMergeable(List<Appointment> appointmentsMain, Appointment appointment)
         {
-            foreach (var appointmentSec in appointmentsMain)
-            {
-                if (new TimeInterval(appointmentSec.StartAt, appointmentSec.EndAt).IsOverlaping(
-                        new TimeInterval(appointment.StartAt, appointment.EndAt)))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return appointmentsMain.All(appointmentSec => !new TimeInterval(appointmentSec.StartAt, appointmentSec.EndAt)
+                .IsOverlaping(new TimeInterval(appointment.StartAt, appointment.EndAt)));
         }
 
         public void Update(Model.Renovation renovation)
@@ -263,6 +247,7 @@ namespace HospitalLibrary.Renovation
         public async Task Delete(int id)
         {
             _unitOfWork.RenovationRepository.Delete(_unitOfWork.RenovationRepository.GetOne(id));
+            _unitOfWork.RenovationRepository.Save();
         }
 
         public async Task<List<Model.Renovation>> GetAllPending()
