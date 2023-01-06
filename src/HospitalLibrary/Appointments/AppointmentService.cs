@@ -8,6 +8,7 @@ using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Dtos;
 using HospitalLibrary.Doctors.Interfaces;
+using HospitalLibrary.Examination;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Dtos;
 using HospitalLibrary.Shared.Interfaces;
@@ -231,6 +232,19 @@ namespace HospitalLibrary.Appointments
                         select new CalendarAppointmentsDTO(date, map[dt]))
                     .ToList();
             }
+            public Task<IEnumerable<Appointment>> GetAllFinishedPatientAppointments(int patientId)
+            {
+                return _unitOfWork.AppointmentRepository.GetPatientEndedAppointments(patientId);
+            }
+            public String GetUrl()
+            {
+                return _unitOfWork.ExaminationReportRepository.FindExam().Url;
+            }
+            public ExaminationReport GetByExamination(int examinationId)
+            {
+                return _unitOfWork.ExaminationReportRepository.GetByExamination(examinationId);
+            }
         }
+    
     }
 

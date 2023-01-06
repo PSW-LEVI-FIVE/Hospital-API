@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Allergens;
+using HospitalLibrary.Appointments;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Patients.Interfaces;
@@ -43,7 +44,6 @@ namespace HospitalLibrary.Patients
             _unitOfWork.PatientRepository.Save();
             return patient;
         }
-
         public Patient SearchByUid(string uid)
         {
             return _unitOfWork.PatientRepository.SearchByUid(uid);

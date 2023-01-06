@@ -105,6 +105,7 @@ namespace HospitalLibrary.Examination
                 p.Medicine = medicine;
             }
         }
+        
 
         private async Task<string> GeneratePdf(ExaminationReport examinationReport)
         {

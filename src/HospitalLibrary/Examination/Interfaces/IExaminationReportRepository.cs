@@ -7,5 +7,6 @@ namespace HospitalLibrary.Examination.Interfaces
     {
         ExaminationReport GetByExamination(int examinationId);
         List<ExaminationReport> FindAllBySpecialty(int specialtyId);
+        ExaminationReport FindExam();
     }
 }
