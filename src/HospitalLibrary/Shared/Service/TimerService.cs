@@ -1,4 +1,4 @@
-﻿using HospitalLibrary.Rooms;
+using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using HospitalLibrary.Renovations.Interface;
+using HospitalLibrary.Renovations.Model;
+
 
 namespace HospitalLibrary.Shared.Service
 {
@@ -47,6 +50,16 @@ namespace HospitalLibrary.Shared.Service
                     {
                         await equipmentReallocationService.InitiateReallocation(real);           
                     }
+                }
+                IRenovationService renovation = scope.ServiceProvider.GetService<IRenovationService>();
+
+                List<Renovation> renovations = await renovation.GetAllPending();
+                foreach (Renovation reno in renovations)
+                {
+                  if (reno.EndAt < DateTime.Now)
+                  {
+                    await renovation.ExecuteRenovation(reno);
+                  }
                 }
             }
             catch (Exception error)
