@@ -5,6 +5,7 @@ using HospitalAPI.Controllers.Intranet;
 using HospitalLibrary.Examination;
 using HospitalLibrary.Examination.Dtos;
 using HospitalLibrary.Examination.Interfaces;
+using HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationReport;
 using HospitalLibrary.Symptoms;
 using HospitalLibrary.Therapies.Interfaces;
 using HospitalTests.Setup;
@@ -23,7 +24,7 @@ public class ExaminationTests: BaseIntegrationTest
     {
     }
     
-    private ExaminationReportController CreateFakeControllerWithIdentity(IExaminationReportService examinationReportService) {
+    private ExaminationReportController CreateFakeControllerWithIdentity(IExaminationReportService examinationReportService, IExaminationReportStatistics examinationStatisticsService) {
         var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
         {
             new Claim(ClaimTypes.Name, "Somebody"),
@@ -31,7 +32,8 @@ public class ExaminationTests: BaseIntegrationTest
             new Claim(ClaimTypes.Role, "Doctor"),
         }, "mock"));
         
-        var controller = new ExaminationReportController(examinationReportService);
+        
+        var controller = new ExaminationReportController(examinationReportService, examinationStatisticsService);
         controller.ControllerContext = new ControllerContext()
         {
             HttpContext = new DefaultHttpContext() { User = user }
@@ -41,7 +43,10 @@ public class ExaminationTests: BaseIntegrationTest
 
     private ExaminationReportController SetupController(IServiceScope scope)
     {
-        return CreateFakeControllerWithIdentity(scope.ServiceProvider.GetRequiredService<IExaminationReportService>());
+        return CreateFakeControllerWithIdentity(
+            scope.ServiceProvider.GetRequiredService<IExaminationReportService>(),
+            scope.ServiceProvider.GetRequiredService<IExaminationReportStatistics>()
+            );
     }
     
     [Fact]

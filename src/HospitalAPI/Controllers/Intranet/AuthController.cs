@@ -15,9 +15,11 @@ namespace HospitalAPI.Controllers.Intranet
     public class AuthController: ControllerBase
     {
         private IAuthService _authService;
-        public AuthController(IAuthService authService)
+        private IUserService _userService;
+        public AuthController(IAuthService authService, IUserService userService)
         {
             _authService = authService;
+            _userService = userService;
         }
         
         [AllowAnonymous]
@@ -41,29 +43,27 @@ namespace HospitalAPI.Controllers.Intranet
         public IActionResult PatientsEndpoint()
         {
             var currentUser = GetCurrentUser();
+            var userData = _userService.GetPopulatedWithPerson(currentUser.Id);
             var user = new Authenticated()
             {
                 Username = currentUser.Username,
-                Role = currentUser.Role
+                Role = currentUser.Role,
+                Name = userData.Person.Name,
+                Surname = userData.Person.Surname
             };
             return Ok(user);
         }
 
         private UserDTO GetCurrentUser()
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-
-            if (identity != null)
+            if (HttpContext.User.Identity is not ClaimsIdentity identity) return null;
+            var userClaims = identity.Claims;
+            return new UserDTO
             {
-                var userClaims = identity.Claims;
-                return new UserDTO
-                {
-                    Id = int.Parse(userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value),
-                    Role = Role.Doctor,
-                    Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value
-                };
-            }
-            return null;
+                Id = int.Parse(userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value),
+                Role = Role.Doctor,
+                Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value
+            };
         }
     }
 }

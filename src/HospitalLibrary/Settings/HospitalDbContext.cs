@@ -13,6 +13,7 @@ using HospitalLibrary.Examination;
 using HospitalLibrary.Floors;
 using HospitalLibrary.Map;
 using HospitalLibrary.Hospitalizations;
+using HospitalLibrary.Infrastructure.EventSourcing.Events;
 using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.Medicines;
 using HospitalLibrary.Rooms.Model;
@@ -61,6 +62,11 @@ namespace HospitalLibrary.Settings
         public DbSet<Speciality> Specialities { get; set; }
 
         public DbSet<Renovation.Model.Renovation> Renovations { get; set; }
+
+        
+        public DbSet<Advertisement.Advertisement> Advertisement { get; set; }
+        
+        public DbSet<ExaminationReportDomainEvent> ExaminationReportDomainEvents { get; set; }
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -83,7 +89,10 @@ namespace HospitalLibrary.Settings
             modelBuilder.Entity<Rooms.Model.RoomEquipment>().ToTable("RoomEquipment");
             modelBuilder.Entity<Bed>().ToTable("Beds");
             modelBuilder.Entity<Allergen>().ToTable("Allergens");
-            modelBuilder.Entity<EquipmentReallocation>().ToTable("EquipmentReallocations");            
+            modelBuilder.Entity<EquipmentReallocation>().ToTable("EquipmentReallocations");
+            modelBuilder.Entity<ExaminationReportDomainEvent>().ToTable("ExaminationReportDomainEvents");
+            
+            
             modelBuilder.Entity<Therapy>()
                 .HasDiscriminator(t => t.InstanceType)
                 .HasValue<BloodTherapy>("blood")

@@ -64,6 +64,30 @@ namespace HospitalLibrary.Migrations
                     b.ToTable("ExaminationReportSymptom");
                 });
 
+            modelBuilder.Entity("HospitalLibrary.Advertisement.Advertisement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("PictureUrl")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Advertisement");
+                });
+
             modelBuilder.Entity("HospitalLibrary.Allergens.Allergen", b =>
                 {
                     b.Property<int>("Id")
@@ -255,6 +279,9 @@ namespace HospitalLibrary.Migrations
                     b.Property<string>("Url")
                         .HasColumnType("text");
 
+                    b.Property<int>("Version")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DoctorId");
@@ -364,6 +391,29 @@ namespace HospitalLibrary.Migrations
                     b.HasIndex("MedicalRecordId");
 
                     b.ToTable("Hospitalizations");
+                });
+
+            modelBuilder.Entity("HospitalLibrary.Infrastructure.EventSourcing.DomainEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("AggregateId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("ExaminationReportId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExaminationReportId");
+
+                    b.ToTable("DomainEvent");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Map.MapBuilding", b =>
@@ -761,6 +811,19 @@ namespace HospitalLibrary.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("HospitalLibrary.Infrastructure.EventSourcing.Events.ExaminationReportDomainEvent", b =>
+                {
+                    b.HasBaseType("HospitalLibrary.Infrastructure.EventSourcing.DomainEvent");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Uuid")
+                        .HasColumnType("text");
+
+                    b.ToTable("ExaminationReportDomainEvents");
+                });
+
             modelBuilder.Entity("HospitalLibrary.Rooms.Model.Bed", b =>
                 {
                     b.HasBaseType("HospitalLibrary.Rooms.Model.RoomEquipment");
@@ -1114,6 +1177,13 @@ namespace HospitalLibrary.Migrations
                     b.Navigation("MedicalRecord");
                 });
 
+            modelBuilder.Entity("HospitalLibrary.Infrastructure.EventSourcing.DomainEvent", b =>
+                {
+                    b.HasOne("HospitalLibrary.Examination.ExaminationReport", null)
+                        .WithMany("Changes")
+                        .HasForeignKey("ExaminationReportId");
+                });
+
             modelBuilder.Entity("HospitalLibrary.Map.MapBuilding", b =>
                 {
                     b.HasOne("HospitalLibrary.Buildings.Building", "Building")
@@ -1334,6 +1404,15 @@ namespace HospitalLibrary.Migrations
                     b.Navigation("Person");
                 });
 
+            modelBuilder.Entity("HospitalLibrary.Infrastructure.EventSourcing.Events.ExaminationReportDomainEvent", b =>
+                {
+                    b.HasOne("HospitalLibrary.Infrastructure.EventSourcing.DomainEvent", null)
+                        .WithOne()
+                        .HasForeignKey("HospitalLibrary.Infrastructure.EventSourcing.Events.ExaminationReportDomainEvent", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("HospitalLibrary.Rooms.Model.Bed", b =>
                 {
                     b.HasOne("HospitalLibrary.Rooms.Model.RoomEquipment", null)
@@ -1393,6 +1472,8 @@ namespace HospitalLibrary.Migrations
 
             modelBuilder.Entity("HospitalLibrary.Examination.ExaminationReport", b =>
                 {
+                    b.Navigation("Changes");
+
                     b.Navigation("Prescriptions");
                 });
 

@@ -57,7 +57,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
 
     private static string CreateTestingConnectionString()
     {
-        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=123";
+        return "Host=localhost;Database=HospitalDbTest;Username=postgres;Password=ftn";
     }
 
     private static void InitializeDatabase(HospitalDbContext dbContext)
@@ -504,16 +504,8 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         };
 
 
-        ExaminationReport rp = new ExaminationReport()
-        {
-            Id = 10,
-            Content = "Something test",
-            Prescriptions = null,
-            Symptoms = null,
-            DoctorId = 4,
-            ExaminationId = 41
-        };
-
+        ExaminationReport rp = new ExaminationReport(10, 4, "Something test", 41, "");
+        
         dbContext.Specialities.Add(speciality1);
         dbContext.Specialities.Add(speciality2);
         dbContext.Buildings.Add(building);

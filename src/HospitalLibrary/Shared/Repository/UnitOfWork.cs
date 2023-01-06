@@ -22,6 +22,7 @@ using HospitalLibrary.Floors;
 using HospitalLibrary.Floors.Interfaces;
 using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.Hospitalizations.Interfaces;
+using HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationReport;
 using HospitalLibrary.Map;
 using HospitalLibrary.Map.Interfaces;
 using HospitalLibrary.MedicalRecords;
@@ -82,6 +83,8 @@ namespace HospitalLibrary.Shared.Repository
         private ISymptomRepository _symptomRepository;
         private IConsiliumRepository _consiliumRepository;
         private IRenovationRepository _renovationRepository;
+        private IExaminationEventRepository _examinationEventRepository;
+        private ISpecialtyRepository _specialtyRepository;
 
         public UnitOfWork(HospitalDbContext dataContext)
         {
@@ -132,5 +135,8 @@ namespace HospitalLibrary.Shared.Repository
             _consiliumRepository ??= new ConsiliumRepository(_dataContext);
 
         public IRenovationRepository RenovationRepository => _renovationRepository ??= new RenovationRepository(_dataContext);
+
+        public IExaminationEventRepository ExaminationEventRepository => _examinationEventRepository ??= new ExaminationEventRepository(_dataContext);
+        public ISpecialtyRepository SpecialtyRepository => _specialtyRepository ??= new SpecialtyRepository(_dataContext);
     }
 }

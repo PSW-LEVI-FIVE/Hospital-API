@@ -15,9 +15,9 @@ namespace HospitalLibrary.User.Interfaces
         Task<Users.User> Create(Users.User user);
         Task<Users.User> ActivateAccount(Users.User user,string code);
         Task<Users.User> GetOneByCode(string code);
-        public Users.User UserExist(string username, string password);
+        Users.User GetOneByUsername(string username);
         public Users.User BlockMaliciousUser(int blockedUserId);
-        public Users.User UnBlockMaliciousUser(int blockedUserId);
-
+        public Users.User UnblockMaliciousUser(int blockedUserId);
+        public Users.User GetPopulatedWithPerson(int userId);
     }
 }

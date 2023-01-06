@@ -5,6 +5,7 @@ using HospitalLibrary.Auth.Dtos;
 using HospitalLibrary.Auth.Interfaces;
 using HospitalLibrary.Patients.Dtos;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.User.Interfaces;
 using HospitalLibrary.Users;
 using HospitalLibrary.Users.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -19,11 +20,13 @@ namespace HospitalAPI.Controllers.Public
     {
         private readonly IAuthService _authService;
         private readonly IEmailService _emailService;
+        private readonly IUserService _userService;
 
-        public AuthController(IAuthService authService,IEmailService emailService)
+        public AuthController(IAuthService authService,IEmailService emailService,IUserService userService)
         {
             _authService = authService;
             _emailService = emailService;
+            _userService = userService;
         }
         
         [HttpPost]
@@ -62,24 +65,27 @@ namespace HospitalAPI.Controllers.Public
         public IActionResult PatientsEndpoint()
         {
             var currentUser = GetCurrentUser();
-            return Ok($"Hi {currentUser.Username}");
+            var userData = _userService.GetPopulatedWithPerson(currentUser.Id);
+            var user = new Authenticated()
+            {
+                Username = currentUser.Username,
+                Role = currentUser.Role,
+                Name = userData.Person.Name,
+                Surname = userData.Person.Surname
+            };
+            return Ok(user);
         }
 
         private UserDTO GetCurrentUser()
         {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-
-            if (identity != null)
+            if (HttpContext.User.Identity is not ClaimsIdentity identity) return null;
+            var userClaims = identity.Claims;
+            return new UserDTO
             {
-                var userClaims = identity.Claims;
-                return new UserDTO
-                {
-                    Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value,
-                    Role = Role.Doctor
-                };
-            }
-
-            return null;
+                Id = int.Parse(userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value),
+                Role = Role.Patient,
+                Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value
+            };
         }
     }
 
