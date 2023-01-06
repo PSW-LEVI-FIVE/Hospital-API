@@ -1,4 +1,4 @@
-﻿using HospitalLibrary.Rooms.Dtos;
+using HospitalLibrary.Rooms.Dtos;
 using HospitalLibrary.Rooms.Model;
 using System;
 using System.Collections.Generic;
@@ -14,5 +14,6 @@ namespace HospitalLibrary.Rooms.Interfaces
         void CreateEquipment(int destinationRoomId, int amount, RoomEquipment equipment);
         Task<IEnumerable<RoomEquipment>> SearchEquipmentInRoom(RoomEquipmentDTO roomEquipmentDTO);
         IEnumerable<Room> SearchRoomsByFloorContainingEquipment(RoomEquipmentDTO roomEquipmentDTO);
+        void DeleteEquipment(RoomEquipment realEq);
     }
 }

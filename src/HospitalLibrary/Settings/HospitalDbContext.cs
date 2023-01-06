@@ -1,4 +1,4 @@
-﻿using EntityFramework.Exceptions.PostgreSQL;
+using EntityFramework.Exceptions.PostgreSQL;
 using HospitalLibrary.Allergens;
 using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.Doctors;
@@ -16,6 +16,7 @@ using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.Infrastructure.EventSourcing.Events;
 using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.Medicines;
+using HospitalLibrary.Renovations.Model;
 using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Symptoms;
 using HospitalLibrary.Therapies.Model;
@@ -62,8 +63,10 @@ namespace HospitalLibrary.Settings
         public DbSet<Speciality> Specialities { get; set; }
         
         public DbSet<Advertisement.Advertisement> Advertisement { get; set; }
-        
-        public DbSet<ExaminationReportDomainEvent> ExaminationReportDomainEvents { get; set; }
+        public DbSet<Renovation> Renovations { get; set; }
+
+
+    public DbSet<ExaminationReportDomainEvent> ExaminationReportDomainEvents { get; set; }
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

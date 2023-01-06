@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using HospitalLibrary.Advertisement.Interfaces;
 using HospitalLibrary.Allergens.Interfaces;
 using HospitalLibrary.AnnualLeaves.Interfaces;
@@ -23,6 +23,8 @@ using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Symptoms.Interfaces;
 using HospitalLibrary.Therapies.Interfaces;
 using HospitalLibrary.Users.Interfaces;
+using HospitalLibrary.Renovations.Interface;
+
 
 namespace HospitalLibrary.Shared.Interfaces
 {
@@ -62,5 +64,7 @@ namespace HospitalLibrary.Shared.Interfaces
         ISpecialtyRepository SpecialtyRepository { get; }
         
         IAdvertisementRepository AdvertisementRepository { get; }
-    }
+        IRenovationRepository RenovationRepository { get; }
+
+  }
 }

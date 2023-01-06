@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.Appointments;
+using HospitalLibrary.Renovations.Model;
 using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
@@ -38,8 +39,35 @@ namespace HospitalLibrary.Shared.Validators
             ThrowIfIntervalsAreOverlaping(mixedIntervals.ToList(), requestedTimeInterval);
         }
 
+        public async Task ValidateRenovation(Renovation renovation)
+        {
 
-        public async Task<bool> IsIntervalOverlapingWithDoctorAppointments(int doctorId,TimeInterval possibleTimeInterval)
+          ThrowIfEndBeforeStart(renovation.StartAt, renovation.EndAt);
+          ThrowIfInPast(renovation.StartAt);
+
+          IEnumerable<TimeInterval> startingRoomTimeIntervals =
+            await _unitOfWork.EquipmentReallocationRepository.GetAllRoomTakenInrevalsForDate(renovation.MainRoomId,
+              renovation.StartAt.Date);
+          IEnumerable<TimeInterval> destinationRoomTimeIntervals =
+            await _unitOfWork.EquipmentReallocationRepository.GetAllRoomTakenInrevalsForDate(renovation.SecondaryRoomId,
+              renovation.StartAt.Date);
+          ThrowIfRenovationsAreOverlaping(new TimeInterval(renovation.StartAt, renovation.EndAt));
+          IEnumerable<TimeInterval> mixedIntervals = startingRoomTimeIntervals.Concat(destinationRoomTimeIntervals);
+
+          TimeInterval requestedTimeInterval = new TimeInterval(renovation.StartAt, renovation.EndAt);
+
+          ThrowIfIntervalsAreOverlaping(mixedIntervals.ToList(), requestedTimeInterval);
+        }
+
+        private async void ThrowIfRenovationsAreOverlaping(TimeInterval timeInterval)
+        {
+          var overlaping = await _unitOfWork.RenovationRepository.GetAllPendingForRange(timeInterval);
+          if (overlaping.Count > 0)
+            throw new BadRequestException("Requested time does not follow the working hours rule");
+        }
+
+
+    public async Task<bool> IsIntervalOverlapingWithDoctorAppointments(int doctorId,TimeInterval possibleTimeInterval)
         {
             IEnumerable<TimeInterval> doctorsAppointmentsTimeIntervals = await _unitOfWork.AppointmentRepository
                 .GetAllDoctorTakenIntervalsForDate(doctorId,possibleTimeInterval.Start);

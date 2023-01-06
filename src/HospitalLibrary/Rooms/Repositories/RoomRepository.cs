@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,5 +45,11 @@ namespace HospitalLibrary.Rooms.Repositories
         {
             return await _dataContext.RoomEquipment.Where(r => r.RoomId == id).ToListAsync();
         }
-    }
+
+        public int GetMaxId()
+        {
+          return _dataContext.Rooms.OrderByDescending(a => a.Id).Select(a => a.Id).FirstOrDefault();
+
+        }
+  }
 }

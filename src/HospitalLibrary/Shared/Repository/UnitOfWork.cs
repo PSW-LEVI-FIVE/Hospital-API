@@ -1,4 +1,4 @@
-﻿using HospitalLibrary.Advertisement;
+using HospitalLibrary.Advertisement;
 using HospitalLibrary.Advertisement.Interfaces;
 using HospitalLibrary.Allergens;
 using HospitalLibrary.Allergens.Interfaces;
@@ -35,6 +35,8 @@ using HospitalLibrary.Patients;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Persons;
 using HospitalLibrary.Persons.Interfaces;
+using HospitalLibrary.Renovations.Interface;
+using HospitalLibrary.Renovations.Repository;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Repositories;
@@ -85,8 +87,9 @@ namespace HospitalLibrary.Shared.Repository
         private IExaminationEventRepository _examinationEventRepository;
         private ISpecialtyRepository _specialtyRepository;
         private IAdvertisementRepository _advertisementRepository;
+        private IRenovationRepository _renovationRepository;
 
-        public UnitOfWork(HospitalDbContext dataContext)
+    public UnitOfWork(HospitalDbContext dataContext)
         {
             _dataContext = dataContext;
         }
@@ -137,5 +140,7 @@ namespace HospitalLibrary.Shared.Repository
         public IExaminationEventRepository ExaminationEventRepository => _examinationEventRepository ??= new ExaminationEventRepository(_dataContext);
         public ISpecialtyRepository SpecialtyRepository => _specialtyRepository ??= new SpecialtyRepository(_dataContext);
         public IAdvertisementRepository AdvertisementRepository => _advertisementRepository ??= new AdvertisementRepository(_dataContext);
-    }
+        public IRenovationRepository RenovationRepository => _renovationRepository ??= new RenovationRepository(_dataContext);
+
+  }
 }
