@@ -49,7 +49,7 @@ namespace HospitalLibrary.Shared.Validators
             await _unitOfWork.EquipmentReallocationRepository.GetAllRoomTakenInrevalsForDate(renovation.MainRoomId,
               renovation.StartAt.Date);
           IEnumerable<TimeInterval> destinationRoomTimeIntervals =
-            await _unitOfWork.EquipmentReallocationRepository.GetAllRoomTakenInrevalsForDate(renovation.SecondaryRoomId,
+            await _unitOfWork.EquipmentReallocationRepository.GetAllRoomTakenInrevalsForDate((int)renovation.SecondaryRoomId,
               renovation.StartAt.Date);
           ThrowIfRenovationsAreOverlaping(new TimeInterval(renovation.StartAt, renovation.EndAt));
           IEnumerable<TimeInterval> mixedIntervals = startingRoomTimeIntervals.Concat(destinationRoomTimeIntervals);
