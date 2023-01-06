@@ -8,6 +8,9 @@ using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
+using HospitalLibrary.Examination;
+using HospitalLibrary.Examination.Dtos;
+using HospitalLibrary.Examination.Interfaces;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Patients.Interfaces;
 using HospitalLibrary.Rooms.Interfaces;
@@ -103,6 +106,24 @@ namespace HospitalAPI.Controllers.Public
             Appointment appointment = _appointmentService.CancelPatientAppointment(id);
             if (appointment == null) return BadRequest("You can't cancel appointment 24h before start");
             return Ok(appointment);
+        }
+        
+        [Route("finished")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllFinishedPatientAppointments()
+        {
+            int patientId = GetCurrentUser().Id;
+            IEnumerable<Appointment> appointments = await _appointmentService.GetAllFinishedPatientAppointments(patientId);
+            return Ok(appointments);
+        }
+        
+        [Route("pdf")]
+        [HttpPost]
+        public async Task<IActionResult> GetPdf([FromBody] int appointmentId)
+        {
+            ExaminationReport exam = _appointmentService.GetByExamination(appointmentId);
+            ExaminationPdfDto examDto = new ExaminationPdfDto(exam.ExaminationId, exam.Url);
+            return Ok(examDto);
         }
         
     }

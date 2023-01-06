@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Allergens;
+using HospitalLibrary.Appointments;
 using HospitalLibrary.Doctors;
 
 namespace HospitalLibrary.Patients.Interfaces
@@ -15,6 +16,7 @@ namespace HospitalLibrary.Patients.Interfaces
         Task<Patient> GetOne(int patientId);
         IEnumerable<Patient> GetMaliciousPatients(DateTime dateForMaliciousPatients);
         IEnumerable<Patient> GetBlockedPatients(DateTime dateForMaliciousPatients);
+
     }
     
 }

@@ -24,5 +24,9 @@ namespace HospitalLibrary.Examination
                 .Where(e => e.Doctor.SpecialityId == specialtyId)
                 .ToList();
         }
+        public ExaminationReport FindExam() =>
+            _dataContext.ExaminationReports
+                .Include(a => a.Examination)
+                .FirstOrDefault(e => e.Examination.Id == e.ExaminationId);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Doctors;
+using HospitalLibrary.Examination;
 using HospitalLibrary.Shared.Dtos;
 
 namespace HospitalLibrary.Appointments.Interfaces
@@ -28,6 +29,9 @@ namespace HospitalLibrary.Appointments.Interfaces
 
         IEnumerable<CalendarAppointmentsDTO> FormatAppointmentsForCalendar(IEnumerable<Appointment> appointments, TimeInterval interval);
         Task<Appointment> GetById(int appointmentId);
+        Task<IEnumerable<Appointment>> GetAllFinishedPatientAppointments(int patientId);
+        String GetUrl();
+        ExaminationReport GetByExamination(int examinationId);
 
     }
 }
