@@ -16,7 +16,7 @@ using OpenQA.Selenium.Interactions;
 namespace HospitalAPI.Controllers.Intranet
 {
     [ApiController, Route("api/intranet/examination")]
-    [Authorize(Roles="Doctor")]
+    [Authorize(Roles="Doctor,Manager")]
     public class ExaminationReportController: ControllerBase
     {
         private IExaminationReportService _examinationReportService;
@@ -29,7 +29,7 @@ namespace HospitalAPI.Controllers.Intranet
             _examinationReportStatistics = examinationReportStatistics;
         }
 
-
+        [Authorize(Roles="Doctor")]
         [HttpGet]
         [Route("report/{id:int}")]
         public IActionResult GetById(int id)
@@ -38,6 +38,7 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(report);
         }
         
+        [Authorize(Roles="Doctor")]
         [HttpPost]
         [Route("report/event")]
         public IActionResult AddEvent(EventDTO eventDto)
@@ -46,6 +47,7 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok();
         }
 
+        [Authorize(Roles="Doctor")]
         [HttpGet]
         [Route("{id:int}/report")]
         public IActionResult GetByExamination(int id)
@@ -54,6 +56,7 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(report);
         }
 
+        [Authorize(Roles="Doctor")]
         [HttpPost]
         [Route("report")]
         public async Task<IActionResult> Create(CreateExaminationReportDTO reportDto)
@@ -63,6 +66,7 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(report);
         }
 
+        [Authorize(Roles="Doctor")]
         [HttpPatch]
         [Route("report/{uuid}")]
         public async Task<IActionResult> Update(CreateExaminationReportDTO reportDto, string uuid)
@@ -72,6 +76,7 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(report);
         }
 
+        [Authorize(Roles="Manager")]
         [HttpGet]
         [Route("statistics/succ-unsucc")]
         public IActionResult GetSuccUnsuccExaminationReports()
@@ -80,6 +85,7 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(dto);
         }
         
+        [Authorize(Roles="Manager")]
         [HttpGet]
         [Route("statistics/min-max-avg")]
         public IActionResult GetMinMaxAvg()
@@ -87,7 +93,8 @@ namespace HospitalAPI.Controllers.Intranet
             MinMaxDTO dto = _examinationReportStatistics.CalculateMinMaxDto();
             return Ok(dto);
         }
-
+        
+        [Authorize(Roles="Manager")]
         [HttpGet]
         [Route("statistics/succ-unsucc-spec")]
         public async Task<IActionResult> GetSuccUnsuccExaminationReportsForSpecialties()
@@ -96,6 +103,7 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(dtos);
         }
 
+        [Authorize(Roles="Manager")]
         [HttpGet]
         [Route("statistics/steps")]
         public IActionResult GetStepStatistics()
@@ -103,7 +111,8 @@ namespace HospitalAPI.Controllers.Intranet
             var result = _examinationReportStatistics.CalculateStepsAverageTime();
             return Ok(result);
         }
-
+        
+        [Authorize(Roles="Manager")]
         [HttpGet]
         [Route("statistics/hours")]
         public IActionResult GetAveragePerHour()
