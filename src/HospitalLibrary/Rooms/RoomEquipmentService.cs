@@ -1,4 +1,4 @@
-﻿using HospitalLibrary.Rooms.Dtos;
+using HospitalLibrary.Rooms.Dtos;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Shared.Interfaces;
@@ -32,7 +32,11 @@ namespace HospitalLibrary.Rooms
             _unitOfWork.RoomEquipmentRepository.Update(realEq);
             _unitOfWork.RoomEquipmentRepository.Save();
         }
-        
+        public void DeleteEquipment(RoomEquipment realEq)
+        {
+            _unitOfWork.RoomEquipmentRepository.Delete(realEq);
+            _unitOfWork.RoomEquipmentRepository.Save();
+        }
         public Task<IEnumerable<RoomEquipment>> SearchEquipmentInRoom(RoomEquipmentDTO roomEquipmentDTO)
         {
             return  _unitOfWork.RoomEquipmentRepository.GetAllByCombineSearchInRoom(roomEquipmentDTO);  

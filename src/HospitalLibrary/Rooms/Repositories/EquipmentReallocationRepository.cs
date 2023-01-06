@@ -1,4 +1,4 @@
-﻿using HospitalLibrary.Appointments;
+using HospitalLibrary.Appointments;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Settings;
@@ -18,7 +18,25 @@ namespace HospitalLibrary.Rooms.Repositories
         {
         }
 
-        public async Task<List<EquipmentReallocation>> GetAllPending()
+        public async Task<List<EquipmentReallocation>> GetAllForRoom(int roomid)
+        {
+          return await _dataContext.EquipmentReallocations
+            .Where(a => a.StartingRoomId == roomid || a.DestinationRoomId == roomid)
+            .ToListAsync();
+        }
+
+        public async Task<List<EquipmentReallocation>> GetAllPendingForRoomInTimeInterval(int roomId,
+          TimeInterval timeInterval)
+        {
+          return await _dataContext.EquipmentReallocations
+            .Where(a => a.StartingRoomId == roomId || a.DestinationRoomId == roomId)
+            .Where(a =>
+              timeInterval.Start.Date.CompareTo(a.StartAt.Date) <= 0
+              || timeInterval.End.Date.CompareTo(a.StartAt.Date) > 0)
+            .ToListAsync();
+        }
+
+    public async Task<List<EquipmentReallocation>> GetAllPending()
         {
             return await _dataContext.EquipmentReallocations
                 .Where(a=> a.state==ReallocationState.PENDING)

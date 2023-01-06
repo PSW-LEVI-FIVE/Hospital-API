@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Rooms.Dtos;
 using HospitalLibrary.Rooms.Model;
@@ -13,5 +13,6 @@ namespace HospitalLibrary.Rooms.Interfaces
         Task<IEnumerable<Room>> GetHospitalConsiliumRooms();
         Task<IEnumerable<RoomEquipment>> GetAllEquipmentbyRoom(int id);
         Task<IEnumerable<Room>> SearchByTypeAndName(RoomSearchDTO roomsSearchDTO, int floorId);
+        int GetMaxId();
     }
 }
