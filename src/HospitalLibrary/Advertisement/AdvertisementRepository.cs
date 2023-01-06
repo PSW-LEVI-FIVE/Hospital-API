@@ -7,7 +7,7 @@ namespace HospitalLibrary.Advertisement
 {
     public class AdvertisementRepository : BaseRepository<Advertisement> , IAdvertisementRepository
     {
-        protected AdvertisementRepository(HospitalDbContext dataContext) : base(dataContext)
+        public AdvertisementRepository(HospitalDbContext dataContext) : base(dataContext)
         {
         }
     }

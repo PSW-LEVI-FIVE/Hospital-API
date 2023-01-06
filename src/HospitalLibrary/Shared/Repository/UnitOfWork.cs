@@ -1,4 +1,6 @@
-﻿using HospitalLibrary.Allergens;
+﻿using HospitalLibrary.Advertisement;
+using HospitalLibrary.Advertisement.Interfaces;
+using HospitalLibrary.Allergens;
 using HospitalLibrary.Allergens.Interfaces;
 using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.AnnualLeaves.Interfaces;
@@ -82,6 +84,7 @@ namespace HospitalLibrary.Shared.Repository
         private IConsiliumRepository _consiliumRepository;
         private IExaminationEventRepository _examinationEventRepository;
         private ISpecialtyRepository _specialtyRepository;
+        private IAdvertisementRepository _advertisementRepository;
 
         public UnitOfWork(HospitalDbContext dataContext)
         {
@@ -133,5 +136,6 @@ namespace HospitalLibrary.Shared.Repository
 
         public IExaminationEventRepository ExaminationEventRepository => _examinationEventRepository ??= new ExaminationEventRepository(_dataContext);
         public ISpecialtyRepository SpecialtyRepository => _specialtyRepository ??= new SpecialtyRepository(_dataContext);
+        public IAdvertisementRepository AdvertisementRepository => _advertisementRepository ??= new AdvertisementRepository(_dataContext);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using HospitalLibrary.Advertisement.Interfaces;
 using HospitalLibrary.Allergens.Interfaces;
 using HospitalLibrary.AnnualLeaves.Interfaces;
 using HospitalLibrary.Appointments.Interfaces;
@@ -59,5 +60,7 @@ namespace HospitalLibrary.Shared.Interfaces
         IExaminationEventRepository ExaminationEventRepository { get; }
         
         ISpecialtyRepository SpecialtyRepository { get; }
+        
+        IAdvertisementRepository AdvertisementRepository { get; }
     }
 }
