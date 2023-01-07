@@ -52,17 +52,12 @@ namespace HospitalLibrary.Rooms
 
         public EquipmentReallocation CancelEquipmentRelocation(int equipmentReallocationId)
         {
-            Console.WriteLine("ahhahahahha");
             EquipmentReallocation equipmentReallocation =
                 _unitOfWork.EquipmentReallocationRepository.GetOne(equipmentReallocationId);
-            Console.WriteLine(equipmentReallocation.Id);
             _relocationValidator.ThrowIfLessThan24hours(equipmentReallocation);
             equipmentReallocation.state = ReallocationState.CANCELED;
             _unitOfWork.EquipmentReallocationRepository.Update(equipmentReallocation);
-            
             return equipmentReallocation;
-
-
         }
 
         public async Task<IEnumerable<EquipmentReallocation>> GetAll()
