@@ -67,7 +67,7 @@ namespace HospitalLibrary.PDFGeneration
             y += 20;
             foreach (var prescription in examinationReportPrescriptions)
             {
-                string txt = prescription.Medicine.Name;
+                string txt = prescription.Medicine.Name.NameString;
                 Label lbl = new Label(txt, x, y, THERAPY_LABEL_WIDTH, THERAPY_LABEL_HEIGHT, Font.Helvetica, LABEL_FONT_SIZE, TextAlign.Left);
                 page.Elements.Add(lbl);
                 y += 20;

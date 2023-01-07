@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.Rooms.Model
 {
@@ -17,6 +18,8 @@ namespace HospitalLibrary.Rooms.Model
         public int RoomId { get; set; }
         public Room Room { get; set; }
 
+       
+        public RoomEquipment() {}
         public RoomEquipment(int id, int quantity, string name, int roomId)
         {
             Id = id;
@@ -24,6 +27,7 @@ namespace HospitalLibrary.Rooms.Model
             Name = name;
             RoomId = roomId;
         }
+
         public RoomEquipment(int quantity, string name, int roomId)
         {
             Quantity = quantity;
@@ -31,6 +35,6 @@ namespace HospitalLibrary.Rooms.Model
             RoomId = roomId;
         }
 
-        public RoomEquipment() {}
+        
     }
 }

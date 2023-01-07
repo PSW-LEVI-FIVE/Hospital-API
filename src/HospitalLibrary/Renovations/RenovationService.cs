@@ -132,9 +132,9 @@ namespace HospitalLibrary.Renovations
       }
     }
 
-    public Task<List<Model.Renovation>> GetAllPendingForSpecificRoom(int roomId)
+    public async Task<List<Model.Renovation>> GetAllPendingForSpecificRoom(int roomId)
     {
-      throw new NotImplementedException();
+      return await _unitOfWork.RenovationRepository.GetAllPendingForSpecificRoom(roomId);
     }
 
     public Model.Renovation CancelRenovation(int renovationId)

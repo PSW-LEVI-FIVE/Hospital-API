@@ -263,11 +263,11 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             PatientId = 2
         };
 
-        Medicine medicine = new Medicine(1, "MedicineOne", 12.0);
+        Medicine medicine = new Medicine(1, new Name("MedicineOne"), 12.0);
         Medicine medicine2 = new Medicine()
         {
             Id=2, 
-            Name ="MedicineOne" ,
+            Name = new Name("MedicineOne") ,
             Quantity = 12.0,
             Allergens = allergens,
         };
