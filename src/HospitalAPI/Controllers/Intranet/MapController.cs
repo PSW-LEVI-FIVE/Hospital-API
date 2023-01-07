@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Buildings;
@@ -41,12 +42,12 @@ namespace HospitalAPI.Controllers.Intranet
         public async Task<IActionResult> GetAllBuildings()
         {
             IEnumerable<MapBuilding> mapBuildings = await _mapService.GetAllBuildings();
-            List<MapBuildingDto> mapBuildingDtos = new List<MapBuildingDto>();
+            IEnumerable<MapBuildingDto> mapBuildingDtos = Array.Empty<MapBuildingDto>();
             foreach (MapBuilding mapBuilding in mapBuildings)
             {
-                mapBuildingDtos.Add(new MapBuildingDto(mapBuilding));
+                mapBuildingDtos = mapBuildingDtos.Append(new MapBuildingDto(mapBuilding));
             }
-            return Ok(mapBuildingDtos.AsEnumerable());
+            return Ok(mapBuildingDtos);
         }
 
         [HttpGet]
@@ -54,12 +55,12 @@ namespace HospitalAPI.Controllers.Intranet
         public async Task<IActionResult> GetFloorsByBuilding(int id)
         {
             IEnumerable<MapFloor> mapFloors = await _mapService.GetFloorsByBuilding(id);
-            List<MapFloorDto> mapFloorDtos = new List<MapFloorDto>();
+            IEnumerable<MapFloorDto> mapFloorDtos = Array.Empty<MapFloorDto>();
             foreach (MapFloor mapFloor in mapFloors)
             {
-                mapFloorDtos.Add(new MapFloorDto(mapFloor));
+                mapFloorDtos = mapFloorDtos.Append(new MapFloorDto(mapFloor));
             }
-            return Ok(mapFloorDtos.AsEnumerable());
+            return Ok(mapFloorDtos);
         }
 
         [HttpGet]
@@ -67,12 +68,12 @@ namespace HospitalAPI.Controllers.Intranet
         public async Task<IActionResult> GetRoomsByBuilding(int id)
         {
             IEnumerable<MapRoom> mapRooms = await _mapService.GetRoomsByFloor(id);
-            List<MapRoomDto> mapRoomDtos = new List<MapRoomDto>();
+            IEnumerable<MapRoomDto> mapRoomDtos = Array.Empty<MapRoomDto>();
             foreach (MapRoom mapRoom in mapRooms)
             {
-                mapRoomDtos.Add(new MapRoomDto(mapRoom));
+                mapRoomDtos = mapRoomDtos.Append(new MapRoomDto(mapRoom));
             }
-            return Ok(mapRoomDtos.AsEnumerable());
+            return Ok(mapRoomDtos);
         }
 
         [HttpPost]
