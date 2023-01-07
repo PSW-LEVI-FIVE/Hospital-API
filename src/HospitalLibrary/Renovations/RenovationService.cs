@@ -132,22 +132,19 @@ namespace HospitalLibrary.Renovations
       }
     }
 
-    public async Task<List<Model.Renovation>> GetAllPendingForSpecificRoom(int roomId)
+    public async Task<List<Model.Renovation>> GetAllPendingForRoom(int roomId)
     {
-      return await _unitOfWork.RenovationRepository.GetAllPendingForSpecificRoom(roomId);
+      return await _unitOfWork.RenovationRepository.GetAllPendingForRoom(roomId);
     }
 
     public Model.Renovation CancelRenovation(int renovationId)
     {
-
-      Model.Renovation renovation =
-                      _unitOfWork.RenovationRepository.GetOne(renovationId);
-                  _renovationValidator.ThrowIfLessThan24hours(renovation);
-                  renovation.State = RenovationState.CANCELED;
-                  _unitOfWork.RenovationRepository.Update(renovation);
-                  _unitOfWork.RenovationRepository.Save();
-                  return renovation;
-              
+      Model.Renovation renovation = _unitOfWork.RenovationRepository.GetOne(renovationId);
+      _renovationValidator.ThrowIfLessThan24hours(renovation);
+      renovation.State = RenovationState.CANCELED;
+      _unitOfWork.RenovationRepository.Update(renovation);
+      _unitOfWork.RenovationRepository.Save();
+      return renovation;
     }
 
     private async Task MergeRooms(Room mainRoom, Room secondaryRoom)

@@ -20,7 +20,7 @@ namespace HospitalLibrary.Rooms.Interfaces
         Task<List<Model.RoomEquipment>> GetEquipmentByRoom(int roomId);
         Task<int> GetReservedEquipment(int equipmentId);
         Task<List<EquipmentReallocation>> GetAllPending();
-        Task<List<EquipmentReallocation>> GetAllPendingForSpecificRoom(int roomId);
+        Task<List<EquipmentReallocation>> GetAllPendingForRoom(int roomId);
         Task<List<EquipmentReallocation>> GetAllPendingForToday();
         Task<EquipmentReallocation> Create(EquipmentReallocation equipmentReallocation);
         Task InitiateReallocation(EquipmentReallocation reallocation);

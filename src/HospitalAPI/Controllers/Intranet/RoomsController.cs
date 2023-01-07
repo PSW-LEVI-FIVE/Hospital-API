@@ -103,7 +103,7 @@ namespace HospitalAPI.Controllers.Intranet
         [HttpGet]
         public async Task<IActionResult> GetRoomEquipmentRelocation(int roomId)
         {
-            var equipmentRelocations = await _reallocationService.GetAllPendingForSpecificRoom(roomId);
+            var equipmentRelocations = await _reallocationService.GetAllPendingForRoom(roomId);
             return Ok(equipmentRelocations);
         }
         
@@ -111,7 +111,7 @@ namespace HospitalAPI.Controllers.Intranet
         [HttpGet]
         public async Task<IActionResult> GetRoomRenovation(int roomId)
         {
-            var renovations = await _renovationService.GetAllPendingForSpecificRoom(roomId);
+            var renovations = await _renovationService.GetAllPendingForRoom(roomId);
             return Ok(renovations);
         }
 

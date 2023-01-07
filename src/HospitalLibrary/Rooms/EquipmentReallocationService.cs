@@ -59,7 +59,7 @@ namespace HospitalLibrary.Rooms
             _relocationValidator.ThrowIfLessThan24hours(equipmentReallocation);
             equipmentReallocation.state = ReallocationState.CANCELED;
             _unitOfWork.EquipmentReallocationRepository.Update(equipmentReallocation);
-            _unitOfWork.EquipmentReallocationRepository.Save();
+            
             return equipmentReallocation;
 
 
@@ -70,9 +70,9 @@ namespace HospitalLibrary.Rooms
            return await _unitOfWork.EquipmentReallocationRepository.GetAll();
         }
 
-        public async Task<List<EquipmentReallocation>>GetAllPendingForSpecificRoom(int roomId)
+        public async Task<List<EquipmentReallocation>>GetAllPendingForRoom(int roomId)
         {
-            return await _unitOfWork.EquipmentReallocationRepository.GetAllPendingForSpecificRoom(roomId);
+            return await _unitOfWork.EquipmentReallocationRepository.GetAllPendingForRoom(roomId);
         }
 
         public async Task<List<EquipmentReallocation>> GetAllPending()

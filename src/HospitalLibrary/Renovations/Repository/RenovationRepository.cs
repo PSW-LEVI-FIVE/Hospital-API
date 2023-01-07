@@ -35,7 +35,7 @@ namespace HospitalLibrary.Renovations.Repository
           .Where(a => a.State == RenovationState.PENDING)
           .ToListAsync();
     }
-    public  async Task<List<Model.Renovation>> GetAllPendingForSpecificRoom(int roomId)
+    public  async Task<List<Model.Renovation>> GetAllPendingForRoom(int roomId)
     {
       return await  _dataContext.Renovations
         .Where(a => a.State == RenovationState.PENDING)

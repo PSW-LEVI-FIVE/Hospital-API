@@ -44,8 +44,8 @@ namespace HospitalLibrary.Shared.Validators
 
         public void GetAllEquipmentRellocationForRoom(int roomId)
         {
-            var list =
-                _unitOfWork.EquipmentReallocationRepository.GetAllPendingForSpecificRoom(roomId);
+            
+            var list =   _unitOfWork.EquipmentReallocationRepository.GetAllPendingForRoom(roomId);
         }
         
         public async Task ValidateRenovation(Renovations.Model.Renovation renovation)
