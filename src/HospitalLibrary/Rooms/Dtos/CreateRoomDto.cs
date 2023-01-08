@@ -32,7 +32,7 @@ namespace HospitalLibrary.Rooms.Dtos
             return new Room()
             {
                 RoomNumber = RoomNumber,
-                Area = Area,
+                Area = new Area(Area),
                 RoomType = RoomType
             };
         }

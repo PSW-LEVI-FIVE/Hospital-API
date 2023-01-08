@@ -3,6 +3,7 @@ using HospitalLibrary.Rooms.Dtos;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Shared.Model.ValueObjects;
 using Moq;
 using Shouldly;
 using System;
@@ -22,8 +23,8 @@ namespace HospitalTests.Units.RoomSearch
             var unitOfWork = new Mock<IUnitOfWork>();
             unitOfWork.Setup(u => u.RoomRepository).Returns(roomRepository.Object);
             List<Room> rooms = new List<Room>();
-            Room r1 = new Room(1, "1", 50, 1, RoomType.CAFETERIA);
-            Room r2 = new Room(1, "2", 40, 1, RoomType.HOSPITAL_ROOM);
+            Room r1 = new Room(1, "1", new Area(50), 1, RoomType.CAFETERIA);
+            Room r2 = new Room(1, "2", new Area(40), 1, RoomType.HOSPITAL_ROOM);
             rooms.Add(r1);
             rooms.Add(r2);
             IEnumerable<Room> roomsEnumerable = rooms.AsEnumerable();
