@@ -70,7 +70,7 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
         [HttpGet]
-        [Route("/floor/{id}")]
+        [Route("floor/{id}")]
         public async Task<IActionResult> GetRoomsByFloorId(int id)
         {
           IEnumerable<Room> rooms = await _roomService.GetRoomsByFloorId(id);
