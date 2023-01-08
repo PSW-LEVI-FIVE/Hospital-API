@@ -145,7 +145,8 @@ namespace HospitalLibrary.Appointments
         {
           return await _dataContext.Appointments
             .Where(a => a.State == AppointmentState.PENDING && a.RoomId == roomId)
-            .Where(a => interval.Start.Date.CompareTo(a.StartAt.Date) <= 0 && interval.End.Date.CompareTo(a.StartAt.Date) >= 0)
+            .Where(a => a.StartAt.CompareTo(interval.End) < 0)
+            .Where(a => a.EndAt.CompareTo(interval.Start) > 0)
             .Select(a => new TimeInterval(a.StartAt, a.EndAt))
             .ToListAsync();
         }

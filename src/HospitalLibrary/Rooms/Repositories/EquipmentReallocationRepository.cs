@@ -26,13 +26,12 @@ namespace HospitalLibrary.Rooms.Repositories
         }
 
         public async Task<List<EquipmentReallocation>> GetAllPendingForRoomInTimeInterval(int roomId,
-          TimeInterval timeInterval)
+          TimeInterval interval)
         {
           return await _dataContext.EquipmentReallocations
             .Where(a => a.StartingRoomId == roomId || a.DestinationRoomId == roomId)
-            .Where(a =>
-              timeInterval.Start.Date.CompareTo(a.StartAt.Date) <= 0
-              || timeInterval.End.Date.CompareTo(a.StartAt.Date) > 0)
+            .Where(a => a.StartAt.CompareTo(interval.End) < 0)
+            .Where(a => a.EndAt.CompareTo(interval.Start) > 0)
             .ToListAsync();
         }
 
