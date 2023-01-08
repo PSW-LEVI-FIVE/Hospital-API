@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using HospitalLibrary.Map;
 using HospitalLibrary.Rooms.Model;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.Rooms.Dtos
 {
@@ -41,10 +42,7 @@ namespace HospitalLibrary.Rooms.Dtos
             return new MapRoom()
             {
                 MapFloorId = MapFloorId,
-                XCoordinate = XCoordinate,
-                YCoordinate = YCoordinate,
-                Width = Width,
-                Height = Height,
+                Coordinates = new Coordinates(XCoordinate, YCoordinate, Width, Height),
                 RbgColour = RgbColour
             };
         }

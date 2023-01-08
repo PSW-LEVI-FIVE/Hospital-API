@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using HospitalLibrary.Map;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.Buildings.Dtos
 {
@@ -33,10 +34,7 @@ namespace HospitalLibrary.Buildings.Dtos
         {
             return new MapBuilding()
             {
-                XCoordinate = XCoordinate,
-                YCoordinate = YCoordinate,
-                Width = Width,
-                Height = Height,
+                Coordinates = new Coordinates(XCoordinate, YCoordinate, Width, Height),
                 RgbColour = RgbColour
             };
         }

@@ -114,10 +114,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         {
             Id = 2,
             BuildingId = building.Id,
-            Height = 200,
-            Width = 1000,
-            XCoordinate = 50,
-            YCoordinate = 50,
+            Coordinates = new Coordinates(50, 50, 1000, 200),
             RgbColour = "#FFFFFF"
         };
 
@@ -128,10 +125,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         {
             Id = 2,
             FloorId = floor.Id,
-            Height = 100,
-            Width = 100,
-            XCoordinate = 100,
-            YCoordinate = 100,
+            Coordinates = new Coordinates(100, 100, 100, 100),
             RgbColour = "#FFFFFF",
             MapBuildingId = mapBuilding.Id
         };
@@ -186,10 +180,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         MapRoom mapRoom = new MapRoom()
         {
             RoomId = room1.Id,
-            Height = 10,
-            Width = 10,
-            XCoordinate = 10,
-            YCoordinate = 10,
+            Coordinates = new Coordinates(10, 10, 10, 10),
             MapFloorId = mapFloor.Id
         };
 

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Buildings;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.Map
 {
@@ -13,11 +14,8 @@ namespace HospitalLibrary.Map
         public int BuildingId { get; set; }
         public Building Building { get; set; }
         
-        public float XCoordinate { get; set; }
-        public float YCoordinate { get; set; }
-        public float Width { get; set; }
-        public float Height { get; set; }
-        
+        public Coordinates Coordinates { get; set; }
+      
         public string RgbColour { get; set; }
         
         

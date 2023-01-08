@@ -3,6 +3,7 @@ using HospitalLibrary.Floors.Interfaces;
 using HospitalLibrary.Map;
 using HospitalLibrary.Map.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Shared.Model.ValueObjects;
 using Moq;
 using Shouldly;
 
@@ -43,8 +44,7 @@ public class CreateFloorTests
         MapFloor floor = new MapFloor()
         {
             MapBuildingId = 2,
-            Width = 100,
-            Height = 100
+            Coordinates = new Coordinates(50, 50, 1000, 200),
         };
 
         var result = mapService.CreateFloor(floor);

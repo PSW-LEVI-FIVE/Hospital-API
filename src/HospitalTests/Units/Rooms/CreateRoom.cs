@@ -4,6 +4,7 @@ using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Shared.Model.ValueObjects;
 using Moq;
 using Shouldly;
 
@@ -49,10 +50,7 @@ public class CreateRoom
         MapRoom room = new MapRoom()
         {
             RoomId = 1,
-            Height = 10,
-            Width = 10,
-            XCoordinate = 10,
-            YCoordinate = 10
+            Coordinates = new Coordinates(10, 10, 10, 10),
         };
 
         var result = mapService.CreateRoom(room);

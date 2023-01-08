@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Model;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.Map
 {
@@ -18,10 +19,7 @@ namespace HospitalLibrary.Map
         public int RoomId { get; set; }
         public virtual Room Room { get; set; }
         
-        public float XCoordinate { get; set; }
-        public float YCoordinate { get; set; }
-        public float Width { get; set; }
-        public float Height { get; set; }
+        public Coordinates Coordinates { get; set; }
 
         public string RbgColour { get; set; }
         
