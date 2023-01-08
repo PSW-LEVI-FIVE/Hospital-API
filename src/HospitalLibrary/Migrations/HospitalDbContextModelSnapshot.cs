@@ -426,8 +426,20 @@ namespace HospitalLibrary.Migrations
                     b.Property<int>("BuildingId")
                         .HasColumnType("integer");
 
+                    b.Property<float>("Height")
+                        .HasColumnType("real");
+
                     b.Property<string>("RgbColour")
                         .HasColumnType("text");
+
+                    b.Property<float>("Width")
+                        .HasColumnType("real");
+
+                    b.Property<float>("XCoordinate")
+                        .HasColumnType("real");
+
+                    b.Property<float>("YCoordinate")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -446,11 +458,23 @@ namespace HospitalLibrary.Migrations
                     b.Property<int>("FloorId")
                         .HasColumnType("integer");
 
+                    b.Property<float>("Height")
+                        .HasColumnType("real");
+
                     b.Property<int>("MapBuildingId")
                         .HasColumnType("integer");
 
                     b.Property<string>("RgbColour")
                         .HasColumnType("text");
+
+                    b.Property<float>("Width")
+                        .HasColumnType("real");
+
+                    b.Property<float>("XCoordinate")
+                        .HasColumnType("real");
+
+                    b.Property<float>("YCoordinate")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -468,6 +492,9 @@ namespace HospitalLibrary.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<float>("Height")
+                        .HasColumnType("real");
+
                     b.Property<int>("MapFloorId")
                         .HasColumnType("integer");
 
@@ -476,6 +503,15 @@ namespace HospitalLibrary.Migrations
 
                     b.Property<int>("RoomId")
                         .HasColumnType("integer");
+
+                    b.Property<float>("Width")
+                        .HasColumnType("real");
+
+                    b.Property<float>("XCoordinate")
+                        .HasColumnType("real");
+
+                    b.Property<float>("YCoordinate")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -516,43 +552,6 @@ namespace HospitalLibrary.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Medicines");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Renovations.Model.Renovation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTime>("EndAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("MainRoomId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("SecondaryRoomId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("StartAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("State")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("roomName")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MainRoomId");
-
-                    b.HasIndex("SecondaryRoomId");
-
-                    b.ToTable("Renovations");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Rooms.Model.EquipmentReallocation", b =>
@@ -1152,36 +1151,7 @@ namespace HospitalLibrary.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("HospitalLibrary.Shared.Model.ValueObjects.Coordinates", "Coordinates", b1 =>
-                        {
-                            b1.Property<int>("MapBuildingId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                            b1.Property<float>("Height")
-                                .HasColumnType("real");
-
-                            b1.Property<float>("Width")
-                                .HasColumnType("real");
-
-                            b1.Property<float>("XCoordinate")
-                                .HasColumnType("real");
-
-                            b1.Property<float>("YCoordinate")
-                                .HasColumnType("real");
-
-                            b1.HasKey("MapBuildingId");
-
-                            b1.ToTable("MapBuildings");
-
-                            b1.WithOwner()
-                                .HasForeignKey("MapBuildingId");
-                        });
-
                     b.Navigation("Building");
-
-                    b.Navigation("Coordinates");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Map.MapFloor", b =>
@@ -1197,35 +1167,6 @@ namespace HospitalLibrary.Migrations
                         .HasForeignKey("MapBuildingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.OwnsOne("HospitalLibrary.Shared.Model.ValueObjects.Coordinates", "Coordinates", b1 =>
-                        {
-                            b1.Property<int>("MapFloorId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                            b1.Property<float>("Height")
-                                .HasColumnType("real");
-
-                            b1.Property<float>("Width")
-                                .HasColumnType("real");
-
-                            b1.Property<float>("XCoordinate")
-                                .HasColumnType("real");
-
-                            b1.Property<float>("YCoordinate")
-                                .HasColumnType("real");
-
-                            b1.HasKey("MapFloorId");
-
-                            b1.ToTable("MapFloors");
-
-                            b1.WithOwner()
-                                .HasForeignKey("MapFloorId");
-                        });
-
-                    b.Navigation("Coordinates");
 
                     b.Navigation("Floor");
 
@@ -1246,35 +1187,6 @@ namespace HospitalLibrary.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("HospitalLibrary.Shared.Model.ValueObjects.Coordinates", "Coordinates", b1 =>
-                        {
-                            b1.Property<int>("MapRoomId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                            b1.Property<float>("Height")
-                                .HasColumnType("real");
-
-                            b1.Property<float>("Width")
-                                .HasColumnType("real");
-
-                            b1.Property<float>("XCoordinate")
-                                .HasColumnType("real");
-
-                            b1.Property<float>("YCoordinate")
-                                .HasColumnType("real");
-
-                            b1.HasKey("MapRoomId");
-
-                            b1.ToTable("MapRooms");
-
-                            b1.WithOwner()
-                                .HasForeignKey("MapRoomId");
-                        });
-
-                    b.Navigation("Coordinates");
-
                     b.Navigation("MapFloor");
 
                     b.Navigation("Room");
@@ -1290,7 +1202,7 @@ namespace HospitalLibrary.Migrations
 
                     b.Navigation("Patient");
                 });
-
+            
 
             modelBuilder.Entity("HospitalLibrary.Medicines.Medicine", b =>
                 {
@@ -1331,7 +1243,7 @@ namespace HospitalLibrary.Migrations
 
                     b.Navigation("SecondaryRoom");
                 });
-
+            
             modelBuilder.Entity("HospitalLibrary.Rooms.Model.EquipmentReallocation", b =>
                 {
                     b.HasOne("HospitalLibrary.Rooms.Model.Room", "DestinationRoom")
