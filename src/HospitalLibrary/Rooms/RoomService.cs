@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Rooms.Dtos;
 using HospitalLibrary.Rooms.Interfaces;
@@ -82,7 +82,12 @@ namespace HospitalLibrary.Rooms
             }
             throw new NotFoundException("Couldn't find single free room");
         }
-        
+
+        public Task<IEnumerable<Room>> GetRoomsByFloorId(int id)
+        {
+          return _unitOfWork.RoomRepository.FindAllByFloor(id);
+        }
+
         public Task<IEnumerable<RoomEquipment>> GetAllEquipmentbyRoomId(int id)
         {
             return _unitOfWork.RoomRepository.GetAllEquipmentbyRoom(id);
