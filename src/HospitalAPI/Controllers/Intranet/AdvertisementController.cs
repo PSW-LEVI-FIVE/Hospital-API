@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Advertisement;
 using HospitalLibrary.Advertisement.Dtos;
@@ -22,12 +24,13 @@ namespace HospitalAPI.Controllers.Intranet
         [HttpPost]
         [Authorize(Roles = "Manager")]
         [Route("create")]
-        public async Task<IActionResult> CreateAdvertisement([FromBody] CreateAdvertisementDto createAdvertisementDto)
+        public async Task<IActionResult> CreateAdvertisement([FromBody] AdvertisementDTO advertisementDto)
         {
-            Advertisement advertisement = new Advertisement(createAdvertisementDto.Title, createAdvertisementDto.Text,
-                createAdvertisementDto.PictureUrl, DateTime.Now);
+            Advertisement advertisement = new Advertisement(advertisementDto.Title, advertisementDto.Text,
+                advertisementDto.PictureUrl, DateTime.Now);
             _advertisementService.Create(advertisement);
-            return Ok(createAdvertisementDto);
+            return Ok(advertisementDto);
         }
+
     }
 }
