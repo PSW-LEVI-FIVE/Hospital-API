@@ -118,7 +118,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             RgbColour = "#FFFFFF"
         };
 
-        Floor floor = new Floor(2, 100, 2);
+        Floor floor = new Floor(2, new Area(100), 2);
 
 
         MapFloor mapFloor = new MapFloor()

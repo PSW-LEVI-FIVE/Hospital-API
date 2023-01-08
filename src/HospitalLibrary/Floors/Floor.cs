@@ -5,6 +5,7 @@ using HospitalLibrary.Buildings;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Shared.Model;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.Floors
 {
@@ -13,7 +14,7 @@ namespace HospitalLibrary.Floors
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key()]
         public int Id { get;private set; }
         public int Number { get;private set; }
-        public float Area { get;private set; }
+        public Area Area { get;private set; }
         
         public virtual ICollection<Room> Rooms { get;private set; }
         
@@ -21,13 +22,13 @@ namespace HospitalLibrary.Floors
         public int BuildingId { get;private set; }
         public Building Building { get;private set; }
 
-        public Floor(int number, float area)
+        public Floor(int number, Area area)
         {
             Number = number;
             Area = area;
         }
 
-        public Floor(int id, float area, int buildingId)
+        public Floor(int id, Area area, int buildingId)
         {
             Id = id;
             Area = area;
