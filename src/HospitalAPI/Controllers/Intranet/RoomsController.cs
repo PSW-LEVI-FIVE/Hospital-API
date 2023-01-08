@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments.Interfaces;
-using HospitalLibrary.Rooms;
+using HospitalLibrary.Renovations.Interface;
+using HospitalLibrary.Renovations.Model;
 using HospitalLibrary.Rooms.Dtos;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
 
 namespace HospitalAPI.Controllers.Intranet
 {
@@ -19,10 +19,15 @@ namespace HospitalAPI.Controllers.Intranet
     {
         private IRoomService _roomService;
         private IAppointmentService _appointmentService;
-        public RoomsController(IRoomService roomService, IAppointmentService appointmentService)
+        private IEquipmentReallocationService _reallocationService;
+        private IRenovationService _renovationService;
+        public RoomsController(IRoomService roomService, IAppointmentService appointmentService,IEquipmentReallocationService equipmentReallocationService,IRenovationService renovationService)
         {
             _roomService = roomService;
             _appointmentService = appointmentService;
+            _reallocationService = equipmentReallocationService;
+            _renovationService = renovationService;
+
         }
         
 
@@ -85,13 +90,54 @@ namespace HospitalAPI.Controllers.Intranet
           
         }
 
-        [Route("schedule/{roomId}")]
+        [Route("schedule/appointment/{roomId}")]
         [HttpGet]
         public async Task<IActionResult> GetRoomSchedule(int roomId)
         {
             var appointments = await _appointmentService.GetUpcomingAppointmentsForRoom(roomId);
+            
             return Ok(appointments);
         }
+        
+        [Route("schedule/relocation/{roomId}")]
+        [HttpGet]
+        public async Task<IActionResult> GetRoomEquipmentRelocation(int roomId)
+        {
+            var equipmentRelocations = await _reallocationService.GetAllPendingForRoom(roomId);
+            return Ok(equipmentRelocations);
+        }
+        
+        [Route("schedule/renovation/{roomId}")]
+        [HttpGet]
+        public async Task<IActionResult> GetRoomRenovation(int roomId)
+        {
+            var renovations = await _renovationService.GetAllPendingForRoom(roomId);
+            return Ok(renovations);
+        }
+
+        
+        [Route("schedule/cancel/relocation/{equipmentReallocationId}")]
+        [HttpGet]
+
+        public  IActionResult CancelEquipmentRelocation(int equipmentReallocationId)
+        {
+            EquipmentReallocation reallocation =
+                _reallocationService.CancelEquipmentRelocation(equipmentReallocationId);
+            return Ok(reallocation);
+
+        }
+        
+        [Route("schedule/cancel/renovation/{renovationId}")]
+        [HttpGet]
+        public  IActionResult CancelRenovation(int renovationId)
+        {
+            Renovation renovation = _renovationService.CancelRenovation(renovationId);
+            return Ok(renovation);
+
+        }
+        
+        
+        
         
 
 

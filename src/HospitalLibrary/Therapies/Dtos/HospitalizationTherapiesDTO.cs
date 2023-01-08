@@ -39,7 +39,7 @@ namespace HospitalLibrary.Therapies.Dtos
             TherapyType = therapy.InstanceType;
             Quantity = mTherapy.Quantity;
             PrescribedDate = therapy.GivenAt;
-            MedicineName = med.Name;
+            MedicineName = med.Name.NameString;
         }
     }
 }

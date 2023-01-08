@@ -24,7 +24,7 @@ namespace HospitalLibrary.Medicines
         public IEnumerable<Medicine> Search(string name)
         {
             return _dataContext.Medicines
-                .Where(m => m.Name.ToLower().Contains(name.ToLower()))
+                .Where(m => m.Name.NameString.ToLower().Contains(name.ToLower()))
                 .ToList();
         }
 

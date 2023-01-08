@@ -12,6 +12,7 @@ using HospitalLibrary.Rooms.Dtos;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Repositories;
 using HospitalLibrary.Shared.Exceptions;
+using HospitalLibrary.Shared.Model.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
 using SendGrid.Helpers.Errors.Model;
 

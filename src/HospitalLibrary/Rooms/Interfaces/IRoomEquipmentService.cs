@@ -15,5 +15,7 @@ namespace HospitalLibrary.Rooms.Interfaces
         Task<IEnumerable<RoomEquipment>> SearchEquipmentInRoom(RoomEquipmentDTO roomEquipmentDTO);
         IEnumerable<Room> SearchRoomsByFloorContainingEquipment(RoomEquipmentDTO roomEquipmentDTO);
         void DeleteEquipment(RoomEquipment realEq);
+        RoomEquipment GetEquipmentById(int equipmentId);
+        Task<List<RoomEquipment>> GetRoomEquipment(int roomId);
     }
 }

@@ -39,9 +39,17 @@ namespace HospitalLibrary.Shared.Validators
             ThrowIfIntervalsAreOverlaping(mixedIntervals.ToList(), requestedTimeInterval);
         }
 
-        public async Task ValidateRenovation(Renovation renovation)
-        {
 
+       
+
+        public void GetAllEquipmentRellocationForRoom(int roomId)
+        {
+            
+            var list =   _unitOfWork.EquipmentReallocationRepository.GetAllPendingForRoom(roomId);
+        }
+        
+        public async Task ValidateRenovation(Renovations.Model.Renovation renovation)
+        {
           ThrowIfEndBeforeStart(renovation.StartAt, renovation.EndAt);
           ThrowIfInPast(renovation.StartAt);
 
@@ -107,6 +115,8 @@ namespace HospitalLibrary.Shared.Validators
         {
             ThrowIfNotInWorkingHours(appointment.StartAt, appointment.EndAt, appointment.DoctorId);
         }
+        
+        //private void ThrowIfEquipmentRelocationInProgress(Appointment appointment)
         
         private void ThrowIfNotInWorkingHours(DateTime appointmentStartAt, DateTime appointmentEndAt, int doctorId)
         {

@@ -130,6 +130,10 @@ namespace HospitalAPI
             services.AddScoped<IExaminationReportStatistics, ExaminationReportStatistics>();
             services.AddScoped<IAdvertisementService, AdvertisementService>();
             services.AddScoped<IRenovationService, RenovationService>();
+            services.AddScoped<IEquipmenrRelocationValidator, EquipmentRelocationValidator>();
+            services.AddScoped<IRenovationValidator, RenovationValidator>();
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GraphicalEditor", Version = "v1" });

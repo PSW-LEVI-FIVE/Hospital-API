@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230107123003_Added_Renovation_Model")]
+    partial class Added_Renovation_Model
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -545,6 +547,9 @@ namespace HospitalLibrary.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
 
                     b.Property<double>("Quantity")
                         .HasColumnType("double precision");
@@ -1238,29 +1243,6 @@ namespace HospitalLibrary.Migrations
                         .IsRequired();
 
                     b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Medicines.Medicine", b =>
-                {
-                    b.OwnsOne("HospitalLibrary.Shared.Model.ValueObjects.Name", "Name", b1 =>
-                        {
-                            b1.Property<int>("MedicineId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                            b1.Property<string>("NameString")
-                                .HasColumnType("text");
-
-                            b1.HasKey("MedicineId");
-
-                            b1.ToTable("Medicines");
-
-                            b1.WithOwner()
-                                .HasForeignKey("MedicineId");
-                        });
-
-                    b.Navigation("Name");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Renovations.Model.Renovation", b =>

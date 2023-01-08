@@ -21,12 +21,14 @@ namespace HospitalLibrary.Rooms
         private readonly ITimeIntervalValidationService _intervalValidation;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRoomEquipmentService _equipmentService;
+        private IEquipmenrRelocationValidator _relocationValidator;
 
-        public EquipmentReallocationService(IUnitOfWork unitOfWork,ITimeIntervalValidationService intervalValidation, IRoomEquipmentService equipmentService)
+        public EquipmentReallocationService(IUnitOfWork unitOfWork,ITimeIntervalValidationService intervalValidation, IRoomEquipmentService equipmentService, IEquipmenrRelocationValidator relocationValidator)
         {
             _unitOfWork = unitOfWork;
             _equipmentService = equipmentService;
             _intervalValidation = intervalValidation;
+            _relocationValidator = relocationValidator;
         }
         
         public async Task<EquipmentReallocation> Create(EquipmentReallocation equipmentReallocation)
@@ -37,6 +39,7 @@ namespace HospitalLibrary.Rooms
 
             return equipmentReallocation;
         }
+        
         private void Update(EquipmentReallocation reallocation)
         {
             _unitOfWork.EquipmentReallocationRepository.Update(reallocation);
@@ -47,12 +50,26 @@ namespace HospitalLibrary.Rooms
              _unitOfWork.EquipmentReallocationRepository.Delete(_unitOfWork.EquipmentReallocationRepository.GetOne(id));
         }
 
+        public EquipmentReallocation CancelEquipmentRelocation(int equipmentReallocationId)
+        {
+            EquipmentReallocation equipmentReallocation =
+                _unitOfWork.EquipmentReallocationRepository.GetOne(equipmentReallocationId);
+            _relocationValidator.ThrowIfLessThan24hours(equipmentReallocation);
+            equipmentReallocation.state = ReallocationState.CANCELED;
+            _unitOfWork.EquipmentReallocationRepository.Update(equipmentReallocation);
+            return equipmentReallocation;
+        }
+
         public async Task<IEnumerable<EquipmentReallocation>> GetAll()
         {
            return await _unitOfWork.EquipmentReallocationRepository.GetAll();
         }
 
-      
+        public async Task<List<EquipmentReallocation>>GetAllPendingForRoom(int roomId)
+        {
+            return await _unitOfWork.EquipmentReallocationRepository.GetAllPendingForRoom(roomId);
+        }
+
         public async Task<List<EquipmentReallocation>> GetAllPending()
         {
             return await _unitOfWork.EquipmentReallocationRepository.GetAllPending();

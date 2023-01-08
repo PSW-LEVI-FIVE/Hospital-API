@@ -63,7 +63,7 @@ namespace HospitalLibrary.Settings
         public DbSet<Speciality> Specialities { get; set; }
         
         public DbSet<Advertisement.Advertisement> Advertisement { get; set; }
-        public DbSet<Renovation> Renovations { get; set; }
+        public DbSet<Renovations.Model.Renovation> Renovations { get; set; }
 
 
     public DbSet<ExaminationReportDomainEvent> ExaminationReportDomainEvents { get; set; }

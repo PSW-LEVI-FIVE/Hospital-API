@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Medicines;
 using HospitalLibrary.Patients;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 namespace HospitalLibrary.Allergens
 {

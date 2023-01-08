@@ -14,5 +14,7 @@ namespace HospitalLibrary.Renovations.Interface
     Task<List<Model.Renovation>> GetAllPending();
     Task<Model.Renovation> Create(Model.Renovation renovation);
     Task ExecuteRenovation(Model.Renovation renovation);
+    Task<List<Model.Renovation>> GetAllPendingForRoom(int roomId);
+    Model.Renovation CancelRenovation(int renovationId);
   }
 }

@@ -2,6 +2,7 @@ using HospitalLibrary.Medicines;
 using HospitalLibrary.Medicines.Interfaces;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Shared.Model.ValueObjects;
 using Moq;
 using Shouldly;
 
@@ -15,7 +16,7 @@ namespace HospitalTests.Units.Therapy
             var unitOfWork = new Mock<IUnitOfWork>();
             var medicineRepo = new Mock<IMedicineRepository>();
             unitOfWork.Setup(unit => unit.MedicineRepository).Returns(medicineRepo.Object);
-            medicineRepo.Setup(unit => unit.GetOne(1)).Returns(new Medicine(1, "Paracetamol", 5.0));//LEK
+            medicineRepo.Setup(unit => unit.GetOne(1)).Returns(new Medicine(1, new Name("Paracetamol"), 5.0));//LEK
             return unitOfWork;
         }
 

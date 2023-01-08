@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments.Interfaces;
+using HospitalLibrary.Renovations.Interface;
 using HospitalLibrary.Rooms.Model;
 using Shouldly;
 
@@ -24,7 +25,8 @@ namespace HospitalTests.Integrations.Equipment
         }
         public RoomsController SetupController(IServiceScope scope)
         {
-            return new RoomsController(scope.ServiceProvider.GetRequiredService<IRoomService>(),scope.ServiceProvider.GetRequiredService<IAppointmentService>());
+            return new RoomsController(scope.ServiceProvider.GetRequiredService<IRoomService>(),scope.ServiceProvider.GetRequiredService<IAppointmentService>(),scope.ServiceProvider.GetRequiredService<IEquipmentReallocationService>()
+            ,scope.ServiceProvider.GetRequiredService<IRenovationService>());
         }
 
         [Fact]

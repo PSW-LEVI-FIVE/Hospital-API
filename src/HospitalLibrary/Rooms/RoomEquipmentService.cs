@@ -32,11 +32,20 @@ namespace HospitalLibrary.Rooms
             _unitOfWork.RoomEquipmentRepository.Update(realEq);
             _unitOfWork.RoomEquipmentRepository.Save();
         }
+
         public void DeleteEquipment(RoomEquipment realEq)
         {
             _unitOfWork.RoomEquipmentRepository.Delete(realEq);
             _unitOfWork.RoomEquipmentRepository.Save();
         }
+
+
+        public RoomEquipment GetEquipmentById(int equimpentId)
+        {
+             return _unitOfWork.RoomEquipmentRepository.GetOne(equimpentId);
+        }
+        
+
         public Task<IEnumerable<RoomEquipment>> SearchEquipmentInRoom(RoomEquipmentDTO roomEquipmentDTO)
         {
             return  _unitOfWork.RoomEquipmentRepository.GetAllByCombineSearchInRoom(roomEquipmentDTO);  
@@ -54,6 +63,12 @@ namespace HospitalLibrary.Rooms
 
             }
             return result.AsEnumerable<Room>();
+        }
+
+        public Task<List<RoomEquipment>>GetRoomEquipment(int roomId)
+        {
+            var roomEquipment = _unitOfWork.RoomEquipmentRepository.GetEquipmentByRoom(roomId);
+            return roomEquipment;
         }
     }
 }
