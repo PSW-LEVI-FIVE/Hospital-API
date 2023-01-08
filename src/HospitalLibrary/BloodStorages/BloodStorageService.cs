@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
+using HospitalLibrary.BloodStorages.Dtos;
 using HospitalLibrary.BloodStorages.Interfaces;
 using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.MedicalRecords;
@@ -29,9 +30,11 @@ namespace HospitalLibrary.BloodStorages
             return true;
         }
 
-        public Task<IEnumerable<BloodStorage>> GetAllBloodStorage()
+        public async Task<List<BloodStorageDto>> GetAllBloodStorage()
         {
-            return _unitOfWork.BloodStorageRepository.GetAll();
+            IEnumerable<BloodStorage> blood =await _unitOfWork.BloodStorageRepository.GetAll();
+            List<BloodStorageDto> showList = FillDtoList(blood);
+            return showList;
         }
 
         private void CheckAmount(double onStorage, double toTake)
@@ -101,6 +104,17 @@ namespace HospitalLibrary.BloodStorages
                 compatibile.Add(BloodType.ZERO_POSITIVE);
             }
             return compatibile;
+        }
+
+        private List<BloodStorageDto> FillDtoList(IEnumerable<BloodStorage> blood)
+        {
+            List<BloodStorageDto> dtoList = new List<BloodStorageDto>();
+            foreach (var blod in blood)
+            {
+                BloodStorageDto dto = new BloodStorageDto(blod);
+                dtoList.Add(dto);
+            }
+            return dtoList;
         }
     }
 }
