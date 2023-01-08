@@ -1,4 +1,6 @@
-﻿using HospitalLibrary.Advertisement.Interfaces;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using HospitalLibrary.Advertisement.Interfaces;
 using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.Advertisement
@@ -17,6 +19,10 @@ namespace HospitalLibrary.Advertisement
             _unitOfWork.AdvertisementRepository.Save();
             return advertisement;
         }
-        
+
+        public async Task<IEnumerable<Advertisement>> GetAll()
+        {
+            return await _unitOfWork.AdvertisementRepository.GetAll();
+        }
     }
 }
