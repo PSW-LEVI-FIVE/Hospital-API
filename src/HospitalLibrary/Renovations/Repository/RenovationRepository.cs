@@ -78,9 +78,9 @@ namespace HospitalLibrary.Renovations.Repository
           .Select(a => new TimeInterval(a.StartAt, a.EndAt))
           .SingleOrDefaultAsync();
     }
-    private int maxID()
+    public int MaxId()
     {
-      return _dataContext.RoomEquipment.OrderByDescending(a => a.Id).FirstOrDefault().Id;
+      return _dataContext.Renovations.Select(a => a.Id).Max();
     }
   }
 }

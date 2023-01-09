@@ -165,8 +165,9 @@ namespace HospitalLibrary.Renovations
     public async Task<RenovationEventDTO> CreateEvent(Renovation renovation)
     {
       var uuid = Guid.NewGuid().ToString();
-      
-      renovation.Id = _unitOfWork.RenovationRepository.MaxId() + 1;
+
+      var maxId = _unitOfWork.RenovationRepository.MaxId();
+      renovation.Id = ++maxId;
       _unitOfWork.RenovationRepository.Add(renovation);
       _unitOfWork.RenovationRepository.Save();
       renovation.Apply(new RenovationDomainEvent(renovation.Id,DateTime.Now,RenovationEventType.STARTED,renovation.Type,uuid));
