@@ -10,6 +10,9 @@ using HospitalLibrary.Rooms.Model;
 using Microsoft.VisualBasic;
 using HospitalLibrary.Infrastructure.EventSourcing;
 using NUnit.Framework.Internal.Execution;
+using HospitalLibrary.Examination;
+using SendGrid.Helpers.Mail;
+using System.Security.Policy;
 
 namespace HospitalLibrary.Renovations.Model
 {
@@ -54,6 +57,11 @@ namespace HospitalLibrary.Renovations.Model
       Type = RenovationType.MERGE;
       SecondaryRoomId = secondaryRoomId;
     }
+    public Renovation(int mainRoomId,RenovationType type)
+    {
+      MainRoomId = mainRoomId;
+      Type = type;
+    }
 
     public TimeInterval GetInterval()
     {
@@ -68,6 +76,17 @@ namespace HospitalLibrary.Renovations.Model
     public override void Apply(DomainEvent @event)
     {
       Changes.Add(@event);
+    }
+
+    public void UpdateAdditional(Renovation renovation)
+    {
+      MainRoomId = renovation.MainRoomId;
+      StartAt = renovation.StartAt;
+      EndAt = renovation.EndAt;
+      State = RenovationState.PENDING;
+      Type = RenovationType.SPLIT;
+      SecondaryRoomId = renovation.SecondaryRoomId;
+      roomName = renovation.roomName;
     }
   }
 }

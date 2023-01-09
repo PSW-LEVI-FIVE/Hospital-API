@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace HospitalLibrary.Infrastructure.EventSourcing.Events
 {
   public enum RenovationEventType{STARTED, ADDED_BASIC_INFO, TIME_CHOSEN, ADDED_ADDITION_INFO, CANCELED, FINISHED}
-  internal class RenovationDomainEvent:DomainEvent
+
+  public class RenovationDomainEvent:DomainEvent
   {
     public RenovationEventType EventType { get; set; }
     public RenovationType RenovationType { get; set; }
