@@ -23,11 +23,7 @@ namespace HospitalLibrary.Buildings.Dtos
 
         public Building DtoToBuilding()
         {
-            return new Building()
-            {
-                Address = Address,
-                Name = Name
-            };
+            return new Building(Address, Name);
         }
 
         public MapBuilding DtoToMapBuilding()

@@ -2,19 +2,42 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Floors;
+using HospitalLibrary.Shared.Exceptions;
+using HospitalLibrary.Shared.Model;
 
 namespace HospitalLibrary.Buildings
 {
-    public class Building
+    public class Building : BaseEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key()]
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Address { get; set; }
-        
-        public virtual ICollection<Floor> Floors { get; set; }
-        
-        public Building() {}
-        
+        public string Name { get; private set; }
+        public string Address { get; private set; }
+
+        public virtual ICollection<Floor> Floors { get; private set; }
+
+        public Building() { }
+
+        public Building(int id, string name, string address)
+        {
+            Id = id;
+            Name = name;
+            Address = address;
+        }
+        public Building(string name, string address)
+        {
+            Name = name;
+            Address = address;
+        }
+        public Building(string name, string address, ICollection<Floor> floors)
+        {
+            Name = name;
+            Address = address;
+            Floors = floors;
+        }
+        public void UpdateName(string name)
+        {
+            if (name == null || name.Trim().Equals(""))
+                throw new BadRequestException("You must enter new name!");
+            Name = name;
+        }
     }
 }

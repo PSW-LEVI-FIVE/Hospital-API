@@ -22,7 +22,7 @@ namespace HospitalAPI.Controllers.Intranet
         public IActionResult UpdateName(int id, [FromBody] string name)
         {
             Building building = _buildingService.GetOne(id);
-            building.Name = name;
+            building.UpdateName(name);
             _buildingService.Update(building);
             return Ok(building);
         }
