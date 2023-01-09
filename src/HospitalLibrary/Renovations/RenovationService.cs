@@ -2,10 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ceTe.DynamicPDF.LayoutEngine;
 using HospitalLibrary.Appointments;
+using HospitalLibrary.Examination.Dtos;
+using HospitalLibrary.Infrastructure.EventSourcing.Events;
 using HospitalLibrary.Renovations.Interface;
+using HospitalLibrary.Renovations.Model;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
+using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Shared.Model.ValueObjects;
 using OpenQA.Selenium.DevTools.V106.HeadlessExperimental;
@@ -147,6 +152,40 @@ namespace HospitalLibrary.Renovations
       _unitOfWork.RenovationRepository.Update(renovation);
       _unitOfWork.RenovationRepository.Save();
       return renovation;
+    }
+    
+    public async Task<RenovationEventDTO> CreateEvent(Renovation renovation)
+    {
+      var uuid = Guid.NewGuid().ToString();
+      
+      renovation.Id = _unitOfWork.RenovationRepository.MaxId() + 1;
+      _unitOfWork.RenovationRepository.Add(renovation);
+      _unitOfWork.RenovationRepository.Save();
+      renovation.Apply(new RenovationDomainEvent(renovation.Id,DateTime.Now,RenovationEventType.STARTED,renovation.Type,uuid));
+      _unitOfWork.RenovationRepository.Save();
+      return new RenovationEventDTO(renovation, uuid);
+    }
+
+    public async Task<Renovation> UpdateEvent(Renovation renovation, String uuid)
+    {
+      var existing = _unitOfWork.RenovationRepository.GetOne(renovation.Id);
+      if (existing == null)
+        throw new BadRequestException("Renovation not found");
+
+      existing.UpdateAdditional(renovation);
+      _unitOfWork.RenovationRepository.Save();
+      renovation.Apply(new RenovationDomainEvent(renovation.Id, DateTime.Now, RenovationEventType.FINISHED, renovation.Type, uuid));
+      _unitOfWork.RenovationRepository.Save();
+      return existing;
+    }
+    public void AddEvent(RenovationDomainEvent renovationDomainEvent)
+    {
+      var existing = _unitOfWork.RenovationRepository.GetOne(renovationDomainEvent.AggregateId);
+      if (existing == null)
+        throw new BadRequestException("Renovation not found");
+
+      existing.Apply(renovationDomainEvent);
+      _unitOfWork.RenovationRepository.Save();
     }
 
     private async Task MergeRooms(Room mainRoom, Room secondaryRoom)
