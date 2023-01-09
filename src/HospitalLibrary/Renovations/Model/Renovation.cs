@@ -61,6 +61,9 @@ namespace HospitalLibrary.Renovations.Model
     {
       MainRoomId = mainRoomId;
       Type = type;
+      State= RenovationState.CANCELED;
+      StartAt= DateTime.Now;
+      EndAt= DateTime.Now;
     }
 
     public TimeInterval GetInterval()

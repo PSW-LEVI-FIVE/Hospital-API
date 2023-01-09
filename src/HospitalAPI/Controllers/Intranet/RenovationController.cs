@@ -44,7 +44,7 @@ namespace HospitalAPI.Controllers.Intranet
 
     [HttpPost]
     [Route("Create/Event")]
-    public async Task<IActionResult> Create(RenovationEventCreateDTO renovation)
+    public async Task<IActionResult> Create([FromBody] RenovationEventCreateDTO renovation)
     {
       var reno = await _renovationService.CreateEvent(renovation.MapToModel());
       return Ok(reno);

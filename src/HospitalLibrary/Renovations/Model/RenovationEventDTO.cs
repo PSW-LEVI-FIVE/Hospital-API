@@ -16,6 +16,7 @@ namespace HospitalLibrary.Renovations.Model
 
     public RenovationEventDTO(Renovation renovation, string uuid)
     {
+      Id=renovation.Id;
       MainRoomId = renovation.MainRoomId;
       StartAt = renovation.StartAt;
       EndAt = renovation.EndAt;

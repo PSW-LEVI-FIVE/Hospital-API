@@ -1,22 +1,17 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HospitalLibrary.Renovations.Model
 {
   public class RenovationEventCreateDTO
   {
-
+    [Required]
     public int MainRoomId;
-
-    public RenovationType type;
+    [Required]
+    public RenovationType Type;
 
     public Renovation MapToModel()
     {
-      return new Renovation(MainRoomId, type);
+      return new Renovation(MainRoomId, Type);
     }
 
   }
