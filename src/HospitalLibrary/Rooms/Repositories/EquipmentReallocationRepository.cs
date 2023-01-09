@@ -30,8 +30,7 @@ namespace HospitalLibrary.Rooms.Repositories
         {
           return await _dataContext.EquipmentReallocations
             .Where(a => a.StartingRoomId == roomId || a.DestinationRoomId == roomId)
-            .Where(a => a.StartAt.CompareTo(interval.End) < 0)
-            .Where(a => a.EndAt.CompareTo(interval.Start) > 0)
+            .Where(a => a.StartAt.CompareTo(interval.End) < 0 && a.EndAt.CompareTo(interval.Start) > 0)
             .ToListAsync();
         }
 
