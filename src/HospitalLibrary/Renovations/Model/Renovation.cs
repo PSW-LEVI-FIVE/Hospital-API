@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Rooms.Model;
 using Microsoft.VisualBasic;
+using HospitalLibrary.Infrastructure.EventSourcing;
+using NUnit.Framework.Internal.Execution;
 
 namespace HospitalLibrary.Renovations.Model
 {
-  public class Renovation
+  public class Renovation : EventSourcedAggregate
   {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key()]
     public int Id { get; set; }
@@ -68,6 +70,11 @@ namespace HospitalLibrary.Renovations.Model
     public bool CheckSecondaryRooms(int roomid)
     {
       return GetSecondaryIds().Contains(roomid);
+    }
+    
+    public override void Apply(DomainEvent @event)
+    {
+      Changes.Add(@event);
     }
   }
 }
