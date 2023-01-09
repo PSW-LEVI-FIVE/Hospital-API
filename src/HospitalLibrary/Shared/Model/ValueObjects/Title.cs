@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using HospitalLibrary.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,10 +23,9 @@ namespace HospitalLibrary.Shared.Model.ValueObjects
         }
         private void Validate()
         {
-            Regex validateNameRegex = new Regex("^[A-Z][a-z]+$");
-            if (!validateNameRegex.IsMatch(TitleString))
+            if (TitleString.Trim().Equals(""))
             {
-                throw new BadRequestException("Title cant be empty and has to start with an upper case!");
+                throw new Exception("The title field should be filled!");
             }
         }
         

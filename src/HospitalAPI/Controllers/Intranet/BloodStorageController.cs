@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.BloodStorages;
+using HospitalLibrary.BloodStorages.Dtos;
 using HospitalLibrary.BloodStorages.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,13 +18,20 @@ namespace HospitalAPI.Controllers.Intranet
         {
             _bloodStorageService = bloodStorageService;
         }
-        
+
         [HttpGet]
         [Route("compatibile/{id}")]
         public ActionResult GetBloodStorage(int id)
         {
             List<BloodType> bloodConsumption = _bloodStorageService.GetAllCompatibileBloodStorage(id);
             return Ok(bloodConsumption);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            IEnumerable<BloodStorageDto> blood = await _bloodStorageService.GetAllBloodStorage();
+            return Ok(blood);
         }
     }
 }

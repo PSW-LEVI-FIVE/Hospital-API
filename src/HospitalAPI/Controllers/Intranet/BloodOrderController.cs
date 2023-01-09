@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using HospitalLibrary.BloodOrders;
 using HospitalLibrary.BloodOrders.Dtos;
 using HospitalLibrary.BloodOrders.Interfaces;
@@ -24,6 +25,13 @@ namespace HospitalAPI.Controllers.Intranet
         {
             BloodOrder bloodOrder = await _bloodOrderService.Create(bloodOrderDto.MapToModel());
             return Ok(bloodOrder);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            List<ShowBloodOrderDto> bloodOrders = await _bloodOrderService.GetAllBloodOrders();
+            return Ok(bloodOrders);
         }
     }
 }

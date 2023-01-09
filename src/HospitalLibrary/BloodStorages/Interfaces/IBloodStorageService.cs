@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalLibrary.BloodStorages.Dtos;
 
 namespace HospitalLibrary.BloodStorages.Interfaces
 {
@@ -9,7 +10,7 @@ namespace HospitalLibrary.BloodStorages.Interfaces
 
         Task<BloodStorage> GetByType(BloodType type);
 
-        Task<IEnumerable<BloodStorage>> GetAllBloodStorage();
+        Task<List<BloodStorageDto>> GetAllBloodStorage();
         List<BloodType> GetAllCompatibileBloodStorage(int hospitalizationId);
     }
 }
