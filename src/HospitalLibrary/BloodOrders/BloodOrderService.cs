@@ -39,7 +39,6 @@ namespace HospitalLibrary.BloodOrders
             foreach (var order in bloodOrders)
             {
                 Doctor doctor = _unitOfWork.DoctorRepository.GetOne(order.DoctorId);
-                Console.Write(doctor.Name);
                 ShowBloodOrderDto dto = new ShowBloodOrderDto(order, doctor);
                 showList.Add(dto);
             }
