@@ -42,6 +42,14 @@ namespace HospitalAPI.Controllers.Intranet
       return Ok(slots);
     }
 
+    [HttpPost]
+    [Route("Create/Event")]
+    public async Task<IActionResult> Create(RenovationEventCreateDTO renovation)
+    {
+      var reno = await _renovationService.CreateEvent(renovation.MapToModel());
+      return Ok(reno);
+    }
+
     [HttpGet]
     [Route("pending/")]
     public async Task<IActionResult> GetAllPending()

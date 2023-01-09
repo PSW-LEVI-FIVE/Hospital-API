@@ -1,13 +1,6 @@
-using HospitalLibrary.Rooms.Model;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HospitalLibrary.Renovations.Model;
 
-namespace HospitalLibrary.Examination.Dtos
+namespace HospitalLibrary.Renovations.Model
 {
   public class RenovationEventDTO
   {
