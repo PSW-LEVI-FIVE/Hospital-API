@@ -1,10 +1,8 @@
-
-using System;
-using System.Threading.Tasks;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Renovations.Interface;
 using HospitalLibrary.Renovations.Model;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 namespace HospitalAPI.Controllers.Intranet
 {
   [Route("api/intranet/renovation")]
@@ -43,12 +41,29 @@ namespace HospitalAPI.Controllers.Intranet
     }
 
     [HttpPost]
-    [Route("Create/Event")]
-    public async Task<IActionResult> Create([FromBody] RenovationEventCreateDTO renovation)
+    [Route("create/event")]
+    public async Task<IActionResult> Create([FromBody] RenovationEventCreateDTO renovationDto)
     {
-      var reno = await _renovationService.CreateEvent(renovation.MapToModel());
+      var reno = await _renovationService.CreateEvent(renovationDto.MapToModel());
       return Ok(reno);
     }
+
+    [HttpPost]
+    [Route("add/event")]
+    public async Task<IActionResult> AddEvent([FromBody] RenovationAddEventDTO renovationEventDto)
+    {
+      _renovationService.AddEvent(renovationEventDto.MapToModel());
+      return Ok();
+    }
+
+    [HttpPost]
+    [Route("update/event")]
+    public async Task<IActionResult> UpdateEvent([FromBody] RenovationEventCreateDTO renovationDto,string uuid)
+    {
+      var renovation= _renovationService.UpdateEvent(renovationDto.MapToModel(), uuid);
+      return Ok(renovation);
+    }
+
 
     [HttpGet]
     [Route("pending/")]
