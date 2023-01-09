@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalLibrary.Doctors;
 using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.Appointments.Interfaces
@@ -22,5 +23,6 @@ namespace HospitalLibrary.Appointments.Interfaces
         Task<IEnumerable<TimeInterval>> GetAllDoctorTakenIntervalsForDateExcept(int roomId, DateTime date, int ignore);
         Task<IEnumerable<TimeInterval>> GetAllRoomTakenIntervalsForDateExcept(int roomId, DateTime date, int ignore);
         Task<IEnumerable<Appointment>> GetPatientEndedAppointments(int patientId);
+        IEnumerable<Appointment> GetAllDoctorAppointmentsByStartDate(int doctorId, DateTime date);
     }
 }

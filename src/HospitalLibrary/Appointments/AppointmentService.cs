@@ -16,6 +16,7 @@ using HospitalLibrary.Shared.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using SendGrid.Helpers.Errors.Model;
+using ceTe.DynamicPDF;
 
 namespace HospitalLibrary.Appointments
 {
@@ -244,7 +245,53 @@ namespace HospitalLibrary.Appointments
             {
                 return _unitOfWork.ExaminationReportRepository.GetByExamination(examinationId);
             }
+
+        public IEnumerable<AppointmentsStatisticsDTO> GetMonthStatisticsByDoctorId(int doctorId, int month)
+        {
+            List<AppointmentsStatisticsDTO> dailyAppointmentsDTOs = new List<AppointmentsStatisticsDTO>();
+            DateTime firstOfMonth = new DateTime(DateTime.Now.Year, month, 1);
+            for (DateTime day = firstOfMonth; day <= firstOfMonth.AddMonths(1).AddDays(-1); day.AddDays(1))
+            {
+                IEnumerable<Appointment> thisDay = _unitOfWork.AppointmentRepository.GetDailyAppointmentsByDoctorId(doctorId, day);
+                dailyAppointmentsDTOs.Add(new AppointmentsStatisticsDTO(day.ToString("MMM dd"), thisDay.Count()));
+            }
+            return dailyAppointmentsDTOs;
         }
+
+        public IEnumerable<AppointmentsStatisticsDTO> GetYearStatisticsByDoctorId(int doctorId)
+        {
+            List<AppointmentsStatisticsDTO> monthlyAppointmentsDTOs = new List<AppointmentsStatisticsDTO>();
+            for (int month = 1; month <=12; month++)
+            {
+                DateTime firstOfMonth = new DateTime(DateTime.Now.Year, month, 1);
+                IEnumerable<Appointment> thisMonth = _unitOfWork.AppointmentRepository.GetMonthlyAppointmentsByDoctorId(doctorId, firstOfMonth);
+                monthlyAppointmentsDTOs.Add(new AppointmentsStatisticsDTO(month.ToString("MMMM"), thisMonth.Count()));
+            }
+            return monthlyAppointmentsDTOs;
+        }
+
+        public IEnumerable<AppointmentsStatisticsDTO> GetTimeRangeStatisticsByDoctorId(int doctorId, TimeInterval timeInterval)
+        {
+            List<AppointmentsStatisticsDTO> timeRangeAppointmentsDTOs = new List<AppointmentsStatisticsDTO>();
+            if ((timeInterval.End - timeInterval.Start).Days > 31) 
+            {
+                for (int month = timeInterval.Start.Month; month <= timeInterval.End.Month; month++)
+                {
+                    DateTime firstOfMonth = new DateTime(DateTime.Now.Year, month, 1);
+                    IEnumerable<Appointment> thisMonth = _unitOfWork.AppointmentRepository.GetMonthlyAppointmentsByDoctorId(doctorId, firstOfMonth);
+                    timeRangeAppointmentsDTOs.Add(new AppointmentsStatisticsDTO(month.ToString("MMMM"), thisMonth.Count()));
+                }
+            }else
+            {
+                for (DateTime day = timeInterval.Start; day <= timeInterval.End; day.AddDays(1))
+                {
+                    IEnumerable<Appointment> thisDay = _unitOfWork.AppointmentRepository.GetDailyAppointmentsByDoctorId(doctorId, day);
+                    timeRangeAppointmentsDTOs.Add(new AppointmentsStatisticsDTO(day.ToString("MMM dd"), thisDay.Count()));
+                }
+            }
+            return timeRangeAppointmentsDTOs;
+        }
+    }
     
     }
 
