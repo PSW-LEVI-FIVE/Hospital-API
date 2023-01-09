@@ -28,7 +28,7 @@ public class CreateRoom
         Room room = new Room()
         {
             RoomNumber = "20A",
-            Area = 45
+            Area = new Area(45)
         };
 
         var result = roomService.Create(room);

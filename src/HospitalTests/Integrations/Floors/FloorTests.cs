@@ -7,6 +7,7 @@ using HospitalLibrary.Floors.Interfaces;
 using HospitalLibrary.Map;
 using HospitalLibrary.Map.Interfaces;
 using HospitalLibrary.Rooms.Interfaces;
+using HospitalLibrary.Shared.Model.ValueObjects;
 using HospitalTests.Setup;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,7 +36,7 @@ public class FloorTests: BaseIntegrationTest
         var dto = new CreateFloorDto()
         {
             BuildingId = 2,
-            Area = 150,
+            Area = new Area(150),
             Height = 100,
             Width = 100,
             XCoordinate = 150,
