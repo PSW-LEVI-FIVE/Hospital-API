@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.Renovation
 {
-  public class IRenovationStatistics
+  public interface IRenovationStatistics
   {
+    List<double> GetAvgStepCount();
+    List<double> GetAverageVisitsToStep(RenovationType type);
+    List<double> GetAverageTimeForStep(RenovationType type);
+    List<double> GetAvgTime();
 
   }
 }
