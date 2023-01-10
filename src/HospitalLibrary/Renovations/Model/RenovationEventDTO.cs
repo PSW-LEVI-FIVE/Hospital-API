@@ -13,7 +13,7 @@ namespace HospitalLibrary.Renovations.Model
     public DateTime EndAt { get; set; }
     public String? roomName { get; set; }
     public String Uuid { get; set; }
-
+    public RenovationEventDTO(){}
     public RenovationEventDTO(Renovation renovation, string uuid)
     {
       Id=renovation.Id;
@@ -21,11 +21,25 @@ namespace HospitalLibrary.Renovations.Model
       StartAt = renovation.StartAt;
       EndAt = renovation.EndAt;
       State = RenovationState.PENDING;
-      Type = RenovationType.SPLIT;
+      Type = renovation.Type;
       SecondaryRoomId = renovation.SecondaryRoomId;
       roomName = renovation.roomName;
       Uuid=uuid;
     }
 
+    public Renovation MapToModel()
+    {
+      return new Renovation()
+      {
+        Id = Id,
+        MainRoomId = MainRoomId,
+        SecondaryRoomId = SecondaryRoomId,
+        StartAt = StartAt,
+        EndAt = EndAt,
+        State = RenovationState.PENDING,
+        Type = Type,
+        roomName = roomName
+      };
+    }
   }
 }

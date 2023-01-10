@@ -182,8 +182,9 @@ namespace HospitalLibrary.Renovations
         throw new BadRequestException("Renovation not found");
 
       existing.UpdateAdditional(renovation);
+      _unitOfWork.RenovationRepository.Update(existing);
       _unitOfWork.RenovationRepository.Save();
-      renovation.Apply(new RenovationDomainEvent(renovation.Id, DateTime.Now, RenovationEventType.FINISHED, renovation.Type, uuid));
+      existing.Apply(new RenovationDomainEvent(existing.Id, DateTime.Now, RenovationEventType.FINISHED, existing.Type, uuid));
       _unitOfWork.RenovationRepository.Save();
       return existing;
     }

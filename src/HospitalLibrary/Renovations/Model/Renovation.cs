@@ -93,8 +93,8 @@ namespace HospitalLibrary.Renovations.Model
       MainRoomId = renovation.MainRoomId;
       StartAt = renovation.StartAt;
       EndAt = renovation.EndAt;
-      State = RenovationState.PENDING;
-      Type = RenovationType.SPLIT;
+      State = renovation.State;
+      Type = renovation.Type;
       SecondaryRoomId = renovation.SecondaryRoomId;
       roomName = renovation.roomName;
     }
