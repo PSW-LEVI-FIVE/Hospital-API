@@ -6,6 +6,7 @@ using HospitalLibrary.Shared.Repository;
 using HospitalLibrary.Appointments.Interfaces;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
+using HospitalLibrary.AnnualLeaves;
 
 namespace HospitalLibrary.Appointments
 {
@@ -149,5 +150,14 @@ namespace HospitalLibrary.Appointments
             .Select(a => new TimeInterval(a.StartAt, a.EndAt))
             .ToListAsync();
         }
-  }
+
+        public int GetNumberOfDoctorAppointmentsByStartTime(int doctorId, TimeInterval interval)
+        {
+            return _dataContext.Appointments
+                .Where(a => a.State != AppointmentState.DELETED)
+                .Where(a => a.DoctorId == doctorId)
+                .Where(a => (a.StartAt >= interval.Start && a.StartAt <= interval.End))
+                .Count();
+        }
+    }
 }
