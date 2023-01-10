@@ -21,32 +21,18 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.Renovation
       return _dataContext.RenovationDomainEvents
         .Where(d => d.RenovationType == type)
         .GroupBy(d => d.Uuid)
-        .Select(g =>
-          new
-          {
-            Start = g.FirstOrDefault(el => el.EventType == RenovationEventType.STARTED),
-            End = g.FirstOrDefault(el => el.EventType == RenovationEventType.FINISHED),
-            count = g.Count()
-          })
-        .Where(el => el.Start != null && el.End != null)
-        .Average(el => el.count);
+        .Select(g => g.Count()
+        ).ToList().Average();
 
     }
 
-    public double GetAverageVisitsToStep(RenovationEventType step, RenovationType type)
+    public double GetTotalVisitsToStep(RenovationEventType step, RenovationType type)
     {
       return _dataContext.RenovationDomainEvents
         .Where(d => d.RenovationType == type)
         .GroupBy(d => d.Uuid)
-        .Select(g =>
-          new
-          {
-            Start = g.FirstOrDefault(el => el.EventType == RenovationEventType.STARTED),
-            End = g.FirstOrDefault(el => el.EventType == RenovationEventType.FINISHED),
-            step = g.Select(el => el.EventType == step),
-          })
-        .Where(el => el.Start != null && el.End != null)
-        .Average(el => el.step.Count());
+        .Select(g => g.Count(el=>el.EventType==step)
+        ).ToList().Sum();
     }
 
     public double GetAverageTimeForStep(RenovationEventType stepStart, RenovationEventType stepEnd, RenovationType type)
@@ -66,7 +52,6 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.Renovation
         .Select(el => el.End.Timestamp - el.Start.Timestamp)
         .ToList()
         .Average(el => el.TotalMinutes);
-
     }
 
     public double GetAvgTime(RenovationType type)
