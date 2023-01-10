@@ -7,6 +7,8 @@ using HospitalLibrary.Renovations.Interface;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Shared.Interfaces;
+using HospitalLibrary.Shared.Model.ValueObjects;
+using OpenQA.Selenium.DevTools.V106.HeadlessExperimental;
 
 namespace HospitalLibrary.Renovations
 {
@@ -149,7 +151,8 @@ namespace HospitalLibrary.Renovations
 
     private async Task MergeRooms(Room mainRoom, Room secondaryRoom)
     {
-      mainRoom.Area += secondaryRoom.Area;
+      //mainRoom.Area.Measure += secondaryRoom.Area.Measure;
+      mainRoom.Area = new Area(mainRoom.Area.Measure + secondaryRoom.Area.Measure);
 
       _roomService.Update(mainRoom);
 
@@ -165,10 +168,10 @@ namespace HospitalLibrary.Renovations
     private void SplitRoom(string roomNumber, Room mainRoom)
     {
       var id = _unitOfWork.RoomRepository.GetMaxId();
-      var room2 = new Room(id + 1, roomNumber, mainRoom.Area / 2,
+      var room2 = new Room(id + 1, roomNumber, new Area(mainRoom.Area.Measure / 2),
           mainRoom.FloorId, RoomType.OPERATION_ROOM);
 
-      mainRoom.Area = mainRoom.Area / 2;
+      mainRoom.Area = new Area(mainRoom.Area.Measure / 2);
       _roomService.Create(room2);
       _roomService.Update(mainRoom);
     }

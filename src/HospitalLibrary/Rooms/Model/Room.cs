@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Floors;
+using HospitalLibrary.Shared.Model.ValueObjects;
 
 public enum RoomType
 {
@@ -20,7 +21,7 @@ namespace HospitalLibrary.Rooms.Model
         public int Id { get; set; }
 
         public string RoomNumber { get; set; }
-        public float Area { get; set; }
+        public Area Area { get; set; }
 
         [ForeignKey("Floor")]
         public int FloorId { get; set; }
@@ -31,7 +32,7 @@ namespace HospitalLibrary.Rooms.Model
 
         public Room() {}
 
-        public Room(int id, string roomNumber, float area, int floorId, RoomType roomType)
+        public Room(int id, string roomNumber, Area area, int floorId, RoomType roomType)
         {
             Id = id;
             RoomNumber = roomNumber;

@@ -118,7 +118,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             RgbColour = "#FFFFFF"
         };
 
-        Floor floor = new Floor(2, 100, 2);
+        Floor floor = new Floor(2, new Area(100), 2);
 
 
         MapFloor mapFloor = new MapFloor()
@@ -133,7 +133,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         Room room1 = new Room()
         {
             Id = 2,
-            Area = 10,
+            Area = new Area(10),
             FloorId = 2,
             RoomNumber = "1",
             RoomType = RoomType.EXAMINATION_ROOM
@@ -141,7 +141,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         Room room5 = new Room()
         {
             Id = 1,
-            Area = 10,
+            Area = new Area(10),
             FloorId = 2,
             RoomNumber = "soba",
             RoomType = RoomType.EXAMINATION_ROOM
@@ -150,7 +150,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         Room room2 = new Room()
         {
             Id = 3,
-            Area = 10,
+            Area = new Area(10),
             FloorId = 2,
             RoomNumber = "123",
             RoomType = RoomType.EXAMINATION_ROOM
@@ -159,7 +159,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         Room room3 = new Room()
         {
             Id = 6,
-            Area = 10,
+            Area = new Area(10),
             FloorId = 2,
             RoomNumber = "145",
             RoomType = RoomType.NO_TYPE
@@ -167,7 +167,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         Room room4 = new Room()
         {
             Id = 7,
-            Area = 10,
+            Area = new Area(10),
             FloorId = 2,
             RoomNumber = "146",
             RoomType = RoomType.HOSPITAL_ROOM
