@@ -77,11 +77,50 @@ namespace HospitalAPI.Controllers.Intranet
       var pending = await _renovationService.GetAllPending();
       return Ok(pending);
     }
+
     [HttpGet]
     [Route("statistics/avg-step-count")]
     public IActionResult GetAvgStepCount()
     {
-      var pending =  _renovationStatics.GetAverageTimeForStep(RenovationType.MERGE);
+     var pending = _renovationStatics.GetAvgStepCount();
+     return Ok(pending);
+    }
+
+    [HttpGet]
+    [Route("statistics/visit-count-merge")]
+    public IActionResult GetMergeVisitCount()
+    {
+      var pending = _renovationStatics.GetTotalVisitsToStep(RenovationType.MERGE);
+      return Ok(pending);
+    }
+
+    [HttpGet]
+    [Route("statistics/visit-count-split")]
+    public IActionResult GetSplitVisitCount()
+    {
+      var pending = _renovationStatics.GetTotalVisitsToStep(RenovationType.MERGE);
+      return Ok(pending);
+    }
+
+    [HttpGet]
+    [Route("statistics/avg-step-time-merge")]
+    public IActionResult GetAvgStepTimeMerge()
+    {
+      var pending = _renovationStatics.GetAverageTimeForStep(RenovationType.MERGE);
+      return Ok(pending);
+    }
+    [HttpGet]
+    [Route("statistics/avg-step-time-split")]
+    public IActionResult GetAvgStepTimeSplit()
+    {
+      var pending = _renovationStatics.GetAverageTimeForStep(RenovationType.SPLIT);
+      return Ok(pending);
+    }
+    [HttpGet]
+    [Route("statistics/avg-time")]
+    public IActionResult GetAvgTime()
+    {
+      var pending = _renovationStatics.GetAvgTime();
       return Ok(pending);
     }
 
