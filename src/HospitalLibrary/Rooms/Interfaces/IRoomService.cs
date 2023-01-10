@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Rooms.Dtos;
@@ -18,5 +18,6 @@ namespace HospitalLibrary.Rooms.Interfaces
         Task<Room> GetFirstAvailableExaminationRoom(TimeInterval choosenInterval);
         Task<IEnumerable<RoomEquipment>> GetAllEquipmentbyRoomId(int id);
         Task<Room> GetFirstAvailableConsiliumRoom(TimeInterval timeInterval);
+        Task<IEnumerable<Room>> GetRoomsByFloorId(int id);
     }
 }

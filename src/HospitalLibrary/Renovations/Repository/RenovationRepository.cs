@@ -24,8 +24,7 @@ namespace HospitalLibrary.Renovations.Repository
       return await _dataContext.Renovations
           .Where(a => a.State == RenovationState.PENDING)
           .Where(a => a.MainRoomId == roomId || a.SecondaryRoomId == roomId)
-          .Where(a => interval.Start.Date.CompareTo(a.StartAt.Date) <= 0)
-          .Where(a => interval.End.Date.CompareTo(a.EndAt.Date) >= 0)
+          .Where(a => a.StartAt.CompareTo(interval.End) < 0 && a.EndAt.CompareTo(interval.Start) > 0)
           .ToListAsync();
     }
 

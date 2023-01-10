@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments.Interfaces;
@@ -69,9 +69,15 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(room);
         }
 
-
-
         [HttpGet]
+        [Route("floor/{id}")]
+        public async Task<IActionResult> GetRoomsByFloorId(int id)
+        {
+          IEnumerable<Room> rooms = await _roomService.GetRoomsByFloorId(id);
+          return Ok(rooms);
+        }
+
+    [HttpGet]
         [Route("{id}/beds")]
         public IActionResult GetRoomBeds(int id)
         {
