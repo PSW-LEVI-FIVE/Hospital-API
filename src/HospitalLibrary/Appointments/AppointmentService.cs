@@ -9,6 +9,7 @@ using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Dtos;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Examination;
+using HospitalLibrary.Infrastructure.EventSourcing.Events;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Dtos;
 using HospitalLibrary.Shared.Interfaces;
@@ -246,7 +247,7 @@ namespace HospitalLibrary.Appointments
             {
                 return _unitOfWork.ExaminationReportRepository.GetByExamination(examinationId);
             }
-
+            
         public IEnumerable<AppointmentsStatisticsDTO> GetMonthStatisticsByDoctorId(int doctorId, int month)
         {
             List<AppointmentsStatisticsDTO> dailyAppointmentsDTOs = new List<AppointmentsStatisticsDTO>();
@@ -312,6 +313,16 @@ namespace HospitalLibrary.Appointments
                 timeRangeAppointmentsDTOs.Add(new AppointmentsStatisticsDTO(new DateTime(DateTime.Now.Year, entry.Key, 1).ToString("MMMM"), entry.Value));
             }
             return timeRangeAppointmentsDTOs;
+        }
+        public void AddEvent(SchedulingAppointmentDomainEvenet schedulingAppointmentDomainEvenet)
+        {
+            var appointment = _unitOfWork.AppointmentRepository.GetOne(schedulingAppointmentDomainEvenet.AggregateId);
+            if (appointment == null)
+            {
+                throw new BadRequestException("Appointment report not found");
+            }
+            appointment.Apply(schedulingAppointmentDomainEvenet);
+            _unitOfWork.AppointmentRepository.Save();
         }
     }
 }

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Consiliums;
 using HospitalLibrary.Doctors;
+using HospitalLibrary.Infrastructure.EventSourcing;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Model;
@@ -24,7 +25,7 @@ public enum AppointmentType
 
 namespace HospitalLibrary.Appointments
 {
-    public class Appointment
+    public class Appointment : EventSourcedAggregate
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity),Key()]
         public int Id { get; set; }
@@ -82,7 +83,12 @@ namespace HospitalLibrary.Appointments
             Type = appointment.Type;
             Consilium = appointment.Consilium;
         }
+        public override void Apply(DomainEvent @event)
+        {
+            Changes.Add(@event);
+        }
     }
+    
     
     
 }

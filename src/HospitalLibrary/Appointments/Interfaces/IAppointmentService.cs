@@ -5,6 +5,7 @@ using HospitalLibrary.AnnualLeaves.Dtos;
 using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Examination;
+using HospitalLibrary.Infrastructure.EventSourcing.Events;
 using HospitalLibrary.Shared.Dtos;
 
 namespace HospitalLibrary.Appointments.Interfaces
@@ -36,5 +37,7 @@ namespace HospitalLibrary.Appointments.Interfaces
         IEnumerable<AppointmentsStatisticsDTO> GetMonthStatisticsByDoctorId(int doctorId, int month);
         IEnumerable<AppointmentsStatisticsDTO> GetYearStatisticsByDoctorId(int doctorId);
         IEnumerable<AppointmentsStatisticsDTO> GetTimeRangeStatisticsByDoctorId(int doctorId, TimeInterval timeInterval);
+        public void AddEvent(SchedulingAppointmentDomainEvenet schedulingAppointmentDomainEvenet);
+        
     }
 }
