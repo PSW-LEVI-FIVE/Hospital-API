@@ -23,13 +23,13 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.Renovation
       return new List<double> {avgStepMerge, avgStepSplit};
     }
 
-    public List<double> GetAverageVisitsToStep(RenovationType type)
+    public List<double> GetTotalVisitsToStep(RenovationType type)
     {
-      double avgStarted = _unitOfWork.RenovationStaticsRepository.GetAverageVisitsToStep(RenovationEventType.STARTED,type);
-      double avgBasicInfo = _unitOfWork.RenovationStaticsRepository.GetAverageVisitsToStep(RenovationEventType.ADDED_BASIC_INFO, type);
-      double avgTimeChosen = _unitOfWork.RenovationStaticsRepository.GetAverageVisitsToStep(RenovationEventType.TIME_CHOSEN, type);
-      double avgAdditionalInfo = _unitOfWork.RenovationStaticsRepository.GetAverageVisitsToStep(RenovationEventType.ADDED_ADDITION_INFO, type);
-      double avgFinished = _unitOfWork.RenovationStaticsRepository.GetAverageVisitsToStep(RenovationEventType.FINISHED, type);
+      double avgStarted = _unitOfWork.RenovationStaticsRepository.GetTotalVisitsToStep(RenovationEventType.STARTED,type);
+      double avgBasicInfo = _unitOfWork.RenovationStaticsRepository.GetTotalVisitsToStep(RenovationEventType.ADDED_BASIC_INFO, type);
+      double avgTimeChosen = _unitOfWork.RenovationStaticsRepository.GetTotalVisitsToStep(RenovationEventType.TIME_CHOSEN, type);
+      double avgAdditionalInfo = _unitOfWork.RenovationStaticsRepository.GetTotalVisitsToStep(RenovationEventType.ADDED_ADDITION_INFO, type);
+      double avgFinished = _unitOfWork.RenovationStaticsRepository.GetTotalVisitsToStep(RenovationEventType.FINISHED, type);
       return new List<double>() { avgStarted, avgBasicInfo, avgTimeChosen, avgAdditionalInfo, avgFinished };
     }
 
