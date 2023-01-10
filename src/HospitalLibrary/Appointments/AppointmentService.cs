@@ -9,6 +9,7 @@ using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Dtos;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Examination;
+using HospitalLibrary.Infrastructure.EventSourcing.Events;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Shared.Dtos;
 using HospitalLibrary.Shared.Interfaces;
@@ -244,7 +245,18 @@ namespace HospitalLibrary.Appointments
             {
                 return _unitOfWork.ExaminationReportRepository.GetByExamination(examinationId);
             }
-        }
+
+            public void AddEvent(SchedulingAppointmentDomainEvenet schedulingAppointmentDomainEvenet)
+            {
+                var appointment = _unitOfWork.AppointmentRepository.GetOne(schedulingAppointmentDomainEvenet.AggregateId);
+                if (appointment == null)
+                {
+                    throw new BadRequestException("Appointment report not found");
+                }
+                appointment.Apply(schedulingAppointmentDomainEvenet);
+                _unitOfWork.AppointmentRepository.Save();
+            }
+    }
     
     }
 

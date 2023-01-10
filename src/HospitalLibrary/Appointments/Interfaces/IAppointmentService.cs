@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Examination;
+using HospitalLibrary.Infrastructure.EventSourcing.Events;
 using HospitalLibrary.Shared.Dtos;
 
 namespace HospitalLibrary.Appointments.Interfaces
@@ -32,6 +33,7 @@ namespace HospitalLibrary.Appointments.Interfaces
         Task<IEnumerable<Appointment>> GetAllFinishedPatientAppointments(int patientId);
         String GetUrl();
         ExaminationReport GetByExamination(int examinationId);
+        public void AddEvent(SchedulingAppointmentDomainEvenet schedulingAppointmentDomainEvenet);
 
     }
 }
