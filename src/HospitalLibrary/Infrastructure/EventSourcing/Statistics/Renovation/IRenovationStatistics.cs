@@ -1,3 +1,4 @@
+using HospitalLibrary.Infrastructure.EventSourcing.Statistics.Renovation.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +9,10 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.Renovation
 {
   public interface IRenovationStatistics
   {
-    List<double> GetAvgStepCount();
-    List<double> GetTotalVisitsToStep(RenovationType type);
-    List<double> GetAverageTimeForStep(RenovationType type);
-    List<double> GetAvgTime();
+    AvgStepCountDto GetAvgStepCount();
+    TotalStepVisitDto GetTotalVisitsToStep(RenovationType type);
+    AvgStepTimeDto GetAverageTimeForStep(RenovationType type);
+    AvgTimeDto GetAvgTime();
 
   }
 }
