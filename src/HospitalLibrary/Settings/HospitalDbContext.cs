@@ -71,6 +71,9 @@ namespace HospitalLibrary.Settings
         public DbSet<SchedulingAppointmentDomainEvenet> SchedulingAppointmentDomainEvenets { get; set; }
         
 
+
+    public DbSet<ExaminationReportDomainEvent> ExaminationReportDomainEvents { get; set; }
+        public DbSet<RenovationDomainEvent> RenovationDomainEvents { get; set; }
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -109,6 +112,8 @@ namespace HospitalLibrary.Settings
 
             modelBuilder.Entity<ExaminationReport>().HasMany(e => e.Prescriptions).WithOne(p => p.ExaminationReport);
             modelBuilder.Entity<ExaminationReport>().HasMany(e => e.Symptoms).WithMany(p => p.ExaminationReports);
+            modelBuilder.Entity<RenovationDomainEvent>().ToTable("RenovationDomainEvent");
+
             // modelBuilder.Entity<Hospitalization>()
             //     .HasOne(h => h.Bed)
             //     .WithMany(h => h.AllHospitalizations);
