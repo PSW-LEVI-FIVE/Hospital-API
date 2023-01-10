@@ -151,8 +151,12 @@ namespace HospitalLibrary.Renovations
 
     private async Task MergeRooms(Room mainRoom, Room secondaryRoom)
     {
+
       //mainRoom.Area.Measure += secondaryRoom.Area.Measure;
-      mainRoom.Area = new Area(mainRoom.Area.Measure + secondaryRoom.Area.Measure);
+      //mainRoom.Area = new Area(mainRoom.Area.Measure + secondaryRoom.Area.Measure);
+      float newArea = mainRoom.Area.Measure + secondaryRoom.Area.Measure;
+      mainRoom.UpdateArea(new Area(newArea));
+
 
       _roomService.Update(mainRoom);
 
@@ -170,8 +174,11 @@ namespace HospitalLibrary.Renovations
       var id = _unitOfWork.RoomRepository.GetMaxId();
       var room2 = new Room(id + 1, roomNumber, new Area(mainRoom.Area.Measure / 2),
           mainRoom.FloorId, RoomType.OPERATION_ROOM);
+      
+      //mainRoom.Area = new Area(mainRoom.Area.Measure / 2);
+      float newArea = mainRoom.Area.Measure / 2;
+      mainRoom.UpdateArea(new Area(newArea));
 
-      mainRoom.Area = new Area(mainRoom.Area.Measure / 2);
       _roomService.Create(room2);
       _roomService.Update(mainRoom);
     }

@@ -203,9 +203,7 @@ public class SuggestConsiliumsUnitTests
 
     private Room GetRoom()
     {
-        return new Room()
-        {
-            Id = 1
-        };
+        return new Room(1);
+
     }
 }

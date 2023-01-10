@@ -45,7 +45,7 @@ namespace HospitalAPI.Controllers.Intranet
         public IActionResult UpdateName(int id, [FromBody] string name)
         {
             Room room = _roomService.GetOne(id);
-            room.RoomNumber = name;
+            room.UpdateName(name);
             _roomService.Update(room);
             return Ok(room);
         }

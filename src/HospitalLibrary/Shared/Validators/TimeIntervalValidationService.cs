@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.Appointments;
+using HospitalLibrary.Invitations;
 using HospitalLibrary.Renovations.Model;
 using HospitalLibrary.Rooms.Model;
 using HospitalLibrary.Shared.Exceptions;
@@ -95,6 +96,7 @@ namespace HospitalLibrary.Shared.Validators
             ThrowIfInPast(appointment.StartAt);
             ThrowIfInAnnualLeavePeriod(appointment.DoctorId ?? -1, new TimeInterval(appointment.StartAt, appointment.EndAt));
             ThrowIfNotInWorkingHours(appointment);
+            ThrowIfInTeamBulidingPeriod(appointment.DoctorId, new TimeInterval(appointment.StartAt, appointment.EndAt));
 
             IEnumerable<TimeInterval> doctorTimeIntervals =
                 await _unitOfWork.AppointmentRepository.GetAllDoctorTakenIntervalsForDate(appointment.DoctorId ?? -1,
@@ -219,6 +221,16 @@ namespace HospitalLibrary.Shared.Validators
             if (annualLeaves.Any())
             {
                 throw new BadRequestException("There is an annual leave in that period");
+            }
+        }
+
+        private void ThrowIfInTeamBulidingPeriod(int doctorId, TimeInterval timeInterval)
+        {
+            IEnumerable<Invitation> invitations =
+                _unitOfWork.InvitationRepository.GetDoctorTeamBuildingInvitationsInRange(doctorId, timeInterval);
+            if (invitations.Any())
+            {
+                throw new BadRequestException("Doctor isn't available due to event he must attend");
             }
         }
     }

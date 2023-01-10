@@ -18,19 +18,9 @@ public class RoomsForStepByStep
         var roomRepository = new Mock<IRoomRepository>();
         var appointmentRepository = new Mock<IAppointmentRepository>();
         var unitOfWork = new Mock<IUnitOfWork>();
-        
-        Room room1 = new Room()
-        {
-            Id = 1,
-            RoomNumber = "100A",
-            RoomType = RoomType.EXAMINATION_ROOM
-        };
-        Room room2 = new Room()
-        {
-            Id = 2,
-            RoomNumber = "100B",
-            RoomType = RoomType.EXAMINATION_ROOM
-        };
+
+        Room room1 = new Room(1, "100A", RoomType.EXAMINATION_ROOM);
+        Room room2 = new Room(2, "100B", RoomType.EXAMINATION_ROOM);
         List<Room> rooms = new List<Room>();
         rooms.Add(room1);
         rooms.Add(room2);

@@ -4,7 +4,10 @@ namespace HospitalLibrary.Invitations.Interfaces
 {
     public interface IInvitationService
     {
-        IEnumerable<Invitation> GetAllInvivations();
+        IEnumerable<Invitation> GetAllInvitations();
         IEnumerable<Invitation> GetAllByDoctorId(int doctorId);
+        public Invitation AcceptInvitation(int invitationId);
+
+        public Invitation DeclineInvitation();
     }
 }

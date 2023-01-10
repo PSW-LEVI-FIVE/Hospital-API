@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Appointments;
 
@@ -20,7 +21,8 @@ namespace HospitalLibrary.Invitations
         public string Title { get; set; }
         public string Reason { get; set; }
         public string Place { get; set; }
-        public TimeInterval DateRange { get; set; }
+        public DateTime StartAt { get; set; }
+        public DateTime EndAt { get; set; }
         
         public InvitationStatus InvitationStatus { get; set; }
 
