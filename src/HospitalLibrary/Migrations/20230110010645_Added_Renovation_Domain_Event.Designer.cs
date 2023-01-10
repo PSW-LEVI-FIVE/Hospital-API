@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230110010645_Added_Renovation_Domain_Event")]
+    partial class Added_Renovation_Domain_Event
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -343,6 +345,9 @@ namespace HospitalLibrary.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<float>("Area")
+                        .HasColumnType("real");
+
                     b.Property<int>("BuildingId")
                         .HasColumnType("integer");
 
@@ -605,6 +610,9 @@ namespace HospitalLibrary.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<float>("Area")
+                        .HasColumnType("real");
 
                     b.Property<int>("FloorId")
                         .HasColumnType("integer");
@@ -1133,26 +1141,6 @@ namespace HospitalLibrary.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("HospitalLibrary.Shared.Model.ValueObjects.Area", "Area", b1 =>
-                        {
-                            b1.Property<int>("FloorId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                            b1.Property<float>("Measure")
-                                .HasColumnType("real");
-
-                            b1.HasKey("FloorId");
-
-                            b1.ToTable("Floors");
-
-                            b1.WithOwner()
-                                .HasForeignKey("FloorId");
-                        });
-
-                    b.Navigation("Area");
-
                     b.Navigation("Building");
                 });
 
@@ -1407,26 +1395,6 @@ namespace HospitalLibrary.Migrations
                         .HasForeignKey("FloorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.OwnsOne("HospitalLibrary.Shared.Model.ValueObjects.Area", "Area", b1 =>
-                        {
-                            b1.Property<int>("RoomId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                            b1.Property<float>("Measure")
-                                .HasColumnType("real");
-
-                            b1.HasKey("RoomId");
-
-                            b1.ToTable("Rooms");
-
-                            b1.WithOwner()
-                                .HasForeignKey("RoomId");
-                        });
-
-                    b.Navigation("Area");
 
                     b.Navigation("Floor");
                 });
