@@ -20,11 +20,7 @@ public class CreateBuilding
 
         var buildingService = new BuildingService(unitOfWork.Object);
 
-        Building building = new Building()
-        {
-            Address = "Vojvode Misica 9",
-            Name = "Block A"
-        };
+        Building building = new Building("Vojvode Misica 9", "Blok A");
 
         var result = buildingService.Create(building);
         result.ShouldNotBeNull();
