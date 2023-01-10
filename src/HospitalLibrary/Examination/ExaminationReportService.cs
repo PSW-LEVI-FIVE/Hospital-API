@@ -14,6 +14,7 @@ using HospitalLibrary.PDFGeneration;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Symptoms;
+using LinqKit;
 
 namespace HospitalLibrary.Examination
 {
@@ -91,29 +92,38 @@ namespace HospitalLibrary.Examination
             _unitOfWork.ExaminationReportRepository.Save();
         }
 
-        public Task<IEnumerable<ExaminationReport>> Search(string phrase, int docId)
+        public async Task<IEnumerable<SearchResultDTO>> Search(string phrase, int docId)
         {
             if (phrase.Length == 0)
                 throw new BadRequestException("Input can not be empty");
             
             if (phrase.Contains("'"))
-                isQuote(phrase);
+                return isQuote(phrase);
             else
-                isWords(phrase);
-            return null;
+                return isWords(phrase);
         }
 
-        private void isWords(string phrase)
+        private IEnumerable<SearchResultDTO> isWords(string phrase)
         {
-            List<string> words = phrase.Split(" ").ToList();
+            List<string> words = phrase.ToLower().Split(" ").ToList();
+            IEnumerable<SearchResultDTO> res = new List<SearchResultDTO>();
+            words.ForEach(w =>res = res.Concat(getSearched(w)));
+            return res;
         } 
 
-        private void isQuote(string phrase)
+        private IEnumerable<SearchResultDTO> isQuote(string phrase)
         {
-            phrase=phrase.Replace("'", "");
-            
+            phrase=phrase.ToLower().Replace("'", "");
+            return getSearched(phrase);
         }
 
+        private IEnumerable<SearchResultDTO> getSearched(string term)
+        {
+            IEnumerable<SearchResultDTO> res = new List<SearchResultDTO>();
+            _unitOfWork.ExaminationReportRepository.SearchByWords(term)
+                .ForEach(exam => res = res.Append(new SearchResultDTO(exam)));
+            return res;
+        }
 
         private IEnumerable<Symptom> FindNotExisting(List<Symptom> old, List<Symptom> existing)
         {

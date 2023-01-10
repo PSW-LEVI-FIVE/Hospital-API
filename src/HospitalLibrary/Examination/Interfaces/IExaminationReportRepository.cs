@@ -9,6 +9,6 @@ namespace HospitalLibrary.Examination.Interfaces
         List<ExaminationReport> FindAllBySpecialty(int specialtyId);
         ExaminationReport FindExam();
         IEnumerable<ExaminationReport> SearchByPhrase(string phrase);
-        IEnumerable<ExaminationReport> SearchByWords(List<string> words);
+        IEnumerable<ExaminationReport> SearchByWords(string word);
     }
 }

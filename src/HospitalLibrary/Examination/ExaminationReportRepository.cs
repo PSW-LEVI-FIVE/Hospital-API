@@ -33,12 +33,19 @@ namespace HospitalLibrary.Examination
         {
             throw new System.NotImplementedException();
         }
-
-        public IEnumerable<ExaminationReport> SearchByWords(List<string> words)
+        public IEnumerable<ExaminationReport> SearchByWords(string word)
         {
-            // return _dataContext.ExaminationReports
-                // .Where(a=> a.Content)
-            throw new System.NotImplementedException();
+            return _dataContext.ExaminationReports
+                .Include(a => a.Symptoms)
+                .Include(a=> a.Prescriptions)
+                .Include(a => a.Examination)
+                .Include(a => a.Doctor)
+                .Where(a => a.Content!=null)
+                .Where(a => a.Content.ToLower().Contains(word) ||
+                    a.Symptoms.Any(sym => word.Contains(sym.Name.ToLower())))
+                    // a.Prescriptions.Any(pre => word.Contains(pre.Medicine.Name.NameString.ToLower())))
+                .OrderByDescending(a=>a.Examination.EndAt)
+                .ToList();
         }
     }
 }

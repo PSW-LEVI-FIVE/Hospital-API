@@ -3,5 +3,9 @@
     public class SearchExaminationsDTO
     {
         public string Content { get; set; }
+
+        public SearchExaminationsDTO()
+        {
+        }
     }
 }

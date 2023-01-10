@@ -12,6 +12,6 @@ namespace HospitalLibrary.Examination.Interfaces
         public ExaminationReport GetById(int id);
         public Task<ExaminationReport> Update(ExaminationReport report, string uuid);
         public void AddEvent(ExaminationReportDomainEvent examinationReportDomainEvent);
-        public Task<IEnumerable<ExaminationReport>> Search(string phrase, int docId);
+        public Task<IEnumerable<SearchResultDTO>> Search(string phrase, int docId);
     }
 }
