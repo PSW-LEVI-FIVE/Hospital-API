@@ -35,6 +35,7 @@ using HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationReport;
 using HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppointments;
 using HospitalLibrary.Invitations;
 using HospitalLibrary.Invitations.Interfaces;
+using HospitalLibrary.Infrastructure.EventSourcing.Statistics.Renovation;
 using HospitalLibrary.Map;
 using HospitalLibrary.Map.Interfaces;
 using HospitalLibrary.MedicalRecords;
@@ -137,6 +138,7 @@ namespace HospitalAPI
             services.AddScoped<IRenovationValidator, RenovationValidator>();
             services.AddScoped<IInvitationService, InvitationService>();
             services.AddScoped<ISchedulingAppointmentStatistics, SchedulingAppointmentStatistics>();
+            services.AddScoped<IRenovationStatistics, RenovationStatistics>();
 
 
             services.AddSwaggerGen(c =>

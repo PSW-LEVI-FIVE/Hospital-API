@@ -70,7 +70,7 @@ namespace HospitalLibrary.Shared.Interfaces
         IInvitationRepository InvitationRepository { get; }
         ISchedulingEventRepository SchedulingEvenetRepository { get; }
         
-        IRenovationStaticsRepository renovationStaticsRepository { get; }
+        IRenovationStaticsRepository RenovationStaticsRepository { get; }
 
   }
 }
