@@ -103,12 +103,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             Quantity = 5.0
         };
 
-        Building building = new Building()
-        {
-            Id = 2,
-            Address = "NEKA ADRESA",
-            Name = "Neko ime"
-        };
+        Building building = new Building(2, "NEKA ADRESA", "Neko ime");
 
         MapBuilding mapBuilding = new MapBuilding()
         {
