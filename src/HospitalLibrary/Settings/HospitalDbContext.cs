@@ -72,6 +72,9 @@ namespace HospitalLibrary.Settings
         public DbSet<SchedulingAppointmentDomainEvent> SchedulingAppointmentDomainEvents { get; set; }
         
 
+
+    public DbSet<ExaminationReportDomainEvent> ExaminationReportDomainEvents { get; set; }
+        public DbSet<RenovationDomainEvent> RenovationDomainEvents { get; set; }
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -117,6 +120,8 @@ namespace HospitalLibrary.Settings
                     .HasConversion(p => (string)p, p => (CoordinatesList)p);
             });
             
+            modelBuilder.Entity<RenovationDomainEvent>().ToTable("RenovationDomainEvent");
+
             // modelBuilder.Entity<Hospitalization>()
             //     .HasOne(h => h.Bed)
             //     .WithMany(h => h.AllHospitalizations);
