@@ -120,10 +120,17 @@ namespace HospitalLibrary.Renovations
             break;
           }
         case RenovationType.MERGE:
-          if (renovation.SecondaryRoomId == null) throw new Exception("secondary room can't be null");
+          if (renovation.SecondaryRoomIds == null) throw new Exception("secondary room can't be null");
+
+          IEnumerable<Room> secondaryRooms = Array.Empty<Room>();
+
+          foreach (int id in renovation.GetSecondaryIds())
+          { 
+            secondaryRooms = secondaryRooms.Append(_roomService.GetOne(id));
+          }
 
           await MergeRooms(_roomService.GetOne(renovation.MainRoomId),
-              _roomService.GetOne((int)renovation.SecondaryRoomId));
+              secondaryRooms.ToList());
 
           renovation.State = RenovationState.FINISHED;
           Update(renovation);
@@ -149,23 +156,26 @@ namespace HospitalLibrary.Renovations
       return renovation;
     }
 
-    private async Task MergeRooms(Room mainRoom, Room secondaryRoom)
+    private async Task MergeRooms(Room mainRoom, List<Room> secondaryRooms)
     {
 
-      //mainRoom.Area.Measure += secondaryRoom.Area.Measure;
-      //mainRoom.Area = new Area(mainRoom.Area.Measure + secondaryRoom.Area.Measure);
-      float newArea = mainRoom.Area.Measure + secondaryRoom.Area.Measure;
-      mainRoom.UpdateArea(new Area(newArea));
-
+      foreach (var room in secondaryRooms)
+      {
+        float newArea = mainRoom.Area.Measure + room.Area.Measure;
+        mainRoom.Area = new Area(newArea);
+      }
 
       _roomService.Update(mainRoom);
 
-      await TransferAllEquipment(mainRoom, secondaryRoom);
-      await TransferAllAppointments(mainRoom, secondaryRoom);
-      await DeleteAllReallocation(secondaryRoom, mainRoom);
+      await TransferAllEquipment(mainRoom, secondaryRooms);
+      await TransferAllAppointments(mainRoom, secondaryRooms);
+      await DeleteAllReallocation(secondaryRooms, mainRoom);
 
 
-      _unitOfWork.RoomRepository.Delete(secondaryRoom);
+      foreach (var room in secondaryRooms)
+      {
+        _unitOfWork.RoomRepository.Delete(room);
+      }
       _unitOfWork.RoomRepository.Save();
     }
 
@@ -183,9 +193,14 @@ namespace HospitalLibrary.Renovations
       _roomService.Update(mainRoom);
     }
 
-    private async Task DeleteAllReallocation(Room renovationSecondaryRoom, Room mainRoom)
+    private async Task DeleteAllReallocation(List<Room> renovationSecondaryRooms, Room mainRoom)
     {
-      var equipmentReallocations = await _unitOfWork.EquipmentReallocationRepository.GetAllForRoom(renovationSecondaryRoom.Id);
+      List<EquipmentReallocation> equipmentReallocations = new List<EquipmentReallocation>();
+
+      foreach (var room in renovationSecondaryRooms.ToList())
+      {
+        equipmentReallocations.AddRange(await _unitOfWork.EquipmentReallocationRepository.GetAllForRoom(room.Id));
+      }
 
       var appointmentsMain =
           await GetRoomScheduleForRange(new TimeInterval(DateTime.Now.AddYears(-2), DateTime.Now.AddYears(50)),
@@ -200,7 +215,8 @@ namespace HospitalLibrary.Renovations
           _unitOfWork.EquipmentReallocationRepository.Delete(eq);
           _unitOfWork.EquipmentReallocationRepository.Save();
         }
-        if (eq.StartingRoomId == renovationSecondaryRoom.Id)
+
+        if (renovationSecondaryRooms.FindIndex(room => room.Id == eq.StartingRoomId) >= 0)
           eq.StartingRoomId = mainRoom.Id;
         else eq.DestinationRoomId = mainRoom.Id;
 
@@ -208,9 +224,16 @@ namespace HospitalLibrary.Renovations
         _unitOfWork.EquipmentReallocationRepository.Save();
       }
     }
-    private async Task TransferAllAppointments(Room mainRoom, Room secondaryRoom)
+    private async Task TransferAllAppointments(Room mainRoom, IEnumerable<Room> secondaryRooms)
     {
-      var appointmentsSecondary = await _unitOfWork.AppointmentRepository.GetAllForRoom(secondaryRoom.Id);
+
+      List<Appointment> appointmentsSecondary = new List<Appointment>();
+
+      foreach (var room in secondaryRooms)
+      {
+        appointmentsSecondary.AddRange(await _unitOfWork.AppointmentRepository.GetAllForRoom(room.Id));
+      }
+      
       var appointmentsMain =
           await GetRoomScheduleForRange(new TimeInterval(DateTime.Now.AddYears(-2), DateTime.Now.AddYears(50)),
               mainRoom.Id);
@@ -235,9 +258,15 @@ namespace HospitalLibrary.Renovations
       return appointmentsMain.All(appointmentSec => !new TimeInterval(appointmentSec.Start, appointmentSec.End)
           .IsOverlaping(new TimeInterval(slot.Start, slot.End)));
     }
-    private async Task TransferAllEquipment(Room mainRoom, Room secondaryRoom)
+    private async Task TransferAllEquipment(Room mainRoom, IEnumerable<Room> secondaryRooms)
     {
-      var secondaryRoomEq = await _unitOfWork.RoomEquipmentRepository.GetEquipmentByRoom(secondaryRoom.Id);
+      List<RoomEquipment> secondaryRoomEq = new List<RoomEquipment>();
+
+      foreach (var room in secondaryRooms)
+      {
+        secondaryRoomEq.AddRange(await _unitOfWork.RoomEquipmentRepository.GetEquipmentByRoom(room.Id));
+      }
+      
       var primaryRoomEq = await _unitOfWork.RoomEquipmentRepository.GetEquipmentByRoom(mainRoom.Id);
 
       foreach (var eq in secondaryRoomEq)

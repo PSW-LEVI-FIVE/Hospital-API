@@ -23,7 +23,7 @@ namespace HospitalLibrary.Renovations.Repository
     {
       return await _dataContext.Renovations
           .Where(a => a.State == RenovationState.PENDING)
-          .Where(a => a.MainRoomId == roomId || a.SecondaryRoomId == roomId)
+          .Where(a => a.MainRoomId == roomId || (a.CheckSecondaryRooms(roomId)))
           .Where(a => a.StartAt.CompareTo(interval.End) < 0 && a.EndAt.CompareTo(interval.Start) > 0)
           .ToListAsync();
     }
@@ -38,7 +38,7 @@ namespace HospitalLibrary.Renovations.Repository
     {
       return await  _dataContext.Renovations
         .Where(a => a.State == RenovationState.PENDING)
-        .Where(a=>(a.MainRoomId == roomId)||(a.SecondaryRoomId==roomId))
+        .Where(a=>(a.MainRoomId == roomId)|| (a.CheckSecondaryRooms(roomId)))
         .ToListAsync();
     }
 

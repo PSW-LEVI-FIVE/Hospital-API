@@ -57,9 +57,16 @@ namespace HospitalLibrary.Shared.Validators
           IEnumerable<TimeInterval> startingRoomTimeIntervals =
             await _unitOfWork.EquipmentReallocationRepository.GetAllRoomTakenInrevalsForDate(renovation.MainRoomId,
               renovation.StartAt.Date);
-          IEnumerable<TimeInterval> destinationRoomTimeIntervals =
-            await _unitOfWork.EquipmentReallocationRepository.GetAllRoomTakenInrevalsForDate((int)renovation.SecondaryRoomId,
-              renovation.StartAt.Date);
+          
+          IEnumerable<TimeInterval> destinationRoomTimeIntervals = Array.Empty<TimeInterval>();
+          foreach (var id in renovation.GetSecondaryIds())
+          {
+              IEnumerable<TimeInterval> roomTimeSlots = 
+                  await _unitOfWork.EquipmentReallocationRepository.GetAllRoomTakenInrevalsForDate(id,
+                  renovation.StartAt.Date);
+              destinationRoomTimeIntervals = destinationRoomTimeIntervals.Concat(roomTimeSlots);
+          }
+            
           ThrowIfRenovationsAreOverlaping(new TimeInterval(renovation.StartAt, renovation.EndAt));
           IEnumerable<TimeInterval> mixedIntervals = startingRoomTimeIntervals.Concat(destinationRoomTimeIntervals);
 

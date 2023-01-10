@@ -27,7 +27,7 @@ namespace HospitalLibrary.Renovations.Model
       return new Renovation()
       {
         MainRoomId = MainRoomId,
-        SecondaryRoomId = MainRoomId,
+        SecondaryRoomIds = null,
         StartAt = StartDate,
         EndAt = EndDate,
         State = RenovationState.PENDING,

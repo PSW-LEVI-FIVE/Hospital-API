@@ -489,7 +489,7 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             EndAt = today.AddDays(3),
             State = RenovationState.PENDING,
             Type = RenovationType.MERGE,
-            SecondaryRoomId = 2
+            SecondaryRoomIds = "2"
 
         };
         dbContext.Specialities.Add(speciality1);

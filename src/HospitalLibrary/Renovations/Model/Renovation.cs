@@ -19,9 +19,7 @@ namespace HospitalLibrary.Renovations.Model
     [ForeignKey("MainRoomId")] public int MainRoomId { get; set; }
 
     public Room MainRoom { get; set; }
-
-    [ForeignKey("SecondaryRoomId")] public int? SecondaryRoomId { get; set; }
-    public Room? SecondaryRoom { get; set; }
+    public string SecondaryRoomIds { get; set; }
     public RenovationType Type { get; set; }
     public RenovationState State { get; set; }
     public DateTime StartAt { get; set; }
@@ -32,7 +30,7 @@ namespace HospitalLibrary.Renovations.Model
     {
     }
 
-    public Renovation(int id, int mainRoomId, DateTime startAt, DateTime endAt, Room secondaryRoom)
+    public Renovation(int id, int mainRoomId, DateTime startAt, DateTime endAt)
     {
       Id = id;
       MainRoomId = mainRoomId;
@@ -40,9 +38,8 @@ namespace HospitalLibrary.Renovations.Model
       EndAt = endAt;
       State = RenovationState.PENDING;
       Type = RenovationType.SPLIT;
-      SecondaryRoom = secondaryRoom;
     }
-    public Renovation(int id, int mainRoomId, int secondaryRoomId, DateTime startAt, DateTime endAt)
+    public Renovation(int id, int mainRoomId, string secondaryRoomIds, DateTime startAt, DateTime endAt)
     {
       Id = id;
       MainRoomId = mainRoomId;
@@ -50,7 +47,7 @@ namespace HospitalLibrary.Renovations.Model
       EndAt = endAt;
       State = RenovationState.PENDING;
       Type = RenovationType.MERGE;
-      SecondaryRoomId = secondaryRoomId;
+      SecondaryRoomIds = secondaryRoomIds;
     }
 
     public TimeInterval GetInterval()
@@ -61,6 +58,16 @@ namespace HospitalLibrary.Renovations.Model
     public string GetDictionaryKet()
     {
       return "reno" + Id.ToString();
+    }
+
+    public List<int> GetSecondaryIds()
+    {
+      return SecondaryRoomIds.Split(',').Select(Int32.Parse).ToList();
+    }
+
+    public bool CheckSecondaryRooms(int roomid)
+    {
+      return GetSecondaryIds().Contains(roomid);
     }
   }
 }
