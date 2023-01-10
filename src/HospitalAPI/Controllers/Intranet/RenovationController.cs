@@ -98,7 +98,7 @@ namespace HospitalAPI.Controllers.Intranet
     [Route("statistics/visit-count-split")]
     public IActionResult GetSplitVisitCount()
     {
-      var pending = _renovationStatics.GetTotalVisitsToStep(RenovationType.MERGE);
+      var pending = _renovationStatics.GetTotalVisitsToStep(RenovationType.SPLIT);
       return Ok(pending);
     }
 
