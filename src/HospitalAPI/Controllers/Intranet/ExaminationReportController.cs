@@ -114,9 +114,9 @@ namespace HospitalAPI.Controllers.Intranet
         
         [HttpPost]
         [Route("search")]
-        public async Task<IActionResult> Search([FromBody] SearchExaminationsDTO phrase)
+        public IActionResult Search([FromBody] SearchExaminationsDTO phrase)
         {
-            IEnumerable<SearchResultDTO> reports = await _examinationReportService.Search(phrase.Content);
+            var reports = _examinationReportService.Search(phrase.Content);
             return Ok(reports);
         }
 

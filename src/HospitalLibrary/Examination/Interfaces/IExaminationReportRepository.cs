@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using HospitalLibrary.Examination.Dtos;
 using HospitalLibrary.Shared.Interfaces;
 
 namespace HospitalLibrary.Examination.Interfaces
@@ -8,6 +9,6 @@ namespace HospitalLibrary.Examination.Interfaces
         ExaminationReport GetByExamination(int examinationId);
         List<ExaminationReport> FindAllBySpecialty(int specialtyId);
         ExaminationReport FindExam();
-        IEnumerable<ExaminationReport> Search(string word);
+        IEnumerable<SearchResultDTO> Search(List<string> word);
     }
 }

@@ -92,38 +92,30 @@ namespace HospitalLibrary.Examination
             _unitOfWork.ExaminationReportRepository.Save();
         }
 
-        public async Task<IEnumerable<SearchResultDTO>> Search(string phrase)
+        public IEnumerable<SearchResultDTO> Search(string phrase)
         {
             if (phrase.Length == 0)
                 throw new BadRequestException("Input can not be empty");
-            
             if (phrase.Contains("'"))
-                return isQuote(phrase);
-            else
-                return isWords(phrase);
+                return IsQuote(phrase);
+            return IsWords(phrase);
         }
 
-        private IEnumerable<SearchResultDTO> isWords(string phrase)
+        private IEnumerable<SearchResultDTO> IsWords(string phrase)
         {
-            List<string> words = phrase.ToLower().Split(" ").ToList();
-            IEnumerable<SearchResultDTO> res = new List<SearchResultDTO>();
-            // words.ForEach(w =>res = res.Concat(getSearched(w)));
-            words.ForEach(w => res = res.Concat(getSearched(w)));
-            return res;
+            var words = phrase.ToLower().Split(" ").ToList();
+            return GetSearched(words);
         } 
 
-        private IEnumerable<SearchResultDTO> isQuote(string phrase)
+        private IEnumerable<SearchResultDTO> IsQuote(string phrase)
         {
-            phrase=phrase.ToLower().Replace("'", "");
-            return getSearched(phrase);
+            phrase = phrase.ToLower().Replace("'", "");
+            return GetSearched(new() { phrase });
         }
 
-        private IEnumerable<SearchResultDTO> getSearched(string term)
+        private IEnumerable<SearchResultDTO> GetSearched(List<string> terms)
         {
-            IEnumerable<SearchResultDTO> res = new List<SearchResultDTO>();
-            _unitOfWork.ExaminationReportRepository.Search(term)
-                .ForEach(exam => res = res.Append(new SearchResultDTO(exam)));
-            return res;
+            return _unitOfWork.ExaminationReportRepository.Search(terms);
         }
 
         private IEnumerable<Symptom> FindNotExisting(List<Symptom> old, List<Symptom> existing)

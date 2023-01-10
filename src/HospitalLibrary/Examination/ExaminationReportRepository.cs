@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using HospitalLibrary.Examination.Dtos;
 using HospitalLibrary.Examination.Interfaces;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
@@ -29,18 +30,26 @@ namespace HospitalLibrary.Examination
                 .Include(a => a.Examination)
                 .FirstOrDefault(e => e.Examination.Id == e.ExaminationId);
         
-        public IEnumerable<ExaminationReport> Search(string word)
+        public IEnumerable<SearchResultDTO> Search(List<string> words)
         {
             return _dataContext.ExaminationReports
                 .Include(a => a.Symptoms)
-                .Include(a=> a.Prescriptions)
                 .Include(a => a.Examination)
                 .Include(a => a.Doctor)
+                .Include(a=> a.Prescriptions)
+                .ThenInclude(pre => pre.Medicine)
                 .Where(a => a.Content!=null)
-                .Where(a => a.Content.ToLower().Contains(word) ||
-                    a.Symptoms.Any(sym => word.Contains(sym.Name.ToLower())) ||
-                    a.Prescriptions.Any(pre => word.Contains(pre.Medicine.Name.NameString.ToLower())))
+                .AsEnumerable()
+                .Where(a => 
+                    words.Any(word => 
+                        a.Content.ToLower().Contains(word) ||
+                        a.Symptoms.Any(sym => word.Contains(sym.Name.ToLower())) ||
+                        a.Symptoms.Any(sym => sym.Name.ToLower().Contains(word.ToLower())) ||
+                        a.Prescriptions.Any(pre => word.Contains(pre.Medicine.Name.NameString.ToLower())) ||
+                        a.Prescriptions.Any(pre => pre.Medicine.Name.NameString.ToLower().Contains(word.ToLower()))) 
+                    )
                 .OrderByDescending(a=>a.Examination.EndAt)
+                .Select(exam => new SearchResultDTO(exam))
                 .ToList();
         }
     }
