@@ -32,6 +32,7 @@ using HospitalLibrary.Floors.Interfaces;
 using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.Hospitalizations.Interfaces;
 using HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationReport;
+using HospitalLibrary.Infrastructure.EventSourcing.Statistics.Renovation;
 using HospitalLibrary.Map;
 using HospitalLibrary.Map.Interfaces;
 using HospitalLibrary.MedicalRecords;
@@ -132,6 +133,7 @@ namespace HospitalAPI
             services.AddScoped<IRenovationService, RenovationService>();
             services.AddScoped<IEquipmenrRelocationValidator, EquipmentRelocationValidator>();
             services.AddScoped<IRenovationValidator, RenovationValidator>();
+            services.AddScoped<IRenovationStatistics, RenovationStatistics>();
 
 
             services.AddSwaggerGen(c =>

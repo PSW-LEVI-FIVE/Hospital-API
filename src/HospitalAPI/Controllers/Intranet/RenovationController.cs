@@ -3,6 +3,8 @@ using HospitalLibrary.Renovations.Interface;
 using HospitalLibrary.Renovations.Model;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using HospitalLibrary.Infrastructure.EventSourcing.Statistics.Renovation;
+
 namespace HospitalAPI.Controllers.Intranet
 {
   [Route("api/intranet/renovation")]
@@ -10,11 +12,14 @@ namespace HospitalAPI.Controllers.Intranet
   public class RenovationController : Controller
   {
     private readonly IRenovationService _renovationService;
+    private readonly IRenovationStatistics _renovationStatics;
 
-    public RenovationController(IRenovationService renovationService)
+    public RenovationController(IRenovationService renovationService, IRenovationStatistics renovationStatics)
     {
       _renovationService = renovationService;
+      _renovationStatics = renovationStatics;
     }
+
     [HttpPost]
     [Route("timeslot/")]
     public async Task<IActionResult> GetTimeSlots([FromBody] TimeSlotReqDTo reqdto)
@@ -72,7 +77,13 @@ namespace HospitalAPI.Controllers.Intranet
       var pending = await _renovationService.GetAllPending();
       return Ok(pending);
     }
-
+    [HttpGet]
+    [Route("statistics/avg-step-count")]
+    public IActionResult GetAvgStepCount()
+    {
+      var pending =  _renovationStatics.GetAverageTimeForStep(RenovationType.MERGE);
+      return Ok(pending);
+    }
 
   }
 
