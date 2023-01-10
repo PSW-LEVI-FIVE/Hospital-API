@@ -43,7 +43,7 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.Renovation
           {
             Start = g.FirstOrDefault(el => el.EventType == RenovationEventType.STARTED),
             End = g.FirstOrDefault(el => el.EventType == RenovationEventType.FINISHED),
-            step = g.Where(el => el.EventType == step),
+            step = g.Select(el => el.EventType == step),
           })
         .Where(el => el.Start != null && el.End != null)
         .Average(el => el.step.Count());

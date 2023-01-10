@@ -67,8 +67,7 @@ namespace HospitalLibrary.Shared.Interfaces
         IAdvertisementRepository AdvertisementRepository { get; }
         IRenovationRepository RenovationRepository { get; }
         IInvitationRepository InvitationRepository { get; }
-        
-        IRenovationStaticsRepository renovationStaticsRepository { get; }
+        IRenovationStaticsRepository RenovationStaticsRepository { get; }
 
   }
 }
