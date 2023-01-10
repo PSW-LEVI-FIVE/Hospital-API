@@ -12,7 +12,7 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.Renovation
   public interface IRenovationStaticsRepository: IBaseRepository<RenovationDomainEvent>
   {
     double GetAvgStepCount(RenovationType type);
-    double GetAverageVisitsToStep(RenovationEventType step, RenovationType type);
+    double GetTotalVisitsToStep(RenovationEventType step, RenovationType type);
     double GetAverageTimeForStep(RenovationEventType stepStart, RenovationEventType stepEnd, RenovationType type);
     double GetAvgTime(RenovationType type);
   }
