@@ -524,8 +524,6 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             SecondaryRoomId = 2
 
         };
-
-        
         dbContext.Specialities.Add(speciality1);
         dbContext.Specialities.Add(speciality2);
         dbContext.Buildings.Add(building);
@@ -554,11 +552,11 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Doctors.Add(doctor2);
         dbContext.AnnualLeaves.Add(annualLeave1);
         dbContext.AnnualLeaves.Add(annualLeave2);
-        dbContext.Hospitalizations.Add(hospitalization);
+        //dbContext.Hospitalizations.Add(hospitalization);
         dbContext.MapRooms.Add(mapRoom);
-        dbContext.RoomEquipment.Add(equipment);
-        dbContext.RoomEquipment.Add(equipment2);
-        dbContext.RoomEquipment.Add(equipment3);
+        // dbContext.RoomEquipment.Add(equipment);
+        // dbContext.RoomEquipment.Add(equipment2);
+        // dbContext.RoomEquipment.Add(equipment3);
         dbContext.Patients.Add(patient);
         dbContext.Patients.Add(patient2);
         dbContext.Patients.Add(patient4);
@@ -573,11 +571,11 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Allergens.Add(allergen3);
         dbContext.Medicines.Add(medicine);
         dbContext.Medicines.Add(medicine2);
-        dbContext.Therapies.Add(therapyBlo);
-        dbContext.Therapies.Add(therapyMed);
+        // dbContext.Therapies.Add(therapyBlo);
+        // dbContext.Therapies.Add(therapyMed);
         dbContext.BloodStorage.Add(bloodStorage);
-        dbContext.Therapies.Add(bloodTherapy1);
-        dbContext.Therapies.Add(bloodTherapy2);
+        // dbContext.Therapies.Add(bloodTherapy1);
+        // dbContext.Therapies.Add(bloodTherapy2);
         dbContext.AnnualLeaves.Add(annualLeave1);
         dbContext.AnnualLeaves.Add(annualLeave2);
         dbContext.Symptoms.Add(cough);
@@ -589,9 +587,9 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
         dbContext.Appointments.Add(examination76);
         dbContext.Appointments.Add(examination105);
         dbContext.Appointments.Add(examinationDontTouch);
-        dbContext.EquipmentReallocations.Add(equipmentReallocation);
+        //dbContext.EquipmentReallocations.Add(equipmentReallocation);
         dbContext.ExaminationReports.Add(rp);
-        dbContext.Renovations.Add(renovation);
+        //dbContext.Renovations.Add(renovation);
         dbContext.SaveChanges();
 
 
