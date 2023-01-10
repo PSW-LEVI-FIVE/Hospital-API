@@ -92,7 +92,7 @@ namespace HospitalLibrary.Examination
             _unitOfWork.ExaminationReportRepository.Save();
         }
 
-        public async Task<IEnumerable<SearchResultDTO>> Search(string phrase, int docId)
+        public async Task<IEnumerable<SearchResultDTO>> Search(string phrase)
         {
             if (phrase.Length == 0)
                 throw new BadRequestException("Input can not be empty");
@@ -107,7 +107,8 @@ namespace HospitalLibrary.Examination
         {
             List<string> words = phrase.ToLower().Split(" ").ToList();
             IEnumerable<SearchResultDTO> res = new List<SearchResultDTO>();
-            words.ForEach(w =>res = res.Concat(getSearched(w)));
+            // words.ForEach(w =>res = res.Concat(getSearched(w)));
+            words.ForEach(w => res = res.Concat(getSearched(w)));
             return res;
         } 
 
@@ -120,7 +121,7 @@ namespace HospitalLibrary.Examination
         private IEnumerable<SearchResultDTO> getSearched(string term)
         {
             IEnumerable<SearchResultDTO> res = new List<SearchResultDTO>();
-            _unitOfWork.ExaminationReportRepository.SearchByWords(term)
+            _unitOfWork.ExaminationReportRepository.Search(term)
                 .ForEach(exam => res = res.Append(new SearchResultDTO(exam)));
             return res;
         }

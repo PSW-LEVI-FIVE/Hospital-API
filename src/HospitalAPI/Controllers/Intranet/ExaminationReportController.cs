@@ -116,9 +116,7 @@ namespace HospitalAPI.Controllers.Intranet
         [Route("search")]
         public async Task<IActionResult> Search([FromBody] SearchExaminationsDTO phrase)
         {
-            // int doctorId = GetCurrentUser().Id;
-            int doctorId = 1;
-            IEnumerable<SearchResultDTO> reports = await _examinationReportService.Search(phrase.Content, doctorId);
+            IEnumerable<SearchResultDTO> reports = await _examinationReportService.Search(phrase.Content);
             return Ok(reports);
         }
 

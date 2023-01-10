@@ -28,12 +28,8 @@ namespace HospitalLibrary.Examination
             _dataContext.ExaminationReports
                 .Include(a => a.Examination)
                 .FirstOrDefault(e => e.Examination.Id == e.ExaminationId);
-
-        public IEnumerable<ExaminationReport> SearchByPhrase(string phrase)
-        {
-            throw new System.NotImplementedException();
-        }
-        public IEnumerable<ExaminationReport> SearchByWords(string word)
+        
+        public IEnumerable<ExaminationReport> Search(string word)
         {
             return _dataContext.ExaminationReports
                 .Include(a => a.Symptoms)
@@ -42,8 +38,8 @@ namespace HospitalLibrary.Examination
                 .Include(a => a.Doctor)
                 .Where(a => a.Content!=null)
                 .Where(a => a.Content.ToLower().Contains(word) ||
-                    a.Symptoms.Any(sym => word.Contains(sym.Name.ToLower())))
-                    // a.Prescriptions.Any(pre => word.Contains(pre.Medicine.Name.NameString.ToLower())))
+                    a.Symptoms.Any(sym => word.Contains(sym.Name.ToLower())) ||
+                    a.Prescriptions.Any(pre => word.Contains(pre.Medicine.Name.NameString.ToLower())))
                 .OrderByDescending(a=>a.Examination.EndAt)
                 .ToList();
         }
