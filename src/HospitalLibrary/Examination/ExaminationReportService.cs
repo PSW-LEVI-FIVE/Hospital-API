@@ -77,6 +77,7 @@ namespace HospitalLibrary.Examination
             _unitOfWork.ExaminationReportRepository.Save();
             existing.Apply(new ExaminationReportDomainEvent(existing.Id, DateTime.Now, ExaminationReportEventType.FINISHED, uuid));
             _unitOfWork.ExaminationReportRepository.Save();
+            FinishExamination(existing.ExaminationId);
             return existing;
         }
 
@@ -142,6 +143,14 @@ namespace HospitalLibrary.Examination
             var pdf = _generator.GenerateExaminationReportPdf(examinationReport, patient);
             string file = await _storage.UploadFile(pdf, $"examination-report-{DateTime.Now.ToString("ddMMyyyyhhmmss")}-{patient.Id}");
             return file;
+        }
+
+
+        private void FinishExamination(int examinationId)
+        {
+            Appointment examination = _unitOfWork.AppointmentRepository.GetOne(examinationId);
+            examination.State = AppointmentState.FINISHED;
+            _unitOfWork.AppointmentRepository.Save();
         }
     }
 }
