@@ -16,7 +16,7 @@ namespace HospitalAPI.Controllers.Intranet
 {
     [Route("api/intranet/appointments")]
     [ApiController]
-    [Authorize(Roles="Doctor")]
+    [Authorize(Roles="Doctor, Manager")]
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentService _appointmentService;
@@ -105,6 +105,31 @@ namespace HospitalAPI.Controllers.Intranet
             Appointment newApp = createAppointmentDto.MapToModel();
             Appointment appointment = await _appointmentService.Create(newApp);
             return Ok(appointment);
+        }
+
+        [Route("statistics/month/{month}/{id:int}")]
+        [HttpGet]
+        public IActionResult GetMonthStatisticsByDoctorId(int month, int id)
+        {
+            IEnumerable<AppointmentsStatisticsDTO> dailyAppointmentsDTOs = _appointmentService.GetMonthStatisticsByDoctorId(id, month);
+            return Ok(dailyAppointmentsDTOs);
+        }
+
+        [Route("statistics/year/{id:int}")]
+        [HttpGet]
+        public IActionResult GetYearStatisticsByDoctorId(int id)
+        {
+            IEnumerable<AppointmentsStatisticsDTO> monthlyAppointmentsDTOs = _appointmentService.GetYearStatisticsByDoctorId(id);
+            return Ok(monthlyAppointmentsDTOs);
+        }
+
+        [Route("statistics/interval/{id:int}/{start}/{end}")]
+        [HttpGet]
+        public IActionResult GetTimeIntervalStatisticsByDoctorId(DateTime start, DateTime end, int id)
+        {
+            TimeInterval timeInterval = new TimeInterval(start, end);
+            IEnumerable<AppointmentsStatisticsDTO> timeIntervalAppointmentsDTOs = _appointmentService.GetTimeRangeStatisticsByDoctorId(id, timeInterval);
+            return Ok(timeIntervalAppointmentsDTOs);
         }
 
 

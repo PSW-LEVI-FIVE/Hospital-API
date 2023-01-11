@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HospitalLibrary.AnnualLeaves.Dtos;
 using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Examination;
@@ -32,6 +33,8 @@ namespace HospitalLibrary.Appointments.Interfaces
         Task<IEnumerable<Appointment>> GetAllFinishedPatientAppointments(int patientId);
         String GetUrl();
         ExaminationReport GetByExamination(int examinationId);
-
+        IEnumerable<AppointmentsStatisticsDTO> GetMonthStatisticsByDoctorId(int doctorId, int month);
+        IEnumerable<AppointmentsStatisticsDTO> GetYearStatisticsByDoctorId(int doctorId);
+        IEnumerable<AppointmentsStatisticsDTO> GetTimeRangeStatisticsByDoctorId(int doctorId, TimeInterval timeInterval);
     }
 }
