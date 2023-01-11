@@ -63,7 +63,7 @@ namespace HospitalAPI.Controllers.Intranet
 
     [HttpPost]
     [Route("update/event/")]
-    public async Task<IActionResult> UpdateMergeEvent([FromBody] RenovationEventDTO renovationDto)
+    public async Task<IActionResult> UpdateEvent([FromBody] RenovationEventDTO renovationDto)
     {
       var renovation= await _renovationService.UpdateEvent(renovationDto.MapToModel(), renovationDto.Uuid);
       return Ok(renovation);
