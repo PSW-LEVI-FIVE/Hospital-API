@@ -54,6 +54,44 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.Renovation
         .Average(el => el.TotalMinutes);
     }
 
+    public double GetMinTimeForStep(RenovationEventType stepStart, RenovationEventType stepEnd, RenovationType type)
+    {
+      return _dataContext.RenovationDomainEvents
+        .Where(d => d.RenovationType == type)
+        .Where(d => d.EventType == stepStart || d.EventType == stepEnd)
+        .ToList()
+        .GroupBy(d => d.Uuid)
+        .Select(g =>
+          new
+          {
+            Start = g.FirstOrDefault(el => el.EventType == stepStart),
+            End = g.FirstOrDefault(el => el.EventType == stepEnd)
+          })
+        .Where(el => el.Start != null && el.End != null)
+        .Select(el => el.End.Timestamp - el.Start.Timestamp)
+        .ToList()
+        .Min(el => el.TotalMinutes);
+    }
+
+    public double GetMaxTimeForStep(RenovationEventType stepStart, RenovationEventType stepEnd, RenovationType type)
+    {
+      return _dataContext.RenovationDomainEvents
+        .Where(d => d.RenovationType == type)
+        .Where(d => d.EventType == stepStart || d.EventType == stepEnd)
+        .ToList()
+        .GroupBy(d => d.Uuid)
+        .Select(g =>
+          new
+          {
+            Start = g.FirstOrDefault(el => el.EventType == stepStart),
+            End = g.FirstOrDefault(el => el.EventType == stepEnd)
+          })
+        .Where(el => el.Start != null && el.End != null)
+        .Select(el => el.End.Timestamp - el.Start.Timestamp)
+        .ToList()
+        .Max(el => el.TotalMinutes);
+    }
+
     public double GetAvgTime(RenovationType type)
     {
       return _dataContext.RenovationDomainEvents

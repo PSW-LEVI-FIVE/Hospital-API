@@ -49,6 +49,32 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.Renovation
 
     }
 
+    public AvgStepTimeDto GetMinTimeForStep(RenovationType type)
+    {
+      double minBasicInfo = _unitOfWork.RenovationStaticsRepository
+        .GetMinTimeForStep(RenovationEventType.STARTED, RenovationEventType.ADDED_BASIC_INFO, type);
+      double minTimeChosen = _unitOfWork.RenovationStaticsRepository
+        .GetMinTimeForStep(RenovationEventType.ADDED_BASIC_INFO, RenovationEventType.TIME_CHOSEN, type);
+      double minAdditionalInfo = _unitOfWork.RenovationStaticsRepository
+        .GetMinTimeForStep(RenovationEventType.TIME_CHOSEN, RenovationEventType.ADDED_ADDITION_INFO, type);
+      double minFinished = _unitOfWork.RenovationStaticsRepository
+        .GetMinTimeForStep(RenovationEventType.ADDED_ADDITION_INFO, RenovationEventType.FINISHED, type);
+      return new AvgStepTimeDto(minBasicInfo, minTimeChosen, minAdditionalInfo, minFinished);
+    }
+
+    public AvgStepTimeDto GetMaxTimeForStep(RenovationType type)
+    {
+      double maxBasicInfo = _unitOfWork.RenovationStaticsRepository
+        .GetMaxTimeForStep(RenovationEventType.STARTED, RenovationEventType.ADDED_BASIC_INFO, type);
+      double maxTimeChosen = _unitOfWork.RenovationStaticsRepository
+        .GetMaxTimeForStep(RenovationEventType.ADDED_BASIC_INFO, RenovationEventType.TIME_CHOSEN, type);
+      double maxAdditionalInfo = _unitOfWork.RenovationStaticsRepository
+        .GetMaxTimeForStep(RenovationEventType.TIME_CHOSEN, RenovationEventType.ADDED_ADDITION_INFO, type);
+      double maxFinished = _unitOfWork.RenovationStaticsRepository
+        .GetMaxTimeForStep(RenovationEventType.ADDED_ADDITION_INFO, RenovationEventType.FINISHED, type);
+      return new AvgStepTimeDto(maxBasicInfo, maxTimeChosen, maxAdditionalInfo, maxFinished);
+    }
+
     public AvgTimeDto GetAvgTime()
     {
       double avgMerge = _unitOfWork.RenovationStaticsRepository.GetAvgTime(RenovationType.MERGE);
