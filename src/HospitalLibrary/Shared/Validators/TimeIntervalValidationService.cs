@@ -93,15 +93,15 @@ namespace HospitalLibrary.Shared.Validators
         {
             ThrowIfEndBeforeStart(appointment.StartAt, appointment.EndAt);
             ThrowIfInPast(appointment.StartAt);
-            ThrowIfInAnnualLeavePeriod(appointment.DoctorId, new TimeInterval(appointment.StartAt, appointment.EndAt));
+            ThrowIfInAnnualLeavePeriod(appointment.DoctorId ?? -1, new TimeInterval(appointment.StartAt, appointment.EndAt));
             ThrowIfNotInWorkingHours(appointment);
 
             IEnumerable<TimeInterval> doctorTimeIntervals =
-                await _unitOfWork.AppointmentRepository.GetAllDoctorTakenIntervalsForDate(appointment.DoctorId,
+                await _unitOfWork.AppointmentRepository.GetAllDoctorTakenIntervalsForDate(appointment.DoctorId ?? -1,
                     appointment.StartAt.Date);
             
             IEnumerable<TimeInterval> roomTimeIntervals =
-                await _unitOfWork.AppointmentRepository.GetAllRoomTakenIntervalsForDate(appointment.RoomId,
+                await _unitOfWork.AppointmentRepository.GetAllRoomTakenIntervalsForDate(appointment.RoomId ?? -1,
                     appointment.StartAt.Date);
             
             IEnumerable<TimeInterval> mixedIntervals = doctorTimeIntervals.Concat(roomTimeIntervals);
@@ -113,7 +113,7 @@ namespace HospitalLibrary.Shared.Validators
         
         private void ThrowIfNotInWorkingHours(Appointment appointment)
         {
-            ThrowIfNotInWorkingHours(appointment.StartAt, appointment.EndAt, appointment.DoctorId);
+            ThrowIfNotInWorkingHours(appointment.StartAt, appointment.EndAt, appointment.DoctorId ?? -1);
         }
         
         //private void ThrowIfEquipmentRelocationInProgress(Appointment appointment)
@@ -133,15 +133,15 @@ namespace HospitalLibrary.Shared.Validators
         {
             ThrowIfEndBeforeStart(start, end);
             ThrowIfInPast(start);
-            ThrowIfInAnnualLeavePeriod(appointment.DoctorId, new TimeInterval(start, end));
-            ThrowIfNotInWorkingHours(start, end, appointment.DoctorId);
+            ThrowIfInAnnualLeavePeriod(appointment.DoctorId ?? -1, new TimeInterval(start, end));
+            ThrowIfNotInWorkingHours(start, end, appointment.DoctorId ?? -1);
             
             IEnumerable<TimeInterval> doctorTimeIntervals =
-                await _unitOfWork.AppointmentRepository.GetAllDoctorTakenIntervalsForDateExcept(appointment.DoctorId,
+                await _unitOfWork.AppointmentRepository.GetAllDoctorTakenIntervalsForDateExcept(appointment.DoctorId ?? -1,
                     start.Date, appointment.Id);
             
             IEnumerable<TimeInterval> roomTimeIntervals =
-                await _unitOfWork.AppointmentRepository.GetAllRoomTakenIntervalsForDateExcept(appointment.RoomId,
+                await _unitOfWork.AppointmentRepository.GetAllRoomTakenIntervalsForDateExcept(appointment.RoomId ?? -1,
                     end.Date, appointment.Id);
             
             IEnumerable<TimeInterval> mixedIntervals = doctorTimeIntervals.Concat(roomTimeIntervals);

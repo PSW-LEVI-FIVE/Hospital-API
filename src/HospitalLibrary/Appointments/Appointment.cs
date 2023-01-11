@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Consiliums;
 using HospitalLibrary.Doctors;
+using HospitalLibrary.Infrastructure.EventSourcing;
 using HospitalLibrary.Patients;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Model;
@@ -11,7 +12,8 @@ public enum AppointmentState
 {
     DELETED,
     FINISHED,
-    PENDING
+    PENDING,
+    NOT_CREATED
 }
 
 public enum AppointmentType
@@ -24,13 +26,13 @@ public enum AppointmentType
 
 namespace HospitalLibrary.Appointments
 {
-    public class Appointment
+    public class Appointment : EventSourcedAggregate
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity),Key()]
         public int Id { get; set; }
         
         [ForeignKey("Doctor")]
-        public int DoctorId { get; set; }
+        public int? DoctorId { get; set; }
         public Doctor Doctor { get; set; }
         
         [ForeignKey("Patient")]
@@ -38,7 +40,7 @@ namespace HospitalLibrary.Appointments
         public Patient? Patient { get; set; }
 
         [ForeignKey("Room")]
-        public int RoomId { get; set; }
+        public int? RoomId { get; set; }
         public Room Room { get; set; }
         
         public DateTime StartAt { get; set; }
@@ -54,6 +56,13 @@ namespace HospitalLibrary.Appointments
         
         public Appointment()
         {
+        }
+
+        public Appointment(int patientId)
+        {
+            this.PatientId = patientId;
+            this.State = AppointmentState.NOT_CREATED;
+            this.Type = AppointmentType.REGULAR;
         }
 
         public Appointment(int id, int doctorId, int patientId,int roomId,DateTime startAt,DateTime endAt,AppointmentState state,AppointmentType type)
@@ -82,7 +91,12 @@ namespace HospitalLibrary.Appointments
             Type = appointment.Type;
             Consilium = appointment.Consilium;
         }
+        public override void Apply(DomainEvent @event)
+        {
+            Changes.Add(@event);
+        }
     }
+    
     
     
 }

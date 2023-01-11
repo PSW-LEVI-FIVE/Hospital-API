@@ -106,7 +106,7 @@ namespace HospitalAPI.Controllers.Intranet
             Appointment appointment = await _appointmentService.Create(newApp);
             return Ok(appointment);
         }
-
+        
         [Route("statistics/month/{month}/{id:int}")]
         [HttpGet]
         public IActionResult GetMonthStatisticsByDoctorId(int month, int id)
@@ -114,7 +114,7 @@ namespace HospitalAPI.Controllers.Intranet
             IEnumerable<AppointmentsStatisticsDTO> dailyAppointmentsDTOs = _appointmentService.GetMonthStatisticsByDoctorId(id, month);
             return Ok(dailyAppointmentsDTOs);
         }
-
+        
         [Route("statistics/year/{id:int}")]
         [HttpGet]
         public IActionResult GetYearStatisticsByDoctorId(int id)
@@ -128,10 +128,19 @@ namespace HospitalAPI.Controllers.Intranet
         public IActionResult GetTimeIntervalStatisticsByDoctorId(DateTime start, DateTime end, int id)
         {
             TimeInterval timeInterval = new TimeInterval(start, end);
-            IEnumerable<AppointmentsStatisticsDTO> timeIntervalAppointmentsDTOs = _appointmentService.GetTimeRangeStatisticsByDoctorId(id, timeInterval);
+            IEnumerable<AppointmentsStatisticsDTO> timeIntervalAppointmentsDTOs =
+                _appointmentService.GetTimeRangeStatisticsByDoctorId(id, timeInterval);
             return Ok(timeIntervalAppointmentsDTOs);
+            
         }
+        [Route("event")]
+        [HttpPost]
 
+        public IActionResult AddEvent(ScheduleAppointmentEventDTO eventDto)
+        {
+            _appointmentService.AddEvent(eventDto.MapToModel());
+            return Ok();
+        }
 
         private UserDTO GetCurrentUser()
         {

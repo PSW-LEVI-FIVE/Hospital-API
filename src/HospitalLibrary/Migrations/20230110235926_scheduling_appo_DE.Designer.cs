@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230110235926_scheduling_appo_DE")]
+    partial class scheduling_appo_DE
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,7 +144,7 @@ namespace HospitalLibrary.Migrations
                     b.Property<int?>("ConsiliumId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("DoctorId")
+                    b.Property<int>("DoctorId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("EndAt")
@@ -151,7 +153,7 @@ namespace HospitalLibrary.Migrations
                     b.Property<int?>("PatientId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("RoomId")
+                    b.Property<int>("RoomId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("StartAt")
@@ -791,8 +793,13 @@ namespace HospitalLibrary.Migrations
                 {
                     b.HasBaseType("HospitalLibrary.Infrastructure.EventSourcing.DomainEvent");
 
+                    b.Property<int>("PatientId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Type")
                         .HasColumnType("integer");
+
+                    b.HasIndex("PatientId");
 
                     b.ToTable("SchedulingAppointmentDomainEvents");
                 });
@@ -947,7 +954,9 @@ namespace HospitalLibrary.Migrations
 
                     b.HasOne("HospitalLibrary.Doctors.Doctor", "Doctor")
                         .WithMany("Appointments")
-                        .HasForeignKey("DoctorId");
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HospitalLibrary.Patients.Patient", "Patient")
                         .WithMany("Appointments")
@@ -955,7 +964,9 @@ namespace HospitalLibrary.Migrations
 
                     b.HasOne("HospitalLibrary.Rooms.Model.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("RoomId");
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Consilium");
 
@@ -1559,6 +1570,14 @@ namespace HospitalLibrary.Migrations
                         .HasForeignKey("HospitalLibrary.Infrastructure.EventSourcing.Events.SchedulingAppointmentDomainEvenet", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("HospitalLibrary.Patients.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("HospitalLibrary.Rooms.Model.Bed", b =>

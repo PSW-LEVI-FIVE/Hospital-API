@@ -5,6 +5,7 @@ using HospitalLibrary.AnnualLeaves.Dtos;
 using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Examination;
+using HospitalLibrary.Infrastructure.EventSourcing.Events;
 using HospitalLibrary.Shared.Dtos;
 
 namespace HospitalLibrary.Appointments.Interfaces
@@ -12,15 +13,18 @@ namespace HospitalLibrary.Appointments.Interfaces
     public interface IAppointmentService
     {
         Task<IEnumerable<Appointment>> GetAll();
+        public void Update(Appointment appointment);
         Task<IEnumerable<TimeInterval>> GetTimeIntervalsForStepByStep(int doctorId, DateTime chosen);
         Task<IEnumerable<TimeIntervalWithDoctorDTO>> GetTimeIntervalsForRecommendation(Doctor doctor, DateTime start, DateTime end);
         Task<IEnumerable<TimeIntervalWithDoctorDTO>> GetTimeIntervalsForRecommendationDatePriority(int patientId, string speciality, DateTime start, DateTime end);
         AppointmentCancelledDTO CancelAppointment(int appointmentId);
         Appointment CancelPatientAppointment(int appointmentId);
         Task<IEnumerable<Appointment>> GetUpcomingForDoctor(Doctor doctor);
-
+        public void Schedule(Appointment appointment);
         Task<IEnumerable<Appointment>> GetUpcomingAppointmentsForRoom(int roomId);
         Task<Appointment> Create(Appointment appointment);
+        
+        Task<Appointment> CreateEmpty(Appointment appointment);
 
         public Task<IEnumerable<Appointment>> GetAllPatientAppointments(int patientId);
         
@@ -36,5 +40,7 @@ namespace HospitalLibrary.Appointments.Interfaces
         IEnumerable<AppointmentsStatisticsDTO> GetMonthStatisticsByDoctorId(int doctorId, int month);
         IEnumerable<AppointmentsStatisticsDTO> GetYearStatisticsByDoctorId(int doctorId);
         IEnumerable<AppointmentsStatisticsDTO> GetTimeRangeStatisticsByDoctorId(int doctorId, TimeInterval timeInterval);
+        public void AddEvent(SchedulingAppointmentDomainEvenet schedulingAppointmentDomainEvenet);
+        
     }
 }

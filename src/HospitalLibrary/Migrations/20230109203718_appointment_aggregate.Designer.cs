@@ -3,15 +3,17 @@ using System;
 using HospitalLibrary.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HospitalLibrary.Migrations
 {
     [DbContext(typeof(HospitalDbContext))]
-    partial class HospitalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230109203718_appointment_aggregate")]
+    partial class appointment_aggregate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,7 +144,7 @@ namespace HospitalLibrary.Migrations
                     b.Property<int?>("ConsiliumId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("DoctorId")
+                    b.Property<int>("DoctorId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("EndAt")
@@ -151,7 +153,7 @@ namespace HospitalLibrary.Migrations
                     b.Property<int?>("PatientId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("RoomId")
+                    b.Property<int>("RoomId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("StartAt")
@@ -345,6 +347,9 @@ namespace HospitalLibrary.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<float>("Area")
+                        .HasColumnType("real");
 
                     b.Property<int>("BuildingId")
                         .HasColumnType("integer");
@@ -606,6 +611,9 @@ namespace HospitalLibrary.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<float>("Area")
+                        .HasColumnType("real");
+
                     b.Property<int>("FloorId")
                         .HasColumnType("integer");
 
@@ -787,16 +795,6 @@ namespace HospitalLibrary.Migrations
                     b.ToTable("ExaminationReportDomainEvents");
                 });
 
-            modelBuilder.Entity("HospitalLibrary.Infrastructure.EventSourcing.Events.SchedulingAppointmentDomainEvenet", b =>
-                {
-                    b.HasBaseType("HospitalLibrary.Infrastructure.EventSourcing.DomainEvent");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.ToTable("SchedulingAppointmentDomainEvents");
-                });
-
             modelBuilder.Entity("HospitalLibrary.Rooms.Model.Bed", b =>
                 {
                     b.HasBaseType("HospitalLibrary.Rooms.Model.RoomEquipment");
@@ -947,7 +945,9 @@ namespace HospitalLibrary.Migrations
 
                     b.HasOne("HospitalLibrary.Doctors.Doctor", "Doctor")
                         .WithMany("Appointments")
-                        .HasForeignKey("DoctorId");
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HospitalLibrary.Patients.Patient", "Patient")
                         .WithMany("Appointments")
@@ -955,7 +955,9 @@ namespace HospitalLibrary.Migrations
 
                     b.HasOne("HospitalLibrary.Rooms.Model.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("RoomId");
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Consilium");
 
@@ -1122,26 +1124,6 @@ namespace HospitalLibrary.Migrations
                         .HasForeignKey("BuildingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.OwnsOne("HospitalLibrary.Shared.Model.ValueObjects.Area", "Area", b1 =>
-                        {
-                            b1.Property<int>("FloorId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                            b1.Property<float>("Measure")
-                                .HasColumnType("real");
-
-                            b1.HasKey("FloorId");
-
-                            b1.ToTable("Floors");
-
-                            b1.WithOwner()
-                                .HasForeignKey("FloorId");
-                        });
-
-                    b.Navigation("Area");
 
                     b.Navigation("Building");
                 });
@@ -1398,26 +1380,6 @@ namespace HospitalLibrary.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("HospitalLibrary.Shared.Model.ValueObjects.Area", "Area", b1 =>
-                        {
-                            b1.Property<int>("RoomId")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("integer")
-                                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                            b1.Property<float>("Measure")
-                                .HasColumnType("real");
-
-                            b1.HasKey("RoomId");
-
-                            b1.ToTable("Rooms");
-
-                            b1.WithOwner()
-                                .HasForeignKey("RoomId");
-                        });
-
-                    b.Navigation("Area");
-
                     b.Navigation("Floor");
                 });
 
@@ -1548,15 +1510,6 @@ namespace HospitalLibrary.Migrations
                     b.HasOne("HospitalLibrary.Infrastructure.EventSourcing.DomainEvent", null)
                         .WithOne()
                         .HasForeignKey("HospitalLibrary.Infrastructure.EventSourcing.Events.ExaminationReportDomainEvent", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("HospitalLibrary.Infrastructure.EventSourcing.Events.SchedulingAppointmentDomainEvenet", b =>
-                {
-                    b.HasOne("HospitalLibrary.Infrastructure.EventSourcing.DomainEvent", null)
-                        .WithOne()
-                        .HasForeignKey("HospitalLibrary.Infrastructure.EventSourcing.Events.SchedulingAppointmentDomainEvenet", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -76,7 +76,64 @@ namespace HospitalAPI.Controllers.Public
             Appointment appointment = await _appointmentService.Create(newApp);
             return Ok(newApp);
         }
+        
+        [HttpGet]
+        [Route("create-appointment")]
+        public async Task<IActionResult> CreateInitialAppointment()
+        {
+            Console.WriteLine("hehexd123");
+            int patientId = GetCurrentUser().Id;
+            Appointment newApp = new Appointment(patientId);
+           
+            Appointment appointment = await _appointmentService.CreateEmpty(newApp);
+            return Ok(newApp.Id);
+        }
 
+        [HttpPut]
+        [Route("picked-date/{startDate}/{appointmentId}")]
+        public async Task<IActionResult> PickedDateForAppointment(DateTime startAt,int appointmentId)
+        {
+            Appointment appointment = await _appointmentService.GetById(appointmentId);
+            appointment.StartAt = startAt;
+            _appointmentService.Update(appointment);
+            return Ok();
+        }
+        
+        [HttpPut]
+        [Route("picked-doctor/{doctorUid}/{appointmentId}")]
+        public async Task<IActionResult> PickedDoctorForAppointment(string doctorUid,int appointmentId)
+        {
+            Appointment appointment = await _appointmentService.GetById(appointmentId);
+            Doctor doctor = await _doctorService.GetDoctorByUid(doctorUid);
+            appointment.DoctorId = doctor.Id;
+            _appointmentService.Update(appointment);
+            return Ok();
+        }
+        
+        [HttpPut]
+        [Route("picked-time/{appointmentId}")]
+        public async Task<IActionResult> PickedTimeForAppointment(int appointmentId,[FromBody] TimeInterval choosenTime)
+        {
+            Appointment appointment = await _appointmentService.GetById(appointmentId);
+            appointment.StartAt = choosenTime.Start;
+            appointment.EndAt = choosenTime.End;
+            _appointmentService.Update(appointment);
+            return Ok();
+        }
+        
+        
+        [HttpPut]
+        [Route("scheduled/{appointmentId}")]
+        public async Task<IActionResult> ScheduledAppointment(int appointmentId)
+        {
+            Appointment appointment = await _appointmentService.GetById(appointmentId);
+            appointment.State = AppointmentState.PENDING;
+            appointment.RoomId = (await _roomService.GetFirstAvailableExaminationRoom(new TimeInterval(appointment.StartAt,appointment.EndAt))).Id;
+            _appointmentService.Schedule(appointment);
+            return Ok();
+        }
+        
+        
         private UserDTO GetCurrentUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -124,6 +181,15 @@ namespace HospitalAPI.Controllers.Public
             ExaminationReport exam = _appointmentService.GetByExamination(appointmentId);
             ExaminationPdfDto examDto = new ExaminationPdfDto(exam.ExaminationId, exam.Url);
             return Ok(examDto);
+        }
+        
+        [Route("event")]
+        [HttpPost]
+
+        public IActionResult AddEvent(ScheduleAppointmentEventDTO eventDto)
+        {
+            _appointmentService.AddEvent(eventDto.MapToModel());
+            return Ok();
         }
         
     }
