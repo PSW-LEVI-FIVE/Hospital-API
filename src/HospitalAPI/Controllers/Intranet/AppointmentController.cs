@@ -16,7 +16,7 @@ namespace HospitalAPI.Controllers.Intranet
 {
     [Route("api/intranet/appointments")]
     [ApiController]
-    //[Authorize(Roles="Doctor, Manager")]
+    [Authorize(Roles="Doctor, Manager")]
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentService _appointmentService;
@@ -123,10 +123,11 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(monthlyAppointmentsDTOs);
         }
 
-        [Route("statistics/interval/{id:int}")]
+        [Route("statistics/interval/{id:int}/{start}/{end}")]
         [HttpGet]
-        public IActionResult GetTimeIntervalStatisticsByDoctorId([FromQuery] TimeInterval timeInterval, int id)
+        public IActionResult GetTimeIntervalStatisticsByDoctorId(DateTime start, DateTime end, int id)
         {
+            TimeInterval timeInterval = new TimeInterval(start, end);
             IEnumerable<AppointmentsStatisticsDTO> timeIntervalAppointmentsDTOs = _appointmentService.GetTimeRangeStatisticsByDoctorId(id, timeInterval);
             return Ok(timeIntervalAppointmentsDTOs);
         }
