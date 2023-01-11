@@ -25,6 +25,8 @@ using HospitalLibrary.Floors.Interfaces;
 using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.Hospitalizations.Interfaces;
 using HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationReport;
+using HospitalLibrary.Invitations;
+using HospitalLibrary.Invitations.Interfaces;
 using HospitalLibrary.Map;
 using HospitalLibrary.Map.Interfaces;
 using HospitalLibrary.MedicalRecords;
@@ -88,6 +90,7 @@ namespace HospitalLibrary.Shared.Repository
         private ISpecialtyRepository _specialtyRepository;
         private IAdvertisementRepository _advertisementRepository;
         private IRenovationRepository _renovationRepository;
+        private IInvitationRepository _invitationRepository;
 
     public UnitOfWork(HospitalDbContext dataContext)
         {
@@ -142,7 +145,10 @@ namespace HospitalLibrary.Shared.Repository
         public IAdvertisementRepository AdvertisementRepository => _advertisementRepository ??= new AdvertisementRepository(_dataContext);
         public IRenovationRepository RenovationRepository => _renovationRepository ??= new RenovationRepository(_dataContext);
 
-  }
+        public IInvitationRepository InvitationRepository =>
+            _invitationRepository ??= new InvitationRepository(_dataContext);
+
+    }
 }
 
 

@@ -66,6 +66,13 @@ namespace HospitalLibrary.Doctors
                 .Where(doctor => doctor.Uid.Equals(doctorUid))
                 .FirstAsync();
         }
+        public Task<Doctor> GetDoctorById(int doctorId)
+        {
+            return _dataContext.Doctors
+                .Where(doctor => doctor.Id == doctorId)
+                .FirstAsync();
+        }
+        
 
         public async Task<Doctor> GetMostUnburdenedDoctor()
         {

@@ -43,4 +43,16 @@
     <Folder Include="Shared\Service" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Invitations\Model\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Invitations\Model\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Invitations\Model\**" />
+  </ItemGroup>
+
 </Project>

@@ -27,6 +27,7 @@ namespace HospitalLibrary.Doctors
 
         public Task<IEnumerable<Doctor>> GetAll()
         {
+            Console.WriteLine("udjiiiiiiiii");
             return _unitOfWork.DoctorRepository.GetAll();
         }
 
@@ -48,6 +49,10 @@ namespace HospitalLibrary.Doctors
         public Task<Doctor> GetDoctorByUid(string doctorUid)
         {
             return _unitOfWork.DoctorRepository.GetDoctorByUid(doctorUid);
+        }
+        public Task<Doctor> GetDoctorById(int doctorId)
+        {
+            return _unitOfWork.DoctorRepository.GetDoctorById(doctorId);
         }
 
         public async Task<IEnumerable<Doctor>> GetIternalMedicineDoctorsForPatientRegistration()

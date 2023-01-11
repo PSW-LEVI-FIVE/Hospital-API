@@ -35,11 +35,19 @@ namespace HospitalAPI.Controllers.Intranet
         }
 
         [HttpGet]
-        [Authorize(Roles="Doctor, Manager")]
+        //[Authorize(Roles="Doctor, Manager")]
         public async Task<IActionResult> GetAll()
         {
             IEnumerable<Doctor> doctors = await _doctorService.GetAll();
             return Ok(doctors);
+        }
+        [Route("get/{doctorId}")]
+        [HttpGet]
+        
+        public async Task<IActionResult> GetDoctorById(int doctorId)
+        {
+            var doctor = await _doctorService.GetDoctorById(doctorId); 
+            return Ok(doctor);
         }
 
         [HttpGet]
@@ -63,7 +71,7 @@ namespace HospitalAPI.Controllers.Intranet
         }
         
         [HttpGet]
-        [Authorize(Roles="Doctor")]
+        //[Authorize(Roles="Doctor")]
         [Route("specialities/{specialty}")]
         public async Task<IActionResult> GetAllDoctorsBySpecialty(int specialty)
         {

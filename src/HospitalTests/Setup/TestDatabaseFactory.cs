@@ -124,49 +124,17 @@ public class TestDatabaseFactory<TStartup> : WebApplicationFactory<Startup>
             RgbColour = "#FFFFFF",
             MapBuildingId = mapBuilding.Id
         };
+        
+        Room room1 = new Room(2, "1", new Area(10), 2, RoomType.EXAMINATION_ROOM);
 
-        Room room1 = new Room()
-        {
-            Id = 2,
-            Area = new Area(10),
-            FloorId = 2,
-            RoomNumber = "1",
-            RoomType = RoomType.EXAMINATION_ROOM
-        };
-        Room room5 = new Room()
-        {
-            Id = 1,
-            Area = new Area(10),
-            FloorId = 2,
-            RoomNumber = "soba",
-            RoomType = RoomType.EXAMINATION_ROOM
-        };
+        Room room5 = new Room(1, "soba", new Area(10), 2, RoomType.EXAMINATION_ROOM);
+
+        Room room2 = new Room(3, "123", new Area(10), 2, RoomType.EXAMINATION_ROOM);
         
-        Room room2 = new Room()
-        {
-            Id = 3,
-            Area = new Area(10),
-            FloorId = 2,
-            RoomNumber = "123",
-            RoomType = RoomType.EXAMINATION_ROOM
-        };
+        Room room3 = new Room(6, "145", new Area(10), 2, RoomType.NO_TYPE);
+
+        Room room4 = new Room(7, "146", new Area(10), 2, RoomType.HOSPITAL_ROOM);
         
-        Room room3 = new Room()
-        {
-            Id = 6,
-            Area = new Area(10),
-            FloorId = 2,
-            RoomNumber = "145",
-            RoomType = RoomType.NO_TYPE
-        };
-        Room room4 = new Room()
-        {
-            Id = 7,
-            Area = new Area(10),
-            FloorId = 2,
-            RoomNumber = "146",
-            RoomType = RoomType.HOSPITAL_ROOM
-        };
 
         RoomEquipment equipment = new Bed(1, 10, "Bed", 2, 1);
         RoomEquipment equipment2 = new Bed(2, 10, "Bed", 2, 1);

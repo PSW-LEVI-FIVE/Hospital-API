@@ -27,16 +27,12 @@ namespace HospitalLibrary.Rooms.Dtos
         public string RgbColour { get; set; }
 
 
-        public Room DtoToRoom()
-        {
-            return new Room()
-            {
-                RoomNumber = RoomNumber,
-                Area = new Area(Area),
-                RoomType = RoomType
-            };
-        }
+      
 
+        public  Room DtoToRoom(int floorId)
+        {
+            return new Room(RoomNumber,Area,floorId, RoomType);
+        }
         public MapRoom DtoToMapRoom()
         {
             return new MapRoom()

@@ -24,13 +24,7 @@ public class CreateRoom
         unitOfWork.Setup(u => u.RoomRepository.Save()).Verifiable();
 
         var roomService = new RoomService(unitOfWork.Object,timeIntervalValidationService.Object);
-
-        Room room = new Room()
-        {
-            RoomNumber = "20A",
-            Area = new Area(45)
-        };
-
+        Room room = new Room("20A",new Area(45));
         var result = roomService.Create(room);
         result.ShouldNotBeNull();
     }

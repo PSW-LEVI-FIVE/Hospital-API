@@ -14,6 +14,7 @@ using HospitalLibrary.Floors;
 using HospitalLibrary.Map;
 using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.Infrastructure.EventSourcing.Events;
+using HospitalLibrary.Invitations;
 using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.Medicines;
 using HospitalLibrary.Renovations.Model;
@@ -64,11 +65,12 @@ namespace HospitalLibrary.Settings
         
         public DbSet<Advertisement.Advertisement> Advertisement { get; set; }
         public DbSet<Renovations.Model.Renovation> Renovations { get; set; }
-
-
-    public DbSet<ExaminationReportDomainEvent> ExaminationReportDomainEvents { get; set; }
+        public DbSet<Invitation> Invitations { get; set; }
+        public DbSet<ExaminationReportDomainEvent> ExaminationReportDomainEvents { get; set; }
     
-    public DbSet<SchedulingAppointmentDomainEvenet> SchedulingAppointmentDomainEvenets { get; set; }
+        public DbSet<SchedulingAppointmentDomainEvenet> SchedulingAppointmentDomainEvenets { get; set; }
+        
+
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -92,6 +94,7 @@ namespace HospitalLibrary.Settings
             modelBuilder.Entity<Bed>().ToTable("Beds");
             modelBuilder.Entity<Allergen>().ToTable("Allergens");
             modelBuilder.Entity<EquipmentReallocation>().ToTable("EquipmentReallocations");
+            modelBuilder.Entity<Invitation>().ToTable("Invitations");
             modelBuilder.Entity<ExaminationReportDomainEvent>().ToTable("ExaminationReportDomainEvents");
             modelBuilder.Entity<SchedulingAppointmentDomainEvenet>().ToTable("SchedulingAppointmentDomainEvents");
             
