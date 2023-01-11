@@ -12,6 +12,8 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.Renovation
     AvgStepCountDto GetAvgStepCount();
     TotalStepVisitDto GetTotalVisitsToStep(RenovationType type);
     AvgStepTimeDto GetAverageTimeForStep(RenovationType type);
+    AvgStepTimeDto GetMinTimeForStep(RenovationType type);
+    AvgStepTimeDto GetMaxTimeForStep(RenovationType type);
     AvgTimeDto GetAvgTime();
 
   }

@@ -116,6 +116,37 @@ namespace HospitalAPI.Controllers.Intranet
       var pending = _renovationStatics.GetAverageTimeForStep(RenovationType.SPLIT);
       return Ok(pending);
     }
+
+    [HttpGet]
+    [Route("statistics/min-step-time-merge")]
+    public IActionResult GetMinStepTimeMerge()
+    {
+      var pending = _renovationStatics.GetMinTimeForStep(RenovationType.MERGE);
+      return Ok(pending);
+    }
+    [HttpGet]
+    [Route("statistics/min-step-time-split")]
+    public IActionResult GetMinStepTimeSplit()
+    {
+      var pending = _renovationStatics.GetMinTimeForStep(RenovationType.SPLIT);
+      return Ok(pending);
+    }
+
+    [HttpGet]
+    [Route("statistics/max-step-time-merge")]
+    public IActionResult GetMaxStepTimeMerge()
+    {
+      var pending = _renovationStatics.GetMaxTimeForStep(RenovationType.MERGE);
+      return Ok(pending);
+    }
+    [HttpGet]
+    [Route("statistics/max-step-time-split")]
+    public IActionResult GetMaxStepTimeSplit()
+    {
+      var pending = _renovationStatics.GetMaxTimeForStep(RenovationType.SPLIT);
+      return Ok(pending);
+    }
+
     [HttpGet]
     [Route("statistics/avg-time")]
     public IActionResult GetAvgTime()
