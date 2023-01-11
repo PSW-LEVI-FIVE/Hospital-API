@@ -73,7 +73,6 @@ namespace HospitalLibrary.Settings
         
 
 
-    public DbSet<ExaminationReportDomainEvent> ExaminationReportDomainEvents { get; set; }
         public DbSet<RenovationDomainEvent> RenovationDomainEvents { get; set; }
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
