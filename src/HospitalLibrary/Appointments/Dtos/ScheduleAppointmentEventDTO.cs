@@ -6,10 +6,8 @@ namespace HospitalLibrary.Appointments.Dtos
     public class ScheduleAppointmentEventDTO
     {
         public SchedulingAppointmentEventType EventType { get; set; }
-        
+
         public DateTime Time { get; set; }
-        
-        public int PatientId { get; set; }
 
         public SchedulingAppointmentDomainEvenet MapToModel()
         {
