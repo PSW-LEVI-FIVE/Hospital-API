@@ -10,9 +10,9 @@ namespace HospitalLibrary.Invitations.Interfaces
         IEnumerable<Invitation> GetAllByDoctorId(int doctorId);
         public Invitation AcceptInvitation(int invitationId);
 
-        public Task<IEnumerable<Invitation>>CreateEventForAll(Invitation invitation);
+        public Task<IEnumerable<Invitation>>CreateEventForAll(CreateInvitationDto createInvitationDto);
 
-        public Task<IEnumerable<Invitation>> CreateEventForSpeciality(Invitation invitation,int specialityId);
+        public Task<IEnumerable<Invitation>> CreateEventForSpeciality(CreateInvitationDto createInvitationDto,int specialityId);
 
         public Invitation DeclineInvitation();
     }

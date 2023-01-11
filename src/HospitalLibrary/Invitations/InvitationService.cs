@@ -1,18 +1,28 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Doctors.Interfaces;
 using HospitalLibrary.Invitations.Dtos;
 using HospitalLibrary.Invitations.Interfaces;
+using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Shared.Repository;
 
 namespace HospitalLibrary.Invitations
 {
     public class InvitationService : IInvitationService
     {
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IDoctorService _doctorService;
+
+        public InvitationService(IUnitOfWork unitOfWork, IDoctorService doctorService)
+        {
+            _unitOfWork = unitOfWork;
+            _doctorService = doctorService;
+        }
+
         public IEnumerable<Invitation> GetAllInvitations()
         {
             return _unitOfWork.InvitationRepository.GetAllInvitations();
@@ -31,16 +41,20 @@ namespace HospitalLibrary.Invitations
             return invitation;
         }
 
-        public  async Task<IEnumerable<Invitation>> CreateEventForAll(Invitation invitation)
+        public  async Task<IEnumerable<Invitation>> CreateEventForAll(CreateInvitationDto createInvitationDto)
         {
             IEnumerable<Doctor> doctors = await  _doctorService.GetAll();
             List<Invitation> invitations = new List<Invitation>();
             foreach(Doctor doctor in doctors)
             {
-                invitation.DoctorId = doctor.Id;
-                invitations.Add(invitation);
-                _unitOfWork.InvitationRepository.Add(invitation);
-                _unitOfWork.InvitationRepository.Save();
+                Invitation newInvitation = new Invitation(doctor.Id, createInvitationDto.Description,
+                    createInvitationDto.Title,
+                    "", createInvitationDto.Place, createInvitationDto.StartAt, createInvitationDto.EndAt,
+                    createInvitationDto.InvitationStatus);
+                newInvitation.DoctorId = doctor.Id;
+                invitations.Add(newInvitation);
+                _unitOfWork.InvitationRepository.Add(newInvitation);
+               _unitOfWork.InvitationRepository.Save();
                 
 
             }
@@ -49,15 +63,19 @@ namespace HospitalLibrary.Invitations
 
         }
 
-        public async Task<IEnumerable<Invitation>> CreateEventForSpeciality(Invitation invitation,int specialityId)
+        public async Task<IEnumerable<Invitation>> CreateEventForSpeciality(CreateInvitationDto createInvitationDto,int specialityId)
         {
             IEnumerable<Doctor> doctors = await _doctorService.GetAllDoctorsBySpecialization(specialityId);
             List<Invitation> invitations = new List<Invitation>();
             foreach(Doctor doctor in doctors)
             {
-                invitation.DoctorId = doctor.Id;
-                invitations.Add(invitation);
-                _unitOfWork.InvitationRepository.Add(invitation);
+                Invitation newInvitation = new Invitation(doctor.Id, createInvitationDto.Description,
+                    createInvitationDto.Title,
+                    "", createInvitationDto.Place, createInvitationDto.StartAt, createInvitationDto.EndAt,
+                    createInvitationDto.InvitationStatus);
+                newInvitation.DoctorId = doctor.Id;
+                invitations.Add(newInvitation);
+                _unitOfWork.InvitationRepository.Add(newInvitation);
                 _unitOfWork.InvitationRepository.Save();
                 
 

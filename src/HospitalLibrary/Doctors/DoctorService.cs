@@ -27,6 +27,7 @@ namespace HospitalLibrary.Doctors
 
         public Task<IEnumerable<Doctor>> GetAll()
         {
+            Console.WriteLine("udjiiiiiiiii");
             return _unitOfWork.DoctorRepository.GetAll();
         }
 

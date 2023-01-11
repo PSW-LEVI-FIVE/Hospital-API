@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -32,20 +33,17 @@ namespace HospitalAPI.Controllers.Intranet
         }
         [Route("create/all")]
         [HttpPost]
-        public async Task<IActionResult> CreateNewTeamBuildingEventForEveryone([FromBody] CreateInvitationDto invitationDto)
-        {
-            Invitation newInvitation = invitationDto.MapToModel();
-            var result = await _invitationService.CreateEventForAll(newInvitation);
+        public async Task<IActionResult> CreateNewTeamBuildingEventForEveryone([FromBody] CreateInvitationDto invitationDto){
+            
+        var result = await _invitationService.CreateEventForAll(invitationDto);
             return Ok(result);
-
         }
 
         [Route("create/special")]
         [HttpPost]
         public async Task<IActionResult> CreateNewTimeBuildingEventForSpecific([FromBody] CreateInvitationDto invitationDto)
         {
-            Invitation newInvitation = invitationDto.MapToModel();
-            var result = await _invitationService.CreateEventForSpeciality(newInvitation,invitationDto.SpecialityId);
+            var result = await _invitationService.CreateEventForSpeciality(invitationDto,invitationDto.SpecialityId);
             return Ok(result);
         }
 
@@ -62,7 +60,6 @@ namespace HospitalAPI.Controllers.Intranet
         [HttpPatch]
         public IActionResult AcceptInvitation(int invitationId)
         {
-            int docId = GetCurrentUser().Id;
             Invitation invitation = _invitationService.AcceptInvitation(invitationId);
             return Ok(invitation);
         }
