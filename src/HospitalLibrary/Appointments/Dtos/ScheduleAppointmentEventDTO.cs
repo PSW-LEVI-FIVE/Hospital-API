@@ -13,7 +13,7 @@ namespace HospitalLibrary.Appointments.Dtos
 
         public SchedulingAppointmentDomainEvenet MapToModel()
         {
-            return new SchedulingAppointmentDomainEvenet(1, Time, EventType, PatientId);
+            return new SchedulingAppointmentDomainEvenet(1, Time, EventType);
         }
     }
 }

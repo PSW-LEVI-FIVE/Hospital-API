@@ -41,6 +41,12 @@ namespace HospitalLibrary.Appointments
             return _unitOfWork.AppointmentRepository.GetAll();
         }
 
+        public void Update(Appointment appointment)
+        {
+            _unitOfWork.AppointmentRepository.Update(appointment);
+            _unitOfWork.AppointmentRepository.Save();
+        }
+
         public async Task<IEnumerable<TimeInterval>> GetTimeIntervalsForStepByStep(int doctorId, DateTime chosen)
         {
             WorkingHours doctorsWorkingHours =

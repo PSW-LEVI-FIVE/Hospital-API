@@ -114,7 +114,7 @@ namespace HospitalAPI.Controllers.Intranet
             IEnumerable<AppointmentsStatisticsDTO> dailyAppointmentsDTOs = _appointmentService.GetMonthStatisticsByDoctorId(id, month);
             return Ok(dailyAppointmentsDTOs);
         }
-
+        
         [Route("statistics/year/{id:int}")]
         [HttpGet]
         public IActionResult GetYearStatisticsByDoctorId(int id)
@@ -141,7 +141,6 @@ namespace HospitalAPI.Controllers.Intranet
             _appointmentService.AddEvent(eventDto.MapToModel());
             return Ok();
         }
-
 
         private UserDTO GetCurrentUser()
         {

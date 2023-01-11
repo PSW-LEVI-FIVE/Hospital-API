@@ -10,15 +10,9 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Events
     {
         public SchedulingAppointmentEventType Type { get; set; }
 
-        [ForeignKey("Patient")]
-        public int PatientId { get; set; }
-
-        public Patient Patient { get; set; }
-
-        public SchedulingAppointmentDomainEvenet(int aggregateId, DateTime timestamp,SchedulingAppointmentEventType type,int patientId) : base(aggregateId, timestamp)
+        public SchedulingAppointmentDomainEvenet(int aggregateId, DateTime timestamp,SchedulingAppointmentEventType type) : base(aggregateId, timestamp)
         {
             Type = type;
-            PatientId = patientId;
         }
     }
 }

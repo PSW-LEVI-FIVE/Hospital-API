@@ -67,6 +67,8 @@ namespace HospitalLibrary.Settings
 
 
     public DbSet<ExaminationReportDomainEvent> ExaminationReportDomainEvents { get; set; }
+    
+    public DbSet<SchedulingAppointmentDomainEvenet> SchedulingAppointmentDomainEvenets { get; set; }
         public HospitalDbContext(DbContextOptions<HospitalDbContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -91,7 +93,7 @@ namespace HospitalLibrary.Settings
             modelBuilder.Entity<Allergen>().ToTable("Allergens");
             modelBuilder.Entity<EquipmentReallocation>().ToTable("EquipmentReallocations");
             modelBuilder.Entity<ExaminationReportDomainEvent>().ToTable("ExaminationReportDomainEvents");
-            
+            modelBuilder.Entity<SchedulingAppointmentDomainEvenet>().ToTable("SchedulingAppointmentDomainEvents");
             
             modelBuilder.Entity<Therapy>()
                 .HasDiscriminator(t => t.InstanceType)

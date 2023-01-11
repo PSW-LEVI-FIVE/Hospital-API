@@ -13,6 +13,7 @@ namespace HospitalLibrary.Appointments.Interfaces
     public interface IAppointmentService
     {
         Task<IEnumerable<Appointment>> GetAll();
+        public void Update(Appointment appointment);
         Task<IEnumerable<TimeInterval>> GetTimeIntervalsForStepByStep(int doctorId, DateTime chosen);
         Task<IEnumerable<TimeIntervalWithDoctorDTO>> GetTimeIntervalsForRecommendation(Doctor doctor, DateTime start, DateTime end);
         Task<IEnumerable<TimeIntervalWithDoctorDTO>> GetTimeIntervalsForRecommendationDatePriority(int patientId, string speciality, DateTime start, DateTime end);
