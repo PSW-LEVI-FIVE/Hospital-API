@@ -96,7 +96,7 @@ namespace HospitalLibrary.Shared.Validators
             ThrowIfInPast(appointment.StartAt);
             ThrowIfInAnnualLeavePeriod(appointment.DoctorId ?? -1, new TimeInterval(appointment.StartAt, appointment.EndAt));
             ThrowIfNotInWorkingHours(appointment);
-            ThrowIfInTeamBulidingPeriod(appointment.DoctorId, new TimeInterval(appointment.StartAt, appointment.EndAt));
+            ThrowIfInTeamBulidingPeriod(appointment.DoctorId?? -1, new TimeInterval(appointment.StartAt, appointment.EndAt));
 
             IEnumerable<TimeInterval> doctorTimeIntervals =
                 await _unitOfWork.AppointmentRepository.GetAllDoctorTakenIntervalsForDate(appointment.DoctorId ?? -1,
