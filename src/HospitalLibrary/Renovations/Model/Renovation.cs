@@ -37,16 +37,6 @@ namespace HospitalLibrary.Renovations.Model
     {
     }
 
-    public Renovation(int id, int mainRoomId, DateTime startAt, DateTime endAt, Room secondaryRoom)
-    {
-      Id = id;
-      MainRoomId = mainRoomId;
-      StartAt = startAt;
-      EndAt = endAt;
-      State = RenovationState.PENDING;
-      Type = RenovationType.SPLIT;
-      SecondaryRoom = secondaryRoom;
-    }
     public Renovation(int id, int mainRoomId, int secondaryRoomId, DateTime startAt, DateTime endAt)
     {
       Id = id;
@@ -69,11 +59,6 @@ namespace HospitalLibrary.Renovations.Model
     public TimeInterval GetInterval()
     {
       return new TimeInterval(StartAt, EndAt);
-    }
-
-    public string GetDictionaryKet()
-    {
-      return "reno" + Id.ToString();
     }
 
     public override void Apply(DomainEvent @event)
