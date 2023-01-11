@@ -2,7 +2,7 @@
 
 namespace HospitalLibrary.Infrastructure.EventSourcing.Events
 {
-    public enum ExaminationReportEventType { STARTED, FINISHED_SYMPTOMS, FINISHED_REPORT, FINISHED_PRESCRPITION,  CANCELED, FINISHED }
+    public enum ExaminationReportEventType { STARTED, FINISHED_SYMPTOMS, FINISHED_REPORT, FINISHED_PRESCRPITION, FINISHED }
     
     public class ExaminationReportDomainEvent: DomainEvent
     {
