@@ -13,14 +13,14 @@ namespace HospitalLibrary.Renovations.Interface
 {
   public interface IRenovationService
   {
-    Task<List<TimeInterval>> GenerateCleanerTimeSlots(TimeInterval timeInterval, int duration, int roomid);
+    Task<List<TimeInterval>> GenerateCleanerTimeSlots(TimeInterval timeInterval, int duration, int roomId);
     Task<List<Model.Renovation>> GetAllPending();
     Task<Model.Renovation> Create(Model.Renovation renovation);
     Task ExecuteRenovation(Model.Renovation renovation);
     Task<List<Model.Renovation>> GetAllPendingForRoom(int roomId);
     Model.Renovation CancelRenovation(int renovationId);
     Task<RenovationEventDTO> CreateEvent(Model.Renovation renovation);
-    Task<Renovation> UpdateEvent(Renovation renovation, String uuid);
+    Task<Renovation> UpdateEvent(Renovation renovation, string uuid);
     void AddEvent(RenovationDomainEvent renovationDomainEvent);
   }
 }
