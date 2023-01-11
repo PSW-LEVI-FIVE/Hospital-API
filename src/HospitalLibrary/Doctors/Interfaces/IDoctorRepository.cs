@@ -13,6 +13,7 @@ namespace HospitalLibrary.Doctors.Interfaces
         Task<IEnumerable<Doctor>> GetDoctorsForStepByStep(int patientId);
         Task<IEnumerable<Doctor>> GetDoctorForPatientBySpeciality(int patientId,string speciality);
         Task<Doctor> GetDoctorByUid(string doctorUid);
+        public Task<Doctor> GetDoctorById(int doctorId);
         Task<Doctor> GetMostUnburdenedDoctor();
         IEnumerable<Doctor> GetDoctorsForDate(List<int> doctors, DateTime date);
         public Task<IEnumerable<Doctor>> GetDoctorsByAgeRange(DateTime dateFromAge, DateTime dateToAge);

@@ -41,6 +41,14 @@ namespace HospitalAPI.Controllers.Intranet
             IEnumerable<Doctor> doctors = await _doctorService.GetAll();
             return Ok(doctors);
         }
+        [Route("get/{doctorId}")]
+        [HttpGet]
+        
+        public async Task<IActionResult> GetDoctorById(int doctorId)
+        {
+            var doctor = await _doctorService.GetDoctorById(doctorId); 
+            return Ok(doctor);
+        }
 
         [HttpGet]
         [Authorize(Roles = "Manager")]

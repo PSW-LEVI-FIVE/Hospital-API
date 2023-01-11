@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using HospitalLibrary.AnnualLeaves;
 using HospitalLibrary.Invitations;
 using HospitalLibrary.Invitations.Dtos;
@@ -11,8 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
 {
+    [ApiController]   
     [Route("api/intranet/invitations")]
-    [ApiController]
     public class InvitationController : ControllerBase
     {
         private readonly IInvitationService _invitationService;
@@ -22,18 +23,35 @@ namespace HospitalAPI.Controllers.Intranet
             _invitationService = invitationService;
         }
 
-        [Route("create")]
-        [HttpPost]
-        IActionResult CreateNewTeamBuildingEvent([FromBody] CreateInvitationDto invitationDto)
+        [Route("all")]
+        [HttpGet]
+        public IActionResult GetAllInvitations()
         {
+            var result = _invitationService.GetAllInvitations();
+            return Ok(result);
+        }
+        [Route("create/all")]
+        [HttpPost]
+        public async Task<IActionResult> CreateNewTeamBuildingEventForEveryone([FromBody] CreateInvitationDto invitationDto)
+        {
+            Invitation newInvitation = invitationDto.MapToModel();
+            var result = await _invitationService.CreateEventForAll(newInvitation);
+            return Ok(result);
 
-            return null;
+        }
 
+        [Route("create/special")]
+        [HttpPost]
+        public async Task<IActionResult> CreateNewTimeBuildingEventForSpecific([FromBody] CreateInvitationDto invitationDto)
+        {
+            Invitation newInvitation = invitationDto.MapToModel();
+            var result = await _invitationService.CreateEventForSpeciality(newInvitation,invitationDto.SpecialityId);
+            return Ok(result);
         }
 
         [Route("doctor")]
         [HttpGet]
-        IActionResult GetAllByDoctor()
+        public IActionResult GetAllByDoctor()
         {
             int id = GetCurrentUser().Id;
             IEnumerable<Invitation> invitations = _invitationService.GetAllByDoctorId(id);
@@ -42,7 +60,7 @@ namespace HospitalAPI.Controllers.Intranet
 
         [Route("accept/{invitationId}")]
         [HttpPatch]
-        IActionResult AcceptInvitation(int invitationId)
+        public IActionResult AcceptInvitation(int invitationId)
         {
             int docId = GetCurrentUser().Id;
             Invitation invitation = _invitationService.AcceptInvitation(invitationId);

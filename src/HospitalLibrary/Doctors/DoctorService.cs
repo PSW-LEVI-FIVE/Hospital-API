@@ -49,6 +49,10 @@ namespace HospitalLibrary.Doctors
         {
             return _unitOfWork.DoctorRepository.GetDoctorByUid(doctorUid);
         }
+        public Task<Doctor> GetDoctorById(int doctorId)
+        {
+            return _unitOfWork.DoctorRepository.GetDoctorById(doctorId);
+        }
 
         public async Task<IEnumerable<Doctor>> GetIternalMedicineDoctorsForPatientRegistration()
         {

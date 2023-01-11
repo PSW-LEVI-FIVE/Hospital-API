@@ -1,12 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments.Interfaces;
+using HospitalLibrary.Invitations;
+using HospitalLibrary.Invitations.Dtos;
+using HospitalLibrary.Invitations.Interfaces;
 using HospitalLibrary.Renovations.Interface;
 using HospitalLibrary.Renovations.Model;
 using HospitalLibrary.Rooms.Dtos;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
+using HospitalLibrary.Users;
+using HospitalLibrary.Users.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,12 +28,14 @@ namespace HospitalAPI.Controllers.Intranet
         private IAppointmentService _appointmentService;
         private IEquipmentReallocationService _reallocationService;
         private IRenovationService _renovationService;
-        public RoomsController(IRoomService roomService, IAppointmentService appointmentService,IEquipmentReallocationService equipmentReallocationService,IRenovationService renovationService)
+        
+        public RoomsController(IRoomService roomService, IAppointmentService appointmentService,IEquipmentReallocationService equipmentReallocationService,IRenovationService renovationService )
         {
             _roomService = roomService;
             _appointmentService = appointmentService;
             _reallocationService = equipmentReallocationService;
             _renovationService = renovationService;
+           
 
         }
         

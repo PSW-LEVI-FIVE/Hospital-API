@@ -14,6 +14,7 @@ namespace HospitalLibrary.Doctors.Interfaces
         Task<IEnumerable<Doctor>> GetDoctorForPatientBySpeciality(int patientId, string speciality);
         Task<Doctor> GetMostUnburdenedDoctor();
         Task<Doctor> GetDoctorByUid(string doctorUid);
+        public Task<Doctor> GetDoctorById(int doctorId);
         Task<IEnumerable<Doctor>> GetDoctorsByAgeRange(int fromAge, int toAge);
         Task<IEnumerable<Speciality>> GetAllSpecialities();
         Task<IEnumerable<Doctor>> GetAllDoctorsBySpecialization(int specialty);

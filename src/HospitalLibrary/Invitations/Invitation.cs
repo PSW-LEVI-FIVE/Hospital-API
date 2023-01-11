@@ -26,6 +26,33 @@ namespace HospitalLibrary.Invitations
         
         public InvitationStatus InvitationStatus { get; set; }
 
-        
+        public Invitation()
+        {
+        }
+
+        public Invitation(int doctorId, string description, string title, string reason, string place, DateTime startAt, DateTime endAt, InvitationStatus invitationStatus)
+        {
+            DoctorId = doctorId;
+            Description = description;
+            Title = title;
+            Reason = reason;
+            Place = place;
+            StartAt = startAt;
+            EndAt = endAt;
+            InvitationStatus = invitationStatus;
+        }
+
+        public Invitation(int id, int doctorId, string description, string title, string reason, string place, DateTime startAt, DateTime endAt, InvitationStatus invitationStatus)
+        {
+            Id = id;
+            DoctorId = doctorId;
+            Description = description;
+            Title = title;
+            Reason = reason;
+            Place = place;
+            StartAt = startAt;
+            EndAt = endAt;
+            InvitationStatus = invitationStatus;
+        }
     }
 }
