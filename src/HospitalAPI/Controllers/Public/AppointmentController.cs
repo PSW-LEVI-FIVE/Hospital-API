@@ -85,7 +85,7 @@ namespace HospitalAPI.Controllers.Public
             int patientId = GetCurrentUser().Id;
             Appointment newApp = new Appointment(patientId);
            
-            Appointment appointment = await _appointmentService.Create(newApp);
+            Appointment appointment = await _appointmentService.CreateEmpty(newApp);
             return Ok(newApp.Id);
         }
 
@@ -129,7 +129,7 @@ namespace HospitalAPI.Controllers.Public
             Appointment appointment = await _appointmentService.GetById(appointmentId);
             appointment.State = AppointmentState.PENDING;
             appointment.RoomId = (await _roomService.GetFirstAvailableExaminationRoom(new TimeInterval(appointment.StartAt,appointment.EndAt))).Id;
-            _appointmentService.Update(appointment);
+            _appointmentService.Schedule(appointment);
             return Ok();
         }
         

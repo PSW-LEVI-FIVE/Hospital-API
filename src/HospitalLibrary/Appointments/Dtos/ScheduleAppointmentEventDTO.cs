@@ -8,10 +8,12 @@ namespace HospitalLibrary.Appointments.Dtos
         public SchedulingAppointmentEventType EventType { get; set; }
 
         public DateTime Time { get; set; }
+        
+        public int AggregateId { get; set; }
 
         public SchedulingAppointmentDomainEvenet MapToModel()
         {
-            return new SchedulingAppointmentDomainEvenet(1, Time, EventType);
+            return new SchedulingAppointmentDomainEvenet(AggregateId, Time, EventType);
         }
     }
 }

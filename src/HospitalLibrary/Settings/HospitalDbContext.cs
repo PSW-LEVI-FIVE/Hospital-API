@@ -106,8 +106,6 @@ namespace HospitalLibrary.Settings
 
             modelBuilder.Entity<ExaminationReport>().HasMany(e => e.Prescriptions).WithOne(p => p.ExaminationReport);
             modelBuilder.Entity<ExaminationReport>().HasMany(e => e.Symptoms).WithMany(p => p.ExaminationReports);
-
-
             // modelBuilder.Entity<Hospitalization>()
             //     .HasOne(h => h.Bed)
             //     .WithMany(h => h.AllHospitalizations);

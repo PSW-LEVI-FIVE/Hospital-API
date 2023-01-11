@@ -46,6 +46,13 @@ namespace HospitalLibrary.Appointments
             _unitOfWork.AppointmentRepository.Update(appointment);
             _unitOfWork.AppointmentRepository.Save();
         }
+        
+        public async void Schedule(Appointment appointment)
+        {
+            await _intervalValidation.ValidateAppointment(appointment);
+            _unitOfWork.AppointmentRepository.Update(appointment);
+            _unitOfWork.AppointmentRepository.Save();
+        }
 
         public async Task<IEnumerable<TimeInterval>> GetTimeIntervalsForStepByStep(int doctorId, DateTime chosen)
         {
@@ -115,6 +122,13 @@ namespace HospitalLibrary.Appointments
         public async Task<Appointment> Create(Appointment appointment)
         {
             await _intervalValidation.ValidateAppointment(appointment);
+            _unitOfWork.AppointmentRepository.Add(appointment);
+            _unitOfWork.AppointmentRepository.Save();
+            return appointment;
+        }
+        
+        public async Task<Appointment> CreateEmpty(Appointment appointment)
+        {
             _unitOfWork.AppointmentRepository.Add(appointment);
             _unitOfWork.AppointmentRepository.Save();
             return appointment;

@@ -32,15 +32,15 @@ namespace HospitalLibrary.Appointments
         public int Id { get; set; }
         
         [ForeignKey("Doctor")]
-        public int DoctorId { get; set; }
-        public Doctor Doctor { get; set; }
+        public int? DoctorId { get; set; }
+        public virtual Doctor Doctor { get; set; }
         
         [ForeignKey("Patient")]
         public int? PatientId { get; set; }
         public Patient? Patient { get; set; }
 
         [ForeignKey("Room")]
-        public int RoomId { get; set; }
+        public int? RoomId { get; set; }
         public Room Room { get; set; }
         
         public DateTime StartAt { get; set; }
@@ -61,8 +61,6 @@ namespace HospitalLibrary.Appointments
         public Appointment(int patientId)
         {
             this.PatientId = patientId;
-            this.StartAt = new DateTime(2023, 4, 9, 20, 30, 0);
-            this.EndAt = new DateTime(2023, 4, 9, 21, 0, 0);
             this.State = AppointmentState.NOT_CREATED;
             this.Type = AppointmentType.REGULAR;
         }
