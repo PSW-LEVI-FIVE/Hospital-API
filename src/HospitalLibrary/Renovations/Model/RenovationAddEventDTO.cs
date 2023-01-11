@@ -17,7 +17,7 @@ namespace HospitalLibrary.Renovations.Model
 
     public RenovationDomainEvent MapToModel()
     {
-      return new RenovationDomainEvent(RenovationId, Time, EventType, Type, Uuid);
+      return new RenovationDomainEvent(RenovationId, DateTime.Now, EventType, Type, Uuid);
     }
   }
 }
