@@ -12,7 +12,8 @@ public enum AppointmentState
 {
     DELETED,
     FINISHED,
-    PENDING
+    PENDING,
+    NOT_CREATED
 }
 
 public enum AppointmentType
@@ -55,6 +56,15 @@ namespace HospitalLibrary.Appointments
         
         public Appointment()
         {
+        }
+
+        public Appointment(int patientId)
+        {
+            this.PatientId = patientId;
+            this.StartAt = new DateTime(2023, 4, 9, 20, 30, 0);
+            this.EndAt = new DateTime(2023, 4, 9, 21, 0, 0);
+            this.State = AppointmentState.NOT_CREATED;
+            this.Type = AppointmentType.REGULAR;
         }
 
         public Appointment(int id, int doctorId, int patientId,int roomId,DateTime startAt,DateTime endAt,AppointmentState state,AppointmentType type)

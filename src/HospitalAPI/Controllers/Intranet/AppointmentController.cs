@@ -107,15 +107,6 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(appointment);
         }
 
-        [Route("event")]
-        [HttpPost]
-
-        public IActionResult AddEvent(ScheduleAppointmentEventDTO eventDto)
-        {
-            _appointmentService.AddEvent(eventDto.MapToModel());
-            return Ok();
-        }
-
 
         private UserDTO GetCurrentUser()
         {
