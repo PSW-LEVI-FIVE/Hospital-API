@@ -14,6 +14,7 @@ using HospitalLibrary.PDFGeneration;
 using HospitalLibrary.Shared.Exceptions;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Symptoms;
+using LinqKit;
 
 namespace HospitalLibrary.Examination
 {
@@ -86,10 +87,36 @@ namespace HospitalLibrary.Examination
             {
                 throw new BadRequestException("Examination report not found");
             }
+
             report.Apply(examinationReportDomainEvent);
             _unitOfWork.ExaminationReportRepository.Save();
         }
 
+        public IEnumerable<SearchResultDTO> Search(string phrase)
+        {
+            if (phrase.Length == 0)
+                throw new BadRequestException("Input can not be empty");
+            if (phrase.Contains("'"))
+                return IsQuote(phrase);
+            return IsWords(phrase);
+        }
+
+        private IEnumerable<SearchResultDTO> IsWords(string phrase)
+        {
+            var words = phrase.ToLower().Split(" ").ToList();
+            return GetSearched(words);
+        } 
+
+        private IEnumerable<SearchResultDTO> IsQuote(string phrase)
+        {
+            phrase = phrase.ToLower().Replace("'", "");
+            return GetSearched(new() { phrase });
+        }
+
+        private IEnumerable<SearchResultDTO> GetSearched(List<string> terms)
+        {
+            return _unitOfWork.ExaminationReportRepository.Search(terms);
+        }
 
         private IEnumerable<Symptom> FindNotExisting(List<Symptom> old, List<Symptom> existing)
         {

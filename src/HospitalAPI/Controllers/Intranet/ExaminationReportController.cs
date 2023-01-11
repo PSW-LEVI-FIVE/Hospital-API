@@ -16,7 +16,7 @@ using OpenQA.Selenium.Interactions;
 namespace HospitalAPI.Controllers.Intranet
 {
     [ApiController, Route("api/intranet/examination")]
-    [Authorize(Roles="Doctor")]
+    // [Authorize(Roles="Doctor")]
     public class ExaminationReportController: ControllerBase
     {
         private IExaminationReportService _examinationReportService;
@@ -112,6 +112,14 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(result);
         }
         
+        [HttpPost]
+        [Route("search")]
+        public IActionResult Search([FromBody] SearchExaminationsDTO phrase)
+        {
+            var reports = _examinationReportService.Search(phrase.Content);
+            return Ok(reports);
+        }
+
         private UserDTO GetCurrentUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
