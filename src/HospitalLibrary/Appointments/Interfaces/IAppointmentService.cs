@@ -35,7 +35,7 @@ namespace HospitalLibrary.Appointments.Interfaces
 
         IEnumerable<CalendarAppointmentsDTO> FormatAppointmentsForCalendar(IEnumerable<Appointment> appointments, TimeInterval interval);
         Task<Appointment> GetById(int appointmentId);
-        Task<IEnumerable<Appointment>> GetAllFinishedPatientAppointments(int patientId);
+        List<Appointment> GetAllFinishedPatientAppointments(int patientId);
         String GetUrl();
         ExaminationReport GetByExamination(int examinationId);
         IEnumerable<AppointmentsStatisticsDTO> GetMonthStatisticsByDoctorId(int doctorId, int month);

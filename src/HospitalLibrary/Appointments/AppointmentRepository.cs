@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HospitalLibrary.Shared.Repository;
 using HospitalLibrary.Appointments.Interfaces;
+using HospitalLibrary.Examination;
 using HospitalLibrary.Settings;
+using HospitalLibrary.Shared.Repository;
 using Microsoft.EntityFrameworkCore;
-using NUnit.Framework.Constraints;
 
 namespace HospitalLibrary.Appointments
 {
@@ -38,15 +38,26 @@ namespace HospitalLibrary.Appointments
                 .Select(a => new TimeInterval(a.StartAt, a.EndAt))
                 .ToListAsync();
         }
-        
-        public async Task<IEnumerable<Appointment>> GetPatientEndedAppointments(int patientId)
+
+        public List<ExaminationReport> GetAllExaminations(List<ExaminationReport> reports)
         {
-            return await _dataContext.Appointments
-                .Where(a => a.PatientId == patientId)
-                .Where(a => a.State == AppointmentState.FINISHED)
+            return reports
+                .Where(e => e.Url != null)
+                .ToList();
+        }
+        public List<Appointment> GetPatientEndedAppointments(int patientId)
+        {
+            List<ExaminationReport> reports = _dataContext.ExaminationReports
+                .Where(e => e.Url != null)
+                .ToList();
+                
+            return _dataContext.Appointments
                 .Include(a => a.Doctor)
                 .Include(a => a.Room)
-                .ToListAsync();
+                .Where(a => a.PatientId == patientId)
+                .AsEnumerable()
+                .Where(a => (a.State == AppointmentState.FINISHED) && GetAllExaminations(reports).Any(id => id.ExaminationId == a.Id))
+                .ToList();
         }
 
         public async Task<IEnumerable<TimeInterval>> GetAllDoctorTakenIntervalsForTimeInterval(int doctorId, TimeInterval timeInterval)
