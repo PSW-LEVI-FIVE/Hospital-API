@@ -26,7 +26,7 @@ namespace HospitalAPI.Controllers.Public
 {
     [Route("api/public/appointments")]
     [ApiController]
-    //[Authorize(Roles="Patient")]
+    [Authorize(Roles="Patient")]
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentService _appointmentService;
