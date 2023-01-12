@@ -19,6 +19,7 @@ using HospitalLibrary.MedicalRecords;
 using HospitalLibrary.Medicines;
 using HospitalLibrary.Renovations.Model;
 using HospitalLibrary.Rooms.Model;
+using HospitalLibrary.Shared.Model.ValueObjects;
 using HospitalLibrary.Symptoms;
 using HospitalLibrary.Therapies.Model;
 using Microsoft.EntityFrameworkCore;
@@ -109,6 +110,13 @@ namespace HospitalLibrary.Settings
 
             modelBuilder.Entity<ExaminationReport>().HasMany(e => e.Prescriptions).WithOne(p => p.ExaminationReport);
             modelBuilder.Entity<ExaminationReport>().HasMany(e => e.Symptoms).WithMany(p => p.ExaminationReports);
+            
+            modelBuilder.Entity<MapRoom>(x =>
+            {
+                x.Property(p => p.SecondaryCoordinatesList)
+                    .HasConversion(p => (string)p, p => (CoordinatesList)p);
+            });
+            
             // modelBuilder.Entity<Hospitalization>()
             //     .HasOne(h => h.Bed)
             //     .WithMany(h => h.AllHospitalizations);

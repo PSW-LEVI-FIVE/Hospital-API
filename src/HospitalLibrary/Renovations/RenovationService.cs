@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Appointments;
+using HospitalLibrary.Map;
 using HospitalLibrary.Renovations.Interface;
 using HospitalLibrary.Rooms.Interfaces;
 using HospitalLibrary.Rooms.Model;
@@ -170,15 +171,37 @@ namespace HospitalLibrary.Renovations
       await TransferAllEquipment(mainRoom, secondaryRooms);
       await TransferAllAppointments(mainRoom, secondaryRooms);
       await DeleteAllReallocation(secondaryRooms, mainRoom);
+      TransferCoordinates(mainRoom, secondaryRooms);
 
+      DeleteSecondaryRooms(secondaryRooms);
+    }
 
+    private void TransferCoordinates(Room mainRoom, List<Room> secondaryRooms)
+    {
+      IEnumerable<Coordinates> secondaryCoordinates = Array.Empty<Coordinates>();
+      foreach (var room in secondaryRooms)
+      {
+        secondaryCoordinates = secondaryCoordinates.Append(_unitOfWork.MapRoomRepository.GetOne(room.Id).Coordinates);
+      }
+
+      MapRoom mainMapRoom = _unitOfWork.MapRoomRepository.GetOne(mainRoom.Id);
+      mainMapRoom.SecondaryCoordinatesList = new CoordinatesList(secondaryCoordinates);
+      
+      _unitOfWork.MapRoomRepository.Save();
+    }
+
+    private void DeleteSecondaryRooms(List<Room> secondaryRooms)
+    {
       foreach (var room in secondaryRooms)
       {
         _unitOfWork.RoomRepository.Delete(room);
+        _unitOfWork.MapRoomRepository.Delete(_unitOfWork.MapRoomRepository.GetOne(room.Id));
       }
+      
       _unitOfWork.RoomRepository.Save();
+      _unitOfWork.MapRoomRepository.Save();
     }
-
+    
     private void SplitRoom(string roomNumber, Room mainRoom)
     {
       var id = _unitOfWork.RoomRepository.GetMaxId();

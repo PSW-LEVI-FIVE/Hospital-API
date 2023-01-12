@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace HospitalLibrary.Shared.Model.ValueObjects
@@ -47,5 +49,23 @@ namespace HospitalLibrary.Shared.Model.ValueObjects
             }
         }
         
+        public static explicit operator Coordinates(string coordinate)
+        {
+            string[] coordinates = coordinate.Split("|");
+
+            return new Coordinates(
+                float.Parse(coordinates[0]), 
+                float.Parse(coordinates[1]),
+                float.Parse(coordinates[2]), 
+                float.Parse(coordinates[3])
+                );
+        }
+        public static implicit operator string(Coordinates coordinate)
+        {
+            return coordinate.XCoordinate.ToString() + "|" + 
+                   coordinate.YCoordinate.ToString() + "|" + 
+                   coordinate.Width.ToString() + "|" + 
+                   coordinate.Height.ToString();
+        }
     }
 }
