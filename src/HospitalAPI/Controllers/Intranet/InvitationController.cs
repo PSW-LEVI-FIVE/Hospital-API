@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HospitalAPI.Controllers.Intranet
 {
     [ApiController]   
-    [Authorize(Roles="Doctor")]
+    [Authorize(Roles="Doctor,Manager")]
     [Route("api/intranet/invitations")]
     public class InvitationController : ControllerBase
     {
@@ -66,11 +66,11 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(invitation);
         }
         
-        [Route("decline/{invitationId}")]
-        [HttpPatch]
-        public IActionResult DeclineInvitation(int invitationId)
+        [Route("decline")]
+        [HttpPost]
+        public IActionResult DeclineInvitation(DeclineInvitationDto declineInvitationDto)
         {
-            Invitation invitation = _invitationService.DeclineInvitation(invitationId);
+            Invitation invitation = _invitationService.DeclineInvitation(declineInvitationDto);
             return Ok(invitation);
         }
 

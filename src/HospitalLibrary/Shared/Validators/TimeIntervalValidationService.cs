@@ -90,6 +90,12 @@ namespace HospitalLibrary.Shared.Validators
             return roomAppointmentsTimeIntervals.Any(possibleTimeInterval.IsOverlaping);
         }
 
+        public async Task ValidateTeamBuildingEventInvitation(Invitation invitation)
+        {
+            ThrowIfEndBeforeStart(invitation.StartAt, invitation.EndAt);
+            ThrowIfInPast(invitation.StartAt);
+        }
+
         public async Task ValidateAppointment(Appointment appointment)
         {
             ThrowIfEndBeforeStart(appointment.StartAt, appointment.EndAt);
