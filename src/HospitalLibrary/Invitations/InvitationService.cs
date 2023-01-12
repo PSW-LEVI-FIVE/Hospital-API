@@ -37,7 +37,15 @@ namespace HospitalLibrary.Invitations
         {
             Invitation invitation=_unitOfWork.InvitationRepository.GetOne(invitationId);
             invitation.InvitationStatus = InvitationStatus.ACCEPTED;
-            _unitOfWork.InvitationRepository.Update(invitation);
+            _unitOfWork.InvitationRepository.Save();
+            return invitation;
+        }
+        
+        public Invitation DeclineInvitation(int invitationId)
+        {
+            Invitation invitation =_unitOfWork.InvitationRepository.GetOne(invitationId);
+            invitation.InvitationStatus = InvitationStatus.REJECTED;
+            _unitOfWork.InvitationRepository.Save();
             return invitation;
         }
 
@@ -84,9 +92,6 @@ namespace HospitalLibrary.Invitations
             return invitations;
         }
 
-        public Invitation DeclineInvitation()
-        {
-            throw new System.NotImplementedException();
-        }
+
     }
 }

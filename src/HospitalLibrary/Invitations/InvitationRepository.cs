@@ -16,13 +16,14 @@ namespace HospitalLibrary.Invitations
 
         public IEnumerable<Invitation> GetAllInvitations()
         {
-            return _dataContext.Invitations.Where(r => (r.StartAt.CompareTo(DateTime.Now)) <= 0);
+            return _dataContext.Invitations.Where(r => r.StartAt.CompareTo(DateTime.Now) >= 0);
         }
 
         public IEnumerable<Invitation> GetAllByDoctorId(int doctorId)
         {
             return _dataContext.Invitations
-                .Where(r => (r.StartAt.CompareTo(DateTime.Now)) <= 0)
+                .Where(r => r.StartAt.CompareTo(DateTime.Now) >= 0)
+                .Where(r => r.InvitationStatus == InvitationStatus.PENDING)
                 .Where(r => (r.DoctorId == doctorId));
 
         }
