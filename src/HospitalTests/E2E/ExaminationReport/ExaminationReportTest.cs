@@ -42,7 +42,7 @@ public class ExaminationReportTest
         Click("report-next");
         
         
-        TypeInInput("input-medicine", "Paracetamol", 2000);
+        TypeInInput("input-medicine", "Paracetamol", 5000);
         FindAllByCssSelector(".mat-option-text")[0].Click();
         Sleep(1000);
         

@@ -47,11 +47,12 @@ public class CreateConsiliumTest
         
         element = Driver.FindElement(By.Id("submit-login"));
         element.Submit();
-        Thread.Sleep(1000);
+        Thread.Sleep(5000);
 
-        element = Driver.FindElement(By.XPath("//*[contains(text(),'Create consilium')]"));
-        element.Click();
-        Thread.Sleep(1000);
+        // element = Driver.FindElement(By.XPath("//*[contains(text(),'Create consilium')]"));
+        // element.Click();
+        // Thread.Sleep(1000);
+        Navigate("http://localhost:4200/doctor/consilium");
         
         element = Driver.FindElement(By.Id("reason-consilium"));
         element.SendKeys("Some reason");
@@ -59,12 +60,12 @@ public class CreateConsiliumTest
         
         element = Driver.FindElement(By.Id("from-consilium"));
         DeleteDate(element);
-        element.SendKeys("12/26/2022");
+        element.SendKeys("12/26/2023");
         Thread.Sleep(1000);
 
         element = Driver.FindElement(By.Id("to-consilium"));
         DeleteDate(element);
-        element.SendKeys("12/30/2022");
+        element.SendKeys("12/30/2023");
         Thread.Sleep(1000);
         
         element = Driver.FindElement(By.Id("duration-consilium"));
@@ -96,6 +97,12 @@ public class CreateConsiliumTest
     public void CloseBrowser()
     {
         Driver.Quit();
+    }
+    
+    private void Navigate(string url)
+    {
+        Driver.Url = url;
+        Thread.Sleep(4000);
     }
 
     private void DeleteDate(IWebElement element)

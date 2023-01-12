@@ -46,7 +46,7 @@ public class MovingExamination
         
         Click("date-input");
         DeleteCharacters("date-input", 10);
-        TypeInInput("date-input", "12/17/2022");
+        TypeInInput("date-input", "01/17/2022");
         Sleep(1000);
         
         Click("time-from");
@@ -80,7 +80,7 @@ public class MovingExamination
     private void Login()
     {
         TypeInInput("input-username", "doktor");
-        TypeInInput("input-password", "asdasd");
+        TypeInInput("input-password", "asdasd123");
         Submit("submit-login");
     }
 
