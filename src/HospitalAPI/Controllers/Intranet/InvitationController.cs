@@ -9,11 +9,13 @@ using HospitalLibrary.Invitations.Dtos;
 using HospitalLibrary.Invitations.Interfaces;
 using HospitalLibrary.Users;
 using HospitalLibrary.Users.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAPI.Controllers.Intranet
 {
     [ApiController]   
+    [Authorize(Roles="Doctor")]
     [Route("api/intranet/invitations")]
     public class InvitationController : ControllerBase
     {
@@ -61,6 +63,14 @@ namespace HospitalAPI.Controllers.Intranet
         public IActionResult AcceptInvitation(int invitationId)
         {
             Invitation invitation = _invitationService.AcceptInvitation(invitationId);
+            return Ok(invitation);
+        }
+        
+        [Route("decline/{invitationId}")]
+        [HttpPatch]
+        public IActionResult DeclineInvitation(int invitationId)
+        {
+            Invitation invitation = _invitationService.DeclineInvitation(invitationId);
             return Ok(invitation);
         }
 
