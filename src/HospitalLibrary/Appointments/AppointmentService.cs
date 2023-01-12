@@ -348,7 +348,7 @@ namespace HospitalLibrary.Appointments
             appointment.Apply(schedulingAppointmentDomainEvent);
             _unitOfWork.AppointmentRepository.Save();
         }
-        public AveragePatientStepDTO CalculateStepsAverageTime()
+        public TimesWatchedStepsDTO CalculateStepsAverageTime()
         {
             return _schedulingAppointmentStatistics.CalculateStepsAverageTime();
         }
@@ -368,7 +368,7 @@ namespace HospitalLibrary.Appointments
             return _schedulingAppointmentStatistics.GetAverageTimeForSchedule();
 
         }
-        public AveragePatientStepDTO GetHowManyTimesQuitOnStep()
+        public TimesWatchedStepsDTO GetHowManyTimesQuitOnStep()
         {
             return _schedulingAppointmentStatistics.GetHowManyTimesQuitOnStep();
         }

@@ -42,12 +42,12 @@ namespace HospitalLibrary.Appointments.Interfaces
         IEnumerable<AppointmentsStatisticsDTO> GetYearStatisticsByDoctorId(int doctorId);
         IEnumerable<AppointmentsStatisticsDTO> GetTimeRangeStatisticsByDoctorId(int doctorId, TimeInterval timeInterval);
         public void AddEvent(SchedulingAppointmentDomainEvent schedulingAppointmentDomainEvent);
-        AveragePatientStepDTO CalculateStepsAverageTime();
+        TimesWatchedStepsDTO CalculateStepsAverageTime();
         TimesWatchedStepsDTO GetTimesWatchedStep();
         SchedulePerAgeDTO GetAverageTimeForSchedulePerAge(int fromAge, int toAge);
         SchedulePerAgeDTO GetAverageTimeForSchedule();
-        AveragePatientStepDTO GetHowManyTimesQuitOnStep();
         TimesWatchedStepsDTO GetLongTermedSteps();
+        TimesWatchedStepsDTO GetHowManyTimesQuitOnStep();
 
     }
 }
