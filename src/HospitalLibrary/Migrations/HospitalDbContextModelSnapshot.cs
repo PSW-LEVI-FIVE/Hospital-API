@@ -420,7 +420,41 @@ namespace HospitalLibrary.Migrations
 
                     b.ToTable("DomainEvent");
                 });
+            modelBuilder.Entity("HospitalLibrary.Invitations.Invitation", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer")
+                    .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                b.Property<string>("Description")
+                    .HasColumnType("text");
+
+                b.Property<int>("DoctorId")
+                    .HasColumnType("integer");
+
+                b.Property<DateTime>("EndAt")
+                    .HasColumnType("timestamp without time zone");
+
+                b.Property<int>("InvitationStatus")
+                    .HasColumnType("integer");
+
+                b.Property<string>("Place")
+                    .HasColumnType("text");
+
+                b.Property<string>("Reason")
+                    .HasColumnType("text");
+
+                b.Property<DateTime>("StartAt")
+                    .HasColumnType("timestamp without time zone");
+
+                b.Property<string>("Title")
+                    .HasColumnType("text");
+
+                b.HasKey("Id");
+
+                b.ToTable("Invitations");
+            });
             modelBuilder.Entity("HospitalLibrary.Map.MapBuilding", b =>
                 {
                     b.Property<int>("Id")
