@@ -17,7 +17,7 @@ namespace HospitalAPI.Controllers.Intranet
 {
     [Route("api/intranet/appointments")]
     [ApiController]
-    //[Authorize(Roles="Doctor, Manager")]
+    [Authorize(Roles="Doctor, Manager")]
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentService _appointmentService;
