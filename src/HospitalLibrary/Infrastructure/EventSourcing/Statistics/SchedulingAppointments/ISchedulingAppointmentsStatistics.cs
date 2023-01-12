@@ -4,11 +4,11 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppo
 {
     public interface ISchedulingAppointmentStatistics
     {
-        AveragePatientStepDTO CalculateStepsAverageTime();
+        TimesWatchedStepsDTO CalculateStepsAverageTime();
         TimesWatchedStepsDTO GetTimesWatchedStep();
         SchedulePerAgeDTO GetAverageTimeForSchedulePerAge(int fromAge, int toAge);
         SchedulePerAgeDTO GetAverageTimeForSchedule();
-        AveragePatientStepDTO GetHowManyTimesQuitOnStep();
         TimesWatchedStepsDTO GetLongTermedSteps();
+        TimesWatchedStepsDTO GetHowManyTimesQuitOnStep();
     }
 }

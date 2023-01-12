@@ -13,7 +13,7 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppo
         {
             _unitOfWork = unitOfWork;
         }
-        public AveragePatientStepDTO CalculateStepsAverageTime()
+        public TimesWatchedStepsDTO CalculateStepsAverageTime()
         {
             var dateAverage = _unitOfWork.SchedulingEvenetRepository
                 .GetAverageTimeForStep(SchedulingAppointmentEventType.STARTED, SchedulingAppointmentEventType.PICKED_DATE);
@@ -25,7 +25,7 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppo
                 .GetAverageTimeForStep(SchedulingAppointmentEventType.PICKED_DOCTOR, SchedulingAppointmentEventType.PICKED_TIME);
             var scheduleAverage = _unitOfWork.SchedulingEvenetRepository
                 .GetAverageTimeForStep(SchedulingAppointmentEventType.PICKED_TIME, SchedulingAppointmentEventType.FINISHED);
-            return new AveragePatientStepDTO(dateAverage, specialityAverage,doctorAverage ,timeAverage,scheduleAverage);
+            return new TimesWatchedStepsDTO(dateAverage, specialityAverage,doctorAverage ,timeAverage,scheduleAverage);
         }
 
         public TimesWatchedStepsDTO GetTimesWatchedStep()
@@ -59,7 +59,7 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppo
             return new SchedulePerAgeDTO(dateStep);
 
         }
-        public AveragePatientStepDTO GetHowManyTimesQuitOnStep()
+        public TimesWatchedStepsDTO GetHowManyTimesQuitOnStep()
         {
             var dateAverage = _unitOfWork.SchedulingEvenetRepository
                 .GetHowManyTimesQuitOnStep(SchedulingAppointmentEventType.STARTED, SchedulingAppointmentEventType.PICKED_DATE);
@@ -71,7 +71,7 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppo
                 .GetHowManyTimesQuitOnStep(SchedulingAppointmentEventType.PICKED_DOCTOR, SchedulingAppointmentEventType.PICKED_TIME);
             var scheduleAverage = _unitOfWork.SchedulingEvenetRepository
                 .GetHowManyTimesQuitOnStep(SchedulingAppointmentEventType.PICKED_TIME, SchedulingAppointmentEventType.FINISHED);
-            return new AveragePatientStepDTO(dateAverage, specialityAverage,doctorAverage ,timeAverage,scheduleAverage);
+            return new TimesWatchedStepsDTO(dateAverage, specialityAverage,doctorAverage ,timeAverage,scheduleAverage);
         }
         public TimesWatchedStepsDTO GetLongTermedSteps()
         {

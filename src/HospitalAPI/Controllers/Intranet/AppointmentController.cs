@@ -139,7 +139,7 @@ namespace HospitalAPI.Controllers.Intranet
         [HttpGet]
         public IActionResult CalculateStepsAverageTime()
         {
-            AveragePatientStepDTO stepAverageTime =
+            TimesWatchedStepsDTO stepAverageTime =
                 _appointmentService.CalculateStepsAverageTime();
             return Ok(stepAverageTime);
         }
@@ -171,7 +171,7 @@ namespace HospitalAPI.Controllers.Intranet
         [HttpGet]
         public IActionResult GetHowManyTimesQuitOnStep()
         {
-            AveragePatientStepDTO quitOnStep =
+            TimesWatchedStepsDTO quitOnStep =
                 _appointmentService.GetHowManyTimesQuitOnStep();
             return Ok(quitOnStep);
         }
