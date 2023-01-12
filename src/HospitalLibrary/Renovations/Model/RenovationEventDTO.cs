@@ -6,7 +6,7 @@ namespace HospitalLibrary.Renovations.Model
   {
     public int Id { get; set; }
     public int MainRoomId { get; set; }
-    public int? SecondaryRoomId { get; set; }
+    public string SecondaryRoomIds { get; set; }
     public RenovationType Type { get; set; }
     public RenovationState State { get; set; }
     public DateTime StartAt { get; set; }
@@ -22,7 +22,7 @@ namespace HospitalLibrary.Renovations.Model
       EndAt = renovation.EndAt;
       State = RenovationState.PENDING;
       Type = renovation.Type;
-      SecondaryRoomId = renovation.SecondaryRoomId;
+      SecondaryRoomIds = renovation.SecondaryRoomIds;
       roomName = renovation.roomName;
       Uuid=uuid;
     }
@@ -33,7 +33,7 @@ namespace HospitalLibrary.Renovations.Model
       {
         Id = Id,
         MainRoomId = MainRoomId,
-        SecondaryRoomId = SecondaryRoomId,
+        SecondaryRoomIds = SecondaryRoomIds,
         StartAt = StartAt,
         EndAt = EndAt,
         State = RenovationState.PENDING,

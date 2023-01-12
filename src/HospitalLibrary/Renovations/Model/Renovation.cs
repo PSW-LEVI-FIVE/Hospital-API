@@ -95,7 +95,7 @@ namespace HospitalLibrary.Renovations.Model
       EndAt = renovation.EndAt;
       State = renovation.State;
       Type = renovation.Type;
-      SecondaryRoomId = renovation.SecondaryRoomId;
+      SecondaryRoomIds = renovation.SecondaryRoomIds;
       roomName = renovation.roomName;
     }
   }
