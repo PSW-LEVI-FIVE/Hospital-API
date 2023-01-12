@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -42,6 +43,7 @@ namespace HospitalAPI.Controllers.Intranet
         [Route("report/event")]
         public IActionResult AddEvent(EventDTO eventDto)
         {
+            eventDto.Time = DateTime.Now;
             _examinationReportService.AddEvent(eventDto.MapToModel());
             return Ok();
         }

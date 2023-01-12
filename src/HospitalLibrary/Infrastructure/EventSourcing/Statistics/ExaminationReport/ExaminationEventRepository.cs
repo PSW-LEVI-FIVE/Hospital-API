@@ -1,10 +1,13 @@
-﻿using System;
+﻿
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HospitalLibrary.Infrastructure.EventSourcing.Events;
 using HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationReport.Dtos;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
+using NUnit.Framework;
 
 namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationReport
 {
@@ -91,9 +94,11 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
                         End = g.FirstOrDefault(el => el.Type == ExaminationReportEventType.FINISHED)
                     })
                 .Where(el => el.Start != null && el.End != null)
-                .Select(el => el.End.Timestamp - el.Start.Timestamp)
+                .Select(el => new {Diff = el.End.Timestamp - el.Start.Timestamp })
+                .DefaultIfEmpty(new { Diff = new TimeSpan(0, 0, 0) })
                 .ToList()
-                .Min().TotalMinutes;
+                .Min(el => el.Diff)
+                .TotalMinutes;
         }
 
         public double GetMaxTime()
@@ -110,9 +115,10 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
                         End = g.FirstOrDefault(el => el.Type == ExaminationReportEventType.FINISHED)
                     })
                 .Where(el => el.Start != null && el.End != null)
-                .Select(el => el.End.Timestamp - el.Start.Timestamp)
-                .ToList()
-                .Max().TotalMinutes;
+                .Select(el => new {Diff = el.End.Timestamp - el.Start.Timestamp })
+                .DefaultIfEmpty(new { Diff = new TimeSpan(0, 0, 0) })
+                .Max(el => el.Diff)
+                .TotalMinutes;
         }
 
         public double GetAvgTime()
@@ -129,9 +135,10 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationRep
                         End = g.FirstOrDefault(el => el.Type == ExaminationReportEventType.FINISHED)
                     })
                 .Where(el => el.Start != null && el.End != null)
-                .Select(el => el.End.Timestamp - el.Start.Timestamp)
+                .Select(el => new {Diff = el.End.Timestamp - el.Start.Timestamp })
+                .DefaultIfEmpty(new { Diff = new TimeSpan(0, 0, 0) })
                 .ToList()
-                .Average(el => el.TotalMinutes);
+                .Average(el => el.Diff.TotalMinutes);
         }
     }
 }
