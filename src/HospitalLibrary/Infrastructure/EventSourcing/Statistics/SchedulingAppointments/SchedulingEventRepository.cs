@@ -116,5 +116,23 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppo
         {
             return a.CompareTo(b) >= 0 && a.CompareTo(c) <= 0;
         }
+        public double GetLongTermedSteps(SchedulingAppointmentEventType stepStart, SchedulingAppointmentEventType stepEnd)
+        {
+            return _dataContext.SchedulingAppointmentDomainEvents
+                .Where(d => d.Type == stepStart || d.Type == stepEnd)
+                .ToList()
+                .GroupBy(d => d.AggregateId)
+                .Select(g =>
+                    new
+                    {
+                        Start = g.FirstOrDefault(el => el.Type == stepStart),
+                        End = g.FirstOrDefault(el => el.Type == stepEnd)
+                    })
+                .Where(el => el.Start != null && el.End != null)
+                .Where(el => el.End.Timestamp.Subtract(el.Start.Timestamp).TotalSeconds > 30)
+                .Select(el => new { Diff = el.End.Timestamp.Subtract(el.Start.Timestamp) })
+                .DefaultIfEmpty(new { Diff = new TimeSpan(0, 0, 0) })
+                .Average(el => el.Diff.TotalMinutes * 60);
+        }
     }
 }

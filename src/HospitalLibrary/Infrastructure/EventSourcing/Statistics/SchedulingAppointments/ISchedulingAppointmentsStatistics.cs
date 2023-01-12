@@ -9,5 +9,6 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppo
         SchedulePerAgeDTO GetAverageTimeForSchedulePerAge(int fromAge, int toAge);
         SchedulePerAgeDTO GetAverageTimeForSchedule();
         AveragePatientStepDTO GetHowManyTimesQuitOnStep();
+        TimesWatchedStepsDTO GetLongTermedSteps();
     }
 }

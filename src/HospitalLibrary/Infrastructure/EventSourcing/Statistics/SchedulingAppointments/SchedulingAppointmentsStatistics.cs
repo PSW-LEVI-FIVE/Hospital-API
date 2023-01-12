@@ -73,6 +73,20 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppo
                 .GetHowManyTimesQuitOnStep(SchedulingAppointmentEventType.PICKED_TIME, SchedulingAppointmentEventType.FINISHED);
             return new AveragePatientStepDTO(dateAverage, specialityAverage,doctorAverage ,timeAverage,scheduleAverage);
         }
+        public TimesWatchedStepsDTO GetLongTermedSteps()
+        {
+            var dateAverage = _unitOfWork.SchedulingEvenetRepository
+                .GetLongTermedSteps(SchedulingAppointmentEventType.STARTED, SchedulingAppointmentEventType.PICKED_DATE);
+            var specialityAverage = _unitOfWork.SchedulingEvenetRepository
+                .GetLongTermedSteps(SchedulingAppointmentEventType.PICKED_DATE, SchedulingAppointmentEventType.PICKED_SPECIALITY);
+            var doctorAverage = _unitOfWork.SchedulingEvenetRepository
+                .GetLongTermedSteps(SchedulingAppointmentEventType.PICKED_SPECIALITY, SchedulingAppointmentEventType.PICKED_DOCTOR);
+            var timeAverage = _unitOfWork.SchedulingEvenetRepository
+                .GetLongTermedSteps(SchedulingAppointmentEventType.PICKED_DOCTOR, SchedulingAppointmentEventType.PICKED_TIME);
+            var scheduleAverage = _unitOfWork.SchedulingEvenetRepository
+                .GetLongTermedSteps(SchedulingAppointmentEventType.PICKED_TIME, SchedulingAppointmentEventType.FINISHED);
+            return new TimesWatchedStepsDTO(dateAverage, specialityAverage,doctorAverage ,timeAverage,scheduleAverage);
+        }
 
 
     }
