@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Appointments.Interfaces;
+using HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppointments.Dtos;
 using HospitalLibrary.Shared.Interfaces;
 using HospitalLibrary.Users;
 using HospitalLibrary.Users.Dtos;
@@ -16,7 +17,7 @@ namespace HospitalAPI.Controllers.Intranet
 {
     [Route("api/intranet/appointments")]
     [ApiController]
-    [Authorize(Roles="Doctor, Manager")]
+    //[Authorize(Roles="Doctor, Manager")]
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentService _appointmentService;
@@ -133,6 +134,48 @@ namespace HospitalAPI.Controllers.Intranet
             return Ok(timeIntervalAppointmentsDTOs);
             
         }
+        
+        [Route("statistics/stepAverage")]
+        [HttpGet]
+        public IActionResult CalculateStepsAverageTime()
+        {
+            AveragePatientStepDTO stepAverageTime =
+                _appointmentService.CalculateStepsAverageTime();
+            return Ok(stepAverageTime);
+        }
+        [Route("statistics/timeOnStep")]
+        [HttpGet]
+        public IActionResult GetTimesWatchedStep()
+        {
+            TimesWatchedStepsDTO timeOnStep =
+                _appointmentService.GetTimesWatchedStep();
+            return Ok(timeOnStep);
+        }
+        [Route("statistics/timePerAge/{fromAge:int}/{toAge:int}")]
+        [HttpGet]
+        public IActionResult GetAverageTimeForSchedulePerAge(int fromAge, int toAge)
+        {
+            SchedulePerAgeDTO avgTime =
+                _appointmentService.GetAverageTimeForSchedulePerAge(fromAge,toAge);
+            return Ok(avgTime);
+        }
+        [Route("statistics/averageScheduleTime")]
+        [HttpGet]
+        public IActionResult GetAverageTimeForSchedule()
+        {
+            SchedulePerAgeDTO averageScheduleTime =
+                _appointmentService.GetAverageTimeForSchedule();
+            return Ok(averageScheduleTime);
+        }
+        [Route("statistics/quitOnStep")]
+        [HttpGet]
+        public IActionResult GetHowManyTimesQuitOnStep()
+        {
+            AveragePatientStepDTO quitOnStep =
+                _appointmentService.GetHowManyTimesQuitOnStep();
+            return Ok(quitOnStep);
+        }
+        
         [Route("event")]
         [HttpPost]
 

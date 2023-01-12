@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Mvc.TagHelpers;
 using SendGrid.Helpers.Errors.Model;
 using ceTe.DynamicPDF;
 using System.Collections;
+using HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppointments;
+using HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppointments.Dtos;
 
 namespace HospitalLibrary.Appointments
 {
@@ -27,13 +29,15 @@ namespace HospitalLibrary.Appointments
         private readonly ITimeIntervalValidationService _intervalValidation;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDoctorService _doctorService;
+        private readonly ISchedulingAppointmentStatistics _schedulingAppointmentStatistics;
 
         public AppointmentService(IUnitOfWork unitOfWork, ITimeIntervalValidationService intervalValidation,
-            IDoctorService doctorService)
+            IDoctorService doctorService,ISchedulingAppointmentStatistics schedulingAppointmentStatistics)
         {
             _unitOfWork = unitOfWork;
             _intervalValidation = intervalValidation;
             _doctorService = doctorService;
+            _schedulingAppointmentStatistics = schedulingAppointmentStatistics;
         }
 
         public Task<IEnumerable<Appointment>> GetAll()
@@ -334,15 +338,39 @@ namespace HospitalLibrary.Appointments
             }
             return timeRangeAppointmentsDTOs;
         }
-        public void AddEvent(SchedulingAppointmentDomainEvenet schedulingAppointmentDomainEvenet)
+        public void AddEvent(SchedulingAppointmentDomainEvent schedulingAppointmentDomainEvent)
         {
-            var appointment = _unitOfWork.AppointmentRepository.GetOne(schedulingAppointmentDomainEvenet.AggregateId);
+            var appointment = _unitOfWork.AppointmentRepository.GetOne(schedulingAppointmentDomainEvent.AggregateId);
             if (appointment == null)
             {
                 throw new BadRequestException("Appointment report not found");
             }
-            appointment.Apply(schedulingAppointmentDomainEvenet);
+            appointment.Apply(schedulingAppointmentDomainEvent);
             _unitOfWork.AppointmentRepository.Save();
+        }
+        public AveragePatientStepDTO CalculateStepsAverageTime()
+        {
+            return _schedulingAppointmentStatistics.CalculateStepsAverageTime();
+        }
+
+        public TimesWatchedStepsDTO GetTimesWatchedStep()
+        {
+            return _schedulingAppointmentStatistics.GetTimesWatchedStep();
+        }
+
+        public SchedulePerAgeDTO GetAverageTimeForSchedulePerAge(int fromAge, int toAge)
+        {
+            return _schedulingAppointmentStatistics.GetAverageTimeForSchedulePerAge(fromAge,toAge);
+
+        }
+        public SchedulePerAgeDTO GetAverageTimeForSchedule()
+        {
+            return _schedulingAppointmentStatistics.GetAverageTimeForSchedule();
+
+        }
+        public AveragePatientStepDTO GetHowManyTimesQuitOnStep()
+        {
+            return _schedulingAppointmentStatistics.GetHowManyTimesQuitOnStep();
         }
     }
 }
