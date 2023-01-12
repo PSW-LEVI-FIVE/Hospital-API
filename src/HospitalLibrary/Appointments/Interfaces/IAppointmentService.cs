@@ -6,6 +6,7 @@ using HospitalLibrary.Appointments.Dtos;
 using HospitalLibrary.Doctors;
 using HospitalLibrary.Examination;
 using HospitalLibrary.Infrastructure.EventSourcing.Events;
+using HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppointments.Dtos;
 using HospitalLibrary.Shared.Dtos;
 
 namespace HospitalLibrary.Appointments.Interfaces
@@ -40,7 +41,12 @@ namespace HospitalLibrary.Appointments.Interfaces
         IEnumerable<AppointmentsStatisticsDTO> GetMonthStatisticsByDoctorId(int doctorId, int month);
         IEnumerable<AppointmentsStatisticsDTO> GetYearStatisticsByDoctorId(int doctorId);
         IEnumerable<AppointmentsStatisticsDTO> GetTimeRangeStatisticsByDoctorId(int doctorId, TimeInterval timeInterval);
-        public void AddEvent(SchedulingAppointmentDomainEvenet schedulingAppointmentDomainEvenet);
-        
+        public void AddEvent(SchedulingAppointmentDomainEvent schedulingAppointmentDomainEvent);
+        AveragePatientStepDTO CalculateStepsAverageTime();
+        TimesWatchedStepsDTO GetTimesWatchedStep();
+        SchedulePerAgeDTO GetAverageTimeForSchedulePerAge(int fromAge, int toAge);
+        SchedulePerAgeDTO GetAverageTimeForSchedule();
+        AveragePatientStepDTO GetHowManyTimesQuitOnStep();
+
     }
 }

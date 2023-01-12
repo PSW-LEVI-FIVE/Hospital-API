@@ -11,9 +11,9 @@ namespace HospitalLibrary.Appointments.Dtos
         
         public int AggregateId { get; set; }
 
-        public SchedulingAppointmentDomainEvenet MapToModel()
+        public SchedulingAppointmentDomainEvent MapToModel()
         {
-            return new SchedulingAppointmentDomainEvenet(AggregateId, Time, EventType);
+            return new SchedulingAppointmentDomainEvent(AggregateId, Time, EventType);
         }
     }
 }

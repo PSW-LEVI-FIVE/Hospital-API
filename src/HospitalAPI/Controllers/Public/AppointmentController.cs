@@ -81,7 +81,6 @@ namespace HospitalAPI.Controllers.Public
         [Route("create-appointment")]
         public async Task<IActionResult> CreateInitialAppointment()
         {
-            Console.WriteLine("hehexd123");
             int patientId = GetCurrentUser().Id;
             Appointment newApp = new Appointment(patientId);
            

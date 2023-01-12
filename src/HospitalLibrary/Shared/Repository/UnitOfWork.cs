@@ -25,6 +25,7 @@ using HospitalLibrary.Floors.Interfaces;
 using HospitalLibrary.Hospitalizations;
 using HospitalLibrary.Hospitalizations.Interfaces;
 using HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationReport;
+using HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppointments;
 using HospitalLibrary.Invitations;
 using HospitalLibrary.Invitations.Interfaces;
 using HospitalLibrary.Map;
@@ -91,6 +92,7 @@ namespace HospitalLibrary.Shared.Repository
         private IAdvertisementRepository _advertisementRepository;
         private IRenovationRepository _renovationRepository;
         private IInvitationRepository _invitationRepository;
+        private ISchedulingEventRepository _schedulingEvenetRepository;
 
     public UnitOfWork(HospitalDbContext dataContext)
         {
@@ -147,6 +149,8 @@ namespace HospitalLibrary.Shared.Repository
 
         public IInvitationRepository InvitationRepository =>
             _invitationRepository ??= new InvitationRepository(_dataContext);
+
+        public ISchedulingEventRepository SchedulingEvenetRepository => _schedulingEvenetRepository ??= new SchedulingEventRepository(_dataContext);
 
     }
 }

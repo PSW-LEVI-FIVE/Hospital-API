@@ -14,6 +14,7 @@ using HospitalLibrary.Feedbacks.Interfaces;
 using HospitalLibrary.Floors.Interfaces;
 using HospitalLibrary.Hospitalizations.Interfaces;
 using HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationReport;
+using HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppointments;
 using HospitalLibrary.Invitations.Interfaces;
 using HospitalLibrary.Map.Interfaces;
 using HospitalLibrary.MedicalRecords.Interfaces;
@@ -66,6 +67,7 @@ namespace HospitalLibrary.Shared.Interfaces
         IAdvertisementRepository AdvertisementRepository { get; }
         IRenovationRepository RenovationRepository { get; }
         IInvitationRepository InvitationRepository { get; }
+        ISchedulingEventRepository SchedulingEvenetRepository { get; }
         
 
   }
