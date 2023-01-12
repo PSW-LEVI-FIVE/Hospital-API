@@ -202,6 +202,14 @@ namespace HospitalAPI.Controllers.Intranet
 
             return null;
         }
+        [Route("statistics/longTermed")]
+        [HttpGet]
+        public IActionResult GetLongTermedSteps()
+        {
+            TimesWatchedStepsDTO timeOnStep =
+                _appointmentService.GetLongTermedSteps();
+            return Ok(timeOnStep);
+        }
         
     }
 }

@@ -47,6 +47,7 @@ namespace HospitalLibrary.Appointments.Interfaces
         SchedulePerAgeDTO GetAverageTimeForSchedulePerAge(int fromAge, int toAge);
         SchedulePerAgeDTO GetAverageTimeForSchedule();
         AveragePatientStepDTO GetHowManyTimesQuitOnStep();
+        TimesWatchedStepsDTO GetLongTermedSteps();
 
     }
 }

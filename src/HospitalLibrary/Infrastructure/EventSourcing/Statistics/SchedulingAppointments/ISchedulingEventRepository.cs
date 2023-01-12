@@ -12,5 +12,6 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppo
         int GetTimesWatchedStep(SchedulingAppointmentEventType step);
         double GetAverageTimeForSchedulePerAge(DateTime fromAge, DateTime toAge);
         int GetHowManyTimesQuitOnStep(SchedulingAppointmentEventType step, SchedulingAppointmentEventType nextStep);
+        double GetLongTermedSteps(SchedulingAppointmentEventType stepStart, SchedulingAppointmentEventType stepEnd);
     }
 }

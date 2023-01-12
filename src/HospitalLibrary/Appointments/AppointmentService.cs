@@ -372,6 +372,10 @@ namespace HospitalLibrary.Appointments
         {
             return _schedulingAppointmentStatistics.GetHowManyTimesQuitOnStep();
         }
+        public TimesWatchedStepsDTO GetLongTermedSteps()
+        {
+            return _schedulingAppointmentStatistics.GetLongTermedSteps();
+        }
     }
 }
 
