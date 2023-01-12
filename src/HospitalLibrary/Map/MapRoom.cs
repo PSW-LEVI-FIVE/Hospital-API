@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using HospitalLibrary.Rooms;
 using HospitalLibrary.Rooms.Model;
@@ -20,6 +21,8 @@ namespace HospitalLibrary.Map
         public virtual Room Room { get; set; }
         
         public Coordinates Coordinates { get; set; }
+        
+        public virtual CoordinatesList SecondaryCoordinatesList { get; set; }
 
         public string RbgColour { get; set; }
         

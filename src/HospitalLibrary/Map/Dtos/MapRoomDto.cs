@@ -1,4 +1,7 @@
-﻿namespace HospitalLibrary.Map.Dtos
+﻿using System.Collections.Generic;
+using HospitalLibrary.Shared.Model.ValueObjects;
+
+namespace HospitalLibrary.Map.Dtos
 {
     public class MapRoomDto
     {
@@ -10,6 +13,7 @@
         public float Width { get; set; }
         public float Height { get; set; }
         public string RbgColour { get; set; }
+        public List<Coordinates> SecondaryCoordinates { get; set; }
         
         public MapRoomDto(MapRoom mapRoom)
         {
@@ -21,6 +25,7 @@
             Width = mapRoom.Coordinates.Width;
             Height = mapRoom.Coordinates.Height;
             RbgColour = mapRoom.RbgColour;
+            SecondaryCoordinates = mapRoom.SecondaryCoordinatesList != null ? mapRoom.SecondaryCoordinatesList.Coordinates : null;
         }
     }
 }

@@ -31,7 +31,7 @@ public class RenovationUnitTest
             
         
         HospitalLibrary.Renovations.Model.Renovation renovation =
-            new HospitalLibrary.Renovations.Model.Renovation(1,1,2,
+            new HospitalLibrary.Renovations.Model.Renovation(1,1,"2",
                 DateTime.Parse("2022-12-15 10:30:00"), DateTime.Parse("2022-12-17 10:30:00"));
         IRenovationValidator renovationValidator = new RenovationValidator();
         IRoomEquipmentValidator roomEquipmentValidator = new RoomEquipmentValidator(unitOfWork.Object);

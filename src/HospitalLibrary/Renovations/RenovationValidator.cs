@@ -26,7 +26,5 @@ namespace HospitalLibrary.Renovations
                     "You cant cancel renovation less than 24 hours before it starts");
             }
         }
-
-        
     }
 }
