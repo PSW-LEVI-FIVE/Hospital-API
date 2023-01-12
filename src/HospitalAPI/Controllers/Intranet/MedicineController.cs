@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HospitalLibrary.Medicines;
 using HospitalLibrary.Medicines.Interfaces;
@@ -30,7 +31,7 @@ namespace HospitalAPI.Controllers.Intranet
         [Route("search")]
         public ActionResult Search([FromQuery] string name)
         {
-            IEnumerable<Medicine> medicines = _medicineService.Search(name);
+            IEnumerable<MedicineSearchResultDTO> medicines = _medicineService.Search(name).Select(m => new MedicineSearchResultDTO(m));
             return Ok(medicines);
         }
     }
