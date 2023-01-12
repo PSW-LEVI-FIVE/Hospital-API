@@ -16,11 +16,13 @@ namespace HospitalLibrary.Invitations
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDoctorService _doctorService;
+        private readonly ITimeIntervalValidationService _intervalValidation;
 
-        public InvitationService(IUnitOfWork unitOfWork, IDoctorService doctorService)
+        public InvitationService(IUnitOfWork unitOfWork, IDoctorService doctorService,ITimeIntervalValidationService timeIntervalValidationService)
         {
             _unitOfWork = unitOfWork;
             _doctorService = doctorService;
+            _intervalValidation = timeIntervalValidationService;
         }
 
         public IEnumerable<Invitation> GetAllInvitations()
@@ -41,10 +43,11 @@ namespace HospitalLibrary.Invitations
             return invitation;
         }
         
-        public Invitation DeclineInvitation(int invitationId)
+        public Invitation DeclineInvitation(DeclineInvitationDto declineInvitationDto)
         {
-            Invitation invitation =_unitOfWork.InvitationRepository.GetOne(invitationId);
+            Invitation invitation =_unitOfWork.InvitationRepository.GetOne(declineInvitationDto.InvitationId);
             invitation.InvitationStatus = InvitationStatus.REJECTED;
+            invitation.Reason = declineInvitationDto.Reason;
             _unitOfWork.InvitationRepository.Save();
             return invitation;
         }
@@ -60,7 +63,9 @@ namespace HospitalLibrary.Invitations
                     "", createInvitationDto.Place, createInvitationDto.StartAt, createInvitationDto.EndAt,
                     createInvitationDto.InvitationStatus);
                 newInvitation.DoctorId = doctor.Id;
+                newInvitation.InvitationStatus = InvitationStatus.PENDING;
                 invitations.Add(newInvitation);
+                await _intervalValidation.ValidateTeamBuildingEventInvitation(newInvitation);
                 _unitOfWork.InvitationRepository.Add(newInvitation);
                _unitOfWork.InvitationRepository.Save();
                 
@@ -82,6 +87,8 @@ namespace HospitalLibrary.Invitations
                     "", createInvitationDto.Place, createInvitationDto.StartAt, createInvitationDto.EndAt,
                     createInvitationDto.InvitationStatus);
                 newInvitation.DoctorId = doctor.Id;
+                newInvitation.InvitationStatus = InvitationStatus.PENDING;
+                await _intervalValidation.ValidateTeamBuildingEventInvitation(newInvitation);
                 invitations.Add(newInvitation);
                 _unitOfWork.InvitationRepository.Add(newInvitation);
                 _unitOfWork.InvitationRepository.Save();

@@ -14,7 +14,7 @@ namespace HospitalLibrary.Invitations.Interfaces
 
         public Task<IEnumerable<Invitation>> CreateEventForSpeciality(CreateInvitationDto createInvitationDto,int specialityId);
 
-        public Invitation DeclineInvitation(int invitationId);
+        public Invitation DeclineInvitation(DeclineInvitationDto declineInvitationDto);
         
     }
 }
