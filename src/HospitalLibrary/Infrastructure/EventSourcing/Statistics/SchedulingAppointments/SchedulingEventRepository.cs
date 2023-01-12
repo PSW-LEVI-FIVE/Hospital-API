@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using HospitalLibrary.Appointments;
 using HospitalLibrary.Infrastructure.EventSourcing.Events;
-using HospitalLibrary.Infrastructure.EventSourcing.Statistics.ExaminationReport;
 using HospitalLibrary.Settings;
 using HospitalLibrary.Shared.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -57,13 +59,23 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppo
                 .ToList()
                 .Count();
         }
-        
+        public DateTime FindPatientBirth(int aggregateId,List<Appointment> appointments)
+        {
+            return appointments
+                .Where(a => a.Id == aggregateId)
+                .Select(a => a.Patient.BirthDate)
+                .FirstOrDefault();
+        }
         public double GetAverageTimeForSchedulePerAge(DateTime fromAge,DateTime toAge)
         {
+            var appointments = _dataContext.Appointments
+                .Include(a => a.Patient)
+                .ToList();
             return _dataContext.SchedulingAppointmentDomainEvents
-                .Where(d => d.Type == SchedulingAppointmentEventType.STARTED ||
-                            d.Type == SchedulingAppointmentEventType.FINISHED)
-                .Where(d=>d.Appointment.Patient.BirthDate > fromAge && d.Appointment.Patient.BirthDate < toAge)
+                .Where(d => (d.Type == SchedulingAppointmentEventType.STARTED ||
+                            d.Type == SchedulingAppointmentEventType.FINISHED))
+                .AsEnumerable()
+                .Where(d=> Between( FindPatientBirth(d.AggregateId,appointments),fromAge,toAge))
                 .ToList()
                 .GroupBy(d => d.AggregateId)
                 .Select(g =>
@@ -78,11 +90,18 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppo
                 .Average(el => el.Diff.TotalMinutes  * 60);
         }
 
+        public List<int> FindNotCreated()
+        {
+            return _dataContext.Appointments
+                .Where(a => a.State == AppointmentState.NOT_CREATED)
+                .Select(a=>a.Id)
+                .ToList();
+        }
+
         public int GetHowManyTimesQuitOnStep(SchedulingAppointmentEventType step,SchedulingAppointmentEventType nextStep)
         {
             return _dataContext.SchedulingAppointmentDomainEvents
-                .Include(d => d.Appointment)
-                .Where(d => d.Appointment.State == AppointmentState.NOT_CREATED)
+                .Where(d => FindNotCreated().Any(id => id == d.AggregateId))
                 .ToList()
                 .GroupBy(d =>
                     d.AggregateId)
@@ -92,6 +111,10 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Statistics.SchedulingAppo
                     NextStep = g.FirstOrDefault(el =>el.Type == nextStep)
                 })
                 .Count(el => el.Step != null && el.NextStep == null);
+        }
+        public bool Between (DateTime a, DateTime b, DateTime c)
+        {
+            return a.CompareTo(b) >= 0 && a.CompareTo(c) <= 0;
         }
     }
 }

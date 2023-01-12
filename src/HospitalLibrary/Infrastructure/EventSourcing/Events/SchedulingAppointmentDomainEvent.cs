@@ -10,13 +10,9 @@ namespace HospitalLibrary.Infrastructure.EventSourcing.Events
     public class SchedulingAppointmentDomainEvent : DomainEvent
     {
         public SchedulingAppointmentEventType Type { get; set; }
-        [ForeignKey("Appointment")] 
-        public int AppoId { get; private set;}
-        public Appointment Appointment;
         public SchedulingAppointmentDomainEvent(int aggregateId, DateTime timestamp,SchedulingAppointmentEventType type) : base(aggregateId, timestamp)
         {
             Type = type;
-            AppoId = aggregateId;
         }
     }
 }

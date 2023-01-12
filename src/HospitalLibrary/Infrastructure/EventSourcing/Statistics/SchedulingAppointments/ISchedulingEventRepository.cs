@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using HospitalLibrary.Infrastructure.EventSourcing.Events;
 using HospitalLibrary.Shared.Interfaces;
 
