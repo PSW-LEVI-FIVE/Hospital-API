@@ -259,7 +259,7 @@ namespace HospitalLibrary.Appointments
                         select new CalendarAppointmentsDTO(date, map[dt]))
                     .ToList();
             }
-            public Task<IEnumerable<Appointment>> GetAllFinishedPatientAppointments(int patientId)
+            public List<Appointment> GetAllFinishedPatientAppointments(int patientId)
             {
                 return _unitOfWork.AppointmentRepository.GetPatientEndedAppointments(patientId);
             }

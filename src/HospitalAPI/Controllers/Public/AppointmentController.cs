@@ -169,7 +169,7 @@ namespace HospitalAPI.Controllers.Public
         public async Task<IActionResult> GetAllFinishedPatientAppointments()
         {
             int patientId = GetCurrentUser().Id;
-            IEnumerable<Appointment> appointments = await _appointmentService.GetAllFinishedPatientAppointments(patientId);
+            IEnumerable<Appointment> appointments = _appointmentService.GetAllFinishedPatientAppointments(patientId);
             return Ok(appointments);
         }
         
