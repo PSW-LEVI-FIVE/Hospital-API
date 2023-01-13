@@ -1,10 +1,10 @@
-
-using System;
-using System.Threading.Tasks;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Renovations.Interface;
 using HospitalLibrary.Renovations.Model;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
+using HospitalLibrary.Infrastructure.EventSourcing.Statistics.Renovation;
+
 namespace HospitalAPI.Controllers.Intranet
 {
   [Route("api/intranet/renovation")]
@@ -12,11 +12,14 @@ namespace HospitalAPI.Controllers.Intranet
   public class RenovationController : Controller
   {
     private readonly IRenovationService _renovationService;
+    private readonly IRenovationStatistics _renovationStatics;
 
-    public RenovationController(IRenovationService renovationService)
+    public RenovationController(IRenovationService renovationService, IRenovationStatistics renovationStatics)
     {
       _renovationService = renovationService;
+      _renovationStatics = renovationStatics;
     }
+
     [HttpPost]
     [Route("timeslot/")]
     public async Task<IActionResult> GetTimeSlots([FromBody] TimeSlotReqDTo reqdto)
@@ -42,6 +45,31 @@ namespace HospitalAPI.Controllers.Intranet
       return Ok(slots);
     }
 
+    [HttpPost]
+    [Route("create/event")]
+    public async Task<IActionResult> Create([FromBody] RenovationEventCreateDTO renovationDto)
+    {
+      var reno = await _renovationService.CreateEvent(renovationDto.MapToModel());
+      return Ok(reno);
+    }
+
+    [HttpPost]
+    [Route("add/event")]
+    public async Task<IActionResult> AddEvent([FromBody] RenovationAddEventDTO renovationEventDto)
+    {
+      _renovationService.AddEvent(renovationEventDto.MapToModel());
+      return Ok();
+    }
+
+    [HttpPost]
+    [Route("update/event/")]
+    public async Task<IActionResult> UpdateEvent([FromBody] RenovationEventDTO renovationDto)
+    {
+      var renovation= await _renovationService.UpdateEvent(renovationDto.MapToModel(), renovationDto.Uuid);
+      return Ok(renovation);
+    }
+
+
     [HttpGet]
     [Route("pending/")]
     public async Task<IActionResult> GetAllPending()
@@ -50,6 +78,82 @@ namespace HospitalAPI.Controllers.Intranet
       return Ok(pending);
     }
 
+    [HttpGet]
+    [Route("statistics/avg-step-count")]
+    public IActionResult GetAvgStepCount()
+    {
+     var pending = _renovationStatics.GetAvgStepCount();
+     return Ok(pending);
+    }
+
+    [HttpGet]
+    [Route("statistics/visit-count-merge")]
+    public IActionResult GetMergeVisitCount()
+    {
+      var pending = _renovationStatics.GetTotalVisitsToStep(RenovationType.MERGE);
+      return Ok(pending);
+    }
+
+    [HttpGet]
+    [Route("statistics/visit-count-split")]
+    public IActionResult GetSplitVisitCount()
+    {
+      var pending = _renovationStatics.GetTotalVisitsToStep(RenovationType.SPLIT);
+      return Ok(pending);
+    }
+
+    [HttpGet]
+    [Route("statistics/avg-step-time-merge")]
+    public IActionResult GetAvgStepTimeMerge()
+    {
+      var pending = _renovationStatics.GetAverageTimeForStep(RenovationType.MERGE);
+      return Ok(pending);
+    }
+    [HttpGet]
+    [Route("statistics/avg-step-time-split")]
+    public IActionResult GetAvgStepTimeSplit()
+    {
+      var pending = _renovationStatics.GetAverageTimeForStep(RenovationType.SPLIT);
+      return Ok(pending);
+    }
+
+    [HttpGet]
+    [Route("statistics/min-step-time-merge")]
+    public IActionResult GetMinStepTimeMerge()
+    {
+      var pending = _renovationStatics.GetMinTimeForStep(RenovationType.MERGE);
+      return Ok(pending);
+    }
+    [HttpGet]
+    [Route("statistics/min-step-time-split")]
+    public IActionResult GetMinStepTimeSplit()
+    {
+      var pending = _renovationStatics.GetMinTimeForStep(RenovationType.SPLIT);
+      return Ok(pending);
+    }
+
+    [HttpGet]
+    [Route("statistics/max-step-time-merge")]
+    public IActionResult GetMaxStepTimeMerge()
+    {
+      var pending = _renovationStatics.GetMaxTimeForStep(RenovationType.MERGE);
+      return Ok(pending);
+    }
+    [HttpGet]
+    [Route("statistics/max-step-time-split")]
+    public IActionResult GetMaxStepTimeSplit()
+    {
+      var pending = _renovationStatics.GetMaxTimeForStep(RenovationType.SPLIT);
+      return Ok(pending);
+    }
+
+    [HttpGet]
+    [Route("statistics/avg-time")]
+    public IActionResult GetAvgTime()
+    {
+      var pending = _renovationStatics.GetAvgTime();
+      return Ok(pending);
+    }
 
   }
 

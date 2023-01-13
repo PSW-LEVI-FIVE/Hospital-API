@@ -50,26 +50,7 @@ namespace HospitalLibrary.Renovations.Repository
           .Where(a => interval.End.Date.CompareTo(a.EndAt.Date) >= 0)
           .ToListAsync();
     }
-
-    public async Task<TimeInterval> GetLastPendingForDay(DateTime date, int roomId)
-    {
-      return await _dataContext.Renovations
-          .Where(a => a.EndAt.Date == date.Date)
-          .Where(a => a.State == RenovationState.PENDING && a.MainRoomId == roomId)
-          .OrderByDescending(a => a.EndAt)
-          .Select(a => new TimeInterval(a.StartAt, a.EndAt))
-          .FirstOrDefaultAsync();
-    }
-    public async Task<TimeInterval> GetFirstPendingForDay(DateTime date, int roomId)
-    {
-      return await _dataContext.Renovations
-          .Where(a => a.StartAt.Date == date.Date)
-          .Where(a => a.State == RenovationState.PENDING && a.MainRoomId == roomId)
-          .OrderBy(a => a.StartAt)
-          .Select(a => new TimeInterval(a.StartAt, a.EndAt))
-          .FirstOrDefaultAsync();
-    }
-
+    
     public async Task<TimeInterval> GetActiveRenovationForDay(DateTime date, int roomId)
     {
       return await _dataContext.Renovations
@@ -77,6 +58,10 @@ namespace HospitalLibrary.Renovations.Repository
           .Where(a => a.StartAt.Date <= date.Date && a.EndAt.Date >= date.Date)
           .Select(a => new TimeInterval(a.StartAt, a.EndAt))
           .SingleOrDefaultAsync();
+    }
+    public int MaxId()
+    {
+      return _dataContext.Renovations.Select(a => a.Id).Max();
     }
   }
 }

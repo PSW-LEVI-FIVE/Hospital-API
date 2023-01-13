@@ -8,10 +8,15 @@ using System.Threading.Tasks;
 using HospitalLibrary.Appointments;
 using HospitalLibrary.Rooms.Model;
 using Microsoft.VisualBasic;
+using HospitalLibrary.Infrastructure.EventSourcing;
+using NUnit.Framework.Internal.Execution;
+using HospitalLibrary.Examination;
+using SendGrid.Helpers.Mail;
+using System.Security.Policy;
 
 namespace HospitalLibrary.Renovations.Model
 {
-  public class Renovation
+  public class Renovation : EventSourcedAggregate
   {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key()]
     public int Id { get; set; }
@@ -49,6 +54,14 @@ namespace HospitalLibrary.Renovations.Model
       Type = RenovationType.MERGE;
       SecondaryRoomIds = secondaryRoomIds;
     }
+    public Renovation(int mainRoomId,RenovationType type)
+    {
+      MainRoomId = mainRoomId;
+      Type = type;
+      State= RenovationState.CANCELED;
+      StartAt= DateTime.Now;
+      EndAt= DateTime.Now;
+    }
 
     public TimeInterval GetInterval()
     {
@@ -68,6 +81,22 @@ namespace HospitalLibrary.Renovations.Model
     public bool CheckSecondaryRooms(int roomid)
     {
       return GetSecondaryIds().Contains(roomid);
+    }
+    
+    public override void Apply(DomainEvent @event)
+    {
+      Changes.Add(@event);
+    }
+
+    public void UpdateAdditional(Renovation renovation)
+    {
+      MainRoomId = renovation.MainRoomId;
+      StartAt = renovation.StartAt;
+      EndAt = renovation.EndAt;
+      State = renovation.State;
+      Type = renovation.Type;
+      SecondaryRoomIds = renovation.SecondaryRoomIds;
+      roomName = renovation.roomName;
     }
   }
 }
