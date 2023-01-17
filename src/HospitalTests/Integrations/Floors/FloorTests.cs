@@ -36,7 +36,7 @@ public class FloorTests: BaseIntegrationTest
         var dto = new CreateFloorDto()
         {
             BuildingId = 2,
-            Area = new Area(150),
+            Area = 150,
             Height = 100,
             Width = 100,
             XCoordinate = 150,
