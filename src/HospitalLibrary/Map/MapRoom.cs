@@ -9,13 +9,12 @@ namespace HospitalLibrary.Map
 {
     public class MapRoom
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key()]
-        public int Id { get; set; }
-        
+
         [ForeignKey("MapFloor")]
         public int MapFloorId { get; set; }
         public MapFloor MapFloor { get; set; }
         
+        [Key()]
         [ForeignKey("Room")]
         public int RoomId { get; set; }
         public virtual Room Room { get; set; }
@@ -27,5 +26,12 @@ namespace HospitalLibrary.Map
         public string RbgColour { get; set; }
         
         public MapRoom() {}
+
+        public MapRoom(int roomId, int mapFloorId, Coordinates coordinates)
+        {
+            RoomId = roomId;
+            MapFloorId = mapFloorId;
+            Coordinates = coordinates;
+        }
     }
 }

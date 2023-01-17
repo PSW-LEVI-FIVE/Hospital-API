@@ -119,7 +119,7 @@ namespace HospitalLibrary.Renovations
       {
         case RenovationType.SPLIT:
           {
-            SplitRoom(renovation.roomName, _unitOfWork.RoomRepository.GetOne(renovation.MainRoomId));
+            await SplitRoom(_unitOfWork.RoomRepository.GetOne(renovation.MainRoomId));
 
             renovation.State = RenovationState.FINISHED;
             Update(renovation);
@@ -243,18 +243,40 @@ namespace HospitalLibrary.Renovations
       _unitOfWork.MapRoomRepository.Save();
     }
     
-    private void SplitRoom(string roomNumber, Room mainRoom)
+    private async Task SplitRoom(Room mainRoom)
     {
-      var id = _unitOfWork.RoomRepository.GetMaxId();
-      var room2 = new Room(id + 1, roomNumber, new Area(mainRoom.Area.Measure / 2),
-          mainRoom.FloorId, RoomType.OPERATION_ROOM);
-      
-      //mainRoom.Area = new Area(mainRoom.Area.Measure / 2);
-      float newArea = mainRoom.Area.Measure / 2;
-      mainRoom.UpdateArea(new Area(newArea));
+      MapRoom mainMapRoom = _unitOfWork.MapRoomRepository.GetOne(mainRoom.Id);
+      List<Coordinates> secondaryRoomCoordinates = mainMapRoom.SecondaryCoordinatesList.Coordinates;
+      foreach (var secondaryCoordinates in secondaryRoomCoordinates)
+      {
+        Room newRoom = new Room(
+          "SplitFrom" + mainRoom.Id,
+          new Area(mainRoom.Area.Measure / secondaryRoomCoordinates.Count),
+          mainRoom.FloorId,
+          mainRoom.RoomType
+          );
+        
+        _unitOfWork.RoomRepository.Update(newRoom);
+        _unitOfWork.RoomRepository.Save();
+      }
 
-      _roomService.Create(room2);
-      _roomService.Update(mainRoom);
+      List<Room> secondaryRooms = new List<Room>();
+      secondaryRooms.AddRange(await _unitOfWork.RoomRepository.GetBySplitRoomId(mainRoom.Id));
+
+      foreach (var secondaryCoordinates in secondaryRoomCoordinates)
+      {
+        int index = secondaryRoomCoordinates.FindIndex(a => a.Equals(secondaryCoordinates));
+        Room room = secondaryRooms[index];
+        MapRoom newRoom = new MapRoom(room.Id, room.FloorId, secondaryCoordinates);
+        
+        _unitOfWork.MapRoomRepository.Add(newRoom);
+        _unitOfWork.MapRoomRepository.Save();
+      }
+
+      mainMapRoom.SecondaryCoordinatesList = null;
+      _unitOfWork.MapRoomRepository.Update(mainMapRoom);
+      _unitOfWork.MapRoomRepository.Save();
+
     }
 
     private async Task DeleteAllReallocation(List<Room> renovationSecondaryRooms, Room mainRoom)

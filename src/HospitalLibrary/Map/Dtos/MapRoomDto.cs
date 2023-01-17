@@ -7,7 +7,6 @@ namespace HospitalLibrary.Map.Dtos
     {
         public int Id { get; set; }
         public int MapFloorId { get; set; }
-        public int RoomId { get; set; }
         public float XCoordinate { get; set; }
         public float YCoordinate { get; set; }
         public float Width { get; set; }
@@ -17,9 +16,8 @@ namespace HospitalLibrary.Map.Dtos
         
         public MapRoomDto(MapRoom mapRoom)
         {
-            Id = mapRoom.Id;
             MapFloorId = mapRoom.MapFloorId;
-            RoomId = mapRoom.RoomId;
+            Id = mapRoom.RoomId;
             XCoordinate = mapRoom.Coordinates.XCoordinate;
             YCoordinate = mapRoom.Coordinates.YCoordinate;
             Width = mapRoom.Coordinates.Width;
