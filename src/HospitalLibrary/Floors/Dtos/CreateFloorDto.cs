@@ -11,7 +11,7 @@ namespace HospitalLibrary.Floors.Dtos
         [Required]
         public int Number;
         [Required]
-        public Area Area;
+        public float Area;
         [Required]
         public float XCoordinate;
         [Required]
