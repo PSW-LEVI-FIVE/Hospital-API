@@ -51,5 +51,10 @@ namespace HospitalLibrary.Rooms.Repositories
           return _dataContext.Rooms.OrderByDescending(a => a.Id).Select(a => a.Id).FirstOrDefault();
 
         }
+
+        public async Task<IEnumerable<Room>> GetBySplitRoomId(int roomId)
+        {
+            return await _dataContext.Rooms.Where(r => r.RoomNumber.Equals("SplitFrom" + roomId)).ToListAsync();
+        }
   }
 }
