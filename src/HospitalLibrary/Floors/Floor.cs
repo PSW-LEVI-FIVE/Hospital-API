@@ -34,6 +34,12 @@ namespace HospitalLibrary.Floors
             Area = area;
             BuildingId = buildingId;
         }
+        public Floor(int id, float area, int buildingId)
+        {
+            Id = id;
+            Area = new Area(area);
+            BuildingId = buildingId;
+        }
         public Floor(int buildingId)
         {
             BuildingId = buildingId;
