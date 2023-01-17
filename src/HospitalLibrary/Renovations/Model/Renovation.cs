@@ -20,7 +20,6 @@ namespace HospitalLibrary.Renovations.Model
   {
     [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key()]
     public int Id { get; set; }
-
     [ForeignKey("MainRoomId")] public int MainRoomId { get; set; }
 
     public Room MainRoom { get; set; }
@@ -33,16 +32,6 @@ namespace HospitalLibrary.Renovations.Model
 
     public Renovation()
     {
-    }
-
-    public Renovation(int id, int mainRoomId, DateTime startAt, DateTime endAt)
-    {
-      Id = id;
-      MainRoomId = mainRoomId;
-      StartAt = startAt;
-      EndAt = endAt;
-      State = RenovationState.PENDING;
-      Type = RenovationType.SPLIT;
     }
     public Renovation(int id, int mainRoomId, string secondaryRoomIds, DateTime startAt, DateTime endAt)
     {
